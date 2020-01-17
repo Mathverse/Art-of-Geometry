@@ -1,0 +1,3 @@
+MAnimLib >= 0.1.10
+NumPy >= 1.17.4
+SymPy >= 1.5.1
