@@ -1,0 +1,20 @@
+from abc import ABC, ABCMeta
+
+from sympy.geometry.entity import GeometryEntity
+
+
+class _GeometryEntityABC(GeometryEntity, ABC):
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        self._name = name
+
+    @name.deleter
+    def name(self):
+        self._name = None
+
+    def __str__(self):
+        return repr(self)
