@@ -1,10 +1,10 @@
 __all__ = \
     'Point', 'Pt', \
     'ORIGIN_POINT', 'HORIZONTAL_UNIT_POINT', 'VERTICAL_UNIT_POINT', \
-    'PointAtDirectedInfinity', 'PtAtDirInf', \
-    'POINT_AT_EAST_INFINITY', 'POINT_AT_WEST_INFINITY', 'POINT_AT_NORTH_INFINITY', 'POINT_AT_SOUTH_INFINITY', \
     'PointAtUndirectedInfinity', 'PtAtUndirInf', \
-    'POINT_AT_HORIZONTAL_INFINITY', 'POINT_AT_VERTICAL_INFINITY'
+    'POINT_AT_HORIZONTAL_INFINITY', 'POINT_AT_VERTICAL_INFINITY', \
+    'PointAtDirectedInfinity', 'PtAtDirInf', \
+    'POINT_AT_EAST_INFINITY', 'POINT_AT_WEST_INFINITY', 'POINT_AT_NORTH_INFINITY', 'POINT_AT_SOUTH_INFINITY'
 
 
 from sympy.core.singleton import S
@@ -58,6 +58,32 @@ HORIZONTAL_UNIT_POINT = Pt(x=S.One, y=S.Zero, name='HORIZONTAL_UNIT_POINT')
 VERTICAL_UNIT_POINT = Pt(x=S.Zero, y=S.One, name='VERTICAL_UNIT_POINT')
 
 
+class PointAtUndirectedInfinity(_PointABC):
+    def __init__(self, direction, name=None):
+        self.direction = direction
+
+        self._name = \
+            name \
+            if name \
+            else str(uuid4())
+
+    def __repr__(self):
+        return 'Pt@UndirInf {}'.format(self.name)
+
+    def __eq__(self, point_at_undirected_infinity):
+        assert isinstance(point_at_undirected_infinity, PointAtUndirectedInfinity)
+
+        return self.direction.is_scalar_multiple(point_at_undirected_infinity.direction)
+
+
+# alias
+PtAtUndirInf = PointAtUndirectedInfinity
+
+# constants
+POINT_AT_HORIZONTAL_INFINITY = PtAtUndirInf(direction=HORIZONTAL_UNIT_POINT, name='POINT_AT_HORIZONTAL_INFINITY')
+POINT_AT_VERTICAL_INFINITY = PtAtUndirInf(direction=VERTICAL_UNIT_POINT, name='POINT_AT_VERTICAL_INFINITY')
+
+
 class PointAtDirectedInfinity(_PointABC):
     def __init__(self, direction, name=None):
         self.direction = direction
@@ -79,21 +105,3 @@ POINT_AT_EAST_INFINITY = PtAtDirInf(direction=HORIZONTAL_UNIT_POINT, name='POINT
 POINT_AT_WEST_INFINITY = PtAtDirInf(direction=-HORIZONTAL_UNIT_POINT, name='POINT_AT_WEST_INFINITY')
 POINT_AT_NORTH_INFINITY = PtAtDirInf(direction=VERTICAL_UNIT_POINT, name='POINT_AT_NORTH_INFINITY')
 POINT_AT_SOUTH_INFINITY = PtAtDirInf(direction=-VERTICAL_UNIT_POINT, name='POINT_AT_NORTH_INFINITY')
-
-
-class PointAtUndirectedInfinity(PointAtDirectedInfinity):
-    def __repr__(self):
-        return 'Pt@UndirInf {}'.format(self.name)
-
-    def __eq__(self, point_at_undirected_infinity):
-        assert isinstance(point_at_undirected_infinity, PointAtDirectedInfinity)
-
-        return self.direction.is_scalar_multiple(point_at_undirected_infinity.direction)
-
-
-# alias
-PtAtUndirInf = PointAtUndirectedInfinity
-
-# constants
-POINT_AT_HORIZONTAL_INFINITY = PtAtUndirInf(direction=HORIZONTAL_UNIT_POINT, name='POINT_AT_HORIZONTAL_INFINITY')
-POINT_AT_VERTICAL_INFINITY = PtAtUndirInf(direction=VERTICAL_UNIT_POINT, name='POINT_AT_VERTICAL_INFINITY')
