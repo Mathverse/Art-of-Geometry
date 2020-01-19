@@ -7,7 +7,6 @@ __all__ = \
 from sympy.geometry.line import Line2D, Ray2D, Segment2D
 
 from ... import _GeometryEntityABC
-
 from .point import _PointABC, Point, PointAtInfinity
 
 

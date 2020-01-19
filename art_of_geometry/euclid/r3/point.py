@@ -1,7 +1,11 @@
+__all__ = \
+    'Point', 'Pt', \
+    'PointAtInfinity', 'PtAtInf'
+
+
 from sympy.core.symbol import Symbol
-
+from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point3D
-
 from uuid import uuid4
 
 from ... import _GeometryEntityABC
@@ -25,7 +29,11 @@ class Point(Point3D, _PointABC):
         if z is None:
             z = Symbol(name='{}.z'.format(name), real=True)
 
-        point = super().__new__(cls, x, y, z)
+        point = super().__new__(
+                    cls,
+                    x, y, z,   # *coords
+                    evaluate=False   # if True (default), all floats are turn into exact types
+                )
 
         point._name = name
 
@@ -36,7 +44,7 @@ class Point(Point3D, _PointABC):
 
     @classmethod
     def _from_sympy_point_3d(cls, sympy_point_3d: Point3D, name: str = None):
-        return Point(
+        return cls(
                 x=sympy_point_3d.x,
                 y=sympy_point_3d.y,
                 z=sympy_point_3d.z,
@@ -49,6 +57,11 @@ Pt = Point
 
 class PointAtInfinity(_PointABC):
     def __init__(self, direction: Point, name: str = None):
+        assert isinstance(direction, Point), \
+            GeometryError(
+                '*** DIRECTION {} NOT {} ***'
+                .format(direction, Point.__name__))
+
         self.direction = direction
 
         self._name = \
