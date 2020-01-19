@@ -1,10 +1,7 @@
 __all__ = \
     'Point', 'Pt', \
-    'ORIGIN_POINT', 'HORIZONTAL_UNIT_POINT', 'VERTICAL_UNIT_POINT', \
     'PointAtUndirectedInfinity', 'PtAtUndirInf', \
-    'POINT_AT_HORIZONTAL_INFINITY', 'POINT_AT_VERTICAL_INFINITY', \
-    'PointAtDirectedInfinity', 'PtAtDirInf', \
-    'POINT_AT_EAST_INFINITY', 'POINT_AT_WEST_INFINITY', 'POINT_AT_NORTH_INFINITY', 'POINT_AT_SOUTH_INFINITY'
+    'PointAtDirectedInfinity', 'PtAtDirInf'
 
 
 from sympy.core.singleton import S
@@ -52,11 +49,6 @@ class Point(Point2D, _PointABC):
 # alias
 Pt = Point
 
-# constants
-ORIGIN_POINT = Pt(x=S.Zero, y=S.Zero, name='ORIGIN_POINT')
-HORIZONTAL_UNIT_POINT = Pt(x=S.One, y=S.Zero, name='HORIZONTAL_UNIT_POINT')
-VERTICAL_UNIT_POINT = Pt(x=S.Zero, y=S.One, name='VERTICAL_UNIT_POINT')
-
 
 class PointAtUndirectedInfinity(_PointABC):
     def __init__(self, direction, name=None):
@@ -79,10 +71,6 @@ class PointAtUndirectedInfinity(_PointABC):
 # alias
 PtAtUndirInf = PointAtUndirectedInfinity
 
-# constants
-POINT_AT_HORIZONTAL_INFINITY = PtAtUndirInf(direction=HORIZONTAL_UNIT_POINT, name='POINT_AT_HORIZONTAL_INFINITY')
-POINT_AT_VERTICAL_INFINITY = PtAtUndirInf(direction=VERTICAL_UNIT_POINT, name='POINT_AT_VERTICAL_INFINITY')
-
 
 class PointAtDirectedInfinity(_PointABC):
     def __init__(self, direction, name=None):
@@ -99,9 +87,3 @@ class PointAtDirectedInfinity(_PointABC):
 
 # alias
 PtAtDirInf = PointAtDirectedInfinity
-
-# constants
-POINT_AT_EAST_INFINITY = PtAtDirInf(direction=HORIZONTAL_UNIT_POINT, name='POINT_AT_EAST_INFINITY')
-POINT_AT_WEST_INFINITY = PtAtDirInf(direction=-HORIZONTAL_UNIT_POINT, name='POINT_AT_WEST_INFINITY')
-POINT_AT_NORTH_INFINITY = PtAtDirInf(direction=VERTICAL_UNIT_POINT, name='POINT_AT_NORTH_INFINITY')
-POINT_AT_SOUTH_INFINITY = PtAtDirInf(direction=-VERTICAL_UNIT_POINT, name='POINT_AT_NORTH_INFINITY')
