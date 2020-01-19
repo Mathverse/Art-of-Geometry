@@ -58,7 +58,7 @@ class PointAtInfinity(_PointABC):
             else str(uuid4())
 
     def __repr__(self):
-        return 'Pt@DirInf {}'.format(self.name)
+        return 'Pt@Inf {}'.format(self.name)
 
     def __eq__(self, point_at_infinity):
         assert isinstance(point_at_infinity, PointAtInfinity)
