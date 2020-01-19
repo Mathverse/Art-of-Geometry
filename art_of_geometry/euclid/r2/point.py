@@ -85,10 +85,10 @@ class PointAtUndirectedInfinity(PointAtDirectedInfinity):
     def __repr__(self):
         return 'Pt@UndirInf {}'.format(self.name)
 
-    def __eq__(self, point_at_undirected_infinity):
-        assert isinstance(point_at_undirected_infinity, PointAtDirectedInfinity)
+    def __eq__(self, point_at_infinity):
+        assert isinstance(point_at_infinity, PointAtDirectedInfinity)
 
-        return self.direction.is_scalar_multiple(point_at_undirected_infinity.direction)
+        return self.direction.is_scalar_multiple(point_at_infinity.direction)
 
 
 # alias
