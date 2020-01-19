@@ -12,7 +12,7 @@ from .point import _PointABC, Point, PointAtInfinity
 
 
 class Line(Line2D, _GeometryEntityABC):
-    def __new__(cls, point_0: Point, point_1: _PointABC, name=None):
+    def __new__(cls, point_0: Point, point_1: _PointABC, name: str = None):
         assert isinstance(point_0, Point)
         
         if isinstance(point_1, Point):
@@ -40,7 +40,7 @@ class Line(Line2D, _GeometryEntityABC):
                     '*** POINT_1 {} NEITHER {} NOR {} ***'
                     .format(point_1, Point.__name__, PointAtInfinity.__name__))
 
-    def __init__(self, point_0: Point, point_1: _PointABC, name=None):
+    def __init__(self, point_0: Point, point_1: _PointABC, name: str = None):
         self.point_0 = point_0
 
         self.point_1 = point_1
@@ -75,7 +75,7 @@ Ln = Line
 
 
 class Ray(Ray2D, _GeometryEntityABC):
-    def __new__(cls, point_0: Point, point_1: _PointABC, name=None):
+    def __new__(cls, point_0: Point, point_1: _PointABC, name: str = None):
         assert isinstance(point_0, Point)
 
         if isinstance(point_1, Point):
@@ -103,7 +103,7 @@ class Ray(Ray2D, _GeometryEntityABC):
                     '*** POINT_1 {} NEITHER {} NOR {} ***'
                     .format(point_1, Point.__name__, PointAtInfinity.__name__))
 
-    def __init__(self, point_0: Point, point_1: _PointABC, name=None):
+    def __init__(self, point_0: Point, point_1: _PointABC, name: str = None):
         self.point_0 = point_0
 
         self.point_1 = point_1
@@ -123,12 +123,12 @@ class Ray(Ray2D, _GeometryEntityABC):
 
 
 class Segment(Segment2D, _GeometryEntityABC):
-    def __new__(cls, point_0: Point, point_1: Point, name=None):
+    def __new__(cls, point_0: Point, point_1: Point, name: str = None):
         return super().__new__(
                 cls,
                 p1=point_0, p2=point_1)
 
-    def __init__(self, point_0: Point, point_1: Point, name=None):
+    def __init__(self, point_0: Point, point_1: Point, name: str = None):
         self.point_0 = point_0
 
         self.point_1 = point_1

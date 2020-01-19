@@ -17,7 +17,7 @@ class _PointABC(_GeometryEntityABC):
 
 
 class Point(Point2D, _PointABC):
-    def __new__(cls, x=None, y=None, name=None):
+    def __new__(cls, x: Symbol = None, y: Symbol = None, name: str = None):
         if not name:
             name = str(uuid4())
 
@@ -37,7 +37,7 @@ class Point(Point2D, _PointABC):
         return 'Pt {}'.format(self.name)
 
     @classmethod
-    def _from_sympy_point_2d(cls, sympy_point_2d, name=None):
+    def _from_sympy_point_2d(cls, sympy_point_2d: Point2D, name: str = None):
         return Point(
                 x=sympy_point_2d.x,
                 y=sympy_point_2d.y,
@@ -49,7 +49,7 @@ Pt = Point
 
 
 class PointAtInfinity(_PointABC):
-    def __init__(self, direction, name=None):
+    def __init__(self, direction: Point, name: str = None):
         self.direction = direction
 
         self._name = \
