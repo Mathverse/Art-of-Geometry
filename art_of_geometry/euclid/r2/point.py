@@ -4,7 +4,6 @@ __all__ = \
     'PointAtDirectedInfinity', 'PtAtDirInf'
 
 
-from sympy.core.singleton import S
 from sympy.core.symbol import Symbol
 
 from sympy.geometry.point import Point2D
