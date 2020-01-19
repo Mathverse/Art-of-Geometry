@@ -1,7 +1,6 @@
 __all__ = \
     'Point', 'Pt', \
-    'PointAtDirectedInfinity', 'PtAtDirInf', \
-    'PointAtUndirectedInfinity', 'PtAtUndirInf'
+    'PointAtInfinity', 'PtAtInf'
 
 
 from sympy.core.symbol import Symbol
@@ -49,7 +48,7 @@ class Point(Point2D, _PointABC):
 Pt = Point
 
 
-class PointAtDirectedInfinity(_PointABC):
+class PointAtInfinity(_PointABC):
     def __init__(self, direction, name=None):
         self.direction = direction
 
@@ -61,20 +60,11 @@ class PointAtDirectedInfinity(_PointABC):
     def __repr__(self):
         return 'Pt@DirInf {}'.format(self.name)
 
+    def __eq__(self, point_at_infinity):
+        assert isinstance(point_at_infinity, PointAtInfinity)
 
-# alias
-PtAtDirInf = PointAtDirectedInfinity
-
-
-class PointAtUndirectedInfinity(PointAtDirectedInfinity):
-    def __repr__(self):
-        return 'Pt@UndirInf {}'.format(self.name)
-
-    def __eq__(self, point_at_undirected_infinity):
-        assert isinstance(point_at_undirected_infinity, PointAtUndirectedInfinity)
-
-        return self.direction.is_scalar_multiple(point_at_undirected_infinity.direction)
+        return self.direction.is_scalar_multiple(point_at_infinity.direction)
 
 
 # alias
-PtAtUndirInf = PointAtUndirectedInfinity
+PtAtInf = PointAtInfinity
