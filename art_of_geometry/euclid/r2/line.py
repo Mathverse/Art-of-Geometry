@@ -1,16 +1,14 @@
 __all__ = \
     'Line', 'Ln', \
     'Ray', \
-    'Segment', 'Seg', \
-    'Vector', 'Vec'
+    'Segment', 'Seg'
 
 
 from sympy.geometry.line import Line2D, Ray2D, Segment2D
 
 from ... import _GeometryEntityABC
 
-from .angle_measure import ray_directed_angle_measure
-from .point import _PointABC, Point, PointAtUndirectedInfinity, PointAtDirectedInfinity
+from .point import _PointABC, Point, PointAtInfinity
 
 
 class Line(Line2D, _GeometryEntityABC):
@@ -19,34 +17,38 @@ class Line(Line2D, _GeometryEntityABC):
         
         if isinstance(point_1, Point):
             line = super().__new__(
-                        cls,
-                        p1=point_0,
-                        pt=point_1)
+                    cls,
+                    p1=point_0,
+                    pt=point_1)
 
-            line._point_1_at_undirected_infinity = False
+            line._point_1_at_infinity = False
+
+            return line
         
-        elif isinstance(point_1, PointAtUndirectedInfinity):
+        elif isinstance(point_1, PointAtInfinity):
             line = super().__new__(
                     cls,
                     p1=point_0,
-                    slope=point_1.slope)
+                    pt=point_0 + point_1.direction)
 
-            line._point_1_at_undirected_infinity = True
+            line._point_1_at_infinity = True
+
+            return line
         
         else:
             raise TypeError(
                     '*** POINT_1 {} NEITHER {} NOR {} ***'
-                    .format(point_1, Point.__name__, PointAtUndirectedInfinity.__name__))
+                    .format(point_1, Point.__name__, PointAtInfinity.__name__))
 
     def __init__(self, point_0: Point, point_1: _PointABC, name=None):
         self.point_0 = point_0
 
         self.point_1 = point_1
 
-        self.point_at_undirected_infinity = \
+        self.point_at_infinity = \
             point_1 \
-            if self._point_1_at_undirected_infinity \
-            else PointAtUndirectedInfinity(slope=self.slope)
+            if self._point_1_at_infinity \
+            else PointAtInfinity(direction=self.direction)
 
         self._name = name
 
@@ -62,7 +64,7 @@ class Line(Line2D, _GeometryEntityABC):
         return 'Ln {}'.format(self.name)
 
     def line_intersection(self, line):
-        return self.point_at_undirected_infinity \
+        return self.point_at_infinity \
             if self.is_parallel(line) \
           else Point._from_sympy_point_2d(
                 sympy_point_2d=super().intersection(line)[0])
@@ -82,40 +84,29 @@ class Ray(Ray2D, _GeometryEntityABC):
                     p1=point_0,
                     pt=point_1)
 
-            ray._point_1_at_directed_infinity = False
+            ray._point_1_at_infinity = False
 
-        elif isinstance(point_1, PointAtDirectedInfinity):
+            return ray
+
+        elif isinstance(point_1, PointAtInfinity):
             ray = super().__new__(
                     cls,
                     p1=point_0,
-                    angle=point_1.directed_angle_measure)
+                    pt=point_0 + point_1.direction)
 
-            ray._point_1_at_directed_infinity = True
+            ray._point_1_at_infinity = True
+
+            return ray
 
         else:
             raise TypeError(
                     '*** POINT_1 {} NEITHER {} NOR {} ***'
-                    .format(point_1, Point.__name__, PointAtDirectedInfinity.__name__))
+                    .format(point_1, Point.__name__, PointAtInfinity.__name__))
 
     def __init__(self, point_0: Point, point_1: _PointABC, name=None):
         self.point_0 = point_0
 
         self.point_1 = point_1
-
-        if self._point_1_at_directed_infinity:
-            self.point_at_directed_infinity = point_1
-            
-            self.directed_angle_measure = point_1.directed_angle_measure
-            
-        else:
-            self.directed_angle_measure = \
-                ray_directed_angle_measure(
-                    point_0=point_0,
-                    point_1=point_1)
-            
-            self.point_at_directed_infinity = \
-                PointAtDirectedInfinity(
-                    directed_angle_measure=self.directed_angle_measure)
 
         self._name = name
 
@@ -139,12 +130,8 @@ class Segment(Segment2D, _GeometryEntityABC):
 
     def __init__(self, point_0: Point, point_1: Point, name=None):
         self.point_0 = point_0
-        self.point_1 = point_1
 
-        self.directed_angle_measure = \
-            ray_directed_angle_measure(
-                point_0=point_0,
-                point_1=point_1)
+        self.point_1 = point_1
 
         self._name = name
 
@@ -162,21 +149,3 @@ class Segment(Segment2D, _GeometryEntityABC):
 
 # alias
 Seg = Segment
-
-
-class Vector(_GeometryEntityABC):
-    @property
-    def name(self):
-        return self._name \
-            if self._name \
-          else '{} *-> {}'.format(
-                self.point_0.name,
-                self.point_1.name)
-
-    def __repr__(self):
-        return 'Vec {}'.format(self.name)
-
-
-# alias
-Vec = Vector
-
