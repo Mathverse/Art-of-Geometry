@@ -1,0 +1,20 @@
+from sympy.core.symbol import Symbol
+
+from art_of_geometry.euclid.r2.point import Pt, PtAtInf
+from art_of_geometry.euclid.r2.line import Ln, Ray, Seg
+
+
+A = Pt(name='A'); print(A)
+B = Pt(name='B'); print(B)
+
+slope = Symbol('alpha', real=True)
+s = PtAtInf(slope=slope, name='s'); print(s)
+
+
+lnAB = Ln(A, B); print(lnAB)
+lnAs = Ln(A, s); print(lnAs)
+
+rayAB = Ray(A, B); print(rayAB)
+rayAs = Ray(A, s); print(rayAs)
+
+segAB = Seg(A, B); print(segAB)

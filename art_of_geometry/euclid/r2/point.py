@@ -1,3 +1,8 @@
+__all__ = \
+    'Point', 'Pt', \
+    'PointAtInfinity', 'PtAtInf', 'PointAtInf'
+
+
 from sympy.core.symbol import Symbol
 
 from sympy.geometry.point import Point2D
@@ -7,7 +12,11 @@ from uuid import uuid4
 from ... import _GeometryEntityABC
 
 
-class Point(Point2D, _GeometryEntityABC):
+class _PointABC(_GeometryEntityABC):
+    pass
+
+
+class Point(Point2D, _PointABC):
     def __new__(cls, name=str(uuid4())):
         point = super().__new__(
                     cls,
@@ -26,7 +35,7 @@ class Point(Point2D, _GeometryEntityABC):
 Pt = Point
 
 
-class PointAtInfinity(_GeometryEntityABC):
+class PointAtInfinity(_PointABC):
     def __init__(self, slope, name=str(uuid4())):
         self.slope = slope
 

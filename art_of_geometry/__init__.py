@@ -3,11 +3,10 @@ from abc import ABC, ABCMeta, abstractmethod, abstractproperty
 from sympy.geometry.entity import GeometryEntity
 
 
-class _GeometryEntityABC(GeometryEntity, ABC):
-    @abstractmethod
+class _GeometryEntityABC(GeometryEntity):
     @property
     def name(self):
-        raise NotImplementedError
+        return self._name
 
     @name.setter
     def name(self, name):
