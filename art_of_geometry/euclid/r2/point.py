@@ -1,11 +1,9 @@
 __all__ = \
-    'Point', 'Pt', \
-    'ORIGIN_POINT', 'HORIZONTAL_UNIT_POINT', 'VERTICAL_UNIT_POINT',  \
-    'PointAtInfinity', 'PtAtInf', 'PointAtInf', \
-    'HORIZONTAL_POINT_AT_INFINITY', 'VERTICAL_POINT_AT_INFINITY', 'VERTICAL_POINT_AT_MINUS_INFINITY'
+    'Point', 'Pt', 'ORIGIN_POINT', 'HORIZONTAL_UNIT_POINT', 'VERTICAL_UNIT_POINT',  \
+    'PointAtInfinity', 'PtAtInf', 'PointAtInf', 'HORIZONTAL_POINT_AT_INFINITY', 'VERTICAL_POINT_AT_INFINITY'
 
 
-from sympy.core.numbers import Infinity, NegativeInfinity, NegativeOne, One, Pi, Zero, oo, pi
+from sympy.core.numbers import Infinity, NegativeInfinity, NegativeOne, One, Pi, Zero, oo, pi, zoo
 from sympy.core.singleton import S, Singleton, SingletonRegistry
 from sympy.core.symbol import Symbol
 
@@ -61,12 +59,15 @@ class PointAtInfinity(_PointABC):
     def __repr__(self):
         return 'Pt@Inf {}'.format(self.name)
 
+    def __eq__(self, point_at_infinity):
+        assert isinstance(point_at_infinity, PointAtInfinity)
+
+        return self.slope == point_at_infinity.slope
+
 
 # aliases
 PtAtInf = PointAtInf = PointAtInfinity
 
 
 HORIZONTAL_POINT_AT_INFINITY = PtAtInf(slope=S.Zero, name='HORIZONTAL_POINT_AT_INFINITY')
-
 VERTICAL_POINT_AT_INFINITY = PtAtInf(slope=oo, name='VERTICAL_POINT_AT_INFINITY')
-VERTICAL_POINT_AT_MINUS_INFINITY = PtAtInf(slope=S.NegativeInfinity, name='VERTICAL_POINT_AT_MINUS_INFINITY')
