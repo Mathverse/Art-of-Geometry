@@ -52,11 +52,11 @@ Pt = Point
 
 
 class PointAtInfinity(_PointABC):
-    def __init__(self, direction: Point, name: str = None):
-        assert isinstance(direction, Point), \
+    def __init__(self, direction: Point2D, name: str = None):
+        assert isinstance(direction, Point2D), \
             GeometryError(
                 '*** DIRECTION {} NOT {} ***'
-                .format(direction, Point.__name__))
+                .format(direction, Point2D.__name__))
 
         self.direction = direction
 
