@@ -3,12 +3,12 @@ __all__ = \
     'PointAtInfinity', 'PtAtInf'
 
 
-from sympy.core.symbol import Symbol
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point2D
 from uuid import uuid4
 
 from ... import _GeometryEntityABC
+from .. import rand_coord
 
 
 class _PointABC(_GeometryEntityABC):
@@ -16,15 +16,15 @@ class _PointABC(_GeometryEntityABC):
 
 
 class Point(Point2D, _PointABC):
-    def __new__(cls, x: Symbol = None, y: Symbol = None, name: str = None):
+    def __new__(cls, x: float = None, y: float = None, name: str = None):
         if not name:
             name = str(uuid4())
 
         if x is None:
-            x = Symbol(name='{}.x'.format(name), real=True)
+            x = rand_coord()
 
         if y is None:
-            y = Symbol(name='{}.y'.format(name), real=True)
+            y = rand_coord()
 
         point = super().__new__(
                     cls,
