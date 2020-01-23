@@ -3,9 +3,11 @@ __all__ = \
 
 
 from sympy.core.symbol import Symbol
+from sympy.functions.elementary.trigonometric import cos, sin
 from sympy.geometry.ellipse import Circle as SymPyCircle
 from sympy.geometry.exceptions import GeometryError
 
+from ....coord import THETA
 from ... import _EuclidR2GeometryEntityABC
 from ...coord import X, Y
 from ...point import PointInR2
@@ -46,6 +48,11 @@ class CircleInR2(_EuclidR2GeometryEntityABC, SymPyCircle):
         return (X - self.center.x) ** 2 \
              + (Y - self.center.y) ** 2 \
              - self.radius ** 2
+
+    @property
+    def parametric_equations(self):
+        return X - self.center.x - self.radius * cos(THETA), \
+               Y - self.center.y - self.radius * sin(THETA)
 
 
 # aliases
