@@ -73,7 +73,10 @@ Ln = Line = LineR2 = LineInR2
 
 class RayInR2(Ray2D, _GeometryEntityABC):
     def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None):
-        assert isinstance(point_0, PointInR2)
+        assert isinstance(point_0, PointInR2), \
+            GeometryError(
+                '*** POINT_0 {} NOT {} ***'
+                .format(point_0, PointInR2.__name__))
 
         if isinstance(point_1, PointInR2):
             ray = super().__new__(
@@ -130,9 +133,20 @@ Ray = RayR2 = RayInR2
 
 class SegmentInR2(Segment2D, _GeometryEntityABC):
     def __new__(cls, point_0: PointInR2, point_1: PointInR2, name: str = None):
+        assert isinstance(point_0, PointInR2), \
+            GeometryError(
+                '*** POINT_0 {} NOT {} ***'
+                .format(point_0, PointInR2.__name__))
+
+        assert isinstance(point_1, PointInR2), \
+            GeometryError(
+                '*** POINT_1 {} NOT {} ***'
+                    .format(point_1, PointInR2.__name__))
+
         return super().__new__(
                 cls,
-                p1=point_0, p2=point_1)
+                p1=point_0,
+                p2=point_1)
 
     def __init__(self, point_0: PointInR2, point_1: PointInR2, name: str = None):
         self.point_0 = point_0

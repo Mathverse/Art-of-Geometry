@@ -16,7 +16,7 @@ class LineInR3(Line3D, _GeometryEntityABC):
         assert isinstance(point_0, PointInR3), \
             GeometryError(
                 '*** POINT_0 {} NOT {} ***'
-                    .format(point_0, PointInR3.__name__))
+                .format(point_0, PointInR3.__name__))
 
         if isinstance(point_1, PointInR3):
             line = super().__new__(
@@ -41,7 +41,7 @@ class LineInR3(Line3D, _GeometryEntityABC):
         else:
             raise GeometryError(
                 '*** POINT_1 {} NEITHER {} NOR {} ***'
-                    .format(point_1, PointInR3.__name__, PointAtInfinityInR3.__name__))
+                .format(point_1, PointInR3.__name__, PointAtInfinityInR3.__name__))
 
     def __init__(self, point_0: PointInR3, point_1: _PointInR3ABC, name: str = None):
         self.point_0 = point_0
@@ -73,7 +73,10 @@ Ln = Line = LineR3 = LineInR3
 
 class RayInR3(Ray3D, _GeometryEntityABC):
     def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, name: str = None):
-        assert isinstance(point_0, PointInR3)
+        assert isinstance(point_0, PointInR3), \
+            GeometryError(
+                '*** POINT_0 {} NOT {} ***'
+                .format(point_0, PointInR3.__name__))
 
         if isinstance(point_1, PointInR3):
             ray = super().__new__(
@@ -130,9 +133,20 @@ Ray = RayR3 = RayInR3
 
 class SegmentInR3(Segment3D, _GeometryEntityABC):
     def __new__(cls, point_0: PointInR3, point_1: PointInR3, name: str = None):
+        assert isinstance(point_0, PointInR3), \
+            GeometryError(
+                '*** POINT_0 {} NOT {} ***'
+                .format(point_0, PointInR3.__name__))
+
+        assert isinstance(point_1, PointInR3), \
+            GeometryError(
+                '*** POINT_1 {} NOT {} ***'
+                .format(point_1, PointInR3.__name__))
+
         return super().__new__(
             cls,
-            p1=point_0, p2=point_1)
+            p1=point_0,
+            p2=point_1)
 
     def __init__(self, point_0: PointInR3, point_1: PointInR3, name: str = None):
         self.point_0 = point_0
