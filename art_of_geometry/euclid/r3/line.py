@@ -7,11 +7,13 @@ __all__ = \
 from sympy.geometry.line import Line3D, Ray3D, Segment3D
 from sympy.geometry.exceptions import GeometryError
 
-from ... import _GeometryEntityABC
+from ..coord import T
+from . import _EuclidR3GeometryEntityABC
+from .coord import X, Y, Z
 from .point import _PointInR3ABC, PointInR3, PointAtInfinityInR3
 
 
-class LineInR3(Line3D, _GeometryEntityABC):
+class LineInR3(_EuclidR3GeometryEntityABC, Line3D):
     def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, name: str = None):
         assert isinstance(point_0, PointInR3), \
             GeometryError(
@@ -66,12 +68,18 @@ class LineInR3(Line3D, _GeometryEntityABC):
     def __repr__(self):
         return 'Ln {}'.format(self.name)
 
+    @property
+    def parametric_equations(self):
+        return X - self.point_0.x - self.direction.x * T, \
+               Y - self.point_0.y - self.direction.y * T, \
+               Z - self.point_0.z - self.direction.z * T
 
-# alias
+
+# aliases
 Ln = Line = LineR3 = LineInR3
 
 
-class RayInR3(Ray3D, _GeometryEntityABC):
+class RayInR3(_EuclidR3GeometryEntityABC, Ray3D):
     def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, name: str = None):
         assert isinstance(point_0, PointInR3), \
             GeometryError(
@@ -131,7 +139,7 @@ class RayInR3(Ray3D, _GeometryEntityABC):
 Ray = RayR3 = RayInR3
 
 
-class SegmentInR3(Segment3D, _GeometryEntityABC):
+class SegmentInR3(_EuclidR3GeometryEntityABC, Segment3D):
     def __new__(cls, point_0: PointInR3, point_1: PointInR3, name: str = None):
         assert isinstance(point_0, PointInR3), \
             GeometryError(
