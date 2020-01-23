@@ -152,9 +152,9 @@ class SegmentInR3(_EuclidR3GeometryEntityABC, Segment3D):
                 .format(point_1, PointInR3.__name__))
 
         return super().__new__(
-            cls,
-            p1=point_0,
-            p2=point_1)
+                cls,
+                p1=point_0,
+                p2=point_1)
 
     def __init__(self, point_0: PointInR3, point_1: PointInR3, name: str = None):
         self.point_0 = point_0
