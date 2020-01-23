@@ -1,30 +1,34 @@
 __all__ = \
-    'Point', 'Pt', \
-    'PointAtInfinity', 'PtAtInf'
+    'PointInR2', 'PointR2', 'Point', 'Pt', \
+    'PointAtInfinityInR2', 'PointAtInfinityR2', 'PointAtInfinity', 'PointAtInf', 'PtAtInf'
 
 
+from sympy.core.symbol import Symbol
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point2D
 from uuid import uuid4
 
 from ... import _GeometryEntityABC
-from .. import rand_coord
 
 
-class _PointABC(_GeometryEntityABC):
+class _PointInR2ABC(_GeometryEntityABC):
     pass
 
 
-class Point(Point2D, _PointABC):
-    def __new__(cls, x: float = None, y: float = None, name: str = None):
+class PointInR2(Point2D, _PointInR2ABC):
+    def __new__(cls, x: Symbol = None, y: Symbol = None, name: str = None):
         if not name:
             name = str(uuid4())
 
         if x is None:
-            x = rand_coord()
+            x = Symbol(
+                    name='{}.x'.format(name),
+                    real=True)
 
         if y is None:
-            y = rand_coord()
+            y = Symbol(
+                    name='{}.y'.format(name),
+                    real=True)
 
         point = super().__new__(
                     cls,
@@ -39,19 +43,12 @@ class Point(Point2D, _PointABC):
     def __repr__(self):
         return 'Pt {}'.format(self.name)
 
-    @classmethod
-    def _from_sympy_point_2d(cls, sympy_point_2d: Point2D, name: str = None):
-        return cls(
-                x=sympy_point_2d.x,
-                y=sympy_point_2d.y,
-                name=name)
+
+# aliases
+Pt = Point = PointR2 = PointInR2
 
 
-# alias
-Pt = Point
-
-
-class PointAtInfinity(_PointABC):
+class PointAtInfinityInR2(_PointInR2ABC):
     def __init__(self, direction: Point2D, name: str = None):
         assert isinstance(direction, Point2D), \
             GeometryError(
@@ -69,10 +66,10 @@ class PointAtInfinity(_PointABC):
         return 'Pt@Inf {}'.format(self.name)
 
     def __eq__(self, point_at_infinity):
-        assert isinstance(point_at_infinity, PointAtInfinity)
+        assert isinstance(point_at_infinity, PointAtInfinityInR2)
 
         return self.direction.is_scalar_multiple(point_at_infinity.direction)
 
 
-# alias
-PtAtInf = PointAtInfinity
+# aliases
+PtAtInf = PointAtInf = PointAtInfinity = PointAtInfinityR2 = PointAtInfinityInR2
