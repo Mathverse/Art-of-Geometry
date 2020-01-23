@@ -153,5 +153,5 @@ class SegmentInR2(Segment2D, _GeometryEntityABC):
         return 'Seg {}'.format(self.name)
 
 
-# alias
+# aliases
 Seg = Segment = SegmentR2 = SegmentInR2
