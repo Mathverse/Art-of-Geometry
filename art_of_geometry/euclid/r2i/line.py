@@ -1,3 +1,7 @@
+__all__ = \
+    'LineInR2_VerticalPlaneInR2I',
+
+
 from sympy.geometry.exceptions import GeometryError
 
 from ..r2.line import LineInR2
