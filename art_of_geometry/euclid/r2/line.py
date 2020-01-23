@@ -7,12 +7,12 @@ __all__ = \
 from sympy.geometry.line import Line2D, Ray2D, Segment2D
 from sympy.geometry.exceptions import GeometryError
 
-from ... import _GeometryEntityABC
+from . import _EuclidR2GeometryEntityABC
 from .coord import X, Y
 from .point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
 
-class LineInR2(Line2D, _GeometryEntityABC):
+class LineInR2(_EuclidR2GeometryEntityABC, Line2D):
     def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None):
         assert isinstance(point_0, PointInR2), \
             GeometryError(
@@ -77,7 +77,7 @@ class LineInR2(Line2D, _GeometryEntityABC):
 Ln = Line = LineR2 = LineInR2
 
 
-class RayInR2(Ray2D, _GeometryEntityABC):
+class RayInR2(_EuclidR2GeometryEntityABC, Ray2D):
     def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None):
         assert isinstance(point_0, PointInR2), \
             GeometryError(
@@ -137,7 +137,7 @@ class RayInR2(Ray2D, _GeometryEntityABC):
 Ray = RayR2 = RayInR2
 
 
-class SegmentInR2(Segment2D, _GeometryEntityABC):
+class SegmentInR2(_EuclidR2GeometryEntityABC, Segment2D):
     def __new__(cls, point_0: PointInR2, point_1: PointInR2, name: str = None):
         assert isinstance(point_0, PointInR2), \
             GeometryError(

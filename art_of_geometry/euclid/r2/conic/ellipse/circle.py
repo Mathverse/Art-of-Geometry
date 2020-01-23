@@ -6,12 +6,12 @@ from sympy.core.symbol import Symbol
 from sympy.geometry.ellipse import Circle as SymPyCircle
 from sympy.geometry.exceptions import GeometryError
 
-from ..... import _GeometryEntityABC
+from ... import _EuclidR2GeometryEntityABC
 from ...coord import X, Y
 from ...point import PointInR2
 
 
-class CircleInR2(SymPyCircle, _GeometryEntityABC):
+class CircleInR2(_EuclidR2GeometryEntityABC, SymPyCircle):
     def __new__(cls, center: PointInR2 = None, radius: Symbol = None, name: str = None):
         assert isinstance(center, PointInR2), \
             GeometryError(

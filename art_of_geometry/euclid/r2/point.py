@@ -8,14 +8,14 @@ from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point2D
 from uuid import uuid4
 
-from ... import _GeometryEntityABC
+from . import _EuclidR2GeometryEntityABC
 
 
-class _PointInR2ABC(_GeometryEntityABC):
+class _PointInR2ABC(_EuclidR2GeometryEntityABC):
     pass
 
 
-class PointInR2(Point2D, _PointInR2ABC):
+class PointInR2(_PointInR2ABC, Point2D):
     def __new__(cls, x: Symbol = None, y: Symbol = None, name: str = None):
         if not name:
             name = str(uuid4())
