@@ -22,12 +22,12 @@ class PointInR2(Point2D, _PointInR2ABC):
 
         if x is None:
             x = Symbol(
-                    name='{}.x'.format(name),
+                    name='[{}.x]'.format(name),
                     real=True)
 
         if y is None:
             y = Symbol(
-                    name='{}.y'.format(name),
+                    name='[{}.y]'.format(name),
                     real=True)
 
         point = super().__new__(

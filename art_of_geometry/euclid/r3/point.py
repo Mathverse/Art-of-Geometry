@@ -22,17 +22,17 @@ class PointInR3(Point3D, _PointInR3ABC):
 
         if x is None:
             x = Symbol(
-                    name='{}.x'.format(name),
+                    name='[{}.x]'.format(name),
                     real=True)
 
         if y is None:
             y = Symbol(
-                    name='{}.y'.format(name),
+                    name='[{}.y]'.format(name),
                     real=True)
             
         if z is None:
             z = Symbol(
-                    name='{}.z'.format(name),
+                    name='[{}.z]'.format(name),
                     real=True)
 
         point = super().__new__(

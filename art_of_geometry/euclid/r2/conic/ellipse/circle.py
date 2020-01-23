@@ -43,9 +43,9 @@ class CircleInR2(SymPyCircle, _GeometryEntityABC):
 
     @property
     def equation(self):
-        return (X - self.circle_in_r2.center.x) ** 2 \
-             + (Y - self.circle_in_r2.center.y) ** 2 \
-             - self.circle_in_r2.radius ** 2
+        return (X - self.center.x) ** 2 \
+             + (Y - self.center.y) ** 2 \
+             - self.radius ** 2
 
 
 # aliases
