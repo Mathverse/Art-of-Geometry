@@ -1,20 +1,24 @@
 __all__ = \
-    'Line', 'Ln', \
-    'Ray', \
-    'Segment', 'Seg'
+    'LineInR2', 'LineR2', 'Line', 'Ln', \
+    'RayInR2', 'RayR2', 'Ray', \
+    'SegmentInR2', 'SegmentR2', 'Segment', 'Seg'
 
 
 from sympy.geometry.line import Line2D, Ray2D, Segment2D
+from sympy.geometry.exceptions import GeometryError
 
 from ... import _GeometryEntityABC
-from .point import _PointABC, Point, PointAtInfinity
+from .point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
 
-class Line(Line2D, _GeometryEntityABC):
-    def __new__(cls, point_0: Point, point_1: _PointABC, name: str = None):
-        assert isinstance(point_0, Point)
+class LineInR2(Line2D, _GeometryEntityABC):
+    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None):
+        assert isinstance(point_0, PointInR2), \
+            GeometryError(
+                '*** POINT_0 {} NOT {} ***'
+                .format(point_0, PointInR2.__name__))
         
-        if isinstance(point_1, Point):
+        if isinstance(point_1, PointInR2):
             line = super().__new__(
                     cls,
                     p1=point_0,
@@ -24,7 +28,7 @@ class Line(Line2D, _GeometryEntityABC):
 
             return line
         
-        elif isinstance(point_1, PointAtInfinity):
+        elif isinstance(point_1, PointAtInfinityInR2):
             line = super().__new__(
                     cls,
                     p1=point_0,
@@ -35,11 +39,11 @@ class Line(Line2D, _GeometryEntityABC):
             return line
         
         else:
-            raise TypeError(
+            raise GeometryError(
                     '*** POINT_1 {} NEITHER {} NOR {} ***'
-                    .format(point_1, Point.__name__, PointAtInfinity.__name__))
+                    .format(point_1, PointInR2.__name__, PointAtInfinityInR2.__name__))
 
-    def __init__(self, point_0: Point, point_1: _PointABC, name: str = None):
+    def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None):
         self.point_0 = point_0
 
         self.point_1 = point_1
@@ -47,7 +51,7 @@ class Line(Line2D, _GeometryEntityABC):
         self.point_at_infinity = \
             point_1 \
             if self._point_1_at_infinity \
-            else PointAtInfinity(direction=self.direction)
+            else PointAtInfinityInR2(direction=self.direction)
 
         self._name = name
 
@@ -62,22 +66,16 @@ class Line(Line2D, _GeometryEntityABC):
     def __repr__(self):
         return 'Ln {}'.format(self.name)
 
-    def line_intersection(self, line):
-        return self.point_at_infinity \
-            if self.is_parallel(line) \
-          else Point._from_sympy_point_2d(
-                sympy_point_2d=super().intersection(line)[0])
-
 
 # alias
-Ln = Line
+Ln = Line = LineR2 = LineInR2
 
 
-class Ray(Ray2D, _GeometryEntityABC):
-    def __new__(cls, point_0: Point, point_1: _PointABC, name: str = None):
-        assert isinstance(point_0, Point)
+class RayInR2(Ray2D, _GeometryEntityABC):
+    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None):
+        assert isinstance(point_0, PointInR2)
 
-        if isinstance(point_1, Point):
+        if isinstance(point_1, PointInR2):
             ray = super().__new__(
                     cls,
                     p1=point_0,
@@ -87,7 +85,7 @@ class Ray(Ray2D, _GeometryEntityABC):
 
             return ray
 
-        elif isinstance(point_1, PointAtInfinity):
+        elif isinstance(point_1, PointAtInfinityInR2):
             ray = super().__new__(
                     cls,
                     p1=point_0,
@@ -100,12 +98,17 @@ class Ray(Ray2D, _GeometryEntityABC):
         else:
             raise TypeError(
                     '*** POINT_1 {} NEITHER {} NOR {} ***'
-                    .format(point_1, Point.__name__, PointAtInfinity.__name__))
+                    .format(point_1, PointInR2.__name__, PointAtInfinityInR2.__name__))
 
-    def __init__(self, point_0: Point, point_1: _PointABC, name: str = None):
+    def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None):
         self.point_0 = point_0
 
         self.point_1 = point_1
+
+        self.point_at_infinity = \
+            point_1 \
+            if self._point_1_at_infinity \
+            else PointAtInfinityInR2(direction=self.direction)
 
         self._name = name
 
@@ -121,13 +124,17 @@ class Ray(Ray2D, _GeometryEntityABC):
         return 'Ray {}'.format(self.name)
 
 
-class Segment(Segment2D, _GeometryEntityABC):
-    def __new__(cls, point_0: Point, point_1: Point, name: str = None):
+# aliases
+Ray = RayR2 = RayInR2
+
+
+class SegmentInR2(Segment2D, _GeometryEntityABC):
+    def __new__(cls, point_0: PointInR2, point_1: PointInR2, name: str = None):
         return super().__new__(
                 cls,
                 p1=point_0, p2=point_1)
 
-    def __init__(self, point_0: Point, point_1: Point, name: str = None):
+    def __init__(self, point_0: PointInR2, point_1: PointInR2, name: str = None):
         self.point_0 = point_0
 
         self.point_1 = point_1
@@ -147,4 +154,4 @@ class Segment(Segment2D, _GeometryEntityABC):
 
 
 # alias
-Seg = Segment
+Seg = Segment = SegmentR2 = SegmentInR2
