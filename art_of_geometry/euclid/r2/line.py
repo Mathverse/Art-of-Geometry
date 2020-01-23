@@ -8,6 +8,7 @@ from sympy.geometry.line import Line2D, Ray2D, Segment2D
 from sympy.geometry.exceptions import GeometryError
 
 from ... import _GeometryEntityABC
+from .coord import X, Y
 from .point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
 
@@ -65,6 +66,11 @@ class LineInR2(Line2D, _GeometryEntityABC):
 
     def __repr__(self):
         return 'Ln {}'.format(self.name)
+
+    @property
+    def equation(self):
+        return self.direction.y * (X - self.point_0.x) \
+             - self.direction.x * (Y - self.point_0.y)
 
 
 # alias
