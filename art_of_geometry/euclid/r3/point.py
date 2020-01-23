@@ -1,33 +1,39 @@
 __all__ = \
-    'Point', 'Pt', \
-    'PointAtInfinity', 'PtAtInf'
+    'PointInR3', 'PointR3', 'Point', 'Pt', \
+    'PointAtInfinityInR3', 'PointAtInfinityR3', 'PointAtInfinity', 'PointAtInf', 'PtAtInf'
 
 
+from sympy.core.symbol import Symbol
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point3D
 from uuid import uuid4
 
 from ... import _GeometryEntityABC
-from .. import rand_coord
 
 
-class _PointABC(_GeometryEntityABC):
+class _PointInR3ABC(_GeometryEntityABC):
     pass
 
 
-class Point(Point3D, _PointABC):
-    def __new__(cls, x: float = None, y: float = None, z: float = None, name: str = None):
+class PointInR3(Point3D, _PointInR3ABC):
+    def __new__(cls, x: Symbol = None, y: Symbol = None, z: Symbol = None, name: str = None):
         if not name:
             name = str(uuid4())
 
         if x is None:
-            x = rand_coord()
+            x = Symbol(
+                    name='{}.x'.format(name),
+                    real=True)
 
         if y is None:
-            y = rand_coord()
+            y = Symbol(
+                    name='{}.y'.format(name),
+                    real=True)
             
         if z is None:
-            z = rand_coord()
+            z = Symbol(
+                    name='{}.z'.format(name),
+                    real=True)
 
         point = super().__new__(
                     cls,
@@ -42,20 +48,12 @@ class Point(Point3D, _PointABC):
     def __repr__(self):
         return 'Pt {}'.format(self.name)
 
-    @classmethod
-    def _from_sympy_point_3d(cls, sympy_point_3d: Point3D, name: str = None):
-        return cls(
-                x=sympy_point_3d.x,
-                y=sympy_point_3d.y,
-                z=sympy_point_3d.z,
-                name=name)
+
+# aliases
+Pt = Point = PointR3 = PointInR3
 
 
-# alias
-Pt = Point
-
-
-class PointAtInfinity(_PointABC):
+class PointAtInfinityInR3(_PointInR3ABC):
     def __init__(self, direction: Point3D, name: str = None):
         assert isinstance(direction, Point3D), \
             GeometryError(
@@ -73,10 +71,10 @@ class PointAtInfinity(_PointABC):
         return 'Pt@Inf {}'.format(self.name)
 
     def __eq__(self, point_at_infinity):
-        assert isinstance(point_at_infinity, PointAtInfinity)
+        assert isinstance(point_at_infinity, PointAtInfinityInR3)
 
         return self.direction.is_scalar_multiple(point_at_infinity.direction)
 
 
-# alias
-PtAtInf = PointAtInfinity
+# aliases
+PtAtInf = PointAtInf = PointAtInfinity = PointAtInfinityR3 = PointAtInfinityInR3
