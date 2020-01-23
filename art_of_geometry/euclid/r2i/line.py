@@ -1,5 +1,4 @@
-__all__ = \
-    'LineInR2_VerticalPlaneInR2I',
+__all__ = 'LineInR2_VerticalPlaneInR2I',
 
 
 from sympy.geometry.exceptions import GeometryError
@@ -20,3 +19,7 @@ class LineInR2_VerticalPlaneInR2I(_SurfaceInR2IABC):
     @property
     def equation(self):
         return self.line_in_r2.equation
+
+    @property
+    def parametric_equations(self):
+        return self.line_in_r2.parametric_equations

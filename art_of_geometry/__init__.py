@@ -1,3 +1,8 @@
+__all__ = '_GeometryEntityABC',
+
+
+from abc import ABC, ABCMeta, abstractmethod, abstractproperty, abstractclassmethod, abstractstaticmethod
+
 from sympy.geometry.entity import GeometryEntity
 
 
@@ -16,3 +21,8 @@ class _GeometryEntityABC(GeometryEntity):
 
     def __str__(self):
         return repr(self)
+
+    @property
+    @abstractmethod
+    def parametric_equations(self):
+        raise NotImplementedError

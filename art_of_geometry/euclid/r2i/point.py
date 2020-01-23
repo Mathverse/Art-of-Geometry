@@ -1,5 +1,4 @@
-__all__ = \
-    'PointInR2_DoubleConeInR2I',
+__all__ = 'PointInR2_DoubleConeInR2I',
 
 
 from sympy.geometry.exceptions import GeometryError
