@@ -4,9 +4,9 @@ __all__ = \
 
 from sympy.geometry.exceptions import GeometryError
 
-from .....r2.conic.ellipse.circle import CircleInR2
-from .... import _SurfaceInR2IABC
-from ....coord import X, Y, W
+from ....r2.conic.ellipse.circle import CircleInR2
+from ... import _SurfaceInR2IABC
+from ...coord import X, Y, W
 
 
 class CircleInR2_HyperboloidInR2I(_SurfaceInR2IABC):
