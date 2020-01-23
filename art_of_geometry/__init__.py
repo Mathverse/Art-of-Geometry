@@ -1,5 +1,3 @@
-from abc import ABC, ABCMeta, abstractmethod, abstractproperty, abstractclassmethod, abstractstaticmethod
-
 from sympy.geometry.entity import GeometryEntity
 
 
