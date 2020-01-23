@@ -16,11 +16,6 @@ class _GeometryEntityABC(GeometryEntity):
     def name(self):
         self._name = None
 
-    @property
-    @abstractmethod
-    def equation(self):
-        raise NotImplementedError
-
     def __str__(self):
         return repr(self)
 
