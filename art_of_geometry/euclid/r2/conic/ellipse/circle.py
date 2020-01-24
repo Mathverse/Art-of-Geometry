@@ -12,22 +12,16 @@ from ...coord import X, Y
 from ...point import PointInR2
 
 
-class CircleInR2(_EuclidR2GeometryEntityABC, SymPyCircle):
-    def __new__(cls, center: PointInR2 = None, radius: Symbol = None, name: str = None):
+class CircleInR2(_EuclidR2GeometryEntityABC):
+    def __init__(self, center: PointInR2, radius: Symbol, name: str = None):
         assert isinstance(center, PointInR2), \
             GeometryError(
                 '*** CENTER {} NOT {} ***'
                 .format(center, PointInR2.__name__))
 
-        return super().__new__(
-                cls,
-                center,
-                radius)
+        self.center = center
 
-    def __init__(self, center: PointInR2 = None, radius: Symbol = None, name: str = None):
-        # self.center = center
-
-        # self.radius = radius
+        self.radius = radius
 
         self._name = name
 
