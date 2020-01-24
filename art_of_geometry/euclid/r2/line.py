@@ -1,11 +1,13 @@
 __all__ = \
     'LineInR2', 'LineR2', 'Line', 'Ln', \
+    'LineAtInfinityInR2', 'LineAtInfinityR2', 'LineAtInfinity', 'LineAtInf', 'LnAtInf', \
     'RayInR2', 'RayR2', 'Ray', \
     'SegmentInR2', 'SegmentR2', 'Segment', 'Seg'
 
 
 from sympy.geometry.line import Line2D, Ray2D, Segment2D
 from sympy.geometry.exceptions import GeometryError
+from sympy.geometry.point import Point2D
 
 from ..coord import T
 from . import _EuclidR2GeometryEntityABC
@@ -13,7 +15,11 @@ from .coord import X, Y
 from .point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
 
-class LineInR2(_EuclidR2GeometryEntityABC, Line2D):
+class _LineInR2ABC(_EuclidR2GeometryEntityABC):
+    pass
+
+
+class LineInR2(_LineInR2ABC, Line2D):
     def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None):
         assert isinstance(point_0, PointInR2), \
             GeometryError(
@@ -81,6 +87,15 @@ class LineInR2(_EuclidR2GeometryEntityABC, Line2D):
 
 # alias
 Ln = Line = LineR2 = LineInR2
+
+
+class LineAtInfinityInR2(_PointInR2ABC):
+    def __init__(self, normal_direction=Point2D):
+        self.normal_direction = normal_direction
+
+
+# aliases
+LnAtInf = LineAtInf = LineAtInfinity = LineAtInfinityR2 = LineAtInfinityInR2
 
 
 class RayInR2(_EuclidR2GeometryEntityABC, Ray2D):

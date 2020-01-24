@@ -1,9 +1,11 @@
 __all__ = \
-    'PlaneInR3', 'PlaneR3', 'Plane', 'Pln'
+    'PlaneInR3', 'PlaneR3', 'Plane', 'Pln', \
+    'PlaneAtInfinityInR3', 'PlaneAtInfinityR3', 'PlaneAtInfinity', 'PlaneAtInf', 'PlnAtInf'
 
 
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.plane import Plane as SymPyPlane
+from sympy.geometry.point import Point3D
 
 from ..coord import U, V
 from . import _EuclidR3GeometryEntityABC
@@ -11,7 +13,11 @@ from .coord import X, Y, Z
 from .point import _PointInR3ABC, PointInR3, PointAtInfinityInR3
 
 
-class PlaneInR3(_EuclidR3GeometryEntityABC, SymPyPlane):
+class _PlaneInR3ABC(_EuclidR3GeometryEntityABC):
+    pass
+
+
+class PlaneInR3(_PlaneInR3ABC, SymPyPlane):
     def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, point_2: _PointInR3ABC, name: str = None):
         assert isinstance(point_0, PointInR3), \
             GeometryError(
@@ -91,3 +97,12 @@ class PlaneInR3(_EuclidR3GeometryEntityABC, SymPyPlane):
 
 # aliases
 Pln = Plane = PlaneR3 = PlaneInR3
+
+
+class PlaneAtInfinityInR3(_PlaneInR3ABC):
+    def __init__(self, normal_direction: Point3D):
+        self.normal_direction = normal_direction
+
+
+# aliases
+PlnAtInf = PlaneAtInf = PlaneAtInfinity = PlaneAtInfinityR3 = PlaneAtInfinityInR3
