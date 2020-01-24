@@ -9,28 +9,41 @@ from sympy.geometry.exceptions import GeometryError
 from ....coord import THETA
 from ... import _EuclidR2GeometryEntityABC
 from ...coord import X, Y
-from ...point import PointInR2
+from ...point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
 
 class EllipseInR2(_EuclidR2GeometryEntityABC, SymPyEllipse):
-    def __new__(cls, center: PointInR2 = None, hradius: Symbol = None, vradius: Symbol = None, name: str = None):
-        assert isinstance(center, PointInR2), \
+    def __new__(cls, focus: PointInR2, vertex: PointInR2, eccentricity: Symbol = None, name: str = None):
+        assert isinstance(focus, PointInR2), \
             GeometryError(
-                '*** CENTER {} NOT {} ***'
-                .format(center, PointInR2.__name__))
+                '*** FOCUS {} NOT {} ***'
+                .format(focus, PointInR2.__name__))
 
-        return super().__new__(
-                cls,
-                center=center,
-                hradius=hradius,
-                vradius=vradius)
+        assert isinstance(vertex, PointInR2), \
+            GeometryError(
+                '*** VERTEX {} NOT {} ***'
+                .format(vertex, PointInR2.__name__))
 
-    def __init__(self, center: PointInR2 = None, hradius: Symbol = None, vradius: Symbol = None, name: str = None):
-        # self.center = center
+        direction = focus - vertex
 
-        # self.hradius = hradius
+        hradius = focus.distance(other=vertex) / (1 - eccentricity)
 
-        # self.vradius = vradius
+        ellipse = super().__new__(
+                    cls,
+                    center=vertex + hradius * direction.unit,
+                    hradius=hradius,
+                    eccentricity=eccentricity)
+
+        ellipse.direction = direction
+
+        return ellipse
+
+    def __init__(self, focus: PointInR2, vertex: PointInR2, eccentricity: Symbol = None, name: str = None):
+        self.focus = focus
+
+        self.vertex = vertex
+
+        # self.eccentricity = eccentricity
 
         self._name = name
 
@@ -38,10 +51,10 @@ class EllipseInR2(_EuclidR2GeometryEntityABC, SymPyEllipse):
     def name(self):
         return self._name \
             if self._name \
-          else '{}({}, {})'.format(
-                self.center.name,
-                self.hradius,
-                self.vradius)
+          else '{}(vtx: {}, ecc: {})'.format(
+                self.focus.name,
+                self.vertex.name,
+                self.eccentricity)
 
     def __repr__(self):
         return 'Ellipse {}'.format(self.name)
