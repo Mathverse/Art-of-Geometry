@@ -16,7 +16,7 @@ class _PointInR3ABC(_EuclidR3GeometryEntityABC):
 
 
 class PointInR3(_PointInR3ABC, Point3D):
-    def __new__(cls, x: Symbol = None, y: Symbol = None, z: Symbol = None, name: str = None):
+    def __new__(cls, x: Symbol = None, y: Symbol = None, z: Symbol = None, name: str = None) -> Point3D:
         if not name:
             name = str(uuid4())
 
@@ -45,7 +45,7 @@ class PointInR3(_PointInR3ABC, Point3D):
 
         return point
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return 'Pt {}'.format(self.name)
 
 
@@ -54,7 +54,7 @@ Pt = Point = PointR3 = PointInR3
 
 
 class PointAtInfinityInR3(_PointInR3ABC):
-    def __init__(self, direction: Point3D, name: str = None):
+    def __init__(self, direction: Point3D, name: str = None) -> None:
         assert isinstance(direction, Point3D), \
             GeometryError(
                 '*** DIRECTION {} NOT {} ***'
@@ -67,10 +67,10 @@ class PointAtInfinityInR3(_PointInR3ABC):
             if name \
             else str(uuid4())
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return 'Pt@Inf {}'.format(self.name)
 
-    def __eq__(self, point_at_infinity):
+    def __eq__(self, point_at_infinity) -> bool:
         assert isinstance(point_at_infinity, PointAtInfinityInR3)
 
         return self.direction.is_scalar_multiple(point_at_infinity.direction)
