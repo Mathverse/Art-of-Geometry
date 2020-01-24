@@ -1,5 +1,4 @@
-__all__ = \
-    'CircleInR2', 'CircleR2', 'Circle'
+__all__ = 'CircleInR2', 'CircleR2', 'Circle'
 
 
 from sympy.core.symbol import Symbol
