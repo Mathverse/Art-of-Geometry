@@ -4,7 +4,7 @@ __all__ = '_GeometryEntityABC',
 from abc import ABC, ABCMeta, abstractmethod, abstractproperty, abstractclassmethod, abstractstaticmethod
 from sympy.core.expr import Expr
 from sympy.geometry.entity import GeometryEntity
-from typing import List, Tuple
+from typing import Tuple
 
 
 class _GeometryEntityABC(GeometryEntity):
@@ -30,5 +30,5 @@ class _GeometryEntityABC(GeometryEntity):
     
     @property
     @abstractmethod
-    def parametric_equations(self) -> (List[Expr], Tuple[Expr, ...]):
+    def parametric_equations(self) -> Tuple[Expr, ...]:
         raise NotImplementedError
