@@ -5,9 +5,11 @@ __all__ = \
     'SegmentInR2', 'SegmentR2', 'Segment', 'Seg'
 
 
+from sympy.core.expr import Expr
 from sympy.geometry.line import Line2D, Ray2D, Segment2D
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point2D
+from typing import Tuple
 
 from ..coord import T
 from . import _EuclidR2GeometryEntityABC
@@ -20,10 +22,10 @@ class _LineInR2ABC(_EuclidR2GeometryEntityABC):
 
 
 class LineInR2(_LineInR2ABC, Line2D):
-    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None):
+    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None) -> Line2D:
         assert isinstance(point_0, PointInR2), \
             GeometryError(
-                '*** POINT_0 {} NOT {} ***'
+                '*** POINT_0 {} NOT OF TYPE {} ***'
                 .format(point_0, PointInR2.__name__))
         
         if isinstance(point_1, PointInR2):
@@ -48,10 +50,10 @@ class LineInR2(_LineInR2ABC, Line2D):
         
         else:
             raise GeometryError(
-                    '*** POINT_1 {} NEITHER {} NOR {} ***'
+                    '*** POINT_1 {} NEITHER OF TYPE {} NOR OF TYPE {} ***'
                     .format(point_1, PointInR2.__name__, PointAtInfinityInR2.__name__))
 
-    def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None):
+    def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None) -> None:
         self.point_0 = point_0
 
         self.point_1 = point_1
@@ -64,23 +66,23 @@ class LineInR2(_LineInR2ABC, Line2D):
         self._name = name
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name \
             if self._name \
           else '{} --- {}'.format(
                 self.point_0.name,
                 self.point_1.name)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return 'Ln {}'.format(self.name)
 
     @property
-    def equation(self):
+    def equation(self) -> Expr:
         return self.direction.y * (X - self.point_0.x) \
              - self.direction.x * (Y - self.point_0.y)
 
     @property
-    def parametric_equations(self):
+    def parametric_equations(self) -> Tuple[Expr, Expr]:
         return X - self.point_0.x - self.direction.x * T, \
                Y - self.point_0.y - self.direction.y * T
 
@@ -90,7 +92,12 @@ Ln = Line = LineR2 = LineInR2
 
 
 class LineAtInfinityInR2(_PointInR2ABC):
-    def __init__(self, normal_direction=Point2D):
+    def __init__(self, normal_direction: Point2D) -> None:
+        assert isinstance(normal_direction, Point2D), \
+            GeometryError(
+                '*** NORMAL DIRECTION {} NOT OF TYPE {} ***'
+                .format(normal_direction, Point2D.__name__))
+
         self.normal_direction = normal_direction
 
 
@@ -99,10 +106,10 @@ LnAtInf = LineAtInf = LineAtInfinity = LineAtInfinityR2 = LineAtInfinityInR2
 
 
 class RayInR2(_EuclidR2GeometryEntityABC, Ray2D):
-    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None):
+    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None) -> Ray2D:
         assert isinstance(point_0, PointInR2), \
             GeometryError(
-                '*** POINT_0 {} NOT {} ***'
+                '*** POINT_0 {} NOT OF TYPE {} ***'
                 .format(point_0, PointInR2.__name__))
 
         if isinstance(point_1, PointInR2):
@@ -126,11 +133,11 @@ class RayInR2(_EuclidR2GeometryEntityABC, Ray2D):
             return ray
 
         else:
-            raise TypeError(
-                    '*** POINT_1 {} NEITHER {} NOR {} ***'
+            raise GeometryError(
+                    '*** POINT_1 {} NEITHER OF TYPE {} NOR OF TYPE {} ***'
                     .format(point_1, PointInR2.__name__, PointAtInfinityInR2.__name__))
 
-    def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None):
+    def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None) -> None:
         self.point_0 = point_0
 
         self.point_1 = point_1
@@ -143,14 +150,14 @@ class RayInR2(_EuclidR2GeometryEntityABC, Ray2D):
         self._name = name
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name \
             if self._name \
           else '{} *-- {}'.format(
                 self.point_0.name,
                 self.point_1.name)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return 'Ray {}'.format(self.name)
 
 
@@ -159,15 +166,15 @@ Ray = RayR2 = RayInR2
 
 
 class SegmentInR2(_EuclidR2GeometryEntityABC, Segment2D):
-    def __new__(cls, point_0: PointInR2, point_1: PointInR2, name: str = None):
+    def __new__(cls, point_0: PointInR2, point_1: PointInR2, name: str = None) -> Segment2D:
         assert isinstance(point_0, PointInR2), \
             GeometryError(
-                '*** POINT_0 {} NOT {} ***'
+                '*** POINT_0 {} NOT OF TYPE {} ***'
                 .format(point_0, PointInR2.__name__))
 
         assert isinstance(point_1, PointInR2), \
             GeometryError(
-                '*** POINT_1 {} NOT {} ***'
+                '*** POINT_1 {} NOT OF TYPE {} ***'
                     .format(point_1, PointInR2.__name__))
 
         return super().__new__(
@@ -175,7 +182,7 @@ class SegmentInR2(_EuclidR2GeometryEntityABC, Segment2D):
                 p1=point_0,
                 p2=point_1)
 
-    def __init__(self, point_0: PointInR2, point_1: PointInR2, name: str = None):
+    def __init__(self, point_0: PointInR2, point_1: PointInR2, name: str = None) -> None:
         self.point_0 = point_0
 
         self.point_1 = point_1
@@ -183,14 +190,14 @@ class SegmentInR2(_EuclidR2GeometryEntityABC, Segment2D):
         self._name = name
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name \
             if self._name \
           else '{} *-* {}'.format(
                 self.point_0.name,
                 self.point_1.name)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return 'Seg {}'.format(self.name)
 
 

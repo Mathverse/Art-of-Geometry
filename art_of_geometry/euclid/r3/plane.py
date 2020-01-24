@@ -3,9 +3,11 @@ __all__ = \
     'PlaneAtInfinityInR3', 'PlaneAtInfinityR3', 'PlaneAtInfinity', 'PlaneAtInf', 'PlnAtInf'
 
 
+from sympy.core.expr import Expr
 from sympy.geometry.exceptions import GeometryError
-from sympy.geometry.plane import Plane as SymPyPlane
+from sympy.geometry.plane import Plane as Plane3D
 from sympy.geometry.point import Point3D
+from typing import Tuple
 
 from ..coord import U, V
 from . import _EuclidR3GeometryEntityABC
@@ -17,11 +19,11 @@ class _PlaneInR3ABC(_EuclidR3GeometryEntityABC):
     pass
 
 
-class PlaneInR3(_PlaneInR3ABC, SymPyPlane):
-    def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, point_2: _PointInR3ABC, name: str = None):
+class PlaneInR3(_PlaneInR3ABC, Plane3D):
+    def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, point_2: _PointInR3ABC, name: str = None) -> Plane3D:
         assert isinstance(point_0, PointInR3), \
             GeometryError(
-                '*** POINT_0 {} NOT {} ***'
+                '*** POINT_0 {} NOT OF TYPE {} ***'
                 .format(point_0, PointInR3.__name__))
 
         _point_1_at_infinity = isinstance(point_1, PointAtInfinityInR3)
@@ -57,7 +59,7 @@ class PlaneInR3(_PlaneInR3ABC, SymPyPlane):
 
         return plane
 
-    def __init__(self, point_0: PointInR3, point_1: _PointInR3ABC, point_2: _PointInR3ABC, name: str = None):
+    def __init__(self, point_0: PointInR3, point_1: _PointInR3ABC, point_2: _PointInR3ABC, name: str = None) -> None:
         self.point_0 = point_0
         
         self.point_1 = point_1
@@ -77,7 +79,7 @@ class PlaneInR3(_PlaneInR3ABC, SymPyPlane):
         self._name = name
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name \
             if self._name \
           else '{} --- {} --- {}'.format(
@@ -85,11 +87,11 @@ class PlaneInR3(_PlaneInR3ABC, SymPyPlane):
                 self.point_1.name,
                 self.point_2.name)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return 'Pln {}'.format(self.name)
 
     @property
-    def parametric_equations(self):
+    def parametric_equations(self) -> Tuple[Expr, Expr, Expr]:
         return X - self.point_0.x - self.direction_1.x * U - self.direction_2.x * V, \
                Y - self.point_0.y - self.direction_1.y * U - self.direction_2.y * V, \
                Z - self.point_0.z - self.direction_1.z * U - self.direction_2.z * V
@@ -100,7 +102,12 @@ Pln = Plane = PlaneR3 = PlaneInR3
 
 
 class PlaneAtInfinityInR3(_PlaneInR3ABC):
-    def __init__(self, normal_direction: Point3D):
+    def __init__(self, normal_direction: Point3D) -> None:
+        assert isinstance(normal_direction, Point3D), \
+            GeometryError(
+                '*** NORMAL DIRECTION {} NOT OF TYPE {} ***'
+                .format(normal_direction, Point3D.__name__))
+
         self.normal_direction = normal_direction
 
 
