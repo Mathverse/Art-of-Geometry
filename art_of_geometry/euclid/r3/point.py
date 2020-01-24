@@ -3,6 +3,7 @@ __all__ = \
     'PointAtInfinityInR3', 'PointAtInfinityR3', 'PointAtInfinity', 'PointAtInf', 'PtAtInf'
 
 
+from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point3D
@@ -16,7 +17,7 @@ class _PointInR3ABC(_EuclidR3GeometryEntityABC):
 
 
 class PointInR3(_PointInR3ABC, Point3D):
-    def __new__(cls, x: Symbol = None, y: Symbol = None, z: Symbol = None, name: str = None) -> Point3D:
+    def __new__(cls, x: Expr = None, y: Expr = None, z: Expr = None, name: str = None) -> Point3D:
         if not name:
             name = str(uuid4())
 
