@@ -24,13 +24,13 @@ class EllipseInR2(_EuclidR2GeometryEntityABC, SymPyEllipse):
                 '*** VERTEX {} NOT {} ***'
                 .format(vertex, PointInR2.__name__))
 
-        direction = focus - vertex
+        direction = (focus - vertex).unit
 
         hradius = focus.distance(other=vertex) / (1 - eccentricity)
 
         ellipse = super().__new__(
                     cls,
-                    center=vertex + hradius * direction.unit,
+                    center=vertex + hradius * direction,
                     hradius=hradius,
                     eccentricity=eccentricity)
 
