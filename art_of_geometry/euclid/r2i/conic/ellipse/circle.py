@@ -1,5 +1,4 @@
-__all__ = \
-    'CircleInR2_HyperboloidInR2I',
+__all__ = 'CircleInR2_HyperboloidInR2I',
 
 
 from sympy.geometry.exceptions import GeometryError
