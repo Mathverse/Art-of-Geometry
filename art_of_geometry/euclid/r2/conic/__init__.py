@@ -146,8 +146,7 @@ class ConicInR2(_EuclidR2GeometryEntityABC):
                     self.vertex +
                     self.focus_to_vertex_direction / self.eccentricity)
 
-
-    @property
+    @cached_property
     def other_directrix(self) -> _LineInR2ABC:
         if self.is_circle:
             return LineAtInfinityInR2(self.vertex_to_focus_direction)
@@ -163,7 +162,7 @@ class ConicInR2(_EuclidR2GeometryEntityABC):
                     self.other_vertex +
                     self.vertex_to_focus_direction / self.eccentricity)
 
-    @property
+    @cached_property
     def directrices(self):
         return self.directrix, self.other_directrix
 
