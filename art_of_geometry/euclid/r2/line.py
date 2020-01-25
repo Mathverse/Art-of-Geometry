@@ -88,6 +88,18 @@ class LineInR2(_LineInR2ABC, Line2D):
         return X - self.point_0.x - self.direction.x * T, \
                Y - self.point_0.y - self.direction.y * T
 
+    def parallel_line(self, through_point: PointInR2, /, *, name=None):
+        return LineInR2(
+                through_point,
+                PointAtInfinityInR2(self.direction),
+                name=name)
+
+    def perpendicular_line(self, through_point: PointInR2, /, *, name=None):
+        return LineInR2(
+                through_point,
+                PointAtInfinityInR2(self.direction.orthogonal_direction),
+                name=name)
+
 
 # alias
 Ln = Line = LineR2 = LineInR2

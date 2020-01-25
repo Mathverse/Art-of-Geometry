@@ -3,6 +3,7 @@ __all_ = 'ConicInR2', 'ConicR2', 'Conic'
 
 from functools import cached_property
 from sympy.core.expr import Expr
+from sympy.core.numbers import oo
 from sympy.core.singleton import S
 from sympy.functions.elementary.trigonometric import cos, sin
 from sympy.geometry.exceptions import GeometryError
@@ -31,7 +32,8 @@ class ConicInR2(_EuclidR2GeometryEntityABC):
 
         self.vertex = vertex
 
-        self.direction = (focus - vertex).unit
+        self.focus_to_vertex_direction = vertex - focus
+        self.vertex_to_focus_direction = -self.focus_to_vertex_direction
 
         self.eccentricity = eccentricity
 
@@ -53,46 +55,113 @@ class ConicInR2(_EuclidR2GeometryEntityABC):
     def parametric_equations(self) -> Tuple[Expr, Expr]:
         pass
 
-    @property
+    @cached_property
+    def is_circle(self):
+        return self.eccentricity == S.Zero
+
+    @cached_property
     def is_parabola(self):
         return self.eccentricity == S.One
 
-    @property
-    def other_focus(self) -> _PointInR2ABC:
-        if self.is_parabola:
-            return PointAtInfinityInR2(self.direction)
+    @cached_property
+    def is_line(self):
+        return self.eccentricity == oo
 
-    @property
+    @cached_property
+    def center(self) -> _PointInR2ABC:
+        if self.is_circle:
+            return self.focus.same()
+
+        elif self.is_parabola:
+            return PointAtInfinityInR2(self.focus_to_vertex_direction)
+
+        elif self.is_line:
+            return self.vertex.same()
+
+        else:
+            return self.vertex \
+                 + self.vertex_to_focus_direction / (1 - self.eccentricity)
+
+    @cached_property
+    def other_focus(self) -> _PointInR2ABC:
+        if self.is_circle:
+            return self.focus.same()
+
+        elif self.is_parabola:
+            return PointAtInfinityInR2(self.focus_to_vertex_direction)
+
+        elif self.is_line:
+            return self.vertex + self.focus_to_vertex_direction
+
+        else:
+            return self.vertex \
+                 + (1 + self.eccentricity) / (1 - self.eccentricity) * self.vertex_to_focus_direction
+
+    @cached_property
     def foci(self) -> Tuple[PointInR2, _PointInR2ABC]:
         return self.focus, self.other_focus
 
-    @property
+    @cached_property
     def other_vertex(self) -> _PointInR2ABC:
-        if self.is_parabola:
-            return PointAtInfinityInR2(self.direction)
+        if self.is_circle:
+            return self.focus + self.vertex_to_focus_direction
+
+        elif self.is_parabola:
+            return PointAtInfinityInR2(self.focus_to_vertex_direction)
+
+        elif self.is_line:
+            return self.vertex.same()
 
         else:
-            pass
+            return self.vertex \
+                 + 2 * self.vertex_to_focus_direction / (1 - self.eccentricity)
 
-    @property
+    @cached_property
     def vertices(self) -> Tuple[PointInR2, _PointInR2ABC]:
         return self.vertex, self.other_vertex
 
-    @property
+    @cached_property
+    def major_axis(self):
+        return LineInR2(self.focus, self.vertex)
+
+    @cached_property
+    def minor_axis(self):
+        return self.major_axis.perpendicular_line(self.center)
+
+    @cached_property
     def directrix(self) -> _LineInR2ABC:
-        if self.is_parabola:
-            return LineAtInfinityInR2(self.direction)
+        if self.is_circle:
+            return LineAtInfinityInR2(self.focus_to_vertex_direction)
+
+        elif self.is_parabola:
+            return self.major_axis.perpendicular_line(
+                    self.vertex +
+                    self.focus_to_vertex_direction)
+
+        elif self.is_line:
+            return self.major_axis.perpendicular_line(self.vertex)
 
         else:
-            pass
+            return self.major_axis.perpendicular_line(
+                    self.vertex +
+                    self.focus_to_vertex_direction / self.eccentricity)
+
 
     @property
     def other_directrix(self) -> _LineInR2ABC:
-        if self.eccentricity == S.One:   # parabola
-            return LineAtInfinityInR2(self.direction)
+        if self.is_circle:
+            return LineAtInfinityInR2(self.vertex_to_focus_direction)
+
+        elif self.is_parabola:
+            return LineAtInfinityInR2(self.focus_to_vertex_direction)
+
+        elif self.is_line:
+            return self.major_axis.perpendicular_line(self.vertex)
 
         else:
-            pass
+            return self.major_axis.perpendicular_line(
+                    self.other_vertex +
+                    self.vertex_to_focus_direction / self.eccentricity)
 
     @property
     def directrices(self):
