@@ -3,6 +3,7 @@ __all__ = \
     'PointAtInfinityInR3', 'PointAtInfinityR3', 'PointAtInfinity', 'PointAtInf', 'PtAtInf'
 
 
+from functools import cached_property
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.geometry.exceptions import GeometryError
@@ -59,7 +60,7 @@ class PointInR3(_PointInR3ABC, Point3D):
 
     @classmethod
     def _from_sympy_point_3d(cls, sympy_point_3d: Point3D, /, *, name=None):
-        return cls(
+        return PointInR3(
                 x=sympy_point_3d.x,
                 y=sympy_point_3d.y,
                 z=sympy_point_3d.z,
@@ -84,6 +85,10 @@ class PointInR3(_PointInR3ABC, Point3D):
     def __div__(self, n: float, /):
         return self._from_sympy_point_3d(
                 super().__div__(n))
+
+    @cached_property
+    def distance_from_origin(self):
+        return self.x ** 2 + self.y ** 2 + self.z ** 2
 
 
 # aliases
