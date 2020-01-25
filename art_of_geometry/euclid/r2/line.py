@@ -13,12 +13,13 @@ from sympy.geometry.point import Point2D
 from typing import Tuple
 
 from ..coord import T
+from ..line import _LineABC
 from . import _EuclidR2GeometryEntityABC
 from .coord import X, Y
 from .point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
 
-class _LineInR2ABC(_EuclidR2GeometryEntityABC):
+class _LineInR2ABC(_EuclidR2GeometryEntityABC, _LineABC):
     pass
 
 

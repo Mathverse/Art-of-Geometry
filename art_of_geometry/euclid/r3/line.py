@@ -11,12 +11,17 @@ from sympy.geometry.exceptions import GeometryError
 from typing import Tuple
 
 from ..coord import T
+from ..line import _LineABC
 from . import _EuclidR3GeometryEntityABC
 from .coord import X, Y, Z
 from .point import _PointInR3ABC, PointInR3, PointAtInfinityInR3
 
 
-class LineInR3(_EuclidR3GeometryEntityABC, Line3D):
+class _LineInR3ABC(_EuclidR3GeometryEntityABC, _LineABC):
+    pass
+
+
+class LineInR3(_LineInR3ABC, Line3D):
     def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, /, *, name: str = None) -> Line3D:
         assert isinstance(point_0, PointInR3), \
             GeometryError(

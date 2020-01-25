@@ -9,10 +9,11 @@ from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point3D
 from uuid import uuid4
 
+from ..point import _PointABC
 from . import _EuclidR3GeometryEntityABC
 
 
-class _PointInR3ABC(_EuclidR3GeometryEntityABC):
+class _PointInR3ABC(_EuclidR3GeometryEntityABC, _PointABC):
     pass
 
 
