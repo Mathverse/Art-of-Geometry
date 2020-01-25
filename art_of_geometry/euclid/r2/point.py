@@ -45,6 +45,39 @@ class PointInR2(_PointInR2ABC, Point2D):
     def __repr__(self) -> str:
         return 'Pt {}'.format(self.name)
 
+    def same(self, *, name=None):
+        return PointInR2(
+                x=self.x,
+                y=self.y,
+                name=name)
+
+    @classmethod
+    def _from_sympy_point_2d(cls, sympy_point_2d: Point2D, /, *, name=None):
+        return cls(
+                x=sympy_point_2d.x,
+                y=sympy_point_2d.y,
+                name=name)
+
+    def __neg__(self):
+        return self._from_sympy_point_2d(
+                super().__neg__())
+
+    def __add__(self, point: Point2D, /):
+        return self._from_sympy_point_2d(
+                super().__add__(point))
+
+    def __sub__(self, point: Point2D, /):
+        return self._from_sympy_point_2d(
+                super().__sub__(point))
+
+    def __mul__(self, n: float, /):
+        return self._from_sympy_point_2d(
+                super().__mul__(n))
+
+    def __div__(self, n: float, /):
+        return self._from_sympy_point_2d(
+                super().__div__(n))
+
 
 # aliases
 Pt = Point = PointR2 = PointInR2
@@ -74,6 +107,11 @@ class PointAtInfinityInR2(_PointInR2ABC):
                 .format(point_at_infinity, PointAtInfinityInR2.__name__))
 
         return self.direction.is_scalar_multiple(point_at_infinity.direction)
+
+    def same(self, *, name=None):
+        return PointAtInfinityInR2(
+                self.direction,
+                name=name)
 
 
 # aliases

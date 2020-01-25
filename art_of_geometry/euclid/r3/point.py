@@ -50,6 +50,41 @@ class PointInR3(_PointInR3ABC, Point3D):
     def __repr__(self) -> str:
         return 'Pt {}'.format(self.name)
 
+    def same(self, *, name=None):
+        return PointInR3(
+                x=self.x,
+                y=self.y,
+                z=self.z,
+                name=name)
+
+    @classmethod
+    def _from_sympy_point_3d(cls, sympy_point_3d: Point3D, /, *, name=None):
+        return cls(
+                x=sympy_point_3d.x,
+                y=sympy_point_3d.y,
+                z=sympy_point_3d.z,
+                name=name)
+
+    def __neg__(self):
+        return self._from_sympy_point_3d(
+                super().__neg__())
+
+    def __add__(self, point: Point3D, /):
+        return self._from_sympy_point_3d(
+                super().__add__(point))
+
+    def __sub__(self, point: Point3D, /):
+        return self._from_sympy_point_3d(
+                super().__sub__(point))
+
+    def __mul__(self, n: float, /):
+        return self._from_sympy_point_3d(
+                super().__mul__(n))
+
+    def __div__(self, n: float, /):
+        return self._from_sympy_point_3d(
+                super().__div__(n))
+
 
 # aliases
 Pt = Point = PointR3 = PointInR3
@@ -79,6 +114,11 @@ class PointAtInfinityInR3(_PointInR3ABC):
                 .format(point_at_infinity, PointAtInfinityInR3.__name__))
 
         return self.direction.is_scalar_multiple(point_at_infinity.direction)
+
+    def same(self, *, name=None):
+        return PointAtInfinityInR3(
+                self.direction,
+                name=name)
 
 
 # aliases
