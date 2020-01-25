@@ -1,6 +1,7 @@
 __all_ = 'ConicInR2', 'ConicR2', 'Conic'
 
 
+from functools import cached_property
 from sympy.core.expr import Expr
 from sympy.core.singleton import S
 from sympy.functions.elementary.trigonometric import cos, sin
@@ -15,7 +16,7 @@ from ..point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
 
 class ConicInR2(_EuclidR2GeometryEntityABC):
-    def __init__(self, focus: PointInR2, vertex: PointInR2, eccentricity: Expr, name: str = None) -> None:
+    def __init__(self, /, focus: PointInR2, vertex: PointInR2, eccentricity: Expr, *, name: str = None) -> None:
         assert isinstance(focus, PointInR2), \
             GeometryError(
                 '*** FOCUS {} NOT OF TYPE {} ***'
@@ -48,14 +49,18 @@ class ConicInR2(_EuclidR2GeometryEntityABC):
     def __repr__(self) -> str:
         return 'Conic {}'.format(self.name)
 
-    @property
+    @cached_property
     def parametric_equations(self) -> Tuple[Expr, Expr]:
         pass
 
     @property
+    def is_parabola(self):
+        return self.eccentricity == S.One
+
+    @property
     def other_focus(self) -> _PointInR2ABC:
-        if self.eccentricity == S.One:   # parabola
-            return PointAtInfinityInR2(direction=self.direction)
+        if self.is_parabola:
+            return PointAtInfinityInR2(self.direction)
 
     @property
     def foci(self) -> Tuple[PointInR2, _PointInR2ABC]:
@@ -63,8 +68,8 @@ class ConicInR2(_EuclidR2GeometryEntityABC):
 
     @property
     def other_vertex(self) -> _PointInR2ABC:
-        if self.eccentricity == S.One:   # parabola
-            return PointAtInfinityInR2(direction=self.direction)
+        if self.is_parabola:
+            return PointAtInfinityInR2(self.direction)
 
         else:
             pass
@@ -75,8 +80,8 @@ class ConicInR2(_EuclidR2GeometryEntityABC):
 
     @property
     def directrix(self) -> _LineInR2ABC:
-        if self.eccentricity == S.One:   # parabola
-            return LineAtInfinityInR2(normal_direction=self.direction)
+        if self.is_parabola:
+            return LineAtInfinityInR2(self.direction)
 
         else:
             pass
@@ -84,10 +89,14 @@ class ConicInR2(_EuclidR2GeometryEntityABC):
     @property
     def other_directrix(self) -> _LineInR2ABC:
         if self.eccentricity == S.One:   # parabola
-            return LineAtInfinityInR2(normal_direction=self.direction)
+            return LineAtInfinityInR2(self.direction)
 
         else:
             pass
+
+    @property
+    def directrices(self):
+        return self.directrix, self.other_directrix
 
 
 # aliases
