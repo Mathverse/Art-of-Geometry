@@ -7,7 +7,11 @@ _PACKAGE_NAMESPACE_NAME = 'art_of_geometry'
 
 _METADATA_FILE_NAME = 'metadata.yml'
 
-_REQUIREMENTS_FILE_NAME = 'requirements.txt'
+_SETUP_REQUIREMENTS_FILE_NAME = 'requirements-setup.txt'
+
+_INSTALL_REQUIREMENTS_FILE_NAME = 'requirements.txt'
+
+_DOC_REQUIREMENTS_FILE_NAME = 'requirements-doc.txt'
 
 
 _metadata = \
@@ -29,6 +33,14 @@ setup(
     keywords=_metadata['DESCRIPTION'],
     packages=find_packages(),
     include_package_data=True,
+    setup_requires=
+        [s for s in
+            {i.strip()
+             for i in open(_SETUP_REQUIREMENTS_FILE_NAME).readlines()}
+         if not s.startswith('#')],
     install_requires=
-        [s for s in open(_REQUIREMENTS_FILE_NAME).readlines()
-           if not s.startswith('#')])
+        [s for s in
+            {i.strip()
+             for i in (open(_INSTALL_REQUIREMENTS_FILE_NAME).readlines() +
+                       open(_DOC_REQUIREMENTS_FILE_NAME).readlines())}
+         if not s.startswith('#')])

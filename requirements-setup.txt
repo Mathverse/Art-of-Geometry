@@ -1,0 +1,4 @@
+PIP >= 20.0.2
+Ruamel.YAML >= 0.16.6
+SetUpTools >= 45.1.0
+Wheel >= 0.33.6
