@@ -1,10 +1,12 @@
 __all__ = 'CircleInR2', 'CircleR2', 'Circle'
 
 
+from sympy.assumptions.ask import Q
+from sympy.assumptions.assume import global_assumptions
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.functions.elementary.trigonometric import cos, sin
-from sympy.geometry.ellipse import Circle as SymPyCircle
+from sympy.geometry.ellipse import Circle as Circle2D
 from sympy.geometry.exceptions import GeometryError
 from typing import Tuple
 
@@ -20,6 +22,8 @@ class CircleInR2(_EuclidR2GeometryEntityABC):
             GeometryError(
                 '*** CENTER {} NOT {} ***'
                 .format(center, PointInR2.__name__))
+
+        global_assumptions.add(Q.nonnegative(radius))
 
         self.center = center
 

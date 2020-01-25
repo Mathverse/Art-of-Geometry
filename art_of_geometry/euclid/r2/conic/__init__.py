@@ -2,6 +2,8 @@ __all_ = 'ConicInR2', 'ConicR2', 'Conic'
 
 
 from functools import cached_property
+from sympy.assumptions.ask import Q
+from sympy.assumptions.assume import global_assumptions
 from sympy.core.expr import Expr
 from sympy.core.numbers import oo
 from sympy.core.singleton import S
@@ -27,6 +29,8 @@ class ConicInR2(_EuclidR2GeometryEntityABC):
             GeometryError(
                 '*** VERTEX {} NOT OF TYPE {} ***'
                 .format(vertex, PointInR2.__name__))
+
+        global_assumptions.add(Q.nonnegative(eccentricity))
 
         self.focus = focus
 
