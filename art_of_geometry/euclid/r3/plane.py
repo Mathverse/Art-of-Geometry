@@ -21,7 +21,7 @@ class _PlaneInR3ABC(_EuclidR3GeometryEntityABC):
 
 
 class PlaneInR3(_PlaneInR3ABC, Plane3D):
-    def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, point_2: _PointInR3ABC, name: str = None) -> Plane3D:
+    def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, point_2: _PointInR3ABC, /, *, name: str = None) -> Plane3D:
         assert isinstance(point_0, PointInR3), \
             GeometryError(
                 '*** POINT_0 {} NOT OF TYPE {} ***'
@@ -60,7 +60,7 @@ class PlaneInR3(_PlaneInR3ABC, Plane3D):
 
         return plane
 
-    def __init__(self, point_0: PointInR3, point_1: _PointInR3ABC, point_2: _PointInR3ABC, name: str = None) -> None:
+    def __init__(self, point_0: PointInR3, point_1: _PointInR3ABC, point_2: _PointInR3ABC, /, *, name: str = None) -> None:
         self.point_0 = point_0
         
         self.point_1 = point_1
@@ -103,7 +103,7 @@ Pln = Plane = PlaneR3 = PlaneInR3
 
 
 class PlaneAtInfinityInR3(_PlaneInR3ABC):
-    def __init__(self, normal_direction: Point3D) -> None:
+    def __init__(self, normal_direction: Point3D, /) -> None:
         assert isinstance(normal_direction, Point3D), \
             GeometryError(
                 '*** NORMAL DIRECTION {} NOT OF TYPE {} ***'

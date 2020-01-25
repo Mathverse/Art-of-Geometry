@@ -17,7 +17,7 @@ class _PointInR2ABC(_EuclidR2GeometryEntityABC):
 
 
 class PointInR2(_PointInR2ABC, Point2D):
-    def __new__(cls, x: Expr = None, y: Expr = None, name: str = None) -> Point2D:
+    def __new__(cls, /, x: Expr = None, y: Expr = None, *, name: str = None) -> Point2D:
         if not name:
             name = str(uuid4())
 
@@ -50,7 +50,7 @@ Pt = Point = PointR2 = PointInR2
 
 
 class PointAtInfinityInR2(_PointInR2ABC):
-    def __init__(self, direction: Point2D, name: str = None) -> None:
+    def __init__(self, direction: Point2D, /, *, name: str = None) -> None:
         assert isinstance(direction, Point2D), \
             GeometryError(
                 '*** DIRECTION {} NOT OF TYPE {} ***'
@@ -66,8 +66,11 @@ class PointAtInfinityInR2(_PointInR2ABC):
     def __repr__(self) -> str:
         return 'Pt@Inf {}'.format(self.name)
 
-    def __eq__(self, point_at_infinity) -> bool:
-        assert isinstance(point_at_infinity, PointAtInfinityInR2)
+    def __eq__(self, point_at_infinity, /) -> bool:
+        assert isinstance(point_at_infinity, PointAtInfinityInR2), \
+            GeometryError(
+                '*** POINT_AT_INFINITY {} NOT OF TYPE {} ***'
+                .format(point_at_infinity, PointAtInfinityInR2.__name__))
 
         return self.direction.is_scalar_multiple(point_at_infinity.direction)
 

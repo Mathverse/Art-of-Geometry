@@ -23,7 +23,7 @@ class _LineInR2ABC(_EuclidR2GeometryEntityABC):
 
 
 class LineInR2(_LineInR2ABC, Line2D):
-    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None) -> Line2D:
+    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, /, *, name: str = None) -> Line2D:
         assert isinstance(point_0, PointInR2), \
             GeometryError(
                 '*** POINT_0 {} NOT OF TYPE {} ***'
@@ -54,7 +54,7 @@ class LineInR2(_LineInR2ABC, Line2D):
                     '*** POINT_1 {} NEITHER OF TYPE {} NOR OF TYPE {} ***'
                     .format(point_1, PointInR2.__name__, PointAtInfinityInR2.__name__))
 
-    def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None) -> None:
+    def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, /, *, name: str = None) -> None:
         self.point_0 = point_0
 
         self.point_1 = point_1
@@ -62,7 +62,7 @@ class LineInR2(_LineInR2ABC, Line2D):
         self.point_at_infinity = \
             point_1 \
             if self._point_1_at_infinity \
-            else PointAtInfinityInR2(direction=self.direction)
+            else PointAtInfinityInR2(self.direction)
 
         self._name = name
 
@@ -93,7 +93,7 @@ Ln = Line = LineR2 = LineInR2
 
 
 class LineAtInfinityInR2(_PointInR2ABC):
-    def __init__(self, normal_direction: Point2D) -> None:
+    def __init__(self, normal_direction: Point2D, /) -> None:
         assert isinstance(normal_direction, Point2D), \
             GeometryError(
                 '*** NORMAL DIRECTION {} NOT OF TYPE {} ***'
@@ -107,7 +107,7 @@ LnAtInf = LineAtInf = LineAtInfinity = LineAtInfinityR2 = LineAtInfinityInR2
 
 
 class RayInR2(_EuclidR2GeometryEntityABC, Ray2D):
-    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None) -> Ray2D:
+    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, /, *, name: str = None) -> Ray2D:
         assert isinstance(point_0, PointInR2), \
             GeometryError(
                 '*** POINT_0 {} NOT OF TYPE {} ***'
@@ -138,7 +138,7 @@ class RayInR2(_EuclidR2GeometryEntityABC, Ray2D):
                     '*** POINT_1 {} NEITHER OF TYPE {} NOR OF TYPE {} ***'
                     .format(point_1, PointInR2.__name__, PointAtInfinityInR2.__name__))
 
-    def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, name: str = None) -> None:
+    def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, /, *, name: str = None) -> None:
         self.point_0 = point_0
 
         self.point_1 = point_1
@@ -146,7 +146,7 @@ class RayInR2(_EuclidR2GeometryEntityABC, Ray2D):
         self.point_at_infinity = \
             point_1 \
             if self._point_1_at_infinity \
-            else PointAtInfinityInR2(direction=self.direction)
+            else PointAtInfinityInR2(self.direction)
 
         self._name = name
 
@@ -167,7 +167,7 @@ Ray = RayR2 = RayInR2
 
 
 class SegmentInR2(_EuclidR2GeometryEntityABC, Segment2D):
-    def __new__(cls, point_0: PointInR2, point_1: PointInR2, name: str = None) -> Segment2D:
+    def __new__(cls, point_0: PointInR2, point_1: PointInR2, /, *, name: str = None) -> Segment2D:
         assert isinstance(point_0, PointInR2), \
             GeometryError(
                 '*** POINT_0 {} NOT OF TYPE {} ***'
@@ -183,7 +183,7 @@ class SegmentInR2(_EuclidR2GeometryEntityABC, Segment2D):
                 p1=point_0,
                 p2=point_1)
 
-    def __init__(self, point_0: PointInR2, point_1: PointInR2, name: str = None) -> None:
+    def __init__(self, point_0: PointInR2, point_1: PointInR2, /, *, name: str = None) -> None:
         self.point_0 = point_0
 
         self.point_1 = point_1

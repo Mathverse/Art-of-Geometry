@@ -17,7 +17,7 @@ from .point import _PointInR3ABC, PointInR3, PointAtInfinityInR3
 
 
 class LineInR3(_EuclidR3GeometryEntityABC, Line3D):
-    def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, name: str = None) -> Line3D:
+    def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, /, *, name: str = None) -> Line3D:
         assert isinstance(point_0, PointInR3), \
             GeometryError(
                 '*** POINT_0 {} NOT OF TYPE {} ***'
@@ -48,7 +48,7 @@ class LineInR3(_EuclidR3GeometryEntityABC, Line3D):
                     '*** POINT_1 {} NEITHER {} NOR {} ***'
                     .format(point_1, PointInR3.__name__, PointAtInfinityInR3.__name__))
 
-    def __init__(self, point_0: PointInR3, point_1: _PointInR3ABC, name: str = None) -> None:
+    def __init__(self, point_0: PointInR3, point_1: _PointInR3ABC, /, *, name: str = None) -> None:
         self.point_0 = point_0
 
         self.point_1 = point_1
@@ -56,7 +56,7 @@ class LineInR3(_EuclidR3GeometryEntityABC, Line3D):
         self.point_at_infinity = \
             point_1 \
             if self._point_1_at_infinity \
-            else PointAtInfinityInR3(direction=self.direction)
+            else PointAtInfinityInR3(self.direction)
 
         self._name = name
 
@@ -83,7 +83,7 @@ Ln = Line = LineR3 = LineInR3
 
 
 class RayInR3(_EuclidR3GeometryEntityABC, Ray3D):
-    def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, name: str = None) -> Ray3D:
+    def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, /, *, name: str = None) -> Ray3D:
         assert isinstance(point_0, PointInR3), \
             GeometryError(
                 '*** POINT_0 {} NOT OF TYPE {} ***'
@@ -114,7 +114,7 @@ class RayInR3(_EuclidR3GeometryEntityABC, Ray3D):
                     '*** POINT_1 {} NEITHER {} NOR {} ***'
                     .format(point_1, PointInR3.__name__, PointAtInfinityInR3.__name__))
 
-    def __init__(self, point_0: PointInR3, point_1: _PointInR3ABC, name: str = None) -> None:
+    def __init__(self, point_0: PointInR3, point_1: _PointInR3ABC, /, *, name: str = None) -> None:
         self.point_0 = point_0
 
         self.point_1 = point_1
@@ -122,7 +122,7 @@ class RayInR3(_EuclidR3GeometryEntityABC, Ray3D):
         self.point_at_infinity = \
             point_1 \
             if self._point_1_at_infinity \
-            else PointAtInfinityInR3(direction=self.direction)
+            else PointAtInfinityInR3(self.direction)
 
         self._name = name
 
@@ -143,7 +143,7 @@ Ray = RayR3 = RayInR3
 
 
 class SegmentInR3(_EuclidR3GeometryEntityABC, Segment3D):
-    def __new__(cls, point_0: PointInR3, point_1: PointInR3, name: str = None) -> Segment3D:
+    def __new__(cls, point_0: PointInR3, point_1: PointInR3, /, *, name: str = None) -> Segment3D:
         assert isinstance(point_0, PointInR3), \
             GeometryError(
                 '*** POINT_0 {} NOT OF TYPE {} ***'
@@ -159,7 +159,7 @@ class SegmentInR3(_EuclidR3GeometryEntityABC, Segment3D):
                 p1=point_0,
                 p2=point_1)
 
-    def __init__(self, point_0: PointInR3, point_1: PointInR3, name: str = None) -> None:
+    def __init__(self, point_0: PointInR3, point_1: PointInR3, /, *, name: str = None) -> None:
         self.point_0 = point_0
 
         self.point_1 = point_1
