@@ -5,6 +5,7 @@ __all__ = \
     'SegmentInR2', 'SegmentR2', 'Segment', 'Seg'
 
 
+from functools import cached_property
 from sympy.core.expr import Expr
 from sympy.geometry.line import Line2D, Ray2D, Segment2D
 from sympy.geometry.exceptions import GeometryError
@@ -76,12 +77,12 @@ class LineInR2(_LineInR2ABC, Line2D):
     def __repr__(self) -> str:
         return 'Ln {}'.format(self.name)
 
-    @property
+    @cached_property
     def equation(self) -> Expr:
         return self.direction.y * (X - self.point_0.x) \
              - self.direction.x * (Y - self.point_0.y)
 
-    @property
+    @cached_property
     def parametric_equations(self) -> Tuple[Expr, Expr]:
         return X - self.point_0.x - self.direction.x * T, \
                Y - self.point_0.y - self.direction.y * T

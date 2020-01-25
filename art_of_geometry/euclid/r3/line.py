@@ -4,6 +4,7 @@ __all__ = \
     'SegmentInR3', 'SegmentR3', 'Segment', 'Seg'
 
 
+from functools import cached_property
 from sympy.core.expr import Expr
 from sympy.geometry.line import Line3D, Ray3D, Segment3D
 from sympy.geometry.exceptions import GeometryError
@@ -70,7 +71,7 @@ class LineInR3(_EuclidR3GeometryEntityABC, Line3D):
     def __repr__(self) -> str:
         return 'Ln {}'.format(self.name)
 
-    @property
+    @cached_property
     def parametric_equations(self) -> Tuple[Expr, Expr, Expr]:
         return X - self.point_0.x - self.direction.x * T, \
                Y - self.point_0.y - self.direction.y * T, \

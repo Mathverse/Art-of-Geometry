@@ -3,6 +3,7 @@ __all__ = \
     'PlaneAtInfinityInR3', 'PlaneAtInfinityR3', 'PlaneAtInfinity', 'PlaneAtInf', 'PlnAtInf'
 
 
+from functools import cached_property
 from sympy.core.expr import Expr
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.plane import Plane as Plane3D
@@ -90,7 +91,7 @@ class PlaneInR3(_PlaneInR3ABC, Plane3D):
     def __repr__(self) -> str:
         return 'Pln {}'.format(self.name)
 
-    @property
+    @cached_property
     def parametric_equations(self) -> Tuple[Expr, Expr, Expr]:
         return X - self.point_0.x - self.direction_1.x * U - self.direction_2.x * V, \
                Y - self.point_0.y - self.direction_1.y * U - self.direction_2.y * V, \
