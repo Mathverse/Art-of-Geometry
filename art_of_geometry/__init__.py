@@ -24,6 +24,10 @@ class _GeometryEntityABC(GeometryEntity):
     def __str__(self) -> str:
         return repr(self)
 
+    @abstractmethod
+    def same(self, *, name=None):
+        raise NotImplementedError
+
     @cached_property
     @abstractmethod
     def equation(self) -> Expr:
