@@ -2,3 +2,4 @@
 
 
 python3.8 -m pip install -r requirements-setup.txt --user
+python3.8 -m pip install -e . --upgrade --user
