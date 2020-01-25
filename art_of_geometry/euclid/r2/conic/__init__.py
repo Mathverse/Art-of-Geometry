@@ -5,7 +5,7 @@ from functools import cached_property
 from sympy.core.expr import Expr
 from sympy.core.numbers import oo
 from sympy.core.singleton import S
-from sympy.functions.elementary.trigonometric import cos, sin
+from sympy.functions.elementary.trigonometric import atan2, cos, sin
 from sympy.geometry.exceptions import GeometryError
 from typing import Tuple
 
@@ -35,6 +35,8 @@ class ConicInR2(_EuclidR2GeometryEntityABC):
         self.focus_to_vertex_direction = vertex - focus
         self.vertex_to_focus_direction = -self.focus_to_vertex_direction
 
+        self.focus_to_vertex_distance = self.focus_to_vertex_direction.distance_from_origin
+
         self.eccentricity = eccentricity
 
         self._name = name
@@ -52,10 +54,6 @@ class ConicInR2(_EuclidR2GeometryEntityABC):
         return 'Conic {}'.format(self.name)
 
     @cached_property
-    def parametric_equations(self) -> Tuple[Expr, Expr]:
-        pass
-
-    @cached_property
     def is_circle(self):
         return self.eccentricity == S.Zero
 
@@ -66,6 +64,32 @@ class ConicInR2(_EuclidR2GeometryEntityABC):
     @cached_property
     def is_line(self):
         return self.eccentricity == oo
+
+    @cached_property
+    def _major_axis_angle(self):
+        return atan2(y=self.vertex_to_focus_direction.y,
+                     x=self.vertex_to_focus_direction.x)
+
+    @cached_property
+    def parametric_equations(self) -> Tuple[Expr, Expr]:
+        if self.is_circle:
+            return X - self.focus.x - self.focus_to_vertex_distance * cos(THETA), \
+                   Y - self.focus.y - self.focus_to_vertex_distance * sin(THETA)
+
+        elif self.is_parabola:
+            pass
+
+        elif self.is_line:
+            pass
+
+        else:
+            phi = self._major_axis_angle
+
+            r = (1 - self.eccentricity) * self.focus_to_vertex_distance / \
+                (1 - self.eccentricity * cos(THETA - phi))
+
+            return X - self.focus.x - r * cos(THETA + phi), \
+                   Y - self.focus.y - r * sin(THETA + phi)
 
     @cached_property
     def center(self) -> _PointInR2ABC:
