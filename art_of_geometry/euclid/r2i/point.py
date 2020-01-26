@@ -5,7 +5,7 @@ from sympy.geometry.exceptions import GeometryError
 
 from ..r2.point import PointInR2
 from . import _SurfaceInR2IABC
-from .coord import X, Y, W
+from .coord import X, Y, Z
 
 
 class PointInR2_DoubleConeInR2I(_SurfaceInR2IABC):
@@ -21,4 +21,4 @@ class PointInR2_DoubleConeInR2I(_SurfaceInR2IABC):
     def equation(self):
         return (X - self.point_in_r2.x) ** 2 \
              + (Y - self.point_in_r2.y) ** 2 \
-             - W ** 2
+             - Z ** 2
