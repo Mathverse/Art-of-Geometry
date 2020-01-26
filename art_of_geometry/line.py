@@ -4,7 +4,6 @@ __all__ = \
 
 
 from abc import abstractmethod
-from sympy.geometry.line import LinearEntity, Line
 
 from . import _GeometryEntityABC
 from .point import _PointABC
@@ -24,7 +23,7 @@ class _LinearEntityABC(_GeometryEntityABC):
         raise NotImplementedError
 
 
-class _ConcreteLinearEntityABC(_LinearEntityABC, LinearEntity):
+class _ConcreteLinearEntityABC(_LinearEntityABC):
     pass
 
 
@@ -38,7 +37,7 @@ class _LineABC(_LinearEntityABC):
         raise NotImplementedError
 
 
-class _ConcreteLineABC(_LineABC, Line):
+class _ConcreteLineABC(_LineABC):
     pass
 
 
