@@ -1,4 +1,4 @@
-__all__ = '_EuclidR3GeometryEntityABC',
+__all__ = '_EuclidGeometryEntityInR3ABC',
 
 
 from abc import abstractmethod
@@ -9,7 +9,7 @@ from typing import Tuple
 from ... import _GeometryEntityABC
 
 
-class _EuclidR3GeometryEntityABC(_GeometryEntityABC):
+class _EuclidGeometryEntityInR3ABC(_GeometryEntityABC):
     @cached_property
     @abstractmethod
     def parametric_equations(self) -> Tuple[Expr, Expr, Expr]:
