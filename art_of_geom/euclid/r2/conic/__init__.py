@@ -21,12 +21,12 @@ from ..point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 class ConicInR2(_EuclidGeometryEntityInR2ABC):
     def __init__(self, /, focus: PointInR2, vertex: PointInR2, eccentricity: Expr, *, name: str = None) -> None:
         assert isinstance(focus, PointInR2), \
-            GeometryError(
+            TypeError(
                 '*** FOCUS {} NOT OF TYPE {} ***'
                 .format(focus, PointInR2.__name__))
 
         assert isinstance(vertex, PointInR2), \
-            GeometryError(
+            TypeError(
                 '*** VERTEX {} NOT OF TYPE {} ***'
                 .format(vertex, PointInR2.__name__))
 
@@ -62,8 +62,16 @@ class ConicInR2(_EuclidGeometryEntityInR2ABC):
         return self.eccentricity == S.Zero
 
     @cached_property
+    def is_ellipse(self):
+        return S.Zero < self.eccentricity < S.One
+
+    @cached_property
     def is_parabola(self):
         return self.eccentricity == S.One
+
+    @cached_property
+    def is_hyperbola(self):
+        return S.One < self.eccentricity < oo
 
     @cached_property
     def is_line(self):
@@ -127,8 +135,12 @@ class ConicInR2(_EuclidGeometryEntityInR2ABC):
         return LineInR2(self.focus, self.vertex)
 
     @cached_property
-    def minor_axis_line(self):
-        return self.major_axis_line.perpendicular_line(self.center)
+    def minor_axis_line(self) -> _LineInR2ABC:
+        if self.is_parabola:
+            return LineAtInfinityInR2(self.focus_to_vertex_direction)
+
+        else:
+            return self.major_axis_line.perpendicular_line(self.center)
 
     @cached_property
     def tangent_line_at_vertex(self) -> LineInR2:
@@ -179,12 +191,20 @@ class ConicInR2(_EuclidGeometryEntityInR2ABC):
 
     @cached_property
     def parametric_equations(self) -> Tuple[Expr, Expr]:
+        # θ is True Anomaly angle
+
         if self.is_circle:
             return X - self.focus.x - self.focus_to_vertex_distance * cos(THETA), \
                    Y - self.focus.y - self.focus_to_vertex_distance * sin(THETA)
 
         elif self.is_parabola:
-            pass
+            phi = self._major_axis_angle
+
+            r = 2 * self.focus_to_vertex_distance / \
+                (1 - cos(THETA - phi))
+
+            return X - self.focus.x - r * cos(THETA), \
+                   Y - self.focus.y - r * sin(THETA)
 
         elif self.is_line:
             return self.directrix.parametric_equations
@@ -192,11 +212,11 @@ class ConicInR2(_EuclidGeometryEntityInR2ABC):
         else:
             phi = self._major_axis_angle
 
-            r = (1 - self.eccentricity) * self.focus_to_vertex_distance / \
+            r = (1 + self.eccentricity) * self.focus_to_vertex_distance / \
                 (1 - self.eccentricity * cos(THETA - phi))
 
-            return X - self.focus.x - r * cos(THETA + phi), \
-                   Y - self.focus.y - r * sin(THETA + phi)
+            return X - self.focus.x - r * cos(THETA), \
+                   Y - self.focus.y - r * sin(THETA)
 
 
 # aliases
