@@ -37,9 +37,9 @@ class _LineABC(_LinearEntityABC):
         raise NotImplementedError
 
 
-class _ConcreteLineABC(_LineABC):
+class _ConcreteLineABC(_LineABC, _ConcreteLinearEntityABC):
     pass
 
 
-class _LineAtInfinityABC(_LineABC):
+class _LineAtInfinityABC(_LineABC, _LinearEntityAtInfinityABC):
     pass
