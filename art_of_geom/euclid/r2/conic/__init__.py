@@ -207,6 +207,17 @@ class ConicInR2(_EuclidGeometryEntityInR2ABC):
     semi_major_axis_length = major_semi_axis_length
 
     @cached_property
+    def semi_latus_rectum(self):
+        if self.is_circle:
+            return self.focus_to_vertex_distance
+
+        elif self.is_parabola:
+            return 2 * self.focus_to_vertex_distance
+
+        else:
+            return (1 + self.eccentricity) * self.focus_to_vertex_distance
+
+    @cached_property
     def _major_axis_angle(self):
         return atan2(y=self.vertex_to_focus_direction.y,
                      x=self.vertex_to_focus_direction.x)
@@ -220,10 +231,8 @@ class ConicInR2(_EuclidGeometryEntityInR2ABC):
                    Y - self.focus.y - self.focus_to_vertex_distance * sin(THETA)
 
         elif self.is_parabola:
-            phi = self._major_axis_angle
-
-            r = 2 * self.focus_to_vertex_distance / \
-                (1 - cos(THETA - phi))
+            r = self.semi_latus_rectum / \
+                (1 - cos(THETA - self._major_axis_angle))
 
             return X - self.focus.x - r * cos(THETA), \
                    Y - self.focus.y - r * sin(THETA)
@@ -232,10 +241,8 @@ class ConicInR2(_EuclidGeometryEntityInR2ABC):
             return self.directrix.parametric_equations
 
         else:
-            phi = self._major_axis_angle
-
-            r = (1 + self.eccentricity) * self.focus_to_vertex_distance / \
-                (1 - self.eccentricity * cos(THETA - phi))
+            r = self.semi_latus_rectum / \
+                (1 - self.eccentricity * cos(THETA - self._major_axis_angle))
 
             return X - self.focus.x - r * cos(THETA), \
                    Y - self.focus.y - r * sin(THETA)
