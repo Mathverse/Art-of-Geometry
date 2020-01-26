@@ -1,4 +1,5 @@
 __all__ = \
+    '_EuclidLinearEntityABC', '_EuclidConcreteLinearEntityABC', '_EuclidLinearEntityAtInfinityABC', \
     '_EuclidConcreteLineABC', '_EuclidLineAtInfinityABC', \
     '_EuclidRayABC', '_EuclidSegmentABC'
 
