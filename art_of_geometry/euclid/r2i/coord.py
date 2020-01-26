@@ -1,11 +1,8 @@
 from sympy.core.numbers import I
-from sympy.core.symbol import Symbol
 
 from ..r2.coord import X, Y
+from ..r3.coord import Z
 
 
-# coordinate of imaginary W axis
-W = Symbol(name='w', real=True)
-
-# corresponding complex coordinate
-_Z = Y + I * W
+# complex coordinate
+W = Y + I * Z
