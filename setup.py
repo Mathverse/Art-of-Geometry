@@ -3,7 +3,7 @@ from ruamel import yaml
 from setuptools import find_packages, setup
 
 
-_PACKAGE_NAMESPACE_NAME = 'art_of_geometry'
+_PACKAGE_NAMESPACE_NAME = 'art_of_geom'
 
 _METADATA_FILE_NAME = 'metadata.yml'
 
