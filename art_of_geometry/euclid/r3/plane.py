@@ -52,7 +52,7 @@ class PlaneInR3(_PlaneInR3ABC, Plane3D):
 
         plane = super().__new__(
                     cls,
-                    pt=point_0,
+                    p1=point_0,
                     a=point_1,
                     b=point_2)
 
@@ -91,6 +91,10 @@ class PlaneInR3(_PlaneInR3ABC, Plane3D):
         return X - self.point_0.x - self.direction_1.x * U - self.direction_2.x * V, \
                Y - self.point_0.y - self.direction_1.y * U - self.direction_2.y * V, \
                Z - self.point_0.z - self.direction_1.z * U - self.direction_2.z * V
+
+    @cached_property
+    def normal_direction(self):
+        return PointInR3(*self.normal_vector)
 
     def parallel_plane(self, through_point: PointInR3, /, *, name=None):
         return PlaneInR3(

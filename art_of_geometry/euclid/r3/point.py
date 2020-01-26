@@ -28,16 +28,31 @@ class PointInR3(_PointInR3ABC, Point3D):
             x = Symbol(
                     name='[{}.x]'.format(name),
                     real=True)
+        else:
+            assert isinstance(x, (Expr, float, int)), \
+                TypeError(
+                    '*** X COORDINATE {} NEITHER SymPy Expr NOR int NOR float ***'
+                    .format(x))
 
         if y is None:
             y = Symbol(
                     name='[{}.y]'.format(name),
                     real=True)
+        else:
+            assert isinstance(y, (Expr, float, int)), \
+                TypeError(
+                    '*** Y COORDINATE {} NEITHER SymPy Expr NOR int NOR float ***'
+                    .format(y))
             
         if z is None:
             z = Symbol(
                     name='[{}.z]'.format(name),
                     real=True)
+        else:
+            assert isinstance(z, (Expr, float, int)), \
+                TypeError(
+                    '*** Z COORDINATE {} NEITHER SymPy Expr NOR int NOR float ***'
+                    .format(z))
 
         point = super().__new__(
                     cls,
