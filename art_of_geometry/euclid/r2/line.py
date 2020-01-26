@@ -13,13 +13,24 @@ from sympy.geometry.point import Point2D
 from typing import Tuple
 
 from ..coord import T
-from ..line import _EuclidLinearEntityABC, _EuclidLineABC, _EuclidRayABC, _EuclidSegmentABC
-from . import _EuclidR2GeometryEntityABC
+from ..line import \
+    _EuclidLinearEntityABC, _EuclidConcreteLinearEntityABC, _EuclidLinearEntityAtInfinityABC, \
+    _EuclidLineABC, _ConcreteLineABC, _LineAtInfinityABC, \
+    _EuclidRayABC, _EuclidSegmentABC
+from . import _EuclidGeometryEntityInR2ABC
 from .coord import X, Y
 from .point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
 
-class _LinearEntityInR2ABC(_EuclidR2GeometryEntityABC, _EuclidLinearEntityABC, LinearEntity2D):
+class _LinearEntityInR2ABC(_EuclidGeometryEntityInR2ABC, _EuclidLinearEntityABC):
+    pass
+
+
+class _ConcreteLinearEntityInR2ABC(_LinearEntityInR2ABC, _EuclidConcreteLinearEntityABC, LinearEntity2D):
+    pass
+
+
+class _LinearEntityAtInfinityInR2ABC(_LinearEntityInR2ABC, _EuclidLinearEntityAtInfinityABC):
     pass
 
 
@@ -27,10 +38,10 @@ class _LineInR2ABC(_LinearEntityInR2ABC, _EuclidLineABC):
     pass
 
 
-class LineInR2(_LineInR2ABC, Line2D):
+class LineInR2(_LineInR2ABC, _ConcreteLineABC, Line2D):
     def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, /, *, name: str = None) -> Line2D:
         assert isinstance(point_0, PointInR2), \
-            GeometryError(
+            TypeError(
                 '*** POINT_0 {} NOT OF TYPE {} ***'
                 .format(point_0, PointInR2.__name__))
         
@@ -55,7 +66,7 @@ class LineInR2(_LineInR2ABC, Line2D):
             return line
         
         else:
-            raise GeometryError(
+            raise TypeError(
                     '*** POINT_1 {} NEITHER OF TYPE {} NOR OF TYPE {} ***'
                     .format(point_1, PointInR2.__name__, PointAtInfinityInR2.__name__))
 
@@ -70,17 +81,6 @@ class LineInR2(_LineInR2ABC, Line2D):
             else PointAtInfinityInR2(self.direction)
 
         self._name = name
-
-    @property
-    def name(self) -> str:
-        return self._name \
-            if self._name \
-          else '{} --- {}'.format(
-                self.point_0.name,
-                self.point_1.name)
-
-    def __repr__(self) -> str:
-        return 'Ln {}'.format(self.name)
 
     @cached_property
     def equation(self) -> Expr:
@@ -115,10 +115,10 @@ class LineInR2(_LineInR2ABC, Line2D):
 Ln = Line = LineR2 = LineInR2
 
 
-class LineAtInfinityInR2(_LineInR2ABC):
+class LineAtInfinityInR2(_LineInR2ABC, _LineAtInfinityABC):
     def __init__(self, normal_direction: Point2D, /, *, name=None) -> None:
         assert isinstance(normal_direction, Point2D), \
-            GeometryError(
+            TypeError(
                 '*** NORMAL DIRECTION {} NOT OF TYPE {} ***'
                 .format(normal_direction, Point2D.__name__))
 
@@ -148,10 +148,10 @@ class LineAtInfinityInR2(_LineInR2ABC):
 LnAtInf = LineAtInf = LineAtInfinity = LineAtInfinityR2 = LineAtInfinityInR2
 
 
-class RayInR2(_LinearEntityInR2ABC, _EuclidRayABC, Ray2D):
+class RayInR2(_ConcreteLinearEntityInR2ABC, _EuclidRayABC, Ray2D):
     def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, /, *, name: str = None) -> Ray2D:
         assert isinstance(point_0, PointInR2), \
-            GeometryError(
+            TypeError(
                 '*** POINT_0 {} NOT OF TYPE {} ***'
                 .format(point_0, PointInR2.__name__))
 
@@ -176,7 +176,7 @@ class RayInR2(_LinearEntityInR2ABC, _EuclidRayABC, Ray2D):
             return ray
 
         else:
-            raise GeometryError(
+            raise TypeError(
                     '*** POINT_1 {} NEITHER OF TYPE {} NOR OF TYPE {} ***'
                     .format(point_1, PointInR2.__name__, PointAtInfinityInR2.__name__))
 
@@ -192,31 +192,20 @@ class RayInR2(_LinearEntityInR2ABC, _EuclidRayABC, Ray2D):
 
         self._name = name
 
-    @property
-    def name(self) -> str:
-        return self._name \
-            if self._name \
-          else '{} *-- {}'.format(
-                self.point_0.name,
-                self.point_1.name)
-
-    def __repr__(self) -> str:
-        return 'Ray {}'.format(self.name)
-
 
 # aliases
 Ray = RayR2 = RayInR2
 
 
-class SegmentInR2(_LinearEntityInR2ABC, _EuclidSegmentABC, Segment2D):
+class SegmentInR2(_ConcreteLinearEntityInR2ABC, _EuclidSegmentABC, Segment2D):
     def __new__(cls, point_0: PointInR2, point_1: PointInR2, /, *, name: str = None) -> Segment2D:
         assert isinstance(point_0, PointInR2), \
-            GeometryError(
+            TypeError(
                 '*** POINT_0 {} NOT OF TYPE {} ***'
                 .format(point_0, PointInR2.__name__))
 
         assert isinstance(point_1, PointInR2), \
-            GeometryError(
+            TypeError(
                 '*** POINT_1 {} NOT OF TYPE {} ***'
                     .format(point_1, PointInR2.__name__))
 
@@ -231,17 +220,6 @@ class SegmentInR2(_LinearEntityInR2ABC, _EuclidSegmentABC, Segment2D):
         self.point_1 = point_1
 
         self._name = name
-
-    @property
-    def name(self) -> str:
-        return self._name \
-            if self._name \
-          else '{} *-* {}'.format(
-                self.point_0.name,
-                self.point_1.name)
-
-    def __repr__(self) -> str:
-        return 'Seg {}'.format(self.name)
 
 
 # aliases

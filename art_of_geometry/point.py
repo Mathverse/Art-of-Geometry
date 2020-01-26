@@ -9,6 +9,9 @@ from . import _GeometryEntityABC
 
 
 class _PointABC(_GeometryEntityABC):
+    def __repr__(self) -> str:
+        return 'Pt {}'.format(self.name)
+
     @cached_property
     def distance_from_origin(self) -> Expr:
         raise NotImplementedError

@@ -5,21 +5,20 @@ __all__ = \
 
 from functools import cached_property
 from sympy.core.expr import Expr
-from sympy.core.numbers import oo
 from sympy.core.symbol import Symbol
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point2D
 from uuid import uuid4
 
-from ...point import _PointABC
-from . import _EuclidR2GeometryEntityABC
+from ..point import _EuclidPointABC, _EuclidConcretePointABC, _EuclidPointAtInfinityABC
+from . import _EuclidGeometryEntityInR2ABC
 
 
-class _PointInR2ABC(_EuclidR2GeometryEntityABC, _PointABC):
+class _PointInR2ABC(_EuclidGeometryEntityInR2ABC, _EuclidPointABC):
     pass
 
 
-class PointInR2(_PointInR2ABC, Point2D):
+class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
     def __new__(cls, /, x: Expr = None, y: Expr = None, *, name: str = None) -> Point2D:
         if not name:
             name = str(uuid4())
@@ -74,9 +73,6 @@ class PointInR2(_PointInR2ABC, Point2D):
             if isinstance(self.y, Symbol):
                 self.y.name = '[{}.y]'.format(name)
 
-    def __repr__(self) -> str:
-        return 'Pt {}'.format(self.name)
-
     def same(self, *, name=None):
         return PointInR2(
                 x=self.x,
@@ -102,11 +98,11 @@ class PointInR2(_PointInR2ABC, Point2D):
         return self._from_sympy_point_2d(
                 super().__sub__(point))
 
-    def __mul__(self, n: float, /):
+    def __mul__(self, n: Expr, /):
         return self._from_sympy_point_2d(
                 super().__mul__(n))
 
-    def __div__(self, n: float, /):
+    def __div__(self, n: Expr, /):
         return self._from_sympy_point_2d(
                 super().__div__(n))
 
@@ -119,7 +115,7 @@ class PointInR2(_PointInR2ABC, Point2D):
 Pt = Point = PointR2 = PointInR2
 
 
-class PointAtInfinityInR2(_PointInR2ABC):
+class PointAtInfinityInR2(_PointInR2ABC, _EuclidPointAtInfinityABC):
     def __init__(self, direction: Point2D, /, *, name: str = None) -> None:
         assert isinstance(direction, Point2D), \
             TypeError(
@@ -132,26 +128,6 @@ class PointAtInfinityInR2(_PointInR2ABC):
             name \
             if name \
             else str(uuid4())
-
-    def __repr__(self) -> str:
-        return 'Pt@Inf {}'.format(self.name)
-
-    def __eq__(self, point_at_infinity, /) -> bool:
-        assert isinstance(point_at_infinity, PointAtInfinityInR2), \
-            TypeError(
-                '*** POINT_AT_INFINITY {} NOT OF TYPE {} ***'
-                .format(point_at_infinity, PointAtInfinityInR2.__name__))
-
-        return self.direction.is_scalar_multiple(point_at_infinity.direction)
-
-    def same(self, *, name=None):
-        return PointAtInfinityInR2(
-                self.direction,
-                name=name)
-
-    @cached_property
-    def distance_from_origin(self) -> Expr:
-        return oo
 
 
 # aliases

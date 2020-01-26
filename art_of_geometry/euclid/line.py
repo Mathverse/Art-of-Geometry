@@ -51,8 +51,26 @@ class _EuclidLineAtInfinityABC(_EuclidLineABC, _EuclidLinearEntityAtInfinityABC,
 
 
 class _EuclidRayABC(_EuclidConcreteLinearEntityABC, Ray):
-    pass
+    @property
+    def name(self) -> str:
+        return self._name \
+            if self._name \
+          else '{} *-- {}'.format(
+                self.point_0.name,
+                self.point_1.name)
+
+    def __repr__(self) -> str:
+        return 'Ray {}'.format(self.name)
 
 
 class _EuclidSegmentABC(_EuclidConcreteLinearEntityABC, Segment):
-    pass
+    @property
+    def name(self) -> str:
+        return self._name \
+            if self._name \
+          else '{} *-* {}'.format(
+                self.point_0.name,
+                self.point_1.name)
+
+    def __repr__(self) -> str:
+        return 'Seg {}'.format(self.name)

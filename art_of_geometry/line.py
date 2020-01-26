@@ -38,7 +38,16 @@ class _LineABC(_LinearEntityABC):
 
 
 class _ConcreteLineABC(_LineABC, _ConcreteLinearEntityABC):
-    pass
+    @property
+    def name(self) -> str:
+        return self._name \
+            if self._name \
+          else '{} --- {}'.format(
+                self.point_0.name,
+                self.point_1.name)
+
+    def __repr__(self) -> str:
+        return 'Ln {}'.format(self.name)
 
 
 class _LineAtInfinityABC(_LineABC, _LinearEntityAtInfinityABC):
