@@ -11,13 +11,17 @@ from sympy.geometry.exceptions import GeometryError
 from typing import Tuple
 
 from ..coord import T
-from ..line import _LineABC
+from ..line import _EuclidLinearEntityABC, _EuclidLineABC, _EuclidRayABC, _EuclidSegmentABC
 from . import _EuclidR3GeometryEntityABC
 from .coord import X, Y, Z
 from .point import _PointInR3ABC, PointInR3, PointAtInfinityInR3
 
 
-class _LineInR3ABC(_EuclidR3GeometryEntityABC, _LineABC):
+class _LinearEntityInR3ABC(_EuclidR3GeometryEntityABC, _EuclidLinearEntityABC):
+    pass
+
+
+class _LineInR3ABC(_LinearEntityInR3ABC, _EuclidLineABC):
     pass
 
 
@@ -82,12 +86,26 @@ class LineInR3(_LineInR3ABC, Line3D):
                Y - self.point_0.y - self.direction.y * T, \
                Z - self.point_0.z - self.direction.z * T
 
+    def parallel_line(self, through_point: PointInR3, /, *, name=None):
+        return LineInR3(
+                through_point,
+                PointAtInfinityInR3(self.direction),
+                name=name)
+
+    def perpendicular_line(self, through_point: PointInR3, /, *, name=None):
+        # TODO: ASSUME through_point NOT ON THIS LINE
+
+        return LineInR3(
+                through_point,
+                self.perpendicular_projection(through_point),
+                name=name)
+
 
 # aliases
 Ln = Line = LineR3 = LineInR3
 
 
-class RayInR3(_EuclidR3GeometryEntityABC, Ray3D):
+class RayInR3(_LinearEntityInR3ABC, _EuclidRayABC, Ray3D):
     def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, /, *, name: str = None) -> Ray3D:
         assert isinstance(point_0, PointInR3), \
             GeometryError(
@@ -147,7 +165,7 @@ class RayInR3(_EuclidR3GeometryEntityABC, Ray3D):
 Ray = RayR3 = RayInR3
 
 
-class SegmentInR3(_EuclidR3GeometryEntityABC, Segment3D):
+class SegmentInR3(_LinearEntityInR3ABC, _EuclidSegmentABC, Segment3D):
     def __new__(cls, point_0: PointInR3, point_1: PointInR3, /, *, name: str = None) -> Segment3D:
         assert isinstance(point_0, PointInR3), \
             GeometryError(

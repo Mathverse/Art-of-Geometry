@@ -13,6 +13,16 @@ class _EuclidLinearEntityABC(_LinearEntityABC, LinearEntity):
     def unit_direction(self) -> Point:
         return self.direction.unit
 
+    def perpendicular_projection(self, point: Point, /, *, name=None) -> Point:
+        projection = \
+            self.point_0 + \
+            self.unit_direction.dot(point - self.point_0) * self.unit_direction
+
+        if name:
+            projection.name = name
+
+        return projection
+
 
 class _EuclidLineABC(_EuclidLinearEntityABC, _LineABC, Line):
     pass

@@ -1,4 +1,4 @@
-__all__ = '_LineABC'
+__all__ = '_LinearEntityABC', '_LineABC'
 
 
 from abc import abstractmethod
