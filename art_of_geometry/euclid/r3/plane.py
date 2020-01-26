@@ -13,6 +13,7 @@ from typing import Tuple
 from ..coord import U, V
 from . import _EuclidR3GeometryEntityABC
 from .coord import X, Y, Z
+from .line import LineInR3
 from .point import _PointInR3ABC, PointInR3, PointAtInfinityInR3
 
 
@@ -64,18 +65,12 @@ class PlaneInR3(_PlaneInR3ABC, Plane3D):
         self.point_0 = point_0
         
         self.point_1 = point_1
-
-        self.direction_1 = \
-            point_1.direction \
-            if self._point_1_at_infinity \
-            else (point_1 - point_0)
+        self.line_1 = LineInR3(point_0, point_1)
+        self.direction_1 = self.line_1.direction
         
         self.point_2 = point_2
-
-        self.direction_2 = \
-            point_2.direction \
-            if self._point_2_at_infinity \
-            else (point_2 - point_0)
+        self.line_2 = LineInR3(point_0, point_2)
+        self.direction_2 = self.line_2.direction
         
         self._name = name
 
@@ -96,6 +91,38 @@ class PlaneInR3(_PlaneInR3ABC, Plane3D):
         return X - self.point_0.x - self.direction_1.x * U - self.direction_2.x * V, \
                Y - self.point_0.y - self.direction_1.y * U - self.direction_2.y * V, \
                Z - self.point_0.z - self.direction_1.z * U - self.direction_2.z * V
+
+    def parallel_plane(self, through_point: PointInR3, /, *, name=None):
+        return PlaneInR3(
+                through_point,
+                PointAtInfinityInR3(self.direction_1),
+                PointAtInfinityInR3(self.direction_2),
+                name=name)
+
+    def perpendicular_projection(self, point: PointInR3, /, *, name=None) -> PointInR3:
+        perpendicular_projection_1 = self.line_1.perpendicular_projection(point)
+
+        perpendicular_projection_2 = self.line_2.perpendicular_projection(point)
+
+        if perpendicular_projection_1 == perpendicular_projection_2:
+            if name:
+                perpendicular_projection_1.name = name
+
+            return perpendicular_projection_1
+
+        else:
+            return LineInR3(
+                    perpendicular_projection_1,
+                    perpendicular_projection_2) \
+                .perpendicular_projection(
+                    point,
+                    name=name)
+
+    def perpendicular_line(self, through_point: PointInR3, /, *, name=None) -> LineInR3:
+        return LineInR3(
+                through_point,
+                PointAtInfinityInR3(self.normal_vector),
+                name=name)
 
 
 # aliases
