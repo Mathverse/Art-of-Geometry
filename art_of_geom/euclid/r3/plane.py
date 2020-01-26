@@ -125,7 +125,7 @@ class PlaneInR3(_PlaneInR3ABC, Plane3D):
     def perpendicular_line(self, through_point: PointInR3, /, *, name=None) -> LineInR3:
         return LineInR3(
                 through_point,
-                PointAtInfinityInR3(self.normal_vector),
+                PointAtInfinityInR3(self.normal_direction),
                 name=name)
 
 
