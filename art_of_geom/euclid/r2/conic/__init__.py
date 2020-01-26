@@ -78,6 +78,17 @@ class ConicInR2(_EuclidGeometryEntityInR2ABC):
         return self.eccentricity == oo
 
     @cached_property
+    def linear_eccentricity(self):
+        if self.is_circle:
+            return S.Zero
+
+        elif self.is_parabola:
+            return oo
+
+        else:
+            return self.eccentricity / (1 - self.eccentricity)
+
+    @cached_property
     def center(self) -> _PointInR2ABC:
         if self.is_circle:
             return self.focus.same()
@@ -183,6 +194,17 @@ class ConicInR2(_EuclidGeometryEntityInR2ABC):
     @cached_property
     def directrices(self) -> Tuple[_LineInR2ABC, _LineInR2ABC]:
         return self.directrix, self.other_directrix
+
+    @cached_property
+    def major_semi_axis_length(self):
+        if self.is_parabola:
+            return oo
+
+        else:
+            return self.focus_to_vertex_distance / (1 - self.eccentricity)
+
+    # alias
+    semi_major_axis_length = major_semi_axis_length
 
     @cached_property
     def _major_axis_angle(self):
