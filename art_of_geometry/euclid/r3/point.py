@@ -5,12 +5,13 @@ __all__ = \
 
 from functools import cached_property
 from sympy.core.expr import Expr
+from sympy.core.numbers import oo
 from sympy.core.symbol import Symbol
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point3D
 from uuid import uuid4
 
-from ..point import _PointABC
+from ...point import _PointABC
 from . import _EuclidR3GeometryEntityABC
 
 
@@ -87,7 +88,7 @@ class PointInR3(_PointInR3ABC, Point3D):
                 super().__div__(n))
 
     @cached_property
-    def distance_from_origin(self):
+    def distance_from_origin(self) -> Expr:
         return self.x ** 2 + self.y ** 2 + self.z ** 2
 
 
@@ -124,6 +125,10 @@ class PointAtInfinityInR3(_PointInR3ABC):
         return PointAtInfinityInR3(
                 self.direction,
                 name=name)
+
+    @cached_property
+    def distance_from_origin(self) -> Expr:
+        return oo
 
 
 # aliases

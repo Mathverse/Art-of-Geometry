@@ -5,6 +5,7 @@ __all__ = \
 
 from functools import cached_property
 from sympy.core.expr import Expr
+from sympy.core.numbers import oo
 from sympy.core.symbol import Symbol
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point2D
@@ -80,7 +81,7 @@ class PointInR2(_PointInR2ABC, Point2D):
                 super().__div__(n))
 
     @cached_property
-    def distance_from_origin(self):
+    def distance_from_origin(self) -> Expr:
         return self.x ** 2 + self.y ** 2
 
 
@@ -117,6 +118,10 @@ class PointAtInfinityInR2(_PointInR2ABC):
         return PointAtInfinityInR2(
                 self.direction,
                 name=name)
+
+    @cached_property
+    def distance_from_origin(self) -> Expr:
+        return oo
 
 
 # aliases

@@ -7,19 +7,23 @@ __all__ = \
 
 from functools import cached_property
 from sympy.core.expr import Expr
-from sympy.geometry.line import Line2D, Ray2D, Segment2D
+from sympy.geometry.line import LinearEntity2D, Line2D, Ray2D, Segment2D
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point2D
 from typing import Tuple
 
+from ...line import _LinearEntityABC, _LineABC, _RayABC, _SegmentABC
 from ..coord import T
-from art_of_geometry.line import _LineABC
 from . import _EuclidR2GeometryEntityABC
 from .coord import X, Y
 from .point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
 
-class _LineInR2ABC(_EuclidR2GeometryEntityABC, _LineABC):
+class _LinearEntityInR2ABC(_EuclidR2GeometryEntityABC, _LinearEntityABC, LinearEntity2D):
+    pass
+
+
+class _LineInR2ABC(_LinearEntityInR2ABC, _LineABC):
     pass
 
 
@@ -100,6 +104,10 @@ class LineInR2(_LineInR2ABC, Line2D):
                 PointAtInfinityInR2(self.direction),
                 name=name)
 
+    def perpendicular_projection(self, point: PointInR2, /, *, name=None) -> PointInR2:
+        return self.point_0 \
+             + self.unit_direction.dot(point - self.point_0) * self.unit_direction
+
     def perpendicular_line(self, through_point: PointInR2, /, *, name=None):
         return LineInR2(
                 through_point,
@@ -111,7 +119,7 @@ class LineInR2(_LineInR2ABC, Line2D):
 Ln = Line = LineR2 = LineInR2
 
 
-class LineAtInfinityInR2(_PointInR2ABC):
+class LineAtInfinityInR2(_LineInR2ABC):
     def __init__(self, normal_direction: Point2D, /, *, name=None) -> None:
         assert isinstance(normal_direction, Point2D), \
             GeometryError(
@@ -144,7 +152,7 @@ class LineAtInfinityInR2(_PointInR2ABC):
 LnAtInf = LineAtInf = LineAtInfinity = LineAtInfinityR2 = LineAtInfinityInR2
 
 
-class RayInR2(_EuclidR2GeometryEntityABC, Ray2D):
+class RayInR2(_LinearEntityInR2ABC, _RayABC, Ray2D):
     def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, /, *, name: str = None) -> Ray2D:
         assert isinstance(point_0, PointInR2), \
             GeometryError(
@@ -204,7 +212,7 @@ class RayInR2(_EuclidR2GeometryEntityABC, Ray2D):
 Ray = RayR2 = RayInR2
 
 
-class SegmentInR2(_EuclidR2GeometryEntityABC, Segment2D):
+class SegmentInR2(_LinearEntityInR2ABC, _SegmentABC, Segment2D):
     def __new__(cls, point_0: PointInR2, point_1: PointInR2, /, *, name: str = None) -> Segment2D:
         assert isinstance(point_0, PointInR2), \
             GeometryError(

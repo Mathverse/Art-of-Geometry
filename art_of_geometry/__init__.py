@@ -6,6 +6,7 @@ from functools import cached_property
 from sympy.core.expr import Expr
 from sympy.geometry.entity import GeometryEntity
 from typing import Tuple
+from uuid import uuid4
 
 
 class _GeometryEntityABC(GeometryEntity):
@@ -14,12 +15,17 @@ class _GeometryEntityABC(GeometryEntity):
         return self._name
 
     @name.setter
-    def name(self, name) -> None:
+    def name(self, name: str, /) -> None:
+        assert isinstance(name, str) and name, \
+            TypeError(
+                '*** {} NOT NON-EMPTY STRING ***'
+                .format(name))
+
         self._name = name
 
     @name.deleter
     def name(self) -> None:
-        self._name = None
+        self.name = str(uuid4())
 
     def __str__(self) -> str:
         return repr(self)
