@@ -11,12 +11,12 @@ from sympy.geometry.exceptions import GeometryError
 from typing import Tuple
 
 from ....coord import THETA
-from ... import _EuclidR2GeometryEntityABC
+from ... import _EuclidGeometryEntityInR2ABC
 from ...coord import X, Y
 from ...point import PointInR2
 
 
-class CircleInR2(_EuclidR2GeometryEntityABC):
+class CircleInR2(_EuclidGeometryEntityInR2ABC):
     def __init__(self, /, center: PointInR2, radius: Expr, *, name: str = None) -> None:
         assert isinstance(center, PointInR2), \
             GeometryError(

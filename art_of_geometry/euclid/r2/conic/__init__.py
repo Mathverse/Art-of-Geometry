@@ -12,13 +12,13 @@ from sympy.geometry.exceptions import GeometryError
 from typing import Tuple
 
 from ...coord import THETA
-from .. import _EuclidR2GeometryEntityABC
+from .. import _EuclidGeometryEntityInR2ABC
 from ..coord import X, Y
 from ..line import _LineInR2ABC, LineInR2, LineAtInfinityInR2
 from ..point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
 
-class ConicInR2(_EuclidR2GeometryEntityABC):
+class ConicInR2(_EuclidGeometryEntityInR2ABC):
     def __init__(self, /, focus: PointInR2, vertex: PointInR2, eccentricity: Expr, *, name: str = None) -> None:
         assert isinstance(focus, PointInR2), \
             GeometryError(
@@ -68,32 +68,6 @@ class ConicInR2(_EuclidR2GeometryEntityABC):
     @cached_property
     def is_line(self):
         return self.eccentricity == oo
-
-    @cached_property
-    def _major_axis_angle(self):
-        return atan2(y=self.vertex_to_focus_direction.y,
-                     x=self.vertex_to_focus_direction.x)
-
-    @cached_property
-    def parametric_equations(self) -> Tuple[Expr, Expr]:
-        if self.is_circle:
-            return X - self.focus.x - self.focus_to_vertex_distance * cos(THETA), \
-                   Y - self.focus.y - self.focus_to_vertex_distance * sin(THETA)
-
-        elif self.is_parabola:
-            pass
-
-        elif self.is_line:
-            pass
-
-        else:
-            phi = self._major_axis_angle
-
-            r = (1 - self.eccentricity) * self.focus_to_vertex_distance / \
-                (1 - self.eccentricity * cos(THETA - phi))
-
-            return X - self.focus.x - r * cos(THETA + phi), \
-                   Y - self.focus.y - r * sin(THETA + phi)
 
     @cached_property
     def center(self) -> _PointInR2ABC:
@@ -149,12 +123,16 @@ class ConicInR2(_EuclidR2GeometryEntityABC):
         return self.vertex, self.other_vertex
 
     @cached_property
-    def major_axis(self):
+    def major_axis_line(self) -> LineInR2:
         return LineInR2(self.focus, self.vertex)
 
     @cached_property
-    def minor_axis(self):
-        return self.major_axis.perpendicular_line(self.center)
+    def minor_axis_line(self):
+        return self.major_axis_line.perpendicular_line(self.center)
+
+    @cached_property
+    def tangent_line_at_vertex(self) -> LineInR2:
+        return self.major_axis_line.perpendicular_line(self.vertex)
 
     @cached_property
     def directrix(self) -> _LineInR2ABC:
@@ -162,15 +140,15 @@ class ConicInR2(_EuclidR2GeometryEntityABC):
             return LineAtInfinityInR2(self.focus_to_vertex_direction)
 
         elif self.is_parabola:
-            return self.major_axis.perpendicular_line(
+            return self.major_axis_line.perpendicular_line(
                     self.vertex +
                     self.focus_to_vertex_direction)
 
         elif self.is_line:
-            return self.major_axis.perpendicular_line(self.vertex)
+            return self.tangent_line_at_vertex.same()
 
         else:
-            return self.major_axis.perpendicular_line(
+            return self.major_axis_line.perpendicular_line(
                     self.vertex +
                     self.focus_to_vertex_direction / self.eccentricity)
 
@@ -183,16 +161,42 @@ class ConicInR2(_EuclidR2GeometryEntityABC):
             return LineAtInfinityInR2(self.focus_to_vertex_direction)
 
         elif self.is_line:
-            return self.major_axis.perpendicular_line(self.vertex)
+            return self.tangent_line_at_vertex.same()
 
         else:
-            return self.major_axis.perpendicular_line(
+            return self.major_axis_line.perpendicular_line(
                     self.other_vertex +
                     self.vertex_to_focus_direction / self.eccentricity)
 
     @cached_property
-    def directrices(self):
+    def directrices(self) -> Tuple[_LineInR2ABC, _LineInR2ABC]:
         return self.directrix, self.other_directrix
+
+    @cached_property
+    def _major_axis_angle(self):
+        return atan2(y=self.vertex_to_focus_direction.y,
+                     x=self.vertex_to_focus_direction.x)
+
+    @cached_property
+    def parametric_equations(self) -> Tuple[Expr, Expr]:
+        if self.is_circle:
+            return X - self.focus.x - self.focus_to_vertex_distance * cos(THETA), \
+                   Y - self.focus.y - self.focus_to_vertex_distance * sin(THETA)
+
+        elif self.is_parabola:
+            pass
+
+        elif self.is_line:
+            return self.directrix.parametric_equations
+
+        else:
+            phi = self._major_axis_angle
+
+            r = (1 - self.eccentricity) * self.focus_to_vertex_distance / \
+                (1 - self.eccentricity * cos(THETA - phi))
+
+            return X - self.focus.x - r * cos(THETA + phi), \
+                   Y - self.focus.y - r * sin(THETA + phi)
 
 
 # aliases
