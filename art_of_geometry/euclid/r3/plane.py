@@ -11,13 +11,13 @@ from sympy.geometry.point import Point3D
 from typing import Tuple
 
 from ..coord import U, V
-from . import _EuclidR3GeometryEntityABC
+from . import _EuclidGeometryEntityInR3ABC
 from .coord import X, Y, Z
 from .line import LineInR3
 from .point import _PointInR3ABC, PointInR3, PointAtInfinityInR3
 
 
-class _PlaneInR3ABC(_EuclidR3GeometryEntityABC):
+class _PlaneInR3ABC(_EuclidGeometryEntityInR3ABC):
     pass
 
 
