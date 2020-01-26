@@ -16,12 +16,13 @@ class _GeometryEntityABC(GeometryEntity):
 
     @name.setter
     def name(self, name: str, /) -> None:
-        assert isinstance(name, str) and name, \
-            TypeError(
-                '*** {} NOT NON-EMPTY STRING ***'
-                .format(name))
+        if name != self._name:
+            assert isinstance(name, str) and name, \
+                TypeError(
+                    '*** {} NOT NON-EMPTY STRING ***'
+                    .format(name))
 
-        self._name = name
+            self._name = name
 
     @name.deleter
     def name(self) -> None:

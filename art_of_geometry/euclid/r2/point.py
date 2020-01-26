@@ -44,6 +44,26 @@ class PointInR2(_PointInR2ABC, Point2D):
 
         return point
 
+    @property
+    def name(self) -> str:
+        return self._name
+
+    @name.setter
+    def name(self, name: str, /) -> None:
+        if name != self.name:
+            assert isinstance(name, str) and name, \
+                TypeError(
+                    '*** {} NOT NON-EMPTY STRING ***'
+                    .format(name))
+
+            self._name = name
+
+            if isinstance(self.x, Symbol):
+                self.x.name = '[{}.x]'.format(name)
+
+            if isinstance(self.y, Symbol):
+                self.y.name = '[{}.y]'.format(name)
+
     def __repr__(self) -> str:
         return 'Pt {}'.format(self.name)
 
