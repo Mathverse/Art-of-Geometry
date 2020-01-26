@@ -13,7 +13,7 @@ from sympy.geometry.point import Point2D
 from typing import Tuple
 
 from ..coord import T
-from ..line import _LineABC
+from art_of_geometry.line import _LineABC
 from . import _EuclidR2GeometryEntityABC
 from .coord import X, Y
 from .point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
@@ -88,6 +88,12 @@ class LineInR2(_LineInR2ABC, Line2D):
         return X - self.point_0.x - self.direction.x * T, \
                Y - self.point_0.y - self.direction.y * T
 
+    def same(self, *, name=None):
+        return LineInR2(
+                self.point_0,
+                self.point_1,
+                name=name)
+
     def parallel_line(self, through_point: PointInR2, /, *, name=None):
         return LineInR2(
                 through_point,
@@ -106,13 +112,32 @@ Ln = Line = LineR2 = LineInR2
 
 
 class LineAtInfinityInR2(_PointInR2ABC):
-    def __init__(self, normal_direction: Point2D, /) -> None:
+    def __init__(self, normal_direction: Point2D, /, *, name=None) -> None:
         assert isinstance(normal_direction, Point2D), \
             GeometryError(
                 '*** NORMAL DIRECTION {} NOT OF TYPE {} ***'
                 .format(normal_direction, Point2D.__name__))
 
         self.normal_direction = normal_direction
+
+        self._name = name
+
+    def same(self, *, name=None):
+        return LineAtInfinityInR2(
+                self.normal_direction,
+                name=name)
+
+    def parallel_line(self, through_point: PointInR2, /, *, name=None):
+        return LineInR2(
+                through_point,
+                PointAtInfinityInR2(self.normal_direction.orthogonal_direction),
+                name=name)
+
+    def perpendicular_line(self, through_point: PointInR2, /, *, name=None):
+        return LineInR2(
+                through_point,
+                PointAtInfinityInR2(self.normal_direction),
+                name=name)
 
 
 # aliases

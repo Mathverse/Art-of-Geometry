@@ -10,7 +10,7 @@ from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point2D
 from uuid import uuid4
 
-from ..point import _PointABC
+from ...point import _PointABC
 from . import _EuclidR2GeometryEntityABC
 
 

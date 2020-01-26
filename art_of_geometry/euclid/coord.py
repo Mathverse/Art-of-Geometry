@@ -14,7 +14,7 @@ U = Symbol(name='u', real=True)
 V = Symbol(name='v', real=True)
 
 
-# parameter for polar coordinate parametric equations
+# parameter for R2 polar coordinate parametric equations
 THETA = Symbol(name='θ', real=True)
 
 global_assumptions.add(
