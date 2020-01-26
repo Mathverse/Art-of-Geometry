@@ -1,5 +1,6 @@
 __all__ = \
     'LineInR3', 'LineR3', 'Line', 'Ln', \
+    'LineAtInfinityInR3', 'LineAtInfinityR3', 'LineAtInfinity', 'LineAtInf', 'LnAtInf', \
     'RayInR3', 'RayR3', 'Ray', \
     'SegmentInR3', 'SegmentR3', 'Segment', 'Seg'
 
@@ -103,6 +104,15 @@ class LineInR3(_LineInR3ABC, _EuclidConcreteLineABC, Line3D):
 
 # aliases
 Ln = Line = LineR3 = LineInR3
+
+
+class LineAtInfinityInR3(_LineInR3ABC, _EuclidLineAtInfinityABC):
+    # TODO
+    pass
+
+
+# aliases
+LnAtInf = LineAtInf = LineAtInfinity = LineAtInfinityR3 = LineAtInfinityInR3
 
 
 class RayInR3(_LinearEntityInR3ABC, _EuclidRayABC, Ray3D):

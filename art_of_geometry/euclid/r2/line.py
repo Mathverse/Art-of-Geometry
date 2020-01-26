@@ -15,7 +15,7 @@ from typing import Tuple
 from ..coord import T
 from ..line import \
     _EuclidLinearEntityABC, _EuclidConcreteLinearEntityABC, _EuclidLinearEntityAtInfinityABC, \
-    _EuclidLineABC, _ConcreteLineABC, _LineAtInfinityABC, \
+    _EuclidLineABC, _EuclidConcreteLineABC, _EuclidLineAtInfinityABC, \
     _EuclidRayABC, _EuclidSegmentABC
 from . import _EuclidGeometryEntityInR2ABC
 from .coord import X, Y
@@ -38,7 +38,7 @@ class _LineInR2ABC(_LinearEntityInR2ABC, _EuclidLineABC):
     pass
 
 
-class LineInR2(_LineInR2ABC, _ConcreteLineABC, Line2D):
+class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
     def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, /, *, name: str = None) -> Line2D:
         assert isinstance(point_0, PointInR2), \
             TypeError(
@@ -115,7 +115,7 @@ class LineInR2(_LineInR2ABC, _ConcreteLineABC, Line2D):
 Ln = Line = LineR2 = LineInR2
 
 
-class LineAtInfinityInR2(_LineInR2ABC, _LineAtInfinityABC):
+class LineAtInfinityInR2(_LineInR2ABC, _EuclidLineAtInfinityABC):
     def __init__(self, normal_direction: Point2D, /, *, name=None) -> None:
         assert isinstance(normal_direction, Point2D), \
             TypeError(
