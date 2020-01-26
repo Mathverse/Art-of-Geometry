@@ -122,7 +122,7 @@ Pt = Point = PointR2 = PointInR2
 class PointAtInfinityInR2(_PointInR2ABC):
     def __init__(self, direction: Point2D, /, *, name: str = None) -> None:
         assert isinstance(direction, Point2D), \
-            GeometryError(
+            TypeError(
                 '*** DIRECTION {} NOT OF TYPE {} ***'
                 .format(direction, Point2D.__name__))
 
@@ -138,7 +138,7 @@ class PointAtInfinityInR2(_PointInR2ABC):
 
     def __eq__(self, point_at_infinity, /) -> bool:
         assert isinstance(point_at_infinity, PointAtInfinityInR2), \
-            GeometryError(
+            TypeError(
                 '*** POINT_AT_INFINITY {} NOT OF TYPE {} ***'
                 .format(point_at_infinity, PointAtInfinityInR2.__name__))
 

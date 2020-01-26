@@ -2,13 +2,13 @@ __all__ = '_EuclidLineABC', '_EuclidRayABC', '_EuclidSegmentABC'
 
 
 from functools import cached_property
-from sympy.geometry.line import Ray, Segment
+from sympy.geometry.line import LinearEntity, Line, Ray, Segment
 from sympy.geometry.point import Point
 
 from ..line import _LinearEntityABC, _LineABC
 
 
-class _EuclidLinearEntityABC(_LinearEntityABC):
+class _EuclidLinearEntityABC(_LinearEntityABC):   # too early to inherit LinearEntity
     @cached_property
     def unit_direction(self) -> Point:
         return self.direction.unit
@@ -24,7 +24,7 @@ class _EuclidLinearEntityABC(_LinearEntityABC):
         return projection
 
 
-class _EuclidLineABC(_EuclidLinearEntityABC, _LineABC):
+class _EuclidLineABC(_EuclidLinearEntityABC, _LineABC):   # too early to inherit Line
     pass
 
 
