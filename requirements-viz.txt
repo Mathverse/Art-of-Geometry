@@ -1,6 +1,6 @@
-# Kivy >= 1.11.1
-# MAnimLib >= 0.1.10
+Kivy >= 1.11.1
+MAnimLib >= 0.1.10
 MatPlotLib >= 3.1.2
-# MayaVi >= 4.7.1
+MayaVi >= 4.7.1
 PyQt5 >= 5.14.1
-# VTK >= 8.1.2
+VTK >= 8.1.2
