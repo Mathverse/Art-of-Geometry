@@ -1,4 +1,4 @@
-IPyKernel >= 5.1.3
+IPyKernel >= 5.1.4
 IPython >= 7.11.1
 Jinja2 >= 2.10.3
 Jupyter >= 1.0.0
