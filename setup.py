@@ -8,10 +8,10 @@ _PACKAGE_NAMESPACE_NAME = 'art_of_geom'
 _METADATA_FILE_NAME = 'metadata.yml'
 
 _SETUP_REQUIREMENTS_FILE_NAME = 'requirements-setup.txt'
-
-_INSTALL_REQUIREMENTS_FILE_NAME = 'requirements.txt'
-
+_CORE_REQUIREMENTS_FILE_NAME = 'requirements-core.txt'
 _DOC_REQUIREMENTS_FILE_NAME = 'requirements-doc.txt'
+_JUPYTER_REQUIREMENTS_FILE_NAME = 'requirements-jupyter.txt'
+_VIZ_REQUIREMENTS_FILE_NAME = 'requirements-viz.txt'
 
 
 _metadata = \
@@ -41,6 +41,8 @@ setup(
     install_requires=
         [s for s in
             {i.strip()
-             for i in (open(_INSTALL_REQUIREMENTS_FILE_NAME).readlines() +
-                       open(_DOC_REQUIREMENTS_FILE_NAME).readlines())}
+             for i in (open(_CORE_REQUIREMENTS_FILE_NAME).readlines() +
+                       open(_DOC_REQUIREMENTS_FILE_NAME).readlines() +
+                       open(_JUPYTER_REQUIREMENTS_FILE_NAME).readlines() +
+                       open(_VIZ_REQUIREMENTS_FILE_NAME).readlines())}
          if not s.startswith('#')])

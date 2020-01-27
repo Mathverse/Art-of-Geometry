@@ -1,0 +1,6 @@
+# SciPy
+NumPy >= 1.18.1
+SymPy >= 1.5.1
+
+# Tensor-Processing
+# TensorFlow >= 2.1.0
