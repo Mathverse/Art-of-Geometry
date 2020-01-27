@@ -7,7 +7,7 @@ from sympy.core.expr import Expr
 from typing import Tuple
 
 
-from ... import _GeometryEntityABC
+from ...abc import _GeometryEntityABC
 
 
 class _EuclidGeometryEntityInR2IABC(_GeometryEntityABC):
