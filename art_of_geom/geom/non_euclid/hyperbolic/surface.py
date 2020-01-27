@@ -1,7 +1,7 @@
 __all__ = '_HyperbolicSurfaceABC',
 
 
-from ..abc import _NonEuclidSurfaceABC
+from ..surface import _NonEuclidSurfaceABC
 
 
 class _HyperbolicSurfaceABC(_NonEuclidSurfaceABC):

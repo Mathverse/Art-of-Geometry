@@ -1,7 +1,7 @@
 __all__ = '_EllipticSurfaceABC',
 
 
-from ..abc import _NonEuclidSurfaceABC
+from ..surface import _NonEuclidSurfaceABC
 
 
 class _EllipticSurfaceABC(_NonEuclidSurfaceABC):

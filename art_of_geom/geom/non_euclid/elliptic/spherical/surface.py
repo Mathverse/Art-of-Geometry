@@ -1,7 +1,7 @@
 __all__ = '_SphericalSurfaceABC',
 
 
-from ..abc import _EllipticSurfaceABC
+from ..surface import _EllipticSurfaceABC
 
 
 class _SphericalSurfaceABC(_EllipticSurfaceABC):
