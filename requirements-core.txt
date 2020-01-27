@@ -4,3 +4,6 @@ SymPy >= 1.5.1
 
 # Tensor-Processing
 # TensorFlow >= 2.1.0
+
+# misc
+Cached-Property >= 1.5.1
