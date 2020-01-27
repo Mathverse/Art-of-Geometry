@@ -5,7 +5,7 @@ from functools import cached_property
 from sympy.core.expr import Expr
 from sympy.geometry.point import Point
 
-from . import _GeometryEntityABC
+from .abc import _GeometryEntityABC
 
 
 class _PointABC(_GeometryEntityABC):

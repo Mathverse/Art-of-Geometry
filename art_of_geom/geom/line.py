@@ -5,7 +5,7 @@ __all__ = \
 
 from abc import abstractmethod
 
-from . import _GeometryEntityABC
+from .abc import _GeometryEntityABC
 from .point import _PointABC
 
 
