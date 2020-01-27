@@ -3,13 +3,13 @@ __all__ = \
     'PlaneAtInfinityInR3', 'PlaneAtInfinityR3', 'PlaneAtInfinity', 'PlaneAtInf', 'PlnAtInf'
 
 
-from functools import cached_property
 from sympy.core.expr import Expr
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.plane import Plane as Plane3D
 from sympy.geometry.point import Point3D
 from typing import Tuple
 
+from ....util import cached_property
 from ..coord import U, V
 from .abc import _EuclidGeometryEntityInR3ABC
 from .coord import X, Y, Z
@@ -22,7 +22,7 @@ class _PlaneInR3ABC(_EuclidGeometryEntityInR3ABC):
 
 
 class PlaneInR3(_PlaneInR3ABC, Plane3D):
-    def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, point_2: _PointInR3ABC, /, *, name: str = None) -> Plane3D:
+    def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, point_2: _PointInR3ABC, *, name: str = None) -> Plane3D:
         assert isinstance(point_0, PointInR3), \
             GeometryError(
                 '*** POINT_0 {} NOT OF TYPE {} ***'
@@ -61,7 +61,7 @@ class PlaneInR3(_PlaneInR3ABC, Plane3D):
 
         return plane
 
-    def __init__(self, point_0: PointInR3, point_1: _PointInR3ABC, point_2: _PointInR3ABC, /, *, name: str = None) -> None:
+    def __init__(self, point_0: PointInR3, point_1: _PointInR3ABC, point_2: _PointInR3ABC, *, name: str = None) -> None:
         self.point_0 = point_0
         
         self.point_1 = point_1
@@ -96,14 +96,14 @@ class PlaneInR3(_PlaneInR3ABC, Plane3D):
     def normal_direction(self):
         return PointInR3(*self.normal_vector)
 
-    def parallel_plane(self, through_point: PointInR3, /, *, name=None):
+    def parallel_plane(self, through_point: PointInR3, *, name=None):
         return PlaneInR3(
                 through_point,
                 PointAtInfinityInR3(self.direction_1),
                 PointAtInfinityInR3(self.direction_2),
                 name=name)
 
-    def perpendicular_projection(self, point: PointInR3, /, *, name=None) -> PointInR3:
+    def perpendicular_projection(self, point: PointInR3, *, name=None) -> PointInR3:
         perpendicular_projection_1 = self.line_1.perpendicular_projection(point)
 
         perpendicular_projection_2 = self.line_2.perpendicular_projection(point)
@@ -122,7 +122,7 @@ class PlaneInR3(_PlaneInR3ABC, Plane3D):
                     point,
                     name=name)
 
-    def perpendicular_line(self, through_point: PointInR3, /, *, name=None) -> LineInR3:
+    def perpendicular_line(self, through_point: PointInR3, *, name=None) -> LineInR3:
         return LineInR3(
                 through_point,
                 PointAtInfinityInR3(self.normal_direction),
@@ -134,7 +134,7 @@ Pln = Plane = PlaneR3 = PlaneInR3
 
 
 class PlaneAtInfinityInR3(_PlaneInR3ABC):
-    def __init__(self, normal_direction: Point3D, /) -> None:
+    def __init__(self, normal_direction: Point3D) -> None:
         assert isinstance(normal_direction, Point3D), \
             GeometryError(
                 '*** NORMAL DIRECTION {} NOT OF TYPE {} ***'

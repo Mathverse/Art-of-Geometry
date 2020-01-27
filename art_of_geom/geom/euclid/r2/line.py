@@ -5,13 +5,13 @@ __all__ = \
     'SegmentInR2', 'SegmentR2', 'Segment', 'Seg'
 
 
-from functools import cached_property
 from sympy.core.expr import Expr
 from sympy.geometry.line import LinearEntity2D, Line2D, Ray2D, Segment2D
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point2D
 from typing import Tuple
 
+from ....util import cached_property
 from ..coord import T
 from ..line import \
     _EuclidLinearEntityABC, _EuclidConcreteLinearEntityABC, _EuclidLinearEntityAtInfinityABC, \
@@ -39,7 +39,7 @@ class _LineInR2ABC(_LinearEntityInR2ABC, _EuclidLineABC):
 
 
 class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
-    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, /, *, name: str = None) -> Line2D:
+    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, *, name: str = None) -> Line2D:
         assert isinstance(point_0, PointInR2), \
             TypeError(
                 '*** POINT_0 {} NOT OF TYPE {} ***'
@@ -70,7 +70,7 @@ class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
                     '*** POINT_1 {} NEITHER OF TYPE {} NOR OF TYPE {} ***'
                     .format(point_1, PointInR2.__name__, PointAtInfinityInR2.__name__))
 
-    def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, /, *, name: str = None) -> None:
+    def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, *, name: str = None) -> None:
         self.point_0 = point_0
 
         self.point_1 = point_1
@@ -98,13 +98,13 @@ class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
                 self.point_1,
                 name=name)
 
-    def parallel_line(self, through_point: PointInR2, /, *, name=None):
+    def parallel_line(self, through_point: PointInR2, *, name=None):
         return LineInR2(
                 through_point,
                 PointAtInfinityInR2(self.direction),
                 name=name)
 
-    def perpendicular_line(self, through_point: PointInR2, /, *, name=None):
+    def perpendicular_line(self, through_point: PointInR2, *, name=None):
         return LineInR2(
                 through_point,
                 PointAtInfinityInR2(self.direction.orthogonal_direction),
@@ -116,7 +116,7 @@ Ln = Line = LineR2 = LineInR2
 
 
 class LineAtInfinityInR2(_LineInR2ABC, _EuclidLineAtInfinityABC):
-    def __init__(self, normal_direction: Point2D, /, *, name=None) -> None:
+    def __init__(self, normal_direction: Point2D, *, name=None) -> None:
         assert isinstance(normal_direction, Point2D), \
             TypeError(
                 '*** NORMAL DIRECTION {} NOT OF TYPE {} ***'
@@ -126,7 +126,7 @@ class LineAtInfinityInR2(_LineInR2ABC, _EuclidLineAtInfinityABC):
 
         self._name = name
 
-    def __eq__(self, line_at_infinity, /) -> bool:
+    def __eq__(self, line_at_infinity) -> bool:
         assert isinstance(line_at_infinity, LineAtInfinityInR2), \
             TypeError(
                 '*** POINT_AT_INFINITY {} NOT OF TYPE {} ***'
@@ -139,13 +139,13 @@ class LineAtInfinityInR2(_LineInR2ABC, _EuclidLineAtInfinityABC):
                 self.normal_direction,
                 name=name)
 
-    def parallel_line(self, through_point: PointInR2, /, *, name=None):
+    def parallel_line(self, through_point: PointInR2, *, name=None):
         return LineInR2(
                 through_point,
                 PointAtInfinityInR2(self.normal_direction.orthogonal_direction),
                 name=name)
 
-    def perpendicular_line(self, through_point: PointInR2, /, *, name=None):
+    def perpendicular_line(self, through_point: PointInR2, *, name=None):
         return LineInR2(
                 through_point,
                 PointAtInfinityInR2(self.normal_direction),
@@ -157,7 +157,7 @@ LnAtInf = LineAtInf = LineAtInfinity = LineAtInfinityR2 = LineAtInfinityInR2
 
 
 class RayInR2(_ConcreteLinearEntityInR2ABC, _EuclidRayABC, Ray2D):
-    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, /, *, name: str = None) -> Ray2D:
+    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, *, name: str = None) -> Ray2D:
         assert isinstance(point_0, PointInR2), \
             TypeError(
                 '*** POINT_0 {} NOT OF TYPE {} ***'
@@ -188,7 +188,7 @@ class RayInR2(_ConcreteLinearEntityInR2ABC, _EuclidRayABC, Ray2D):
                     '*** POINT_1 {} NEITHER OF TYPE {} NOR OF TYPE {} ***'
                     .format(point_1, PointInR2.__name__, PointAtInfinityInR2.__name__))
 
-    def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, /, *, name: str = None) -> None:
+    def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, *, name: str = None) -> None:
         self.point_0 = point_0
 
         self.point_1 = point_1
@@ -206,7 +206,7 @@ Ray = RayR2 = RayInR2
 
 
 class SegmentInR2(_ConcreteLinearEntityInR2ABC, _EuclidSegmentABC, Segment2D):
-    def __new__(cls, point_0: PointInR2, point_1: PointInR2, /, *, name: str = None) -> Segment2D:
+    def __new__(cls, point_0: PointInR2, point_1: PointInR2, *, name: str = None) -> Segment2D:
         assert isinstance(point_0, PointInR2), \
             TypeError(
                 '*** POINT_0 {} NOT OF TYPE {} ***'
@@ -222,7 +222,7 @@ class SegmentInR2(_ConcreteLinearEntityInR2ABC, _EuclidSegmentABC, Segment2D):
                 p1=point_0,
                 p2=point_1)
 
-    def __init__(self, point_0: PointInR2, point_1: PointInR2, /, *, name: str = None) -> None:
+    def __init__(self, point_0: PointInR2, point_1: PointInR2, *, name: str = None) -> None:
         self.point_0 = point_0
 
         self.point_1 = point_1

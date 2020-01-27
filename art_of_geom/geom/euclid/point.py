@@ -1,10 +1,10 @@
 __all__ = '_EuclidPointABC', '_EuclidConcretePointABC', '_EuclidPointAtInfinityABC'
 
 
-from functools import cached_property
 from sympy.core.expr import Expr
 from sympy.core.numbers import oo
 
+from ...util import cached_property
 from ..point import _PointABC, _ConcretePointABC, _PointAtInfinityABC
 
 
@@ -20,7 +20,7 @@ class _EuclidPointAtInfinityABC(_EuclidPointABC, _PointAtInfinityABC):
     def __repr__(self) -> str:
         return 'Pt@Inf {}'.format(self.name)
 
-    def __eq__(self, point_at_infinity, /) -> bool:
+    def __eq__(self, point_at_infinity) -> bool:
         _type = type(self)
 
         assert isinstance(point_at_infinity, _type), \

@@ -1,11 +1,11 @@
 __all__ = '_PointABC', '_ConcretePointABC', '_PointAtInfinityABC'
 
 
-from functools import cached_property
 from sympy.core.expr import Expr
 from sympy.geometry.point import Point
 
 from .abc import _GeometryEntityABC
+from ..util import cached_property
 
 
 class _PointABC(_GeometryEntityABC):

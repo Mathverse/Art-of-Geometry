@@ -3,13 +3,13 @@ __all__ = \
     'PointAtInfinityInR3', 'PointAtInfinityR3', 'PointAtInfinity', 'PointAtInf', 'PtAtInf'
 
 
-from functools import cached_property
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point3D
 from uuid import uuid4
 
+from ....util import cached_property
 from ..point import _EuclidPointABC, _EuclidConcretePointABC, _EuclidPointAtInfinityABC
 from .abc import _EuclidGeometryEntityInR3ABC
 
@@ -19,7 +19,7 @@ class _PointInR3ABC(_EuclidGeometryEntityInR3ABC, _EuclidPointABC):
 
 
 class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
-    def __new__(cls, /, x: Expr = None, y: Expr = None, z: Expr = None, *, name: str = None) -> Point3D:
+    def __new__(cls, x: Expr = None, y: Expr = None, z: Expr = None, *, name: str = None) -> Point3D:
         if not name:
             name = str(uuid4())
 
@@ -68,7 +68,7 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
         return self._name
 
     @name.setter
-    def name(self, name: str, /) -> None:
+    def name(self, name: str) -> None:
         if name != self.name:
             assert isinstance(name, str) and name, \
                 TypeError(
@@ -94,7 +94,7 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
                 name=name)
 
     @classmethod
-    def _from_sympy_point_3d(cls, sympy_point_3d: Point3D, /, *, name=None):
+    def _from_sympy_point_3d(cls, sympy_point_3d: Point3D, *, name=None):
         return PointInR3(
                 x=sympy_point_3d.x,
                 y=sympy_point_3d.y,
@@ -105,19 +105,19 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
         return self._from_sympy_point_3d(
                 super().__neg__())
 
-    def __add__(self, point: Point3D, /):
+    def __add__(self, point: Point3D):
         return self._from_sympy_point_3d(
                 super().__add__(point))
 
-    def __sub__(self, point: Point3D, /):
+    def __sub__(self, point: Point3D):
         return self._from_sympy_point_3d(
                 super().__sub__(point))
 
-    def __mul__(self, n: Expr, /):
+    def __mul__(self, n: Expr):
         return self._from_sympy_point_3d(
                 super().__mul__(n))
 
-    def __div__(self, n: Expr, /):
+    def __div__(self, n: Expr):
         return self._from_sympy_point_3d(
                 super().__div__(n))
 
@@ -131,7 +131,7 @@ Pt = Point = PointR3 = PointInR3
 
 
 class PointAtInfinityInR3(_PointInR3ABC, _EuclidPointAtInfinityABC):
-    def __init__(self, direction: Point3D, /, *, name: str = None) -> None:
+    def __init__(self, direction: Point3D, *, name: str = None) -> None:
         assert isinstance(direction, Point3D), \
             TypeError(
                 '*** DIRECTION {} NOT {} ***'

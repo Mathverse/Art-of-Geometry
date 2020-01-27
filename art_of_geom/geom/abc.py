@@ -2,11 +2,12 @@ __all__ = '_GeometryEntityABC',
 
 
 from abc import ABC, ABCMeta, abstractmethod, abstractproperty, abstractclassmethod, abstractstaticmethod
-from functools import cached_property
 from sympy.core.expr import Expr
 from sympy.geometry.entity import GeometryEntity
 from typing import Tuple
 from uuid import uuid4
+
+from ..util import cached_property
 
 
 class _GeometryEntityABC(GeometryEntity):
@@ -15,7 +16,7 @@ class _GeometryEntityABC(GeometryEntity):
         return self._name
 
     @name.setter
-    def name(self, name: str, /) -> None:
+    def name(self, name: str) -> None:
         if name != self._name:
             assert isinstance(name, str) and name, \
                 TypeError(

@@ -9,7 +9,7 @@ from .abc import ConicInR2
 
 
 class ParabolaInR2(ConicInR2):
-    def __init__(cls, /, focus: PointInR2, vertex: PointInR2, *, name: str = None):
+    def __init__(cls, focus: PointInR2, vertex: PointInR2, *, name: str = None):
         super().__init__(
             focus=focus,
             vertex=vertex,

@@ -12,7 +12,7 @@ from ..abc import ConicInR2
 
 
 class EllipseInR2(ConicInR2):
-    def __init__(cls, /, focus: PointInR2, vertex: PointInR2, eccentricity: Expr, *, name: str = None) -> None:
+    def __init__(cls, focus: PointInR2, vertex: PointInR2, eccentricity: Expr, *, name: str = None) -> None:
         global_assumptions.add(Q.negative(eccentricity - S.One))
 
         super().__init__(

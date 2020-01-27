@@ -4,7 +4,7 @@ __all__ = 'PointInR2_DoubleConeInR2I',
 from sympy.geometry.exceptions import GeometryError
 
 from ..r2.point import PointInR2
-from . import _SurfaceInR2IABC
+from .abc import _SurfaceInR2IABC
 from .coord import X, Y, Z
 
 

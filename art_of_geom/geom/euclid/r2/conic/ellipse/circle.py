@@ -1,7 +1,6 @@
 __all__ = 'CircleInR2', 'CircleR2', 'Circle'
 
 
-from functools import cached_property
 from sympy.assumptions.ask import Q
 from sympy.assumptions.assume import global_assumptions
 from sympy.core.expr import Expr
@@ -10,6 +9,7 @@ from sympy.geometry.ellipse import Circle as Circle2D
 from sympy.geometry.exceptions import GeometryError
 from typing import Tuple
 
+from ......util import cached_property
 from ....coord import THETA
 from ...abc import _EuclidGeometryEntityInR2ABC
 from ...coord import X, Y
@@ -17,7 +17,7 @@ from ...point import PointInR2
 
 
 class CircleInR2(_EuclidGeometryEntityInR2ABC):
-    def __init__(self, /, center: PointInR2, radius: Expr, *, name: str = None) -> None:
+    def __init__(self, center: PointInR2, radius: Expr, *, name: str = None) -> None:
         assert isinstance(center, PointInR2), \
             GeometryError(
                 '*** CENTER {} NOT {} ***'

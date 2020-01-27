@@ -1,7 +1,6 @@
 __all_ = 'ConicInR2', 'ConicR2', 'Conic'
 
 
-from functools import cached_property
 from sympy.assumptions.ask import Q
 from sympy.assumptions.assume import global_assumptions
 from sympy.core.expr import Expr
@@ -11,15 +10,16 @@ from sympy.functions.elementary.trigonometric import atan2, cos, sin
 from sympy.geometry.exceptions import GeometryError
 from typing import Tuple
 
+from .....util import cached_property
 from ...coord import THETA
-from .. import _EuclidGeometryEntityInR2ABC
+from ..abc import _EuclidGeometryEntityInR2ABC
 from ..coord import X, Y
 from ..line import _LineInR2ABC, LineInR2, LineAtInfinityInR2
 from ..point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
 
 class ConicInR2(_EuclidGeometryEntityInR2ABC):
-    def __init__(self, /, focus: PointInR2, vertex: PointInR2, eccentricity: Expr, *, name: str = None) -> None:
+    def __init__(self, focus: PointInR2, vertex: PointInR2, eccentricity: Expr, *, name: str = None) -> None:
         assert isinstance(focus, PointInR2), \
             TypeError(
                 '*** FOCUS {} NOT OF TYPE {} ***'

@@ -4,10 +4,10 @@ __all__ = \
     '_EuclidRayABC', '_EuclidSegmentABC'
 
 
-from functools import cached_property
 from sympy.geometry.line import LinearEntity, Line, Ray, Segment
 from sympy.geometry.point import Point
 
+from ...util import cached_property
 from ..line import \
     _LinearEntityABC, _ConcreteLinearEntityABC, _LinearEntityAtInfinityABC, \
     _LineABC, _ConcreteLineABC, _LineAtInfinityABC
@@ -23,7 +23,7 @@ class _EuclidConcreteLinearEntityABC(_EuclidLinearEntityABC, _ConcreteLinearEnti
     def unit_direction(self) -> Point:
         return self.direction.unit
 
-    def perpendicular_projection(self, point: _ConcretePointABC, /, *, name=None) -> _ConcretePointABC:
+    def perpendicular_projection(self, point: _ConcretePointABC, *, name=None) -> _ConcretePointABC:
         projection = \
             self.point_0 + \
             self.unit_direction.dot(point - self.point_0) * self.unit_direction

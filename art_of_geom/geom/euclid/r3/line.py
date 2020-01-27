@@ -5,12 +5,12 @@ __all__ = \
     'SegmentInR3', 'SegmentR3', 'Segment', 'Seg'
 
 
-from functools import cached_property
 from sympy.core.expr import Expr
 from sympy.geometry.line import LinearEntity3D, Line3D, Ray3D, Segment3D
 from sympy.geometry.exceptions import GeometryError
 from typing import Tuple
 
+from ....util import cached_property
 from ..coord import T
 from ..line import \
     _EuclidLinearEntityABC, _EuclidConcreteLinearEntityABC, _EuclidLinearEntityAtInfinityABC, \

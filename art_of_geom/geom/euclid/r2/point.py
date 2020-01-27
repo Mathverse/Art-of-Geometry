@@ -3,13 +3,13 @@ __all__ = \
     'PointAtInfinityInR2', 'PointAtInfinityR2', 'PointAtInfinity', 'PointAtInf', 'PtAtInf'
 
 
-from functools import cached_property
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point2D
 from uuid import uuid4
 
+from ....util import cached_property
 from ..point import _EuclidPointABC, _EuclidConcretePointABC, _EuclidPointAtInfinityABC
 from .abc import _EuclidGeometryEntityInR2ABC
 
@@ -19,7 +19,7 @@ class _PointInR2ABC(_EuclidGeometryEntityInR2ABC, _EuclidPointABC):
 
 
 class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
-    def __new__(cls, /, x: Expr = None, y: Expr = None, *, name: str = None) -> Point2D:
+    def __new__(cls, x: Expr = None, y: Expr = None, *, name: str = None) -> Point2D:
         if not name:
             name = str(uuid4())
 
@@ -58,7 +58,7 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
         return self._name
 
     @name.setter
-    def name(self, name: str, /) -> None:
+    def name(self, name: str) -> None:
         if name != self.name:
             assert isinstance(name, str) and name, \
                 TypeError(
@@ -80,7 +80,7 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
                 name=name)
 
     @classmethod
-    def _from_sympy_point_2d(cls, sympy_point_2d: Point2D, /, *, name=None):
+    def _from_sympy_point_2d(cls, sympy_point_2d: Point2D, *, name=None):
         return PointInR2(
                 x=sympy_point_2d.x,
                 y=sympy_point_2d.y,
@@ -90,19 +90,19 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
         return self._from_sympy_point_2d(
                 super().__neg__())
 
-    def __add__(self, point: Point2D, /):
+    def __add__(self, point: Point2D):
         return self._from_sympy_point_2d(
                 super().__add__(point))
 
-    def __sub__(self, point: Point2D, /):
+    def __sub__(self, point: Point2D):
         return self._from_sympy_point_2d(
                 super().__sub__(point))
 
-    def __mul__(self, n: Expr, /):
+    def __mul__(self, n: Expr):
         return self._from_sympy_point_2d(
                 super().__mul__(n))
 
-    def __div__(self, n: Expr, /):
+    def __div__(self, n: Expr):
         return self._from_sympy_point_2d(
                 super().__div__(n))
 
@@ -116,7 +116,7 @@ Pt = Point = PointR2 = PointInR2
 
 
 class PointAtInfinityInR2(_PointInR2ABC, _EuclidPointAtInfinityABC):
-    def __init__(self, direction: Point2D, /, *, name: str = None) -> None:
+    def __init__(self, direction: Point2D, *, name: str = None) -> None:
         assert isinstance(direction, Point2D), \
             TypeError(
                 '*** DIRECTION {} NOT OF TYPE {} ***'
