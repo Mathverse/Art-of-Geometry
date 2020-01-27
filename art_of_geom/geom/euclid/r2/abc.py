@@ -6,7 +6,7 @@ from functools import cached_property
 from sympy.core.expr import Expr
 from typing import Tuple
 
-from ... import _GeometryEntityABC
+from ...abc import _GeometryEntityABC
 
 
 class _EuclidGeometryEntityInR2ABC(_GeometryEntityABC):

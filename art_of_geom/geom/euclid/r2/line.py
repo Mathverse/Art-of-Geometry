@@ -17,7 +17,7 @@ from ..line import \
     _EuclidLinearEntityABC, _EuclidConcreteLinearEntityABC, _EuclidLinearEntityAtInfinityABC, \
     _EuclidLineABC, _EuclidConcreteLineABC, _EuclidLineAtInfinityABC, \
     _EuclidRayABC, _EuclidSegmentABC
-from . import _EuclidGeometryEntityInR2ABC
+from .abc import _EuclidGeometryEntityInR2ABC
 from .coord import X, Y
 from .point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
