@@ -1,6 +1,6 @@
 from sympy.geometry.polygon import Polygon as SymPyPolygon
 
-from .. import _EuclidGeometryEntityInR2ABC
+from ..abc import _EuclidGeometryEntityInR2ABC
 from ..point import PointInR2
 
 
