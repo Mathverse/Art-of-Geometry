@@ -2,14 +2,14 @@ __all__ = \
     'Triangle',
 
 
-from sympy.geometry.polygon import Triangle as SymPyTriangle
+from sympy.geometry.polygon import Triangle as Triangle2D
 from sympy.geometry.exceptions import GeometryError
 
-from ..... import _GeometryEntityABC
+from .....abc import _GeometryEntityABC
 from ...point import PointInR2
 
 
-class Triangle(SymPyTriangle, _GeometryEntityABC):
+class Triangle(Triangle2D, _GeometryEntityABC):
     def __new__(cls, *vertices: PointInR2, name: str = None):
         assert len(vertices) == 3, \
             GeometryError
