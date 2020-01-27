@@ -11,7 +11,7 @@ from sympy.geometry.point import Point3D
 from typing import Tuple
 
 from ..coord import U, V
-from . import _EuclidGeometryEntityInR3ABC
+from .abc import _EuclidGeometryEntityInR3ABC
 from .coord import X, Y, Z
 from .line import LineInR3
 from .point import _PointInR3ABC, PointInR3, PointAtInfinityInR3

@@ -11,7 +11,7 @@ from sympy.geometry.point import Point3D
 from uuid import uuid4
 
 from ..point import _EuclidPointABC, _EuclidConcretePointABC, _EuclidPointAtInfinityABC
-from . import _EuclidGeometryEntityInR3ABC
+from .abc import _EuclidGeometryEntityInR3ABC
 
 
 class _PointInR3ABC(_EuclidGeometryEntityInR3ABC, _EuclidPointABC):
