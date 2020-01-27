@@ -11,7 +11,7 @@ from sympy.geometry.exceptions import GeometryError
 from typing import Tuple
 
 from ....coord import THETA
-from ... import _EuclidGeometryEntityInR2ABC
+from ...abc import _EuclidGeometryEntityInR2ABC
 from ...coord import X, Y
 from ...point import PointInR2
 

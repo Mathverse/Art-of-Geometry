@@ -5,7 +5,7 @@ from sympy.core.singleton import S
 from sympy.geometry.parabola import Parabola as Parabola2D
 
 from ..point import PointInR2
-from . import ConicInR2
+from .abc import ConicInR2
 
 
 class ParabolaInR2(ConicInR2):
