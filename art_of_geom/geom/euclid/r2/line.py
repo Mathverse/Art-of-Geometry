@@ -126,6 +126,14 @@ class LineAtInfinityInR2(_LineInR2ABC, _EuclidLineAtInfinityABC):
 
         self._name = name
 
+    def __eq__(self, line_at_infinity, /) -> bool:
+        assert isinstance(line_at_infinity, LineAtInfinityInR2), \
+            TypeError(
+                '*** POINT_AT_INFINITY {} NOT OF TYPE {} ***'
+                    .format(line_at_infinity, LineAtInfinityInR2.__name__))
+
+        return self.normal_direction.is_scalar_multiple(line_at_infinity.normal_direction) 
+
     def same(self, *, name=None):
         return LineAtInfinityInR2(
                 self.normal_direction,
