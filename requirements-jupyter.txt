@@ -3,6 +3,7 @@ IPython >= 7.11.1
 Jinja2 >= 2.10.3
 Jupyter >= 1.0.0
 Jupyter-Client >= 5.3.4
+Jupyter-Console >= 6.1.0
 Jupyter-Core >= 4.6.1
 NBConvert >= 5.6.1
 NBFormat >= 5.0.4
