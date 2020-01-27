@@ -132,7 +132,7 @@ class LineAtInfinityInR2(_LineInR2ABC, _EuclidLineAtInfinityABC):
                 '*** POINT_AT_INFINITY {} NOT OF TYPE {} ***'
                     .format(line_at_infinity, LineAtInfinityInR2.__name__))
 
-        return self.normal_direction.is_scalar_multiple(line_at_infinity.normal_direction) 
+        return self.normal_direction.is_scalar_multiple(line_at_infinity.normal_direction)
 
     def same(self, *, name=None):
         return LineAtInfinityInR2(
