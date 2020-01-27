@@ -2,3 +2,4 @@
 # MAnimLib >= 0.1.10
 MatPlotLib >= 3.1.2
 # MayaVi >= 4.7.1
+VTK >= 8.1.2
