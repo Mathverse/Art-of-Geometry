@@ -24,7 +24,7 @@ _PKG_VER = '{} {}'.format(_metadata['PACKAGE'], _metadata['VERSION'])
 _MIN_PY_VER = 3, 7
 
 assert version_info >= _MIN_PY_VER, \
-    '*** Arimo SDK {} requires Python >= {}.{} ***'.format(
+    '*** {} requires Python >= {}.{} ***'.format(
         _PKG_VER, _MIN_PY_VER[0], _MIN_PY_VER[1])
 
 
