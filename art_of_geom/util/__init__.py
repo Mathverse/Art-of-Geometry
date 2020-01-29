@@ -28,10 +28,7 @@ assert version_info >= _MIN_PY_VER, \
         _PKG_VER, _MIN_PY_VER[0], _MIN_PY_VER[1])
 
 
-PY38 = version_info >= (3, 8)
-
-
-if PY38:
+if version_info >= (3, 8):
     from functools import cached_property
 
 else:
