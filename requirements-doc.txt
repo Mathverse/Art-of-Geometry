@@ -2,3 +2,4 @@ CommonMark >= 0.9.1
 NBSphinx >= 0.5.0
 ReCommonMark >= 0.6.0
 Sphinx >= 2.3.1
+Sphinx-RTD-Theme >= 0.4.3
