@@ -12,6 +12,25 @@ from ..util import cached_property
 
 class _GeometryEntityABC(GeometryEntity):
     @property
+    def session(self):
+        return self._session
+
+    @session.setter
+    def session(self, session):
+        from .session import GeometrySession
+
+        assert isinstance(session, GeometrySession), \
+            TypeError(
+                '*** {} NOT OF TYPE {} ***'
+                .format(session, GeometrySession))
+
+        self._session = session
+
+    @session.deleter
+    def session(self):
+        self._session = None
+
+    @property
     def name(self) -> str:
         return self._name
 
