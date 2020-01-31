@@ -12,8 +12,10 @@ from ..util import cached_property
 
 
 class _GeometryEntityABC(GeometryEntity):
+    from .session import Session
+
     @property
-    def session(self):
+    def session(self) -> Session:
         if hasattr(self, '_session') and self._session:
             return self._session
 
@@ -22,7 +24,7 @@ class _GeometryEntityABC(GeometryEntity):
             return GLOBAL_SESSION
 
     @session.setter
-    def session(self, session):
+    def session(self, session: Session):
         from .session import Session
 
         assert isinstance(session, Session), \
