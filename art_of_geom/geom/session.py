@@ -1,4 +1,4 @@
-__all__ = 'GeometrySession', 'Session', 'GLOBAL_GEOMETRY_SESSION'
+__all__ = 'Session', 'GLOBAL_SESSION'
 
 
 from sympy.assumptions.assume import AssumptionsContext
@@ -8,7 +8,7 @@ from uuid import uuid4
 from .abc import _GeometryEntityABC
 
 
-class GeometrySession:
+class Session:
     def __init__(self, name: str = None):
         self.name = \
             name \
@@ -52,9 +52,5 @@ class GeometrySession:
         del self.geometry_entities[name]
 
 
-# alias
-Session = GeometrySession
-
-
 # Global Geometry Session
-GLOBAL_GEOMETRY_SESSION = GeometrySession()
+GLOBAL_SESSION = Session(name='GLOBAL GEOMETRY SESSION')
