@@ -8,7 +8,7 @@ from sympy.core.singleton import S
 from sympy.geometry.ellipse import Ellipse as Ellipse2D
 
 from ...point import PointInR2
-from ..abc import ConicInR2
+from .. import ConicInR2
 
 
 class EllipseInR2(ConicInR2):

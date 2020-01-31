@@ -7,7 +7,7 @@ from sympy.core.expr import Expr
 from sympy.core.singleton import S
 
 from ..point import PointInR2
-from .abc import ConicInR2
+from . import ConicInR2
 
 
 class HyperbolaInR2(ConicInR2):
