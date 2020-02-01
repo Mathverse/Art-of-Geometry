@@ -10,7 +10,7 @@ from sympy.functions.elementary.trigonometric import atan2, cos, sin
 from sympy.geometry.exceptions import GeometryError
 from typing import Tuple
 
-from .....util import cached_property
+from .....util.compat import cached_property
 from ...coord import THETA
 from ..abc import _EuclidGeometryEntityInR2ABC
 from ..coord import X, Y

@@ -7,7 +7,7 @@ __all__ = \
 from sympy.geometry.line import LinearEntity, Line, Ray, Segment
 from sympy.geometry.point import Point
 
-from ...util import cached_property
+from ...util.compat import cached_property
 from ..line import \
     _LinearEntityABC, _ConcreteLinearEntityABC, _LinearEntityAtInfinityABC, \
     _LineABC, _ConcreteLineABC, _LineAtInfinityABC

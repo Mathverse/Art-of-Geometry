@@ -9,7 +9,7 @@ from sympy.geometry.plane import Plane as Plane3D
 from sympy.geometry.point import Point3D
 from typing import Tuple
 
-from ....util import cached_property
+from ....util.compat import cached_property
 from ..coord import U, V
 from .abc import _EuclidGeometryEntityInR3ABC
 from .coord import X, Y, Z

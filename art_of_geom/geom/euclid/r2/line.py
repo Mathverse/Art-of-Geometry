@@ -11,7 +11,7 @@ from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point2D
 from typing import Tuple
 
-from ....util import cached_property
+from ....util.compat import cached_property
 from ..coord import T
 from ..line import \
     _EuclidLinearEntityABC, _EuclidConcreteLinearEntityABC, _EuclidLinearEntityAtInfinityABC, \

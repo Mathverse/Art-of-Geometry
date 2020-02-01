@@ -7,7 +7,7 @@ from sympy.geometry.entity import GeometryEntity
 from typing import Tuple
 from uuid import uuid4
 
-from ..util import cached_property
+from ..util.compat import cached_property
 # from .session import Session, GLOBAL_SESSION   # import within the class below instead to avoid circular importing
 
 

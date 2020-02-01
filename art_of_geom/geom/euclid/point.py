@@ -4,7 +4,7 @@ __all__ = '_EuclidPointABC', '_EuclidConcretePointABC', '_EuclidPointAtInfinityA
 from sympy.core.expr import Expr
 from sympy.core.numbers import oo
 
-from ...util import cached_property
+from ...util.compat import cached_property
 from ..point import _PointABC, _ConcretePointABC, _PointAtInfinityABC
 
 
