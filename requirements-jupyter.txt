@@ -1,7 +1,7 @@
 IPyKernel >= 5.1.4
-IPython >= 7.11.1
+IPython >= 7.12.0
 IPyWidgets >= 7.5.1
-Jinja2 >= 2.11.0
+Jinja2 >= 2.11.1
 Jupyter >= 1.0.0
 Jupyter-Client >= 5.3.4
 Jupyter-Console >= 6.1.0
