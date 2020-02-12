@@ -81,43 +81,29 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
             if isinstance(self.z, Symbol):
                 self.z.name = f'[{name}.z]'
 
-    def same(self, /, *, name: Optional[str] = None):
-        return PointInR3(
-                x=self.x,
-                y=self.y,
-                z=self.z,
-                name=name)
+    @_PointInR3ABC._with_name_assignment
+    def same(self) -> 'PointInR3':
+        return PointInR3(self.x, self.y, self.z)
 
     @classmethod
-    def _from_sympy_point_3d(
-            cls,
-            sympy_point_3d: Point3D, /,
-            *, name: Optional[str] = None):
-        return PointInR3(
-                x=sympy_point_3d.x,
-                y=sympy_point_3d.y,
-                z=sympy_point_3d.z,
-                name=name)
+    @_PointInR3ABC._with_name_assignment
+    def _from_sympy_point_3d(cls, sympy_point_3d: Point3D, /) -> 'PointInR3':
+        return PointInR3(sympy_point_3d.x, sympy_point_3d.y, sympy_point_3d.z)
 
-    def __neg__(self):
-        return self._from_sympy_point_3d(
-                super().__neg__())
+    def __neg__(self) -> 'PointInR3':
+        return self._from_sympy_point_3d(super().__neg__())
 
-    def __add__(self, point: Point3D):
-        return self._from_sympy_point_3d(
-                super().__add__(point))
+    def __add__(self, point: Point3D, /) -> 'PointInR3':
+        return self._from_sympy_point_3d(super().__add__(point))
 
-    def __sub__(self, point: Point3D):
-        return self._from_sympy_point_3d(
-                super().__sub__(point))
+    def __sub__(self, point: Point3D, /) -> 'PointInR3':
+        return self._from_sympy_point_3d(super().__sub__(point))
 
-    def __mul__(self, n: Expr):
-        return self._from_sympy_point_3d(
-                super().__mul__(n))
+    def __mul__(self, n: Expr, /) -> 'PointInR3':
+        return self._from_sympy_point_3d(super().__mul__(n))
 
-    def __div__(self, n: Expr):
-        return self._from_sympy_point_3d(
-                super().__div__(n))
+    def __div__(self, n: Expr, /) -> 'PointInR3':
+        return self._from_sympy_point_3d(super().__div__(n))
 
     @cached_property
     def distance_from_origin(self) -> Expr:

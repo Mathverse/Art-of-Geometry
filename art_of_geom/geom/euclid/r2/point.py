@@ -79,25 +79,20 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
     def _from_sympy_point_2d(cls, sympy_point_2d: Point2D, /):
         return PointInR2(sympy_point_2d.x, sympy_point_2d.y)
 
-    def __neg__(self):
-        return self._from_sympy_point_2d(
-                super().__neg__())
+    def __neg__(self) -> 'PointInR2':
+        return self._from_sympy_point_2d(super().__neg__())
 
-    def __add__(self, point: Point2D):
-        return self._from_sympy_point_2d(
-                super().__add__(point))
+    def __add__(self, point: Point2D, /) -> 'PointInR2':
+        return self._from_sympy_point_2d(super().__add__(point))
 
-    def __sub__(self, point: Point2D):
-        return self._from_sympy_point_2d(
-                super().__sub__(point))
+    def __sub__(self, point: Point2D, /) -> 'PointInR2':
+        return self._from_sympy_point_2d(super().__sub__(point))
 
-    def __mul__(self, n: Expr):
-        return self._from_sympy_point_2d(
-                super().__mul__(n))
+    def __mul__(self, n: Expr, /) -> 'PointInR2':
+        return self._from_sympy_point_2d(super().__mul__(n))
 
-    def __div__(self, n: Expr):
-        return self._from_sympy_point_2d(
-                super().__div__(n))
+    def __div__(self, n: Expr, /) -> 'PointInR2':
+        return self._from_sympy_point_2d(super().__div__(n))
 
     @cached_property
     def distance_from_origin(self) -> Expr:
