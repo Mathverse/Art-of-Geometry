@@ -98,7 +98,7 @@ class LineInR3(_LineInR3ABC, _EuclidConcreteLineABC, Line3D):
 
         return LineInR3(
                 through_point,
-                self.perpendicular_projection(through_point),
+                self.perpendicular_projection_of_point(through_point),
                 name=name)
 
 

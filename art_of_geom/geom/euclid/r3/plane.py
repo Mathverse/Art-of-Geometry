@@ -104,9 +104,9 @@ class PlaneInR3(_PlaneInR3ABC, Plane3D):
                 name=name)
 
     def perpendicular_projection(self, point: PointInR3, *, name=None) -> PointInR3:
-        perpendicular_projection_1 = self.line_1.perpendicular_projection(point)
+        perpendicular_projection_1 = self.line_1.perpendicular_projection_of_point(point)
 
-        perpendicular_projection_2 = self.line_2.perpendicular_projection(point)
+        perpendicular_projection_2 = self.line_2.perpendicular_projection_of_point(point)
 
         if perpendicular_projection_1 == perpendicular_projection_2:
             if name:
@@ -118,7 +118,7 @@ class PlaneInR3(_PlaneInR3ABC, Plane3D):
             return LineInR3(
                     perpendicular_projection_1,
                     perpendicular_projection_2) \
-                .perpendicular_projection(
+                .perpendicular_projection_of_point(
                     point,
                     name=name)
 

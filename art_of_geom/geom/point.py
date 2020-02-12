@@ -10,7 +10,7 @@ from ..util.compat import cached_property
 
 class _PointABC(_GeometryEntityABC):
     def __repr__(self) -> str:
-        return 'Pt {}'.format(self.name)
+        return f'Pt {self.name}'
 
     @cached_property
     def distance_from_origin(self) -> Expr:
