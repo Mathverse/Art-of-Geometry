@@ -43,6 +43,7 @@ class _GeometryEntityABC(GeometryEntity):
 
     @staticmethod
     def _with_name_assignment(geometry_entity_method):
+
         @wraps(geometry_entity_method)
         def geometry_entity_method_with_name_assignment(
                 self,
@@ -50,6 +51,7 @@ class _GeometryEntityABC(GeometryEntity):
                 name: Optional[str] = None,
                 **kwargs) \
                 -> _GeometryEntityABC:
+
             result = geometry_entity_method(self, *args, **kwargs)
 
             assert isinstance(result, _GeometryEntityABC), \

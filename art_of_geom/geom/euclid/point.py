@@ -3,7 +3,6 @@ __all__ = '_EuclidPointABC', '_EuclidConcretePointABC', '_EuclidPointAtInfinityA
 
 from sympy.core.expr import Expr
 from sympy.core.numbers import oo
-from typing import Optional
 
 from ...util.compat import cached_property
 from ..point import _PointABC, _ConcretePointABC, _PointAtInfinityABC
@@ -22,17 +21,14 @@ class _EuclidPointAtInfinityABC(_EuclidPointABC, _PointAtInfinityABC):
         return 'Pt@Inf {}'.format(self.name)
 
     def __eq__(self, point_at_infinity: '_EuclidPointAtInfinityABC') -> bool:
-        _type = type(self)
-
-        assert isinstance(point_at_infinity, _type), \
+        assert isinstance(point_at_infinity, _type := type(self)), \
             TypeError(f'*** OTHER POINT_AT_INFINITY {point_at_infinity} NOT OF SAME TYPE {_type.__name__} ***')
 
         return self.direction.is_scalar_multiple(point_at_infinity.direction)
 
-    def same(self, /, *, name: Optional[str] = None):
-        return type(self)(
-                self.direction,
-                name=name)
+    @_PointABC._with_name_assignment
+    def same(self):
+        return type(self)(self.direction)
 
     @cached_property
     def distance_from_origin(self) -> Expr:
