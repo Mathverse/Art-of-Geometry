@@ -4,7 +4,7 @@ SymPy >= 1.5.1
 
 # Tensor-Processing
 Torch >= 1.4.0
-TensorFlow >= 2.1.0
+# TensorFlow >= 2.1.0   # No Py3.8
 
 # misc
 Cached-Property >= 1.5.1

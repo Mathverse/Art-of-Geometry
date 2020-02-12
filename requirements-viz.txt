@@ -1,6 +1,6 @@
-Kivy >= 1.11.1
-MAnimLib >= 0.1.10
-MatPlotLib >= 3.1.2
-MayaVi >= 4.7.1
+# Kivy >= 1.11.1   # No Py3.8
+# MAnimLib >= 0.1.10   # lacks deps in Py3.8
+MatPlotLib >= 3.1.3
+# MayaVi >= 4.7.1   # depends on VTK
 PyQt5 >= 5.14.1
-VTK >= 8.1.2
+# VTK >= 8.1.2   # No Py3.8

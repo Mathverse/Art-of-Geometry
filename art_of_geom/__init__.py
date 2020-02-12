@@ -18,7 +18,7 @@ _PKG_VER = '{} {}'.format(_metadata['PACKAGE'], _metadata['VERSION'])
 
 
 # verify Python version
-_MIN_PY_VER = 3, 7
+_MIN_PY_VER = 3, 8
 
 assert version_info >= _MIN_PY_VER, \
     '*** {} requires Python >= {}.{} ***'.format(
