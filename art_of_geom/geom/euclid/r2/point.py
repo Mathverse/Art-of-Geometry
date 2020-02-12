@@ -5,7 +5,6 @@ __all__ = \
 
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
-from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point2D
 from typing import Optional
 from uuid import uuid4
@@ -71,21 +70,14 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
             if isinstance(self.y, Symbol):
                 self.y.name = f'[{name}.y]'
 
-    def same(self, /, *, name: Optional[str] = None) -> 'PointInR2':
-        return PointInR2(
-                x=self.x,
-                y=self.y,
-                name=name)
+    @_PointInR2ABC._with_name_assignment
+    def same(self) -> 'PointInR2':
+        return PointInR2(self.x, self.y)
 
     @classmethod
-    def _from_sympy_point_2d(
-            cls,
-            sympy_point_2d: Point2D, /,
-            *, name: Optional[str] = None):
-        return PointInR2(
-                x=sympy_point_2d.x,
-                y=sympy_point_2d.y,
-                name=name)
+    @_PointInR2ABC._with_name_assignment
+    def _from_sympy_point_2d(cls, sympy_point_2d: Point2D, /):
+        return PointInR2(sympy_point_2d.x, sympy_point_2d.y)
 
     def __neg__(self):
         return self._from_sympy_point_2d(

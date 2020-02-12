@@ -7,7 +7,6 @@ __all__ = \
 
 from sympy.core.expr import Expr
 from sympy.geometry.line import LinearEntity2D, Line2D, Ray2D, Segment2D
-from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point2D
 from typing import Optional, Tuple
 
@@ -97,23 +96,17 @@ class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
         return X - self.point_0.x - self.direction.x * T, \
                Y - self.point_0.y - self.direction.y * T
 
-    def same(self, *, name=None):
-        return LineInR2(
-                self.point_0,
-                self.point_1,
-                name=name)
+    @_LineInR2ABC._with_name_assignment
+    def same(self) -> 'LineInR2':
+        return LineInR2(self.point_0, self.point_1)
 
-    def parallel_line(self, through_point: PointInR2, *, name=None):
-        return LineInR2(
-                through_point,
-                PointAtInfinityInR2(self.direction),
-                name=name)
+    @_LineInR2ABC._with_name_assignment
+    def parallel_line(self, through_point: PointInR2, /) -> 'LineInR2':
+        return LineInR2(through_point, PointAtInfinityInR2(self.direction))
 
-    def perpendicular_line(self, through_point: PointInR2, *, name=None):
-        return LineInR2(
-                through_point,
-                PointAtInfinityInR2(self.direction.orthogonal_direction),
-                name=name)
+    @_LineInR2ABC._with_name_assignment
+    def perpendicular_line(self, through_point: PointInR2, /) -> 'LineInR2':
+        return LineInR2(through_point, PointAtInfinityInR2(self.direction.orthogonal_direction))
 
 
 # alias
@@ -139,26 +132,17 @@ class LineAtInfinityInR2(_LineInR2ABC, _EuclidLineAtInfinityABC):
 
         return self.normal_direction.is_scalar_multiple(line_at_infinity.normal_direction)
 
-    def same(self, /, *, name: Optional[str] = None):
-        return LineAtInfinityInR2(
-                self.normal_direction,
-                name=name)
+    @_LineInR2ABC._with_name_assignment
+    def same(self) -> 'LineAtInfinityInR2':
+        return LineAtInfinityInR2(self.normal_direction)
 
-    def parallel_line(self, through_point: PointInR2, *, name=None):
-        return LineInR2(
-                through_point,
-                PointAtInfinityInR2(self.normal_direction.orthogonal_direction),
-                name=name)
+    @_LineInR2ABC._with_name_assignment
+    def parallel_line(self, through_point: PointInR2, /) -> LineInR2:
+        return LineInR2(through_point, PointAtInfinityInR2(self.normal_direction.orthogonal_direction))
 
-    def perpendicular_line(
-            self,
-            through_point: PointInR2, /,
-            *, name: Optional[str] = None) \
-            -> LineInR2:
-        return LineInR2(
-                through_point,
-                PointAtInfinityInR2(self.normal_direction),
-                name=name)
+    @_LineInR2ABC._with_name_assignment
+    def perpendicular_line(self, through_point: PointInR2, /) -> LineInR2:
+        return LineInR2(through_point, PointAtInfinityInR2(self.normal_direction))
 
 
 # aliases
