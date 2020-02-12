@@ -21,7 +21,7 @@ class _EuclidPointAtInfinityABC(_EuclidPointABC, _PointAtInfinityABC):
     def __repr__(self) -> str:
         return 'Pt@Inf {}'.format(self.name)
 
-    def __eq__(self, point_at_infinity: _PointAtInfinityABC) -> bool:
+    def __eq__(self, point_at_infinity: '_EuclidPointAtInfinityABC') -> bool:
         _type = type(self)
 
         assert isinstance(point_at_infinity, _type), \

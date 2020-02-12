@@ -67,7 +67,7 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
         return self._name
 
     @name.setter
-    def name(self, name: str) -> None:
+    def name(self, name: str, /) -> None:
         self._validate_name(name)
         
         if name != self.name:

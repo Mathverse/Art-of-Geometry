@@ -9,7 +9,7 @@ from sympy.core.expr import Expr
 from sympy.geometry.line import LinearEntity2D, Line2D, Ray2D, Segment2D
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point2D
-from typing import Tuple
+from typing import Optional, Tuple
 
 from ....util.compat import cached_property
 from ..coord import T
@@ -39,7 +39,11 @@ class _LineInR2ABC(_LinearEntityInR2ABC, _EuclidLineABC):
 
 
 class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
-    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, *, name: str = None) -> Line2D:
+    def __new__(
+            cls,
+            point_0: PointInR2, point_1: _PointInR2ABC, /,
+            *, name: Optional[str] = None) \
+            -> Line2D:
         assert isinstance(point_0, PointInR2), \
             TypeError(
                 '*** POINT_0 {} NOT OF TYPE {} ***'
@@ -157,7 +161,11 @@ LnAtInf = LineAtInf = LineAtInfinity = LineAtInfinityR2 = LineAtInfinityInR2
 
 
 class RayInR2(_ConcreteLinearEntityInR2ABC, _EuclidRayABC, Ray2D):
-    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, *, name: str = None) -> Ray2D:
+    def __new__(
+            cls,
+            point_0: PointInR2, point_1: _PointInR2ABC, /,
+            *, name: Optional[str] = None) \
+            -> Ray2D:
         assert isinstance(point_0, PointInR2), \
             TypeError(
                 '*** POINT_0 {} NOT OF TYPE {} ***'
@@ -188,7 +196,11 @@ class RayInR2(_ConcreteLinearEntityInR2ABC, _EuclidRayABC, Ray2D):
                     '*** POINT_1 {} NEITHER OF TYPE {} NOR OF TYPE {} ***'
                     .format(point_1, PointInR2.__name__, PointAtInfinityInR2.__name__))
 
-    def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, *, name: str = None) -> None:
+    def __init__(
+            self,
+            point_0: PointInR2, point_1: _PointInR2ABC, /,
+            *, name: Optional[str] = None) \
+            -> None:
         self.point_0 = point_0
 
         self.point_1 = point_1
@@ -206,23 +218,27 @@ Ray = RayR2 = RayInR2
 
 
 class SegmentInR2(_ConcreteLinearEntityInR2ABC, _EuclidSegmentABC, Segment2D):
-    def __new__(cls, point_0: PointInR2, point_1: PointInR2, *, name: str = None) -> Segment2D:
+    def __new__(
+            cls,
+            point_0: PointInR2, point_1: PointInR2, /,
+            *, name: Optional[str] = None) \
+            -> Segment2D:
         assert isinstance(point_0, PointInR2), \
-            TypeError(
-                '*** POINT_0 {} NOT OF TYPE {} ***'
-                .format(point_0, PointInR2.__name__))
+            TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR2.__name__} ***'
 
         assert isinstance(point_1, PointInR2), \
-            TypeError(
-                '*** POINT_1 {} NOT OF TYPE {} ***'
-                    .format(point_1, PointInR2.__name__))
+            TypeError(f'*** POINT_1 {point_1} NOT OF TYPE {PointInR2.__name__} ***')
 
         return super().__new__(
                 cls,
                 p1=point_0,
                 p2=point_1)
 
-    def __init__(self, point_0: PointInR2, point_1: PointInR2, *, name: str = None) -> None:
+    def __init__(
+            self,
+            /, point_0: PointInR2, point_1: PointInR2,
+            *, name: Optional[str] = None) \
+            -> None:
         self.point_0 = point_0
 
         self.point_1 = point_1

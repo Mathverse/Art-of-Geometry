@@ -118,7 +118,8 @@ Pt = Point = PointR2 = PointInR2
 
 class PointAtInfinityInR2(_PointInR2ABC, _EuclidPointAtInfinityABC):
     def __init__(
-            self, direction: Point2D, /,
+            self,
+            direction: Point2D, /,
             *, name: Optional[str] = None) \
             -> None:
         assert isinstance(direction, Point2D), \
