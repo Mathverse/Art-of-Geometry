@@ -4,7 +4,6 @@ __all__ = \
 
 
 from abc import abstractmethod
-from typing import Optional
 
 from .abc import _GeometryEntityABC
 from .point import _PointABC
@@ -12,37 +11,23 @@ from .point import _PointABC
 
 class _LinearEntityABC(_GeometryEntityABC):
     @abstractmethod
-    def parallel_line(
-            self,
-            through_point: _PointABC, /,
-            *, name: Optional[str] = None) \
-            -> '_LineABC':
+    @_GeometryEntityABC._with_name_assignment
+    def parallel_line(self, through_point: _PointABC, /) -> '_LineABC':
         raise NotImplementedError
 
     @abstractmethod
-    def perpendicular_projection_of_point(
-            self,
-            point: _PointABC, /,
-            *, name: Optional[str] = None) \
-            -> _PointABC:
+    @_GeometryEntityABC._with_name_assignment
+    def perpendicular_projection_of_point(self, point: _PointABC, /) -> _PointABC:
         raise NotImplementedError
 
     # alias
-    def perpendicular_projection(
-            self,
-            point: _PointABC, /,
-            *, name: Optional[str] = None) \
-            -> _PointABC:
-        return self.perpendicular_projection_of_point(
-                point,
-                name=name)
+    @_GeometryEntityABC._with_name_assignment
+    def perpendicular_projection(self, point: _PointABC, /) -> _PointABC:
+        return self.perpendicular_projection_of_point(point)
 
     @abstractmethod
-    def perpendicular_line(
-            self,
-            through_point: _PointABC, /,
-            *, name: Optional[str] = None) \
-            -> '_LineABC':
+    @_GeometryEntityABC._with_name_assignment
+    def perpendicular_line(self, through_point: _PointABC, /) -> '_LineABC':
         raise NotImplementedError
 
 
@@ -56,23 +41,14 @@ class _LinearEntityAtInfinityABC(_LinearEntityABC):
 
 class _LineABC(_LinearEntityABC):
     @abstractmethod
-    def perspective_projection_of_point(
-            self,
-            /, perspector: _PointABC, point: _PointABC,
-            *, name: Optional[str] = None) \
-            -> _PointABC:
+    @_GeometryEntityABC._with_name_assignment
+    def perspective_projection_of_point(self, /, perspector: _PointABC, point: _PointABC) -> _PointABC:
         raise NotImplementedError
 
     # alias
-    def perspective_projection(
-            self,
-            /, perspector: _PointABC, point: _PointABC,
-            *, name: Optional[str] = None) \
-            -> _PointABC:
-        return self.perspective_projection_of_point(
-                perspector=perspector,
-                point=point,
-                name=name)
+    @_GeometryEntityABC._with_name_assignment
+    def perspective_projection(self, /, perspector: _PointABC, point: _PointABC) -> _PointABC:
+        return self.perspective_projection_of_point(perspector=perspector, point=point)
 
 
 class _ConcreteLineABC(_LineABC, _ConcreteLinearEntityABC):
