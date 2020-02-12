@@ -7,6 +7,7 @@ from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point2D
+from typing import Optional
 from uuid import uuid4
 
 from ....util.compat import cached_property
@@ -19,29 +20,29 @@ class _PointInR2ABC(_EuclidGeometryEntityInR2ABC, _EuclidPointABC):
 
 
 class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
-    def __new__(cls, x: Expr = None, y: Expr = None, *, name: str = None) -> Point2D:
+    def __new__(
+            cls,
+            /, x: Optional[Expr] = None, y: Optional[Expr] = None,
+            *, name: Optional[str] = None) \
+            -> Point2D:
         if not name:
             name = str(uuid4())
 
         if x is None:
             x = Symbol(
-                    name='[{}.x]'.format(name),
+                    name=f'[{name}.x]',
                     real=True)
         else:
             assert isinstance(x, (Expr, float, int)), \
-                TypeError(
-                    '*** X COORDINATE {} NEITHER SymPy Expr NOR int NOR float ***'
-                    .format(x))
+                TypeError(f'*** X COORDINATE {x} NEITHER SymPy Expr NOR int NOR float ***')
 
         if y is None:
             y = Symbol(
-                    name='[{}.y]'.format(name),
+                    name=f'[{name}.y]',
                     real=True)
         else:
             assert isinstance(y, (Expr, float, int)), \
-                TypeError(
-                    '*** Y COORDINATE {} NEITHER SymPy Expr NOR int NOR float ***'
-                    .format(y))
+                TypeError(f'*** Y COORDINATE {y} NEITHER SymPy Expr NOR int NOR float ***')
 
         point = super().__new__(
                     cls,
@@ -58,29 +59,29 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
         return self._name
 
     @name.setter
-    def name(self, name: str) -> None:
-        if name != self.name:
-            assert isinstance(name, str) and name, \
-                TypeError(
-                    '*** {} NOT NON-EMPTY STRING ***'
-                    .format(name))
+    def name(self, name: str, /) -> None:
+        self._validate_name(name)
 
+        if name != self.name:
             self._name = name
 
             if isinstance(self.x, Symbol):
-                self.x.name = '[{}.x]'.format(name)
+                self.x.name = f'[{name}.x]'
 
             if isinstance(self.y, Symbol):
-                self.y.name = '[{}.y]'.format(name)
+                self.y.name = f'[{name}.y]'
 
-    def same(self, *, name=None):
+    def same(self, /, *, name: Optional[str] = None) -> 'PointInR2':
         return PointInR2(
                 x=self.x,
                 y=self.y,
                 name=name)
 
     @classmethod
-    def _from_sympy_point_2d(cls, sympy_point_2d: Point2D, *, name=None):
+    def _from_sympy_point_2d(
+            cls,
+            sympy_point_2d: Point2D, /,
+            *, name: Optional[str] = None):
         return PointInR2(
                 x=sympy_point_2d.x,
                 y=sympy_point_2d.y,
@@ -116,11 +117,12 @@ Pt = Point = PointR2 = PointInR2
 
 
 class PointAtInfinityInR2(_PointInR2ABC, _EuclidPointAtInfinityABC):
-    def __init__(self, direction: Point2D, *, name: str = None) -> None:
+    def __init__(
+            self, direction: Point2D, /,
+            *, name: Optional[str] = None) \
+            -> None:
         assert isinstance(direction, Point2D), \
-            TypeError(
-                '*** DIRECTION {} NOT OF TYPE {} ***'
-                .format(direction, Point2D.__name__))
+            TypeError(f'*** DIRECTION {direction} NOT OF TYPE {Point2D.__name__} ***')
 
         self.direction = direction
 

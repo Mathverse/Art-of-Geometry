@@ -7,6 +7,7 @@ from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point3D
+from typing import Optional
 from uuid import uuid4
 
 from ....util.compat import cached_property
@@ -19,39 +20,37 @@ class _PointInR3ABC(_EuclidGeometryEntityInR3ABC, _EuclidPointABC):
 
 
 class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
-    def __new__(cls, x: Expr = None, y: Expr = None, z: Expr = None, *, name: str = None) -> Point3D:
+    def __new__(
+            cls,
+            /, x: Optional[Expr] = None, y: Optional[Expr] = None, z: Optional[Expr] = None,
+            *, name: Optional[str] = None) \
+            -> Point3D:
         if not name:
             name = str(uuid4())
 
         if x is None:
             x = Symbol(
-                    name='[{}.x]'.format(name),
+                    name=f'[{name}.x]',
                     real=True)
         else:
             assert isinstance(x, (Expr, float, int)), \
-                TypeError(
-                    '*** X COORDINATE {} NEITHER SymPy Expr NOR int NOR float ***'
-                    .format(x))
+                TypeError(f'*** X COORDINATE {x} NEITHER SymPy Expr NOR int NOR float ***')
 
         if y is None:
             y = Symbol(
-                    name='[{}.y]'.format(name),
+                    name=f'[{name}.y]',
                     real=True)
         else:
             assert isinstance(y, (Expr, float, int)), \
-                TypeError(
-                    '*** Y COORDINATE {} NEITHER SymPy Expr NOR int NOR float ***'
-                    .format(y))
+                TypeError(f'*** Y COORDINATE {y} NEITHER SymPy Expr NOR int NOR float ***')
             
         if z is None:
             z = Symbol(
-                    name='[{}.z]'.format(name),
+                    name=f'[{name}.z]',
                     real=True)
         else:
             assert isinstance(z, (Expr, float, int)), \
-                TypeError(
-                    '*** Z COORDINATE {} NEITHER SymPy Expr NOR int NOR float ***'
-                    .format(z))
+                TypeError(f'*** Z COORDINATE {z} NEITHER SymPy Expr NOR int NOR float ***')
 
         point = super().__new__(
                     cls,
@@ -69,24 +68,21 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
 
     @name.setter
     def name(self, name: str) -> None:
+        self._validate_name(name)
+        
         if name != self.name:
-            assert isinstance(name, str) and name, \
-                TypeError(
-                    '*** {} NOT NON-EMPTY STRING ***'
-                    .format(name))
-
             self._name = name
 
             if isinstance(self.x, Symbol):
-                self.x.name = '[{}.x]'.format(name)
+                self.x.name = f'[{name}.x]'
 
             if isinstance(self.y, Symbol):
-                self.y.name = '[{}.y]'.format(name)
+                self.y.name = f'[{name}.y]'
 
             if isinstance(self.z, Symbol):
-                self.z.name = '[{}.z]'.format(name)
+                self.z.name = f'[{name}.z]'
 
-    def same(self, *, name=None):
+    def same(self, /, *, name: Optional[str] = None):
         return PointInR3(
                 x=self.x,
                 y=self.y,
@@ -94,7 +90,10 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
                 name=name)
 
     @classmethod
-    def _from_sympy_point_3d(cls, sympy_point_3d: Point3D, *, name=None):
+    def _from_sympy_point_3d(
+            cls,
+            sympy_point_3d: Point3D, /,
+            *, name: Optional[str] = None):
         return PointInR3(
                 x=sympy_point_3d.x,
                 y=sympy_point_3d.y,
@@ -131,11 +130,13 @@ Pt = Point = PointR3 = PointInR3
 
 
 class PointAtInfinityInR3(_PointInR3ABC, _EuclidPointAtInfinityABC):
-    def __init__(self, direction: Point3D, *, name: str = None) -> None:
+    def __init__(
+            self,
+            direction: Point3D, /,
+            *, name: Optional[str] = None) \
+            -> None:
         assert isinstance(direction, Point3D), \
-            TypeError(
-                '*** DIRECTION {} NOT {} ***'
-                .format(direction, Point3D.__name__))
+            TypeError(f'*** DIRECTION {direction} NOT {Point3D.__name__} ***')
 
         self.direction = direction
 
