@@ -210,7 +210,7 @@ class SegmentInR2(_ConcreteLinearEntityInR2ABC, _EuclidSegmentABC, Segment2D):
             *, name: Optional[str] = None) \
             -> Segment2D:
         assert isinstance(point_0, PointInR2), \
-            TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR2.__name__} ***'
+            TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR2.__name__} ***')
 
         assert isinstance(point_1, PointInR2), \
             TypeError(f'*** POINT_1 {point_1} NOT OF TYPE {PointInR2.__name__} ***')
