@@ -4,8 +4,10 @@ __all__ = \
 
 from sys import version_info
 
+from .. import _MIN_PY_VER
 
-if version_info >= (3, 8):
+
+if version_info >= _MIN_PY_VER:
     from functools import cached_property
 
 else:
