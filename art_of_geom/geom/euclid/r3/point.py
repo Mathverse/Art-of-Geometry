@@ -5,7 +5,6 @@ __all__ = \
 
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
-from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.point import Point3D
 from typing import Optional
 from uuid import uuid4
@@ -34,7 +33,7 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
                     real=True)
         else:
             assert isinstance(x, (Expr, float, int)), \
-                TypeError(f'*** X COORDINATE {x} NEITHER SymPy Expr NOR int NOR float ***')
+                TypeError(f'*** X COORDINATE {x} NEITHER SymPy Expr NOR float NOR int ***')
 
         if y is None:
             y = Symbol(
@@ -42,7 +41,7 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
                     real=True)
         else:
             assert isinstance(y, (Expr, float, int)), \
-                TypeError(f'*** Y COORDINATE {y} NEITHER SymPy Expr NOR int NOR float ***')
+                TypeError(f'*** Y COORDINATE {y} NEITHER SymPy Expr NOR float NOR int ***')
             
         if z is None:
             z = Symbol(
@@ -50,7 +49,7 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
                     real=True)
         else:
             assert isinstance(z, (Expr, float, int)), \
-                TypeError(f'*** Z COORDINATE {z} NEITHER SymPy Expr NOR int NOR float ***')
+                TypeError(f'*** Z COORDINATE {z} NEITHER SymPy Expr NOR float NOR int ***')
 
         point = super().__new__(
                     cls,

@@ -33,7 +33,7 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
                     real=True)
         else:
             assert isinstance(x, (Expr, float, int)), \
-                TypeError(f'*** X COORDINATE {x} NEITHER SymPy Expr NOR int NOR float ***')
+                TypeError(f'*** X COORDINATE {x} NEITHER SymPy Expr NOR float NOR int ***')
 
         if y is None:
             y = Symbol(
@@ -41,7 +41,7 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
                     real=True)
         else:
             assert isinstance(y, (Expr, float, int)), \
-                TypeError(f'*** Y COORDINATE {y} NEITHER SymPy Expr NOR int NOR float ***')
+                TypeError(f'*** Y COORDINATE {y} NEITHER SymPy Expr NOR float NOR int ***')
 
         point = super().__new__(
                     cls,
