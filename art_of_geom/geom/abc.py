@@ -2,6 +2,7 @@ __all__ = '_GeometryEntityABC',
 
 
 from abc import ABC, ABCMeta, abstractmethod, abstractproperty, abstractclassmethod, abstractstaticmethod
+from functools import wraps
 from sympy.core.expr import Expr
 from sympy.geometry.entity import GeometryEntity
 from typing import Optional, Tuple
@@ -40,6 +41,29 @@ class _GeometryEntityABC(GeometryEntity):
         assert isinstance(name, str) and name, \
             TypeError(f'*** {name} NOT NON-EMPTY STRING ***')
 
+    @staticmethod
+    def _with_name_assignment(geometry_entity_method):
+        @wraps(geometry_entity_method)
+        def geometry_entity_method_with_name_assignment(
+                self,
+                *args,
+                name: Optional[str] = None,
+                **kwargs) \
+                -> _GeometryEntityABC:
+            result = geometry_entity_method(self, *args, **kwargs)
+
+            assert isinstance(result, _GeometryEntityABC), \
+                TypeError(f'*** RESULT {result} NOT OF TYPE {_GeometryEntityABC.__name__} ***')
+
+            if name:
+                _GeometryEntityABC._validate_name(name)
+
+                result.name = name
+
+            return result
+
+        return geometry_entity_method_with_name_assignment
+
     @property
     def name(self) -> str:
         return self._name
@@ -59,7 +83,8 @@ class _GeometryEntityABC(GeometryEntity):
         return repr(self)
 
     @abstractmethod
-    def same(self, /, *, name: Optional[str] = None) -> '_GeometryEntityABC':
+    @_with_name_assignment
+    def same(self) -> '_GeometryEntityABC':
         raise NotImplementedError
 
     @cached_property
