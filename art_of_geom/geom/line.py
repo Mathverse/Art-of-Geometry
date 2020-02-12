@@ -41,12 +41,12 @@ class _LinearEntityAtInfinityABC(_LinearEntityABC):
 
 class _LineABC(_LinearEntityABC):
     @abstractmethod
-    @_GeometryEntityABC._with_name_assignment
+    @_LinearEntityABC._with_name_assignment
     def perspective_projection_of_point(self, /, perspector: _PointABC, point: _PointABC) -> _PointABC:
         raise NotImplementedError
 
     # alias
-    @_GeometryEntityABC._with_name_assignment
+    @_LinearEntityABC._with_name_assignment
     def perspective_projection(self, /, perspector: _PointABC, point: _PointABC) -> _PointABC:
         return self.perspective_projection_of_point(perspector=perspector, point=point)
 

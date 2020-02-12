@@ -26,7 +26,7 @@ class _EuclidPointAtInfinityABC(_EuclidPointABC, _PointAtInfinityABC):
 
         return self.direction.is_scalar_multiple(point_at_infinity.direction)
 
-    @_PointABC._with_name_assignment
+    @_EuclidPointABC._with_name_assignment
     def same(self):
         return type(self)(self.direction)
 
