@@ -55,7 +55,7 @@ class _GeometryEntityABC(GeometryEntity):
         return repr(self)
 
     @abstractmethod
-    def same(self, *, name: Optional[str] = None) -> '_GeometryEntityABC':
+    def same(self, /, *, name: Optional[str] = None) -> '_GeometryEntityABC':
         raise NotImplementedError
 
     @cached_property
