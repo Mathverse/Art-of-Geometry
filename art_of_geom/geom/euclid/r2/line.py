@@ -67,8 +67,9 @@ class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
             return line
         
         else:
-            raise TypeError(
-                    f'*** POINT_1 {point_1} NEITHER OF TYPE {PointInR2.__name__} NOR OF TYPE {PointAtInfinityInR2.__name__} ***')
+            raise TypeError(f'*** POINT_1 {point_1} '
+                            f'NEITHER OF TYPE {PointInR2.__name__} '
+                            f'NOR OF TYPE {PointAtInfinityInR2.__name__} ***')
 
     def __init__(
             self,
