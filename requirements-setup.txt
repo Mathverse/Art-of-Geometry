@@ -1,6 +1,6 @@
 PIP >= 20.0.2
 Ruamel.YAML >= 0.16.9
 SetUpTools >= 45.2.0
-Wheel >= 0.34.1
+Wheel >= 0.34.2
 
 VirtualEnv >= 20.0.2
