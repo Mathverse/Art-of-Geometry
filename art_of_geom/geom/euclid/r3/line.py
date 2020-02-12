@@ -46,10 +46,7 @@ class LineInR3(_LineInR3ABC, _EuclidConcreteLineABC, Line3D):
             TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR3.__name__} ***')
 
         if isinstance(point_1, PointInR3):
-            line = super().__new__(
-                    cls,
-                    p1=point_0,
-                    pt=point_1)
+            line = super().__new__(cls, p1=point_0, pt=point_1)
 
             line._point_1_at_infinity = False
 
@@ -121,10 +118,7 @@ class RayInR3(_LinearEntityInR3ABC, _EuclidRayABC, Ray3D):
             TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR3.__name__} ***')
 
         if isinstance(point_1, PointInR3):
-            ray = super().__new__(
-                    cls,
-                    p1=point_0,
-                    pt=point_1)
+            ray = super().__new__(cls, p1=point_0, pt=point_1)
 
             ray._point_1_at_infinity = False
 
@@ -178,10 +172,7 @@ class SegmentInR3(_LinearEntityInR3ABC, _EuclidSegmentABC, Segment3D):
         assert isinstance(point_1, PointInR3), \
             TypeError(f'*** POINT_1 {point_1} NOT OF TYPE {PointInR3.__name__} ***')
 
-        return super().__new__(
-                cls,
-                p1=point_0,
-                p2=point_1)
+        return super().__new__(cls, p1=point_0, p2=point_1)
 
     def __init__(
             self,

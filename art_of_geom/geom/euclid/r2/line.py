@@ -47,20 +47,14 @@ class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
             TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR2.__name__} ***')
         
         if isinstance(point_1, PointInR2):
-            line = super().__new__(
-                    cls,
-                    p1=point_0,
-                    pt=point_1)
+            line = super().__new__(cls, p1=point_0, pt=point_1)
 
             line._point_1_at_infinity = False
 
             return line
         
         elif isinstance(point_1, PointAtInfinityInR2):
-            line = super().__new__(
-                    cls,
-                    p1=point_0,
-                    pt=point_0 + point_1.direction)
+            line = super().__new__(cls, p1=point_0, pt=point_0 + point_1.direction)
 
             line._point_1_at_infinity = True
 
@@ -160,10 +154,7 @@ class RayInR2(_ConcreteLinearEntityInR2ABC, _EuclidRayABC, Ray2D):
             TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR2.__name__} ***')
 
         if isinstance(point_1, PointInR2):
-            ray = super().__new__(
-                    cls,
-                    p1=point_0,
-                    pt=point_1)
+            ray = super().__new__(cls, p1=point_0, pt=point_1)
 
             ray._point_1_at_infinity = False
 
@@ -216,10 +207,7 @@ class SegmentInR2(_ConcreteLinearEntityInR2ABC, _EuclidSegmentABC, Segment2D):
         assert isinstance(point_1, PointInR2), \
             TypeError(f'*** POINT_1 {point_1} NOT OF TYPE {PointInR2.__name__} ***')
 
-        return super().__new__(
-                cls,
-                p1=point_0,
-                p2=point_1)
+        return super().__new__(cls, p1=point_0, p2=point_1)
 
     def __init__(
             self,
