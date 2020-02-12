@@ -21,5 +21,4 @@ _PKG_VER = '{} {}'.format(_metadata['PACKAGE'], _metadata['VERSION'])
 _MIN_PY_VER = 3, 8
 
 assert version_info >= _MIN_PY_VER, \
-    '*** {} requires Python >= {}.{} ***'.format(
-        _PKG_VER, _MIN_PY_VER[0], _MIN_PY_VER[1])
+   SystemError(f'*** {_PKG_VER} requires Python >= {_MIN_PY_VER} ***')
