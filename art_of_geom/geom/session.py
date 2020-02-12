@@ -24,11 +24,6 @@ class Session:
 
     __str__ = __repr__
 
-    @staticmethod
-    def _validate_geometry_entity_name(name: str, /) -> None:
-        assert isinstance(name, str) and name, \
-            TypeError(f'*** {name} NOT NON-EMPTY STRING ***')
-
     def __setattr__(self, name: str, value, /) -> None:
         if isinstance(value, _GeometryEntityABC):
             value.session = self
@@ -38,7 +33,7 @@ class Session:
             object.__setattr__(self, name, value)
 
     def __setitem__(self, name: str, geometry_entity: _GeometryEntityABC, /) -> None:
-        self._validate_geometry_entity_name(name)
+        _GeometryEntityABC._validate_name(name)
 
         assert isinstance(geometry_entity, _GeometryEntityABC), \
             TypeError(f'*** {geometry_entity} NOT OF TYPE {_GeometryEntityABC.__name__} ***')
@@ -50,7 +45,7 @@ class Session:
         return self.geometry_entities[name]
 
     def __getitem__(self, name: str, /) -> _GeometryEntityABC:
-        self._validate_geometry_entity_name(name)
+        _GeometryEntityABC._validate_name(name)
 
         return self.geometry_entities[name]
 
@@ -58,7 +53,7 @@ class Session:
         del self.geometry_entities[name]
 
     def __delitem__(self, name: str) -> None:
-        self._validate_geometry_entity_name(name)
+        _GeometryEntityABC._validate_name(name)
 
         del self.geometry_entities[name]
 

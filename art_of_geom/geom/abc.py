@@ -35,16 +35,20 @@ class _GeometryEntityABC(GeometryEntity):
     def session(self) -> None:
         self._session = None
 
+    @staticmethod
+    def _validate_name(name: str, /) -> None:
+        assert isinstance(name, str) and name, \
+            TypeError(f'*** {name} NOT NON-EMPTY STRING ***')
+
     @property
     def name(self) -> str:
         return self._name
 
     @name.setter
     def name(self, name: str, /) -> None:
-        if name != self._name:
-            assert isinstance(name, str) and name, \
-                TypeError(f'*** {name} NOT NON-EMPTY STRING ***')
+        self._validate_name(name)
 
+        if name != self._name:
             self._name = name
 
     @name.deleter
