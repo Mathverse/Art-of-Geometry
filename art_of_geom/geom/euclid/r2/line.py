@@ -45,9 +45,7 @@ class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
             *, name: Optional[str] = None) \
             -> Line2D:
         assert isinstance(point_0, PointInR2), \
-            TypeError(
-                '*** POINT_0 {} NOT OF TYPE {} ***'
-                .format(point_0, PointInR2.__name__))
+            TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR2.__name__} ***')
         
         if isinstance(point_1, PointInR2):
             line = super().__new__(
@@ -71,10 +69,13 @@ class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
         
         else:
             raise TypeError(
-                    '*** POINT_1 {} NEITHER OF TYPE {} NOR OF TYPE {} ***'
-                    .format(point_1, PointInR2.__name__, PointAtInfinityInR2.__name__))
+                    f'*** POINT_1 {point_1} NEITHER OF TYPE {PointInR2.__name__} NOR OF TYPE {PointAtInfinityInR2.__name__} ***')
 
-    def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, *, name: str = None) -> None:
+    def __init__(
+            self,
+            point_0: PointInR2, point_1: _PointInR2ABC, /,
+            *, name: Optional[str] = None) \
+            -> None:
         self.point_0 = point_0
 
         self.point_1 = point_1
@@ -120,25 +121,25 @@ Ln = Line = LineR2 = LineInR2
 
 
 class LineAtInfinityInR2(_LineInR2ABC, _EuclidLineAtInfinityABC):
-    def __init__(self, normal_direction: Point2D, *, name=None) -> None:
+    def __init__(
+            self,
+            normal_direction: Point2D, /,
+            *, name: Optional[str] = None) \
+            -> None:
         assert isinstance(normal_direction, Point2D), \
-            TypeError(
-                '*** NORMAL DIRECTION {} NOT OF TYPE {} ***'
-                .format(normal_direction, Point2D.__name__))
+            TypeError(f'*** NORMAL DIRECTION {normal_direction} NOT OF TYPE {Point2D.__name__} ***')
 
         self.normal_direction = normal_direction
 
         self._name = name
 
-    def __eq__(self, line_at_infinity) -> bool:
+    def __eq__(self, line_at_infinity: 'LineAtInfinityInR2') -> bool:
         assert isinstance(line_at_infinity, LineAtInfinityInR2), \
-            TypeError(
-                '*** POINT_AT_INFINITY {} NOT OF TYPE {} ***'
-                    .format(line_at_infinity, LineAtInfinityInR2.__name__))
+            TypeError(f'*** OTHER LINE_AT_INFINITY {line_at_infinity} NOT OF TYPE {LineAtInfinityInR2.__name__} ***')
 
         return self.normal_direction.is_scalar_multiple(line_at_infinity.normal_direction)
 
-    def same(self, *, name=None):
+    def same(self, /, *, name: Optional[str] = None):
         return LineAtInfinityInR2(
                 self.normal_direction,
                 name=name)
@@ -149,7 +150,11 @@ class LineAtInfinityInR2(_LineInR2ABC, _EuclidLineAtInfinityABC):
                 PointAtInfinityInR2(self.normal_direction.orthogonal_direction),
                 name=name)
 
-    def perpendicular_line(self, through_point: PointInR2, *, name=None):
+    def perpendicular_line(
+            self,
+            through_point: PointInR2, /,
+            *, name: Optional[str] = None) \
+            -> LineInR2:
         return LineInR2(
                 through_point,
                 PointAtInfinityInR2(self.normal_direction),
@@ -167,9 +172,7 @@ class RayInR2(_ConcreteLinearEntityInR2ABC, _EuclidRayABC, Ray2D):
             *, name: Optional[str] = None) \
             -> Ray2D:
         assert isinstance(point_0, PointInR2), \
-            TypeError(
-                '*** POINT_0 {} NOT OF TYPE {} ***'
-                .format(point_0, PointInR2.__name__))
+            TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR2.__name__} ***')
 
         if isinstance(point_1, PointInR2):
             ray = super().__new__(
@@ -193,8 +196,7 @@ class RayInR2(_ConcreteLinearEntityInR2ABC, _EuclidRayABC, Ray2D):
 
         else:
             raise TypeError(
-                    '*** POINT_1 {} NEITHER OF TYPE {} NOR OF TYPE {} ***'
-                    .format(point_1, PointInR2.__name__, PointAtInfinityInR2.__name__))
+                    f'*** POINT_1 {point_1} NEITHER OF TYPE {PointInR2.__name__} NOR OF TYPE {PointAtInfinityInR2.__name__} ***')
 
     def __init__(
             self,
@@ -236,7 +238,7 @@ class SegmentInR2(_ConcreteLinearEntityInR2ABC, _EuclidSegmentABC, Segment2D):
 
     def __init__(
             self,
-            /, point_0: PointInR2, point_1: PointInR2,
+            point_0: PointInR2, point_1: PointInR2, /,
             *, name: Optional[str] = None) \
             -> None:
         self.point_0 = point_0
