@@ -9,7 +9,7 @@ from art_of_geom.geom.session import Session, DEFAULT_SESSION
 
 
 s = Session() \
-    if choice((True, False)) \
+    if choice((False, True)) \
     else DEFAULT_SESSION
 
 
