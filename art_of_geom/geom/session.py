@@ -1,11 +1,16 @@
+from __future__ import annotations   # to avoid circular import b/w _GeometryEntityABC & Session
+
+
 __all__ = 'Session', 'GLOBAL_SESSION'
 
 
 from sympy.assumptions.assume import AssumptionsContext
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 from uuid import uuid4
 
-from .abc import _GeometryEntityABC
+
+if TYPE_CHECKING:   # to avoid circular import b/w _GeometryEntityABC & Session
+    from .abc import _GeometryEntityABC
 
 
 class Session:
@@ -25,6 +30,8 @@ class Session:
     __str__ = __repr__
 
     def __setattr__(self, name: str, value, /) -> None:
+        from .abc import _GeometryEntityABC
+
         if isinstance(value, _GeometryEntityABC):
             value.session = self
             self.geometry_entities[name] = value
@@ -33,6 +40,8 @@ class Session:
             object.__setattr__(self, name, value)
 
     def __setitem__(self, name: str, geometry_entity: _GeometryEntityABC, /) -> None:
+        from .abc import _GeometryEntityABC
+
         _GeometryEntityABC._validate_name(name)
 
         assert isinstance(geometry_entity, _GeometryEntityABC), \
@@ -45,6 +54,8 @@ class Session:
         return self.geometry_entities[name]
 
     def __getitem__(self, name: str, /) -> _GeometryEntityABC:
+        from .abc import _GeometryEntityABC
+
         _GeometryEntityABC._validate_name(name)
 
         return self.geometry_entities[name]
@@ -53,10 +64,12 @@ class Session:
         del self.geometry_entities[name]
 
     def __delitem__(self, name: str) -> None:
+        from .abc import _GeometryEntityABC
+
         _GeometryEntityABC._validate_name(name)
 
         del self.geometry_entities[name]
 
 
 # Global Geometry Session
-GLOBAL_SESSION = Session('GLOBAL GEOMETRY SESSION')
+GLOBAL_SESSION = Session('GLOBAL')

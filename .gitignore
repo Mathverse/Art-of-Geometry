@@ -134,4 +134,4 @@ dmypy.json
 *.iml
 
 # test
-test/
+test/*.ipynb

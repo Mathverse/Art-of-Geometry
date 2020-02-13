@@ -1,20 +1,25 @@
+from __future__ import annotations   # to avoid circular import b/w _GeometryEntityABC & Session
+
+
 __all__ = '_GeometryEntityABC',
 
 
 from abc import abstractmethod
 from functools import wraps
+from inspect import ismethod
 from sympy.core.expr import Expr
 from sympy.geometry.entity import GeometryEntity
-from typing import Optional, Tuple
+from typing import Optional, Tuple, TYPE_CHECKING
 from uuid import uuid4
 
 from ..util.compat import cached_property
-# from .session import Session, GLOBAL_SESSION   # import within the class below instead to avoid circular importing
+
+
+if TYPE_CHECKING:   # to avoid circular import b/w _GeometryEntityABC & Session
+    from .session import Session
 
 
 class _GeometryEntityABC(GeometryEntity):
-    from .session import Session
-
     @property
     def session(self) -> Session:
         if hasattr(self, '_session') and self._session:
@@ -43,9 +48,9 @@ class _GeometryEntityABC(GeometryEntity):
             TypeError(f'*** {name} NOT NON-EMPTY STRING ***')
 
     @staticmethod
-    def _with_name_assignment(uuid_if_empty=False):
+    def _with_name_assignment(geometry_entity_method=None, *, uuid_if_empty=False):
 
-        def geometry_entity_method_with_name_assignment_decorator(geometry_entity_method):
+        def decorator(geometry_entity_method, /):
 
             @wraps(geometry_entity_method)
             def geometry_entity_method_with_name_assignment(
@@ -78,7 +83,10 @@ class _GeometryEntityABC(GeometryEntity):
 
             return geometry_entity_method_with_name_assignment
 
-        return geometry_entity_method_with_name_assignment_decorator
+        if ismethod(geometry_entity_method):
+            return decorator(geometry_entity_method)
+        else:
+            return decorator
 
     @property
     def name(self) -> str:
@@ -99,7 +107,7 @@ class _GeometryEntityABC(GeometryEntity):
         return repr(self)
 
     @abstractmethod
-    @_with_name_assignment
+    # @_with_name_assignment   # TypeError: 'staticmethod' object is not callable
     def same(self) -> '_GeometryEntityABC':
         raise NotImplementedError
 
