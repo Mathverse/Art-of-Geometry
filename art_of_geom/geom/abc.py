@@ -83,10 +83,9 @@ class _GeometryEntityABC(GeometryEntity):
 
             return geometry_entity_method_with_name_assignment
 
-        if isfunction(_method):
-            return decorator(_method)
-        else:
-            return decorator
+        return decorator(_method) \
+            if isfunction(_method) \
+          else decorator
 
     @property
     def name(self) -> str:
