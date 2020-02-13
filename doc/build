@@ -28,6 +28,7 @@ rm $DOC_BUILD_SOURCES_DIR/*/*/*.txt
 
 ~/Library/Python/3.8/bin/sphinx-autobuild \
   --delay 5 \
+  --open-browser \
   --poll \
   --watch $DOC_SRC_DIR \
   $DOC_SRC_DIR $DOC_BUILD_DIR
