@@ -1,8 +1,8 @@
 #!/usr/bin/env python3.8
 
 
-from art_of_geom.geom.euclid.r2.point import Pt, PtAtInf
-from art_of_geom.geom.euclid.r2.line import Ln, LnAtInf, Ray, Seg
+from art_of_geom.geom.euclid.r3.point import Pt, PtAtInf
+from art_of_geom.geom.euclid.r3.line import Ln, LnAtInf, Ray, Seg
 
 
 A = Pt(name='A'); print(A)
