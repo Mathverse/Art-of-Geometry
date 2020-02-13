@@ -104,7 +104,7 @@ class _GeometryEntityABC(GeometryEntity):
         self._name = None
 
     def __str__(self) -> str:
-        return repr(self)
+        return f'{self.session.name}: {repr(self)}'
 
     @abstractmethod
     # @_with_name_assignment   # TypeError: 'staticmethod' object is not callable
