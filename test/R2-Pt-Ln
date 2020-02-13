@@ -1,12 +1,16 @@
 #!/usr/bin/env python3.8
 
 
+from random import choice
+
 from art_of_geom.geom.euclid.r2.point import Pt, PtAtInf
 from art_of_geom.geom.euclid.r2.line import Ln, LnAtInf, Ray, Seg
-from art_of_geom.geom.session import Session
+from art_of_geom.geom.session import Session, DEFAULT_SESSION
 
 
-s = Session('test')
+s = Session() \
+    if choice((True, False)) \
+    else DEFAULT_SESSION
 
 
 s.A = Pt(name='A'); print(s.A)

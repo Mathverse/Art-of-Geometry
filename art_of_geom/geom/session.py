@@ -1,7 +1,7 @@
 from __future__ import annotations   # to avoid circular import b/w _GeometryEntityABC & Session
 
 
-__all__ = 'Session', 'GLOBAL_SESSION'
+__all__ = 'Session', 'DEFAULT_SESSION'
 
 
 from sympy.assumptions.assume import AssumptionsContext
@@ -17,7 +17,7 @@ class Session:
     def __init__(self, name: Optional[str] = None, /) -> None:
         self.name = \
             name \
-            if isinstance(name, str) and name \
+            if isinstance(name, str) \
             else str(uuid4())
 
         self.geometry_entities = {}
@@ -25,9 +25,15 @@ class Session:
         self.sympy_assumptions = AssumptionsContext()
 
     def __repr__(self) -> str:
-        return f'Geometry Session "{self.name}"'
+        return f"Geometry Session{f' {name.upper()}' if (name := self.name) else ''}"
 
     __str__ = __repr__
+
+    @property
+    def _str_prefix(self) -> str:
+        return f'{name}: ' \
+            if (name := self.name) \
+          else ''
 
     def __setattr__(self, name: str, value, /) -> None:
         from .abc import _GeometryEntityABC
@@ -72,4 +78,4 @@ class Session:
 
 
 # Global Geometry Session
-GLOBAL_SESSION = Session('GLOBAL')
+DEFAULT_SESSION = Session('')

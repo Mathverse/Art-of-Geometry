@@ -11,7 +11,7 @@ from ...abc import _GeometryEntityABC
 
 class _EuclidGeometryEntityInR2ABC(_GeometryEntityABC):
     def __str__(self) -> str:
-        return f'{self.session.name}: Euclid.R2 {repr(self)}'
+        return f'{self.session._str_prefix}Euclid.R2 {repr(self)}'
 
     @cached_property
     @abstractmethod
