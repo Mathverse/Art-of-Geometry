@@ -144,5 +144,5 @@ class PlaneAtInfinityInR3(_PlaneInR3ABC):
 PlnAtInf = PlaneAtInf = PlaneAtInfinity = PlaneAtInfinityR3 = PlaneAtInfinityInR3
 
 
-class DirectedPlaneAtInfinityInR3(PlaneAtInfinityInR3)
+class DirectedPlaneAtInfinityInR3(PlaneAtInfinityInR3):
     pass
