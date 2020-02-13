@@ -52,14 +52,23 @@ class _GeometryEntityABC(GeometryEntity):
                 **kwargs) \
                 -> _GeometryEntityABC:
             result = geometry_entity_method(self, *args, **kwargs)
-            assert isinstance(result, _GeometryEntityABC), \
-                TypeError(f'*** RESULT {result} NOT OF TYPE {_GeometryEntityABC.__name__} ***')
 
-            if name:
-                _GeometryEntityABC._validate_name(name)
-                result.name = name
+            if geometry_entity_method.__name__ == '__new__':
+                assert result is not None
+                result._name = name
+                return result
 
-            return result
+            elif geometry_entity_method.__name__ == '__init__':
+                assert result is None
+                self._name = name
+
+            else:
+                assert isinstance(result, _GeometryEntityABC), \
+                    TypeError(f'*** RESULT {result} NOT OF TYPE {_GeometryEntityABC.__name__} ***')
+                if name:
+                    _GeometryEntityABC._validate_name(name)
+                    result.name = name
+                return result
 
         return geometry_entity_method_with_name_assignment
 

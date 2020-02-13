@@ -38,11 +38,8 @@ class _LineInR2ABC(_LinearEntityInR2ABC, _EuclidLineABC):
 
 
 class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
-    def __new__(
-            cls,
-            point_0: PointInR2, point_1: _PointInR2ABC, /,
-            *, name: Optional[str] = None) \
-            -> Line2D:
+    @_LineInR2ABC._with_name_assignment
+    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, /) -> Line2D:
         assert isinstance(point_0, PointInR2), \
             TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR2.__name__} ***')
         
@@ -65,11 +62,8 @@ class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
                             f'NEITHER OF TYPE {PointInR2.__name__} '
                             f'NOR OF TYPE {PointAtInfinityInR2.__name__} ***')
 
-    def __init__(
-            self,
-            point_0: PointInR2, point_1: _PointInR2ABC, /,
-            *, name: Optional[str] = None) \
-            -> None:
+    @_LineInR2ABC._with_name_assignment
+    def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, /) -> None:
         self.point_0 = point_0
 
         self.point_1 = point_1
@@ -78,8 +72,6 @@ class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
             point_1 \
             if self._point_1_at_infinity \
             else PointAtInfinityInR2(self.direction)
-
-        self._name = name
 
     @cached_property
     def equation(self) -> Expr:
@@ -109,17 +101,12 @@ Ln = Line = LineR2 = LineInR2
 
 
 class LineAtInfinityInR2(_LineInR2ABC, _EuclidLineAtInfinityABC):
-    def __init__(
-            self,
-            normal_direction: Point2D, /,
-            *, name: Optional[str] = None) \
-            -> None:
+    @_LineInR2ABC._with_name_assignment
+    def __init__(self, normal_direction: Point2D, /) -> None:
         assert isinstance(normal_direction, Point2D), \
             TypeError(f'*** NORMAL DIRECTION {normal_direction} NOT OF TYPE {Point2D.__name__} ***')
 
         self.normal_direction = normal_direction
-
-        self._name = name
 
     def __eq__(self, line_at_infinity: 'LineAtInfinityInR2') -> bool:
         assert isinstance(line_at_infinity, LineAtInfinityInR2), \
@@ -145,11 +132,8 @@ LnAtInf = LineAtInf = LineAtInfinity = LineAtInfinityR2 = LineAtInfinityInR2
 
 
 class RayInR2(_ConcreteLinearEntityInR2ABC, _EuclidRayABC, Ray2D):
-    def __new__(
-            cls,
-            point_0: PointInR2, point_1: _PointInR2ABC, /,
-            *, name: Optional[str] = None) \
-            -> Ray2D:
+    @_ConcreteLinearEntityInR2ABC._with_name_assignment
+    def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, /) -> Ray2D:
         assert isinstance(point_0, PointInR2), \
             TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR2.__name__} ***')
 
