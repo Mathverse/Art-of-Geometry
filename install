@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
 
+git pull
+
+
 python3.8 -m pip install -r requirements-setup.txt --upgrade --user
 python3.8 -m pip install -e . --upgrade --user
