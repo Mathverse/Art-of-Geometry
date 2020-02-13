@@ -46,12 +46,9 @@ extensions = (
     'sphinx.ext.inheritance_diagram',   # Include inheritance diagrams
     'sphinx.ext.intersphinx',   # Link to other projects' documentation
     'sphinx.ext.linkcode',   # Add external links to source code
-
-    # math support
-    # 'sphinx.ext.imgmath',   # Render math as images
-    # 'sphinx.ext.jsmath',   # Render math via JavaScript
+    'sphinx.ext.imgmath',   # Render math as images
     'sphinx.ext.mathjax',   # Render math via JavaScript
-
+    'sphinx.ext.jsmath',   # Render math via JavaScript
     'sphinx.ext.napoleon',   # Support for NumPy and Google style docstrings
     'sphinx.ext.todo',   # Support for todo items
     'sphinx.ext.viewcode'   # Add links to highlighted source code
