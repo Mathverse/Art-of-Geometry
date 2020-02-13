@@ -21,7 +21,7 @@ class _PointInR2ABC(_EuclidGeometryEntityInR2ABC, _EuclidPointABC):
 class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
     def __new__(
             cls,
-            /, x: Optional[Expr] = None, y: Optional[Expr] = None,
+            x: Optional[Expr] = None, y: Optional[Expr] = None,
             *, name: Optional[str] = None) \
             -> Point2D:
         if not name:
@@ -104,6 +104,7 @@ Pt = Point = PointR2 = PointInR2
 
 
 class PointAtInfinityInR2(_PointInR2ABC, _EuclidPointAtInfinityABC):
+    @_PointInR2ABC._with_name_assignment(uuid_if_empty=True)
     def __init__(
             self,
             direction: Point2D, /,
@@ -113,11 +114,6 @@ class PointAtInfinityInR2(_PointInR2ABC, _EuclidPointAtInfinityABC):
             TypeError(f'*** DIRECTION {direction} NOT OF TYPE {Point2D.__name__} ***')
 
         self.direction = direction
-
-        self._name = \
-            name \
-            if name \
-            else str(uuid4())
 
 
 # aliases

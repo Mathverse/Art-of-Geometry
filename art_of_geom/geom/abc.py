@@ -6,6 +6,7 @@ from functools import wraps
 from sympy.core.expr import Expr
 from sympy.geometry.entity import GeometryEntity
 from typing import Optional, Tuple
+from uuid import uuid4
 
 from ..util.compat import cached_property
 # from .session import Session, GLOBAL_SESSION   # import within the class below instead to avoid circular importing
@@ -42,35 +43,42 @@ class _GeometryEntityABC(GeometryEntity):
             TypeError(f'*** {name} NOT NON-EMPTY STRING ***')
 
     @staticmethod
-    def _with_name_assignment(geometry_entity_method):
+    def _with_name_assignment(uuid_if_empty=False):
 
-        @wraps(geometry_entity_method)
-        def geometry_entity_method_with_name_assignment(
-                self,
-                *args,
-                name: Optional[str] = None,
-                **kwargs) \
-                -> _GeometryEntityABC:
-            result = geometry_entity_method(self, *args, **kwargs)
+        def geometry_entity_method_with_name_assignment_decorator(geometry_entity_method):
 
-            if geometry_entity_method.__name__ == '__new__':
-                assert result is not None
-                result._name = name
-                return result
+            @wraps(geometry_entity_method)
+            def geometry_entity_method_with_name_assignment(
+                    cls_or_self,
+                    *args,
+                    name: Optional[str] = None,
+                    **kwargs) \
+                    -> _GeometryEntityABC:
+                result = geometry_entity_method(cls_or_self, *args, **kwargs)
 
-            elif geometry_entity_method.__name__ == '__init__':
-                assert result is None
-                self._name = name
+                if uuid_if_empty and not name:
+                    name = str(uuid4())
 
-            else:
-                assert isinstance(result, _GeometryEntityABC), \
-                    TypeError(f'*** RESULT {result} NOT OF TYPE {_GeometryEntityABC.__name__} ***')
-                if name:
-                    _GeometryEntityABC._validate_name(name)
-                    result.name = name
-                return result
+                if geometry_entity_method.__name__ == '__new__':
+                    assert result is not None
+                    result._name = name
+                    return result
 
-        return geometry_entity_method_with_name_assignment
+                elif geometry_entity_method.__name__ == '__init__':
+                    assert result is None
+                    cls_or_self._name = name
+
+                else:
+                    assert isinstance(result, _GeometryEntityABC), \
+                        TypeError(f'*** RESULT {result} NOT OF TYPE {_GeometryEntityABC.__name__} ***')
+                    if name:
+                        _GeometryEntityABC._validate_name(name)
+                        result.name = name
+                    return result
+
+            return geometry_entity_method_with_name_assignment
+
+        return geometry_entity_method_with_name_assignment_decorator
 
     @property
     def name(self) -> str:
