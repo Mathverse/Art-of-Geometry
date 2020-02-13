@@ -10,7 +10,7 @@ from sympy.geometry.point import Point
 from ...util.compat import cached_property
 from ..line import \
     _LinearEntityABC, _ConcreteLinearEntityABC, _LinearEntityAtInfinityABC, \
-    _LineABC, _ConcreteLineABC, _LineAtInfinityABC
+    _LineABC, _ConcreteLineABC, _ConcreteDirectedLineABC, _LineAtInfinityABC, _DirectedLineAtInfinityABC
 from ..point import _ConcretePointABC
 
 

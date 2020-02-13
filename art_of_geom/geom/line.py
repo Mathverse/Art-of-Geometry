@@ -1,6 +1,6 @@
 __all__ = \
     '_LinearEntityABC', '_ConcreteLinearEntityABC', '_LinearEntityAtInfinityABC', \
-    '_LineABC', '_ConcreteLineABC', '_LineAtInfinityABC'
+    '_LineABC', '_ConcreteLineABC', '_ConcreteDirectedLineABC', '_LineAtInfinityABC', '_DirectedLineAtInfinityABC'
 
 
 from abc import abstractmethod
@@ -63,5 +63,21 @@ class _ConcreteLineABC(_LineABC, _ConcreteLinearEntityABC):
         return f'Ln {self.name}'
 
 
+class _ConcreteDirectedLineABC(_ConcreteLineABC):
+    @property
+    def name(self) -> str:
+        return self._name \
+            if self._name \
+            else f'-{self.point_0.name}->{self.point_1.name}-'
+
+    @property
+    def _short_repr(self) -> str:
+        return f'DirLn {self.name}'
+
+
 class _LineAtInfinityABC(_LineABC, _LinearEntityAtInfinityABC):
+    pass
+
+
+class _DirectedLineAtInfinityABC(_LineAtInfinityABC):
     pass
