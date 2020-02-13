@@ -6,10 +6,9 @@ from sympy.assumptions.assume import global_assumptions
 from sympy.core.expr import Expr
 from sympy.functions.elementary.trigonometric import cos, sin
 from sympy.geometry.ellipse import Circle as Circle2D
-from sympy.geometry.exceptions import GeometryError
-from typing import Tuple
+from typing import Optional, Tuple
 
-from ......util import cached_property
+from ......util.compat import cached_property
 from ....coord import THETA
 from ...abc import _EuclidGeometryEntityInR2ABC
 from ...coord import X, Y
@@ -17,11 +16,13 @@ from ...point import PointInR2
 
 
 class CircleInR2(_EuclidGeometryEntityInR2ABC):
-    def __init__(self, center: PointInR2, radius: Expr, *, name: str = None) -> None:
+    def __init__(
+            self,
+            /, center: PointInR2, radius: Expr,
+            *, name: Optional[str] = None) \
+            -> None:
         assert isinstance(center, PointInR2), \
-            GeometryError(
-                '*** CENTER {} NOT {} ***'
-                .format(center, PointInR2.__name__))
+            TypeError(f'*** CENTER {center} NOT {PointInR2.__name__} ***')
 
         global_assumptions.add(Q.nonnegative(radius))
 
@@ -35,12 +36,10 @@ class CircleInR2(_EuclidGeometryEntityInR2ABC):
     def name(self) -> str:
         return self._name \
             if self._name \
-          else '{}({})'.format(
-                self.center.name,
-                self.radius)
+          else f'{self.center.name}({self.radius})'
 
     def __repr__(self) -> str:
-        return 'Cir {}'.format(self.name)
+        return f'Cir {self.name}'
 
     @cached_property
     def equation(self) -> Expr:

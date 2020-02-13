@@ -6,13 +6,18 @@ from sympy.assumptions.assume import global_assumptions
 from sympy.core.expr import Expr
 from sympy.core.singleton import S
 from sympy.geometry.ellipse import Ellipse as Ellipse2D
+from typing import Optional
 
 from ...point import PointInR2
 from .. import ConicInR2
 
 
 class EllipseInR2(ConicInR2):
-    def __init__(cls, focus: PointInR2, vertex: PointInR2, eccentricity: Expr, *, name: str = None) -> None:
+    def __init__(
+            cls,
+            /, focus: PointInR2, vertex: PointInR2, eccentricity: Expr,
+            *, name: str = None) \
+            -> None:
         global_assumptions.add(Q.negative(eccentricity - S.One))
 
         super().__init__(

@@ -171,8 +171,9 @@ class RayInR2(_ConcreteLinearEntityInR2ABC, _EuclidRayABC, Ray2D):
             return ray
 
         else:
-            raise TypeError(
-                    f'*** POINT_1 {point_1} NEITHER OF TYPE {PointInR2.__name__} NOR OF TYPE {PointAtInfinityInR2.__name__} ***')
+            raise TypeError(f'*** POINT_1 {point_1} '
+                            f'NEITHER OF TYPE {PointInR2.__name__} '
+                            f'NOR OF TYPE {PointAtInfinityInR2.__name__} ***')
 
     def __init__(
             self,

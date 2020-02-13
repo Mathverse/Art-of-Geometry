@@ -7,8 +7,7 @@ from sympy.core.expr import Expr
 from sympy.core.numbers import oo
 from sympy.core.singleton import S
 from sympy.functions.elementary.trigonometric import atan2, cos, sin
-from sympy.geometry.exceptions import GeometryError
-from typing import Tuple
+from typing import Optional, Tuple
 
 from .....util.compat import cached_property
 from ...coord import THETA
@@ -19,16 +18,16 @@ from ..point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
 
 class ConicInR2(_EuclidGeometryEntityInR2ABC):
-    def __init__(self, focus: PointInR2, vertex: PointInR2, eccentricity: Expr, *, name: str = None) -> None:
+    def __init__(
+            self,
+            /, focus: PointInR2, vertex: PointInR2, eccentricity: Expr,
+            *, name: Optional[str] = None) \
+            -> None:
         assert isinstance(focus, PointInR2), \
-            TypeError(
-                '*** FOCUS {} NOT OF TYPE {} ***'
-                .format(focus, PointInR2.__name__))
+            TypeError(f'*** FOCUS {focus} NOT OF TYPE {PointInR2.__name__} ***')
 
         assert isinstance(vertex, PointInR2), \
-            TypeError(
-                '*** VERTEX {} NOT OF TYPE {} ***'
-                .format(vertex, PointInR2.__name__))
+            TypeError(f'*** VERTEX {vertex} NOT OF TYPE {PointInR2.__name__} ***')
 
         global_assumptions.add(Q.nonnegative(eccentricity))
 
@@ -49,36 +48,33 @@ class ConicInR2(_EuclidGeometryEntityInR2ABC):
     def name(self) -> str:
         return self._name \
             if self._name \
-          else '{}(vtx: {}, ecc: {})'.format(
-                self.focus.name,
-                self.vertex.name,
-                self.eccentricity)
+          else f'{self.focus.name}(vtx: {self.vertex.name}, ecc: {self.eccentricity})'
 
     def __repr__(self) -> str:
-        return 'Conic {}'.format(self.name)
+        return f'Conic {self.name}'
 
     @cached_property
-    def is_circle(self):
+    def is_circle(self) -> bool:
         return self.eccentricity == S.Zero
 
     @cached_property
-    def is_ellipse(self):
+    def is_ellipse(self) -> bool:
         return S.Zero < self.eccentricity < S.One
 
     @cached_property
-    def is_parabola(self):
+    def is_parabola(self) -> bool:
         return self.eccentricity == S.One
 
     @cached_property
-    def is_hyperbola(self):
+    def is_hyperbola(self) -> bool:
         return S.One < self.eccentricity < oo
 
     @cached_property
-    def is_line(self):
+    def is_line(self) -> bool:
         return self.eccentricity == oo
 
     @cached_property
-    def linear_eccentricity(self):
+    def linear_eccentricity(self) -> Expr:
         if self.is_circle:
             return S.Zero
 
