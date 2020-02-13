@@ -4,7 +4,6 @@ __all__ = \
 
 
 from sympy.core.expr import Expr
-from sympy.geometry.exceptions import GeometryError
 from sympy.geometry.plane import Plane as Plane3D
 from sympy.geometry.point import Point3D
 from typing import Tuple
@@ -24,9 +23,7 @@ class _PlaneInR3ABC(_EuclidGeometryEntityInR3ABC):
 class PlaneInR3(_PlaneInR3ABC, Plane3D):
     def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, point_2: _PointInR3ABC, *, name: str = None) -> Plane3D:
         assert isinstance(point_0, PointInR3), \
-            GeometryError(
-                '*** POINT_0 {} NOT OF TYPE {} ***'
-                .format(point_0, PointInR3.__name__))
+            TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR3.__name__} ***')
 
         _point_1_at_infinity = isinstance(point_1, PointAtInfinityInR3)
 
@@ -35,9 +32,9 @@ class PlaneInR3(_PlaneInR3ABC, Plane3D):
 
         else:
             assert isinstance(point_1, PointInR3), \
-                GeometryError(
-                    '*** POINT_1 {} NEITHER {} NOR {} ***'
-                    .format(point_1, PointInR3.__name__, PointAtInfinityInR3.__name__))
+                TypeError(f'*** POINT_1 {point_1} '
+                          f'NEITHER OF TYPE {PointInR3.__name__} '
+                          f'NOR OF TYPE {PointAtInfinityInR3.__name__} ***')
 
         _point_2_at_infinity = isinstance(point_2, PointAtInfinityInR3)
 
@@ -46,9 +43,9 @@ class PlaneInR3(_PlaneInR3ABC, Plane3D):
 
         else:
             assert isinstance(point_2, PointInR3), \
-                GeometryError(
-                    '*** POINT_2 {} NEITHER {} NOR {} ***'
-                    .format(point_2, PointInR3.__name__, PointAtInfinityInR3.__name__))
+                TypeError(f'*** POINT_2 {point_2} '
+                          f'NEITHER OF TYPE {PointInR3.__name__} '
+                          f'NOR OF TYPE {PointAtInfinityInR3.__name__} ***')
 
         plane = super().__new__(
                     cls,
@@ -78,10 +75,7 @@ class PlaneInR3(_PlaneInR3ABC, Plane3D):
     def name(self) -> str:
         return self._name \
             if self._name \
-          else '{} --- {} --- {}'.format(
-                self.point_0.name,
-                self.point_1.name,
-                self.point_2.name)
+          else f'+{self.point_0.name}++{self.point_1.name}++{self.point_2.name}+'
 
     def __repr__(self) -> str:
         return 'Pln {}'.format(self.name)
@@ -133,15 +127,22 @@ class PlaneInR3(_PlaneInR3ABC, Plane3D):
 Pln = Plane = PlaneR3 = PlaneInR3
 
 
+class DirectedPlaneInR3(PlaneInR3):
+    pass
+
+
 class PlaneAtInfinityInR3(_PlaneInR3ABC):
+    @_PlaneInR3ABC._with_name_assignment(uuid_if_empty=True)
     def __init__(self, normal_direction: Point3D) -> None:
         assert isinstance(normal_direction, Point3D), \
-            GeometryError(
-                '*** NORMAL DIRECTION {} NOT OF TYPE {} ***'
-                .format(normal_direction, Point3D.__name__))
+            TypeError(f'*** NORMAL DIRECTION {normal_direction} NOT OF TYPE {Point3D.__name__} ***')
 
         self.normal_direction = normal_direction
 
 
 # aliases
 PlnAtInf = PlaneAtInf = PlaneAtInfinity = PlaneAtInfinityR3 = PlaneAtInfinityInR3
+
+
+class DirectedPlaneAtInfinityInR3(PlaneAtInfinityInR3)
+    pass
