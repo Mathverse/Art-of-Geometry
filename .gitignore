@@ -134,5 +134,8 @@ dmypy.json
 .idea/
 *.iml
 
+# VirtualEnv
+VirtualEnv/
+
 # test
 test/*.ipynb
