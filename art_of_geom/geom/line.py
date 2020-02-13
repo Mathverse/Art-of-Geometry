@@ -56,7 +56,7 @@ class _ConcreteLineABC(_LineABC, _ConcreteLinearEntityABC):
     def name(self) -> str:
         return self._name \
             if self._name \
-          else f'_{self.point_0.name}__{self.point_1.name}_'
+          else f'-{self.point_0.name}--{self.point_1.name}-'
 
     @property
     def _short_repr(self) -> str:
