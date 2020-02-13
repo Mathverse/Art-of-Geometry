@@ -105,11 +105,7 @@ Pt = Point = PointR2 = PointInR2
 
 class PointAtInfinityInR2(_PointInR2ABC, _EuclidPointAtInfinityABC):
     @_PointInR2ABC._with_name_assignment(uuid_if_empty=True)
-    def __init__(
-            self,
-            direction: Point2D, /,
-            *, name: Optional[str] = None) \
-            -> None:
+    def __init__(self, direction: Point2D, /) -> None:
         assert isinstance(direction, Point2D), \
             TypeError(f'*** DIRECTION {direction} NOT OF TYPE {Point2D.__name__} ***')
 
