@@ -3,6 +3,7 @@
 # For a full list see the documentation: https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 
+from datetime import date
 import os
 import sys
 
@@ -18,8 +19,9 @@ import sys
 # -- Project information -----------------------------------------------------
 
 project = 'Art of Geometry'
-copyright = '2020, Luong The Vinh'
 author = 'Luong The Vinh'
+copyright = f'{date.today().year}, {author}'
+
 
 # The full version, including alpha/beta/rc tags
 release = '0.0.0'
