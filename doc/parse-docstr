@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+
+# *** call this script INSIDE doc/ dir ***
+
+
+MODULE=../art_of_geom
+DOC_SRC_DIR=source
+
+
+# clean up existing .RST files
+rm $DOC_SRC_DIR/$MODULE*.rst
+
+# generate .rst files from module code & docstrings
+# any pathnames given at the end are paths to be excluded ignored during generation.
+~/Library/Python/3.8/bin/sphinx-apidoc \
+  --force \
+  --implicit-namespaces \
+  --maxdepth 9 \
+  --module-first \
+  --output-dir $DOC_SRC_DIR \
+  --private \
+  $MODULE

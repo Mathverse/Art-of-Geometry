@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+
+# *** call this script INSIDE doc/ dir ***
+
+
+DOC_SRC_DIR=source
+DOC_BUILD_DIR=_build
+DOC_BUILD_DOCTREES_DIR=$DOC_BUILD_DIR/.doctrees
+DOC_BUILD_SOURCES_DIR=$DOC_BUILD_DIR/_sources
+
+
+rm $DOC_BUILD_DIR/*.html
+rm $DOC_BUILD_DIR/*/*.html
+rm $DOC_BUILD_DIR/*/*/*.html
+
+rm $DOC_BUILD_DOCTREES_DIR/*.doctree
+rm $DOC_BUILD_DOCTREES_DIR/*/*.doctree
+rm $DOC_BUILD_DOCTREES_DIR/*/*/*.doctree
+
+rm $DOC_BUILD_SOURCES_DIR/*.txt
+rm $DOC_BUILD_SOURCES_DIR/*/*.txt
+rm $DOC_BUILD_SOURCES_DIR/*/*/*.txt
+
+
+./parse-docstr
+
+
+~/Library/Python/3.8/bin/sphinx-autobuild \
+  --delay 5 \
+  --poll \
+  --watch $DOC_SRC_DIR \
+  $DOC_SRC_DIR $DOC_BUILD_DIR
