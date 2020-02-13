@@ -115,20 +115,12 @@ Pt = Point = PointR3 = PointInR3
 
 
 class PointAtInfinityInR3(_PointInR3ABC, _EuclidPointAtInfinityABC):
-    def __init__(
-            self,
-            direction: Point3D, /,
-            *, name: Optional[str] = None) \
-            -> None:
+    @_PointInR3ABC._with_name_assignment(uuid_if_empty=True)
+    def __init__(self, direction: Point3D, /) -> None:
         assert isinstance(direction, Point3D), \
             TypeError(f'*** DIRECTION {direction} NOT {Point3D.__name__} ***')
 
         self.direction = direction
-
-        self._name = \
-            name \
-            if name \
-            else str(uuid4())
 
 
 # aliases
