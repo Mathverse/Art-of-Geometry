@@ -17,8 +17,9 @@ class _EuclidConcretePointABC(_EuclidPointABC, _ConcretePointABC):
 
 
 class _EuclidPointAtInfinityABC(_EuclidPointABC, _PointAtInfinityABC):
-    def __repr__(self) -> str:
-        return 'Pt@Inf {}'.format(self.name)
+    @property
+    def _short_repr(self) -> str:
+        return f'Pt@Inf {self.name}'
 
     def __eq__(self, point_at_infinity: '_EuclidPointAtInfinityABC') -> bool:
         assert isinstance(point_at_infinity, _type := type(self)), \

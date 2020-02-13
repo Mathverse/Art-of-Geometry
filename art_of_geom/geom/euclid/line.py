@@ -51,7 +51,8 @@ class _EuclidRayABC(_EuclidConcreteLinearEntityABC, Ray):
             if self._name \
           else f'{self.point_0.name} *-- {self.point_1.name}'
 
-    def __repr__(self) -> str:
+    @property
+    def _short_repr(self) -> str:
         return f'Ray {self.name}'
 
 
@@ -62,5 +63,6 @@ class _EuclidSegmentABC(_EuclidConcreteLinearEntityABC, Segment):
             if self._name \
           else f'{self.point_0.name} *-* {self.point_1.name}'
 
-    def __repr__(self) -> str:
+    @property
+    def _short_repr(self) -> str:
         return f'Seg {self.name}'

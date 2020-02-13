@@ -10,8 +10,8 @@ from ...abc import _GeometryEntityABC
 
 
 class _EuclidGeometryEntityInR2ABC(_GeometryEntityABC):
-    def __str__(self) -> str:
-        return f'{self.session._str_prefix}Euclid.R2 {repr(self)}'
+    def __repr__(self) -> str:
+        return f'{self.session._str_prefix}Euclid.R2 {self._short_repr}'
 
     @cached_property
     @abstractmethod

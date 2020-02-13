@@ -9,7 +9,8 @@ from ..util.compat import cached_property
 
 
 class _PointABC(_GeometryEntityABC):
-    def __repr__(self) -> str:
+    @property
+    def _short_repr(self) -> str:
         return f'Pt {self.name}'
 
     @cached_property
