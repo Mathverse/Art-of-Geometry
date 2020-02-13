@@ -1,0 +1,32 @@
+#!/usr/bin/env python3.8
+
+
+from sympy.core.symbol import Symbol
+
+from art_of_geom.geom.euclid.r2.point import Pt, PtAtInf
+from art_of_geom.geom.euclid.r2.line import Ln, LnAtInf, Ray, Seg
+
+
+A = Pt(name='A'); print(A)
+B = Pt(name='B'); print(B)
+C = Pt(name='C'); print(C)
+D = Pt(name='D'); print(D)
+
+
+d = PtAtInf(D, name='d'); print(d)
+_d = PtAtInf(-D, name='_d'); print(_d)
+
+
+lnAB = Ln(A, B); print(lnAB)
+lnAd = Ln(A, d); print(lnAd)
+
+lnCD = Ln(C, D); print(lnCD)
+lnCd = Ln(C, d); print(lnCd)
+
+
+rayAB = Ray(A, B); print(rayAB)
+rayAd = Ray(A, d); print(rayAd)
+rayA_d = Ray(A, _d); print(rayA_d)
+
+
+segAB = Seg(A, B); print(segAB)
