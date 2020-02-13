@@ -6,7 +6,7 @@ __all__ = '_GeometryEntityABC',
 
 from abc import abstractmethod
 from functools import wraps
-from inspect import ismethod
+from inspect import isfunction
 from sympy.core.expr import Expr
 from sympy.geometry.entity import GeometryEntity
 from typing import Optional, Tuple, TYPE_CHECKING
@@ -48,7 +48,7 @@ class _GeometryEntityABC(GeometryEntity):
             TypeError(f'*** {name} NOT NON-EMPTY STRING ***')
 
     @staticmethod
-    def _with_name_assignment(geometry_entity_method=None, *, uuid_if_empty=False):
+    def _with_name_assignment(_method=None, *, uuid_if_empty=False):
 
         def decorator(geometry_entity_method, /):
 
@@ -83,8 +83,8 @@ class _GeometryEntityABC(GeometryEntity):
 
             return geometry_entity_method_with_name_assignment
 
-        if ismethod(geometry_entity_method):
-            return decorator(geometry_entity_method)
+        if isfunction(_method):
+            return decorator(_method)
         else:
             return decorator
 
