@@ -1,7 +1,7 @@
 __all__ = '_GeometryEntityABC',
 
 
-from abc import ABC, ABCMeta, abstractmethod, abstractproperty, abstractclassmethod, abstractstaticmethod
+from abc import abstractmethod
 from functools import wraps
 from sympy.core.expr import Expr
 from sympy.geometry.entity import GeometryEntity
