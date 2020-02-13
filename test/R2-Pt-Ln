@@ -3,28 +3,32 @@
 
 from art_of_geom.geom.euclid.r2.point import Pt, PtAtInf
 from art_of_geom.geom.euclid.r2.line import Ln, LnAtInf, Ray, Seg
+from art_of_geom.geom.session import Session
 
 
-A = Pt(name='A'); print(A)
-B = Pt(name='B'); print(B)
-C = Pt(name='C'); print(C)
-D = Pt(name='D'); print(D)
+s = Session('test')
 
 
-d = PtAtInf(D, name='d'); print(d)
-_d = PtAtInf(-D, name='_d'); print(_d)
+s.A = Pt(name='A'); print(s.A)
+s.B = Pt(name='B'); print(s.B)
+s.C = Pt(name='C'); print(s.C)
+s.D = Pt(name='D'); print(s.D)
 
 
-lnAB = Ln(A, B); print(lnAB)
-lnAd = Ln(A, d); print(lnAd)
-
-lnCD = Ln(C, D); print(lnCD)
-lnCd = Ln(C, d); print(lnCd)
+s.d = PtAtInf(s.D, name='d'); print(s.d)
+s._d = PtAtInf(-s.D, name='_d'); print(s._d)
 
 
-rayAB = Ray(A, B); print(rayAB)
-rayAd = Ray(A, d); print(rayAd)
-rayA_d = Ray(A, _d); print(rayA_d)
+s.lnAB = Ln(s.A, s.B); print(s.lnAB)
+s.lnAd = Ln(s.A, s.d); print(s.lnAd)
+
+s.lnCD = Ln(s.C, s.D); print(s.lnCD)
+s.lnCd = Ln(s.C, s.d); print(s.lnCd)
 
 
-segAB = Seg(A, B); print(segAB)
+s.rayAB = Ray(s.A, s.B); print(s.rayAB)
+s.rayAd = Ray(s.A, s.d); print(s.rayAd)
+s.rayA_d = Ray(s.A, s._d); print(s.rayA_d)
+
+
+s.segAB = Seg(s.A, s.B); print(s.segAB)
