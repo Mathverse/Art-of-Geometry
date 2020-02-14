@@ -1,6 +1,3 @@
-#!/usr/bin/env python3.8
-
-
 # Configuration file for the Sphinx documentation builder
 # This file only contains a selection of the most common options
 # For a full list see the documentation: https://www.sphinx-doc.org/en/master/usage/configuration.html
@@ -8,11 +5,7 @@
 
 from datetime import date
 import os
-from sys import version_info
-
-
-# Python version
-print(f"\n*** BUILDING DOCUMENTATION USING PYTHON {version_info[:2]} ***\n")
+import sys
 
 
 # -- Path setup --------------------------------------------------------------
