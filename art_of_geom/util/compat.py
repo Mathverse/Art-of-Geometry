@@ -1,5 +1,4 @@
-__all__ = \
-    'cached_property'
+__all__ = 'cached_property',
 
 
 from sys import version_info
