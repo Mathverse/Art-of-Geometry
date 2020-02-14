@@ -52,7 +52,7 @@ extensions = (
     'sphinx.ext.imgconverter',   # A reference image converter using Imagemagick
     'sphinx.ext.inheritance_diagram',   # Include inheritance diagrams
     'sphinx.ext.intersphinx',   # Link to other projects' documentation
-    'sphinx.ext.linkcode',   # Add external links to source code
+    # 'sphinx.ext.linkcode',   # Add external links to source code
 
     # math support
     # 'sphinx.ext.imgmath',   # Render math as images
