@@ -40,6 +40,8 @@ release = '0.0.0'
 # They can be extensions coming with Sphinx (named sphinx.ext.*) or your custom ones
 extensions = (
     'sphinx.ext.autodoc',  # Include documentation from docstrings
+    # 'sphinx.ext.autodoc.typehints',
+
     'sphinx.ext.autosectionlabel',  # Allow reference sections using its title
     'sphinx.ext.autosummary',   # Generate autodoc summaries
     'sphinx.ext.coverage',   # Collect doc coverage stats
@@ -81,3 +83,20 @@ html_theme = 'alabaster'
 # Add any paths that contain custom static files (such as style sheets) here, relative to this directory
 # They are copied after the built-in static files, so a file named default.css will overwrite the built-in default.css
 html_static_path = ['_static']
+
+
+# AutoDoc
+autodoc_default_options = {
+    # 'members': 'var1, var2',
+    'member-order': 'bysource',
+    'exclude-members': '__weakref__',
+    'imported-members': False,
+    'show-inheritance': True,
+    'inherited-members': True,
+    'private-members': True,
+    'special-members': '__init__',
+    'undoc-members': False,
+    'ignore-module-all': False
+}
+
+# autodoc_typehints = 'description'
