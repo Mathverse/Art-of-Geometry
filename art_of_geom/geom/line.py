@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 __all__ = \
     '_LinearEntityABC', '_ConcreteLinearEntityABC', '_LinearEntityAtInfinityABC', \
     '_LineABC', '_ConcreteLineABC', '_ConcreteDirectedLineABC', '_LineAtInfinityABC', '_DirectedLineAtInfinityABC'
@@ -12,7 +15,7 @@ from .point import _PointABC
 class _LinearEntityABC(_GeometryEntityABC):
     @abstractmethod
     @_GeometryEntityABC._with_name_assignment
-    def parallel_line(self, through_point: _PointABC, /) -> '_LineABC':
+    def parallel_line(self, through_point: _PointABC, /) -> _LineABC:
         raise NotImplementedError
 
     @abstractmethod
@@ -27,7 +30,7 @@ class _LinearEntityABC(_GeometryEntityABC):
 
     @abstractmethod
     @_GeometryEntityABC._with_name_assignment
-    def perpendicular_line(self, through_point: _PointABC, /) -> '_LineABC':
+    def perpendicular_line(self, through_point: _PointABC, /) -> _LineABC:
         raise NotImplementedError
 
 

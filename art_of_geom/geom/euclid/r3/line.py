@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 __all__ = \
     'LineInR3', 'LineR3', 'Line', 'Ln', \
     'LineAtInfinityInR3', 'LineAtInfinityR3', 'LineAtInfinity', 'LineAtInf', 'LnAtInf', \
@@ -88,11 +91,11 @@ class LineInR3(_LineInR3ABC, _EuclidConcreteLineABC, Line3D):
                Z - self.point_0.z - self.direction.z * T
 
     @_LineInR3ABC._with_name_assignment
-    def parallel_line(self, through_point: PointInR3, /) -> 'LineInR3':
+    def parallel_line(self, through_point: PointInR3, /) -> LineInR3:
         return LineInR3(through_point, PointAtInfinityInR3(self.direction))
 
     @_LineInR3ABC._with_name_assignment
-    def perpendicular_line(self, through_point: PointInR3, /) -> 'LineInR3':
+    def perpendicular_line(self, through_point: PointInR3, /) -> LineInR3:
         return LineInR3(through_point, self.perpendicular_projection_of_point(through_point))
         # TODO: CASE WHEN through_point ON THIS LINE
 

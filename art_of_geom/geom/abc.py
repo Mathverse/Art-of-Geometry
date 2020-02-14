@@ -1,4 +1,4 @@
-from __future__ import annotations   # to avoid circular import b/w _GeometryEntityABC & Session
+from __future__ import annotations
 
 
 __all__ = '_GeometryEntityABC',

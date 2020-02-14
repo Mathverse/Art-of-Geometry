@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 __all__ = \
     'LineInR2', 'LineR2', 'Line', 'Ln', \
     'LineAtInfinityInR2', 'LineAtInfinityR2', 'LineAtInfinity', 'LineAtInf', 'LnAtInf', \
@@ -90,15 +93,15 @@ class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
                Y - self.point_0.y - self.direction.y * T
 
     @_LineInR2ABC._with_name_assignment
-    def same(self) -> 'LineInR2':
+    def same(self) -> LineInR2:
         return LineInR2(self.point_0, self.point_1)
 
     @_LineInR2ABC._with_name_assignment
-    def parallel_line(self, through_point: PointInR2, /) -> 'LineInR2':
+    def parallel_line(self, through_point: PointInR2, /) -> LineInR2:
         return LineInR2(through_point, PointAtInfinityInR2(self.direction))
 
     @_LineInR2ABC._with_name_assignment
-    def perpendicular_line(self, through_point: PointInR2, /) -> 'LineInR2':
+    def perpendicular_line(self, through_point: PointInR2, /) -> LineInR2:
         return LineInR2(through_point, PointAtInfinityInR2(self.direction.orthogonal_direction))
 
 
@@ -114,14 +117,14 @@ class LineAtInfinityInR2(_LineInR2ABC, _EuclidLineAtInfinityABC):
 
         self.normal_direction = normal_direction
 
-    def __eq__(self, line_at_infinity: 'LineAtInfinityInR2') -> bool:
+    def __eq__(self, line_at_infinity: LineAtInfinityInR2) -> bool:
         assert isinstance(line_at_infinity, LineAtInfinityInR2), \
             TypeError(f'*** OTHER LINE_AT_INFINITY {line_at_infinity} NOT OF TYPE {LineAtInfinityInR2.__name__} ***')
 
         return self.normal_direction.is_scalar_multiple(line_at_infinity.normal_direction)
 
     @_LineInR2ABC._with_name_assignment
-    def same(self) -> 'LineAtInfinityInR2':
+    def same(self) -> LineAtInfinityInR2:
         return LineAtInfinityInR2(self.normal_direction)
 
     @_LineInR2ABC._with_name_assignment

@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 __all__ = \
     'PointInR3', 'PointR3', 'Point', 'Pt', \
     'PointAtInfinityInR3', 'PointAtInfinityR3', 'PointAtInfinity', 'PointAtInf', 'PtAtInf'
@@ -82,27 +85,27 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
                 self.z.name = f'[{name}.z]'
 
     @_PointInR3ABC._with_name_assignment
-    def same(self) -> 'PointInR3':
+    def same(self) -> PointInR3:
         return PointInR3(self.x, self.y, self.z)
 
     @classmethod
     @_PointInR3ABC._with_name_assignment
-    def _from_sympy_point_3d(cls, sympy_point_3d: Point3D, /) -> 'PointInR3':
+    def _from_sympy_point_3d(cls, sympy_point_3d: Point3D, /) -> PointInR3:
         return PointInR3(sympy_point_3d.x, sympy_point_3d.y, sympy_point_3d.z)
 
-    def __neg__(self) -> 'PointInR3':
+    def __neg__(self) -> PointInR3:
         return self._from_sympy_point_3d(super().__neg__())
 
-    def __add__(self, point: Point3D, /) -> 'PointInR3':
+    def __add__(self, point: Point3D, /) -> PointInR3:
         return self._from_sympy_point_3d(super().__add__(point))
 
-    def __sub__(self, point: Point3D, /) -> 'PointInR3':
+    def __sub__(self, point: Point3D, /) -> PointInR3:
         return self._from_sympy_point_3d(super().__sub__(point))
 
-    def __mul__(self, n: Expr, /) -> 'PointInR3':
+    def __mul__(self, n: Expr, /) -> PointInR3:
         return self._from_sympy_point_3d(super().__mul__(n))
 
-    def __div__(self, n: Expr, /) -> 'PointInR3':
+    def __div__(self, n: Expr, /) -> PointInR3:
         return self._from_sympy_point_3d(super().__div__(n))
 
     @cached_property
