@@ -1,32 +1,34 @@
 #!/usr/bin/env bash
 
 
-# *** call this script INSIDE doc/ dir ***
+# *** call this script INSIDE PY3.8 VIRTUALENV and INSIDE DOC/ dir ***
 
 
+MODULE=../art_of_geom
 DOC_SRC_DIR=source
 DOC_BUILD_DIR=_build
-DOC_BUILD_DOCTREES_DIR=$DOC_BUILD_DIR/.doctrees
-DOC_BUILD_SOURCES_DIR=$DOC_BUILD_DIR/_sources
 
 
-rm $DOC_BUILD_DIR/*.html
-rm $DOC_BUILD_DIR/*/*.html
-rm $DOC_BUILD_DIR/*/*/*.html
+# remove old .RST files
+rm $DOC_SRC_DIR/$MODULE*.rst
 
-rm $DOC_BUILD_DOCTREES_DIR/*.doctree
-rm $DOC_BUILD_DOCTREES_DIR/*/*.doctree
-rm $DOC_BUILD_DOCTREES_DIR/*/*/*.doctree
+# generate .RST files from module code & docstrings
+# any pathnames given at the end are paths to be excluded ignored during generation
+sphinx-apidoc \
+  --force \
+  --implicit-namespaces \
+  --maxdepth 9 \
+  --module-first \
+  --output-dir $DOC_SRC_DIR \
+  --private \
+  $MODULE
 
-rm $DOC_BUILD_SOURCES_DIR/*.txt
-rm $DOC_BUILD_SOURCES_DIR/*/*.txt
-rm $DOC_BUILD_SOURCES_DIR/*/*/*.txt
 
+# remove old doc
+rm -rf $DOC_BUILD_DIR
 
-./parse-docstr
-
-
-~/Library/Python/3.8/bin/sphinx-autobuild \
+# build new doc
+sphinx-autobuild \
   --delay 5 \
   --open-browser \
   --poll \
