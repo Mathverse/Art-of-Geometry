@@ -93,7 +93,7 @@ autodoc_default_options = {
     'private-members': True,
     'special-members': '__init__',
 
-    'undoc-members': False,
+    # 'undoc-members': False,   # *** HAVE TO MANUALLY REMOVE FROM GENERATED .RST FILES ***
 
     'ignore-module-all': False
 }

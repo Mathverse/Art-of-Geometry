@@ -4,13 +4,17 @@
 # *** call this script INSIDE PY3.8 VIRTUALENV and INSIDE DOC/ dir ***
 
 
-MODULE=../art_of_geom
+MODULE_NAME=art_of_geom
+MODULE_PATH=../$MODULE_NAME
+
 DOC_SRC_DIR=source
 DOC_BUILD_DIR=_build
 
 
+DOC_SRC_RST_FILE_PATHS="$DOC_SRC_DIR/$MODULE_NAME*.rst"
+
 # remove old .RST files
-rm $DOC_SRC_DIR/$MODULE*.rst
+rm $DOC_SRC_RST_FILE_PATHS
 
 # generate .RST files from module code & docstrings
 # any pathnames given at the end are paths to be excluded ignored during generation
@@ -21,7 +25,11 @@ sphinx-apidoc \
   --module-first \
   --output-dir $DOC_SRC_DIR \
   --private \
-  $MODULE
+  $MODULE_PATH
+
+# remove undocumented members
+sed -e /:undoc-members:/d -i .orig $DOC_SRC_RST_FILE_PATHS
+rm $DOC_SRC_DIR/*.orig
 
 
 # remove old doc
