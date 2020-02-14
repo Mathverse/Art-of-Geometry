@@ -1,13 +1,6 @@
 # Art of Geometry
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
 
+## Contents
 
-
-## Indices and Tables
-
-- :ref:`genindex`
-- :ref:`modindex`
-- :ref:`search`
+- [API Docs](modules)
