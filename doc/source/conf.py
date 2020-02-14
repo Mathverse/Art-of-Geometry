@@ -106,4 +106,4 @@ autodoc_default_options = {
     'ignore-module-all': False
 }
 
-# autodoc_typehints = 'description'
+autodoc_typehints = 'signature'
