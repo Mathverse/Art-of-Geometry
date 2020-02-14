@@ -65,13 +65,19 @@ class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
     @_LineInR2ABC._with_name_assignment
     def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, /) -> None:
         self.point_0 = point_0
-
         self.point_1 = point_1
 
-        self.point_at_infinity = \
-            point_1 \
-            if self._point_1_at_infinity \
-            else PointAtInfinityInR2(self.direction)
+        self.dependencies = point_0, point_1
+
+    @cached_property
+    def point_at_infinity(self) -> PointAtInfinityInR2:
+        if self._point_1_at_infinity:
+            return self.point_1
+
+        else:
+            pt_at_inf = PointAtInfinityInR2(self.direction)
+            pt_at_inf.dependencies = self.point_0, self.point_1
+            return pt_at_inf
 
     @cached_property
     def equation(self) -> Expr:

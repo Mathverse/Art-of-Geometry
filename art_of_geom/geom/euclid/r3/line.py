@@ -37,11 +37,8 @@ class _LineInR3ABC(_LinearEntityInR3ABC, _EuclidLineABC):
 
 
 class LineInR3(_LineInR3ABC, _EuclidConcreteLineABC, Line3D):
-    def __new__(
-            cls,
-            point_0: PointInR3, point_1: _PointInR3ABC, /,
-            *, name: Optional[str] = None) \
-            -> Line3D:
+    @_LineInR3ABC._with_name_assignment
+    def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, /) -> Line3D:
         assert isinstance(point_0, PointInR3), \
             TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR3.__name__} ***')
 
@@ -67,21 +64,22 @@ class LineInR3(_LineInR3ABC, _EuclidConcreteLineABC, Line3D):
                             f'NEITHER OF TYPE {PointInR3.__name__} '
                             f'NOR OF TYPE {PointAtInfinityInR3.__name__} ***')
 
-    def __init__(
-            self,
-            point_0: PointInR3, point_1: _PointInR3ABC, /,
-            *, name: Optional[str] = None) \
-            -> None:
+    @_LineInR3ABC._with_name_assignment
+    def __init__(self, point_0: PointInR3, point_1: _PointInR3ABC, /) -> None:
         self.point_0 = point_0
-
         self.point_1 = point_1
 
-        self.point_at_infinity = \
-            point_1 \
-            if self._point_1_at_infinity \
-            else PointAtInfinityInR3(self.direction)
+        self.dependencies = point_0, point_1
 
-        self._name = name
+    @cached_property
+    def point_at_infinity(self) -> PointAtInfinityInR3:
+        if self._point_1_at_infinity:
+            return self.point_1
+
+        else:
+            pt_at_inf = PointAtInfinityInR3(self.direction)
+            pt_at_inf.dependencies = self.point_0, self.point_1
+            return pt_at_inf
 
     @cached_property
     def parametric_equations(self) -> Tuple[Expr, Expr, Expr]:

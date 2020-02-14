@@ -9,7 +9,7 @@ from functools import wraps
 from inspect import isfunction
 from sympy.core.expr import Expr
 from sympy.geometry.entity import GeometryEntity
-from typing import Optional, Tuple, TYPE_CHECKING
+from typing import Optional, Tuple, TypeVar, TYPE_CHECKING
 from uuid import uuid4
 
 from ..util.compat import cached_property
@@ -17,6 +17,10 @@ from ..util.compat import cached_property
 
 if TYPE_CHECKING:   # to avoid circular import b/w _GeometryEntityABC & Session
     from .session import Session
+
+
+DependencyType = TypeVar('DependencyType', '_GeometryEntityABC', Expr, float, int)
+DependencyTupleType = Tuple[DependencyType]
 
 
 class _GeometryEntityABC(GeometryEntity):
@@ -113,9 +117,20 @@ class _GeometryEntityABC(GeometryEntity):
     def __str__(self) -> str:
         return repr(self)
 
+    @property
+    def dependencies(self) -> DependencyTupleType:
+        if not hasattr(self, '_dependencies'):
+            self._dependencies = DependencyTupleType()
+
+        return self._dependencies
+
+    @dependencies.setter
+    def dependencies(self, dependencies: DependencyTupleType) -> None:
+        self._dependencies = dependencies
+
     @abstractmethod
     # @_with_name_assignment   # TypeError: 'staticmethod' object is not callable
-    def same(self) -> '_GeometryEntityABC':
+    def same(self) -> _GeometryEntityABC:
         raise NotImplementedError
 
     @cached_property
