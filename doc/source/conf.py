@@ -80,15 +80,21 @@ html_static_path = ['_static']
 
 # AutoDoc
 autodoc_default_options = {
-    # 'members': 'var1, var2',
+    # 'members': ...,
     'member-order': 'bysource',
+
     'exclude-members': '__weakref__',
-    'imported-members': False,
+
+    # 'imported-members': False,
+
     'show-inheritance': True,
-    'inherited-members': False,   # DRY
+    # 'inherited-members': False,
+
     'private-members': True,
     'special-members': '__init__',
+
     'undoc-members': False,
+
     'ignore-module-all': False
 }
 
