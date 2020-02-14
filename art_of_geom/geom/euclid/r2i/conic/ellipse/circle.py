@@ -4,7 +4,7 @@ __all__ = 'CircleInR2_HyperboloidInR2I',
 from sympy.geometry.exceptions import GeometryError
 
 from ....r2.conic.ellipse.circle import CircleInR2
-from ... import _SurfaceInR2IABC
+from ...abc import _SurfaceInR2IABC
 from ...coord import X, Y, Z
 
 
