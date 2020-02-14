@@ -192,7 +192,7 @@ class ConicInR2(_EuclidGeometryEntityInR2ABC):
         return self.directrix, self.other_directrix
 
     @cached_property
-    def major_semi_axis_length(self):
+    def major_semi_axis_length(self) -> Expr:
         if self.is_parabola:
             return oo
 
@@ -200,7 +200,9 @@ class ConicInR2(_EuclidGeometryEntityInR2ABC):
             return self.focus_to_vertex_distance / (1 - self.eccentricity)
 
     # alias
-    semi_major_axis_length = major_semi_axis_length
+    @cached_property
+    def semi_major_axis_length(self) -> Expr:
+        return self.major_semi_axis_length
 
     @cached_property
     def semi_latus_rectum(self):
