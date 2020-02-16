@@ -9,7 +9,7 @@ __all__ = \
 from sympy.geometry.point import Point2D
 from uuid import uuid4
 
-from ....geom.var import Variable, OptionalVariableType, VariableOrNumericType
+from ....geom.var import Variable, OptionalVariableType, VARIABLE_AND_NUMERIC_TYPES
 from ....util.compat import cached_property
 from ....util.types import OptionalStrType, print_obj_and_type
 from ..point import _EuclidPointABC, _EuclidConcretePointABC, _EuclidPointAtInfinityABC
@@ -32,14 +32,16 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
         if x is None:
             x = Variable(f'[{name}.x]', real=True)
         else:
-            assert isinstance(x, VariableOrNumericType), \
-                TypeError(f'*** X COORDINATE {print_obj_and_type(x)} NOT OF TYPE {VariableOrNumericType} ***')
+            assert isinstance(x, VARIABLE_AND_NUMERIC_TYPES), \
+                TypeError(f'*** X COORDINATE {print_obj_and_type(x)} '
+                          f'NOT OF ONE OF TYPES {VARIABLE_AND_NUMERIC_TYPES} ***')
 
         if y is None:
             y = Variable(f'[{name}.y]', real=True)
         else:
-            assert isinstance(y, VariableOrNumericType), \
-                TypeError(f'*** Y COORDINATE {print_obj_and_type(y)} NOT OF TYPE {VariableOrNumericType} ***')
+            assert isinstance(y, VARIABLE_AND_NUMERIC_TYPES), \
+                TypeError(f'*** Y COORDINATE {print_obj_and_type(y)} '
+                          f'NOT OF ONE OF TYPES {VARIABLE_AND_NUMERIC_TYPES} ***')
 
         point = super().__new__(
                     cls,

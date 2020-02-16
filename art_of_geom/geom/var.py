@@ -1,6 +1,6 @@
 __all__ = \
     'Variable', 'Var', \
-    'OptionalVariableType', 'VariableOrNumericType'
+    'OptionalVariableType', 'VARIABLE_AND_NUMERIC_TYPES'
 
 
 from sympy.core.expr import Expr
@@ -69,4 +69,5 @@ Var = Variable
 
 # type constants
 OptionalVariableType = Optional[Variable]
-VariableOrNumericType = Union[Variable, complex, float, int]
+
+VARIABLE_AND_NUMERIC_TYPES = Variable, complex, float, int
