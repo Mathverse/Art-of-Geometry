@@ -6,13 +6,13 @@ __all__ = \
     'PointAtInfinityInR3', 'PointAtInfinityR3', 'PointAtInfinity', 'PointAtInf', 'PtAtInf'
 
 
-from sympy.core.expr import Expr
-from sympy.core.symbol import Symbol
 from sympy.geometry.point import Point3D
 from typing import Optional
 from uuid import uuid4
 
+from ....geom.var import Variable, OptionalVariableType, VariableOrNumericType
 from ....util.compat import cached_property
+from ....util.types import OptionalStrType, print_obj_and_type
 from ..point import _EuclidPointABC, _EuclidConcretePointABC, _EuclidPointAtInfinityABC
 from .abc import _EuclidGeometryEntityInR3ABC
 
@@ -24,35 +24,29 @@ class _PointInR3ABC(_EuclidGeometryEntityInR3ABC, _EuclidPointABC):
 class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
     def __new__(
             cls,
-            /, x: Optional[Expr] = None, y: Optional[Expr] = None, z: Optional[Expr] = None,
-            *, name: Optional[str] = None) \
+            /, x: OptionalVariableType = None, y: OptionalVariableType = None, z: OptionalVariableType = None,
+            *, name: OptionalStrType = None) \
             -> Point3D:
         if not name:
             name = str(uuid4())
 
         if x is None:
-            x = Symbol(
-                    name=f'[{name}.x]',
-                    real=True)
+            x = Variable(f'[{name}.x]', real=True)
         else:
-            assert isinstance(x, (Expr, float, int)), \
-                TypeError(f'*** X COORDINATE {x} NEITHER SymPy Expr NOR float NOR int ***')
+            assert isinstance(x, VariableOrNumericType), \
+                TypeError(f'*** X COORDINATE {print_obj_and_type(x)} NOT OF TYPE {VariableOrNumericType} ***')
 
         if y is None:
-            y = Symbol(
-                    name=f'[{name}.y]',
-                    real=True)
+            y = Variable(f'[{name}.y]', real=True)
         else:
-            assert isinstance(y, (Expr, float, int)), \
-                TypeError(f'*** Y COORDINATE {y} NEITHER SymPy Expr NOR float NOR int ***')
+            assert isinstance(y, VariableOrNumericType), \
+                TypeError(f'*** Y COORDINATE {print_obj_and_type(y)} NOT OF TYPE {VariableOrNumericType} ***')
             
         if z is None:
-            z = Symbol(
-                    name=f'[{name}.z]',
-                    real=True)
+            z = Variable(f'[{name}.z]', real=True)
         else:
-            assert isinstance(z, (Expr, float, int)), \
-                TypeError(f'*** Z COORDINATE {z} NEITHER SymPy Expr NOR float NOR int ***')
+            assert isinstance(z, VariableOrNumericType), \
+                TypeError(f'*** Z COORDINATE {print_obj_and_type(z)} NOT OF TYPE {VariableOrNumericType} ***')
 
         point = super().__new__(
                     cls,
@@ -75,13 +69,13 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
         if name != self.name:
             self._name = name
 
-            if isinstance(self.x, Symbol):
+            if isinstance(self.x, Variable):
                 self.x.name = f'[{name}.x]'
 
-            if isinstance(self.y, Symbol):
+            if isinstance(self.y, Variable):
                 self.y.name = f'[{name}.y]'
 
-            if isinstance(self.z, Symbol):
+            if isinstance(self.z, Variable):
                 self.z.name = f'[{name}.z]'
 
     @_PointInR3ABC._with_name_assignment
@@ -102,15 +96,15 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
     def __sub__(self, point: Point3D, /) -> PointInR3:
         return self._from_sympy_point_3d(super().__sub__(point))
 
-    def __mul__(self, n: Expr, /) -> PointInR3:
+    def __mul__(self, n: Variable, /) -> PointInR3:
         return self._from_sympy_point_3d(super().__mul__(n))
 
-    def __div__(self, n: Expr, /) -> PointInR3:
+    def __div__(self, n: Variable, /) -> PointInR3:
         return self._from_sympy_point_3d(super().__div__(n))
 
     @cached_property
-    def distance_from_origin(self) -> Expr:
-        return self.x ** 2 + self.y ** 2 + self.z ** 2
+    def distance_from_origin(self) -> Variable:
+        return Variable(self.x ** 2 + self.y ** 2 + self.z ** 2)
 
 
 # aliases
