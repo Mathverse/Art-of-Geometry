@@ -7,23 +7,21 @@ __all__ = '_GeometryEntityABC',
 from abc import abstractmethod
 from functools import wraps
 from inspect import isfunction
-from sympy.core.expr import Expr
+from sympy.core.expr import Expr, UnevaluatedExpr
+from sympy.core.symbol import Symbol
 from sympy.geometry.entity import GeometryEntity
-from typing import Optional, Tuple, TypeVar, TYPE_CHECKING
+from typing import Tuple, TYPE_CHECKING
 from uuid import uuid4
 
 from ..util.compat import cached_property
+from ..util.types import OptionalStrType, OptionalSymPyExprType
 
 
 if TYPE_CHECKING:   # to avoid circular import b/w _GeometryEntityABC & Session
     from .session import Session
 
 
-DependencyType = TypeVar('DependencyType', '_GeometryEntityABC', Expr, float, int)
-DependencyTupleType = Tuple[DependencyType]
-
-
-class _GeometryEntityABC(GeometryEntity):
+class _EntityABC:
     @property
     def session(self) -> Session:
         if hasattr(self, '_session') and self._session:
@@ -42,54 +40,15 @@ class _GeometryEntityABC(GeometryEntity):
 
         self._session = session
 
-    @session.deleter
-    def session(self) -> None:
-        self._session = None
+    # *** CANNOT DELETE SESSION ATTR ***
+    # @session.deleter
+    # def session(self) -> None:
+    #     self._session = None
 
     @staticmethod
     def _validate_name(name: str, /) -> None:
         assert isinstance(name, str) and name, \
             TypeError(f'*** {name} NOT NON-EMPTY STRING ***')
-
-    @staticmethod
-    def _with_name_assignment(_method=None, *, uuid_if_empty=False):
-
-        def decorator(geometry_entity_method, /):
-
-            @wraps(geometry_entity_method)
-            def geometry_entity_method_with_name_assignment(
-                    cls_or_self,
-                    *args,
-                    name: Optional[str] = None,
-                    **kwargs) \
-                    -> _GeometryEntityABC:
-                result = geometry_entity_method(cls_or_self, *args, **kwargs)
-
-                if uuid_if_empty and not name:
-                    name = str(uuid4())
-
-                if geometry_entity_method.__name__ == '__new__':
-                    assert result is not None
-                    result._name = name
-                    return result
-
-                elif geometry_entity_method.__name__ == '__init__':
-                    assert result is None
-                    cls_or_self._name = name
-
-                else:
-                    assert isinstance(result, _GeometryEntityABC), \
-                        TypeError(f'*** RESULT {result} NOT OF TYPE {_GeometryEntityABC.__name__} ***')
-                    if name:
-                        _GeometryEntityABC._validate_name(name)
-                        result.name = name
-                    return result
-
-            return geometry_entity_method_with_name_assignment
-
-        return decorator(_method) \
-            if isfunction(_method) \
-          else decorator
 
     @property
     def name(self) -> str:
@@ -106,6 +65,63 @@ class _GeometryEntityABC(GeometryEntity):
     def name(self) -> None:
         self._name = None
 
+    @staticmethod
+    def _with_name_assignment(_method=None, *, uuid_if_empty=False):
+
+        def decorator(method, /):
+
+            @wraps(method)
+            def method_with_name_assignment(
+                    cls_or_self,
+                    *args,
+                    name: OptionalStrType = None,
+                    **kwargs) \
+                    -> _EntityABC:
+                result = method(cls_or_self, *args, **kwargs)
+
+                if uuid_if_empty and not name:
+                    name = str(uuid4())
+
+                if method.__name__ == '__new__':
+                    assert result is not None
+                    result._name = name
+                    return result
+
+                elif method.__name__ == '__init__':
+                    assert result is None
+                    cls_or_self._name = name
+
+                else:
+                    assert isinstance(result, _EntityABC), \
+                        TypeError(f'*** RESULT {result} NOT OF TYPE {_EntityABC.__name__} ***')
+                    if name:
+                        _EntityABC._validate_name(name)
+                        result.name = name
+                    return result
+
+            return method_with_name_assignment
+
+        return decorator(_method) \
+            if isfunction(_method) \
+          else decorator
+
+    @property
+    def dependencies(self) -> Tuple[_EntityABC]:
+        if not hasattr(self, '_dependencies'):
+            self._dependencies = Tuple[_EntityABC]()
+
+        return self._dependencies
+
+    @dependencies.setter
+    def dependencies(self, dependencies: Tuple[_EntityABC]) -> None:
+        self._dependencies = dependencies
+
+
+
+
+class _GeometryEntityABC(_EntityABC, GeometryEntity):
+
+
     @property
     @abstractmethod
     def _short_repr(self) -> str:
@@ -116,17 +132,6 @@ class _GeometryEntityABC(GeometryEntity):
 
     def __str__(self) -> str:
         return repr(self)
-
-    @property
-    def dependencies(self) -> DependencyTupleType:
-        if not hasattr(self, '_dependencies'):
-            self._dependencies = DependencyTupleType()
-
-        return self._dependencies
-
-    @dependencies.setter
-    def dependencies(self, dependencies: DependencyTupleType) -> None:
-        self._dependencies = dependencies
 
     @abstractmethod
     # @_with_name_assignment   # TypeError: 'staticmethod' object is not callable
