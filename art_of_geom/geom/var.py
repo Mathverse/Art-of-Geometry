@@ -1,6 +1,6 @@
 __all__ = \
     'Variable', 'Var', \
-    'OptionalVariableType'
+    'OptionalVariableType', 'VariableOrNumericType'
 
 
 from sympy.core.expr import Expr
