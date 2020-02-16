@@ -1,21 +1,34 @@
-__all__ = 'Variable', 'Var'
+__all__ = \
+    'Variable', 'Var', \
+    'OptionalVariableType'
 
 
+from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
-from typing import Optional
+from typing import Optional, Union
 from uuid import uuid4
 
-from ..util.types import OptionalStrType, OptionalSymPyExprType
+from ..util.types import OptionalStrType, OptionalSymPyExprType, OptionalStrOrSymPyExprType
 from .abc import _EntityABC
 
 
 class Variable(_EntityABC, Symbol):
     def __new__(
             cls,
-            name: OptionalStrType = None,
-            expr: OptionalSymPyExprType = None,
+            expr_or_name: OptionalStrOrSymPyExprType = None, /,
+            *, expr: OptionalSymPyExprType = None, name: OptionalStrType = None,
             **assumptions: bool) \
             -> Symbol:
+        if isinstance(expr_or_name, Expr):
+            assert expr is None, \
+                '*** EXPR ALREADY GIVEN POSITIONALLY ***'
+
+        elif isinstance(expr_or_name, str):
+            assert name is None, \
+                '*** NAME ALREADY GIVEN POSITIONALLY ***'
+
+            name = expr_or_name
+
         return super().__new__(
                 cls,
                 name=name
@@ -25,10 +38,20 @@ class Variable(_EntityABC, Symbol):
 
     def __init__(
             self,
-            name: OptionalStrType = None,
-            expr: OptionalSymPyExprType = None,
+            expr_or_name: OptionalStrOrSymPyExprType = None, /,
+            *, expr: OptionalSymPyExprType = None, name: OptionalStrType = None,
             **assumptions: bool) \
             -> None:
+        if isinstance(expr_or_name, Expr):
+            assert expr is None, \
+                '*** EXPR ALREADY GIVEN POSITIONALLY ***'
+
+            expr = expr_or_name
+
+        elif isinstance(expr_or_name, str):
+            assert name is None, \
+                '*** NAME ALREADY GIVEN POSITIONALLY ***'
+
         self.expr = expr
 
     @property
@@ -44,4 +67,6 @@ class Variable(_EntityABC, Symbol):
 Var = Variable
 
 
+# type constants
 OptionalVariableType = Optional[Variable]
+VariableOrNumericType = Union[Variable, complex, float, int]

@@ -6,13 +6,12 @@ __all__ = \
     'PointAtInfinityInR2', 'PointAtInfinityR2', 'PointAtInfinity', 'PointAtInf', 'PtAtInf'
 
 
-from sympy.core.expr import Expr
-from sympy.core.symbol import Symbol
 from sympy.geometry.point import Point2D
-from typing import Optional
 from uuid import uuid4
 
+from ....geom.var import Variable, OptionalVariableType, VariableOrNumericType
 from ....util.compat import cached_property
+from ....util.types import OptionalStrType, print_obj_and_type
 from ..point import _EuclidPointABC, _EuclidConcretePointABC, _EuclidPointAtInfinityABC
 from .abc import _EuclidGeometryEntityInR2ABC
 
@@ -24,27 +23,23 @@ class _PointInR2ABC(_EuclidGeometryEntityInR2ABC, _EuclidPointABC):
 class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
     def __new__(
             cls,
-            x: Optional[Expr] = None, y: Optional[Expr] = None,
-            *, name: Optional[str] = None) \
+            x: OptionalVariableType = None, y: OptionalVariableType = None,
+            *, name: OptionalStrType = None) \
             -> Point2D:
         if not name:
             name = str(uuid4())
 
         if x is None:
-            x = Symbol(
-                    name=f'[{name}.x]',
-                    real=True)
+            x = Variable(f'[{name}.x]', real=True)
         else:
-            assert isinstance(x, (Expr, float, int)), \
-                TypeError(f'*** X COORDINATE {x} NEITHER SymPy Expr NOR float NOR int ***')
+            assert isinstance(x, VariableOrNumericType), \
+                TypeError(f'*** X COORDINATE {print_obj_and_type(x)} NOT OF TYPE {VariableOrNumericType} ***')
 
         if y is None:
-            y = Symbol(
-                    name=f'[{name}.y]',
-                    real=True)
+            y = Variable(f'[{name}.y]', real=True)
         else:
-            assert isinstance(y, (Expr, float, int)), \
-                TypeError(f'*** Y COORDINATE {y} NEITHER SymPy Expr NOR float NOR int ***')
+            assert isinstance(y, VariableOrNumericType), \
+                TypeError(f'*** Y COORDINATE {print_obj_and_type(y)} NOT OF TYPE {VariableOrNumericType} ***')
 
         point = super().__new__(
                     cls,
@@ -67,10 +62,10 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
         if name != self.name:
             self._name = name
 
-            if isinstance(self.x, Symbol):
+            if isinstance(self.x, Variable):
                 self.x.name = f'[{name}.x]'
 
-            if isinstance(self.y, Symbol):
+            if isinstance(self.y, Variable):
                 self.y.name = f'[{name}.y]'
 
     @_PointInR2ABC._with_name_assignment
@@ -80,7 +75,7 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
     @classmethod
     @_PointInR2ABC._with_name_assignment
     def _from_sympy_point_2d(cls, sympy_point_2d: Point2D, /):
-        return PointInR2(sympy_point_2d.x, sympy_point_2d.y)
+        return PointInR2(Variable(sympy_point_2d.x), Variable(sympy_point_2d.y))
 
     def __neg__(self) -> PointInR2:
         return self._from_sympy_point_2d(super().__neg__())
@@ -91,15 +86,15 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
     def __sub__(self, point: Point2D, /) -> PointInR2:
         return self._from_sympy_point_2d(super().__sub__(point))
 
-    def __mul__(self, n: Expr, /) -> PointInR2:
+    def __mul__(self, n: Variable, /) -> PointInR2:
         return self._from_sympy_point_2d(super().__mul__(n))
 
-    def __div__(self, n: Expr, /) -> PointInR2:
+    def __div__(self, n: Variable, /) -> PointInR2:
         return self._from_sympy_point_2d(super().__div__(n))
 
     @cached_property
-    def distance_from_origin(self) -> Expr:
-        return self.x ** 2 + self.y ** 2
+    def distance_from_origin(self) -> Variable:
+        return Variable(self.x ** 2 + self.y ** 2)
 
 
 # aliases

@@ -40,11 +40,6 @@ class _EntityABC:
 
         self._session = session
 
-    # *** CANNOT DELETE SESSION ATTR ***
-    # @session.deleter
-    # def session(self) -> None:
-    #     self._session = None
-
     @staticmethod
     def _validate_name(name: str, /) -> None:
         assert isinstance(name, str) and name, \
@@ -132,7 +127,7 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
         self._name = None
 
     @abstractmethod
-    # @_with_name_assignment   # TypeError: 'staticmethod' object is not callable
+    @_EntityABC._with_name_assignment
     def same(self) -> _GeometryEntityABC:
         raise NotImplementedError
 
