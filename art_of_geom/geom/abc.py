@@ -1,20 +1,20 @@
 from __future__ import annotations
 
 
-__all__ = '_GeometryEntityABC',
+__all__ = '_EntityABC', '_GeometryEntityABC'
 
 
 from abc import abstractmethod
 from functools import wraps
 from inspect import isfunction
-from sympy.core.expr import Expr, UnevaluatedExpr
+from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.geometry.entity import GeometryEntity
 from typing import Tuple, TYPE_CHECKING
 from uuid import uuid4
 
 from ..util.compat import cached_property
-from ..util.types import OptionalStrType, OptionalSymPyExprType
+from ..util.types import OptionalStrType
 
 
 if TYPE_CHECKING:   # to avoid circular import b/w _GeometryEntityABC & Session
@@ -105,26 +105,6 @@ class _EntityABC:
     @dependencies.setter
     def dependencies(self, dependencies: Tuple[_EntityABC]) -> None:
         self._dependencies = dependencies
-
-
-class Variable(_EntityABC, Symbol):
-    def __new__(cls, name: OptionalStrType = None, expr: OptionalSymPyExprType = None, **assumptions: bool) -> Symbol:
-        return super().__new__(
-                cls,
-                name=name
-                    if isinstance(name, str) and name
-                    else str(uuid4()),
-                **assumptions)
-
-    def __init__(self, name: OptionalStrType = None, expr: OptionalSymPyExprType = None, **assumptions: bool) -> None:
-        self.expr = expr
-
-    def __repr__(self):
-        return f"Var {self.symbol.name}{f'= {self.expr}' if self.expr else ''}"
-
-    @property
-    def free(self):
-        return self.expr is None
 
 
 class _GeometryEntityABC(_EntityABC, GeometryEntity):
