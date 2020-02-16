@@ -104,6 +104,9 @@ class _EntityABC:
         return decorator(_method) \
             if isfunction(_method) \
           else decorator
+    
+    def __str__(self) -> str:
+        return repr(self)
 
     @property
     def dependencies(self) -> Tuple[_EntityABC]:
@@ -117,11 +120,26 @@ class _EntityABC:
         self._dependencies = dependencies
 
 
+class Variable(_EntityABC, Symbol):
+    def __new__(cls, name: OptionalStrType = None, expr: OptionalSymPyExprType = None, **assumptions: bool) -> Symbol:
+        return super().__new__(
+                name=name
+                    if isinstance(name, str) and name
+                    else str(uuid4()),
+                **assumptions)
+
+    def __init__(self, name: OptionalStrType = None, expr: OptionalSymPyExprType = None, **assumptions: bool) -> None:
+        self.expr = expr
+
+    def __repr__(self):
+        return f"Var {self.symbol.name}{f'= {self.expr}' if self.expr else ''}"
+
+    @property
+    def free(self):
+        return self.expr is None
 
 
 class _GeometryEntityABC(_EntityABC, GeometryEntity):
-
-
     @property
     @abstractmethod
     def _short_repr(self) -> str:
@@ -129,9 +147,6 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
 
     def __repr__(self) -> str:
         return f'{self.session._str_prefix}{self._short_repr}'
-
-    def __str__(self) -> str:
-        return repr(self)
 
     @abstractmethod
     # @_with_name_assignment   # TypeError: 'staticmethod' object is not callable
