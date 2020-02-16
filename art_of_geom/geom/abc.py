@@ -50,21 +50,6 @@ class _EntityABC:
         assert isinstance(name, str) and name, \
             TypeError(f'*** {name} NOT NON-EMPTY STRING ***')
 
-    @property
-    def name(self) -> str:
-        return self._name
-
-    @name.setter
-    def name(self, name: str, /) -> None:
-        self._validate_name(name)
-
-        if name != self._name:
-            self._name = name
-
-    @name.deleter
-    def name(self) -> None:
-        self._name = None
-
     @staticmethod
     def _with_name_assignment(_method=None, *, uuid_if_empty=False):
 
@@ -83,8 +68,10 @@ class _EntityABC:
                     name = str(uuid4())
 
                 if method.__name__ == '__new__':
-                    assert result is not None
-                    result._name = name
+                    if isinstance(result, Symbol):
+                        result.name = name
+                    else:
+                        result._name = name
                     return result
 
                 elif method.__name__ == '__init__':
@@ -123,6 +110,7 @@ class _EntityABC:
 class Variable(_EntityABC, Symbol):
     def __new__(cls, name: OptionalStrType = None, expr: OptionalSymPyExprType = None, **assumptions: bool) -> Symbol:
         return super().__new__(
+                cls,
                 name=name
                     if isinstance(name, str) and name
                     else str(uuid4()),
@@ -140,6 +128,21 @@ class Variable(_EntityABC, Symbol):
 
 
 class _GeometryEntityABC(_EntityABC, GeometryEntity):
+    @property
+    def name(self) -> str:
+        return self._name
+
+    @name.setter
+    def name(self, name: str, /) -> None:
+        self._validate_name(name)
+
+        if name != self._name:
+            self._name = name
+
+    @name.deleter
+    def name(self) -> None:
+        self._name = None
+
     @property
     @abstractmethod
     def _short_repr(self) -> str:
