@@ -91,6 +91,14 @@ class _EntityABC:
         return decorator(_method) \
             if isfunction(_method) \
           else decorator
+
+    @property
+    @abstractmethod
+    def _short_repr(self) -> str:
+        raise NotImplementedError
+
+    def __repr__(self) -> str:
+        return f'{self.session._str_prefix}{self._short_repr}'
     
     def __str__(self) -> str:
         return repr(self)
@@ -122,14 +130,6 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
     @name.deleter
     def name(self) -> None:
         self._name = None
-
-    @property
-    @abstractmethod
-    def _short_repr(self) -> str:
-        raise NotImplementedError
-
-    def __repr__(self) -> str:
-        return f'{self.session._str_prefix}{self._short_repr}'
 
     @abstractmethod
     # @_with_name_assignment   # TypeError: 'staticmethod' object is not callable

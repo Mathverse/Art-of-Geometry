@@ -31,7 +31,8 @@ class Variable(_EntityABC, Symbol):
             -> None:
         self.expr = expr
 
-    def __repr__(self):
+    @property
+    def _short_repr(self) -> str:
         return f"Var {self.name}{f'= {self.expr}' if self.expr else ''}"
 
     @property
