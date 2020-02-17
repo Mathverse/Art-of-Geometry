@@ -8,8 +8,8 @@ __all__ = \
 
 from abc import abstractmethod
 
-from .abc import _GeometryEntityABC
-from .point import _PointABC
+from ._entity import _GeometryEntityABC
+from ._point import _PointABC
 
 
 class _LinearEntityABC(_GeometryEntityABC):

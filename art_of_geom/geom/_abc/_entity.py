@@ -12,13 +12,13 @@ from sympy.core.symbol import Symbol
 from sympy.geometry.entity import GeometryEntity
 from typing import Iterable, Optional, Tuple, TYPE_CHECKING
 
-from ..util.compat import cached_property
-from ..util.tmp import TMP_NAME_FACTORY
-from ..util.types import OptionalStrType
+from ...util.compat import cached_property
+from ...util.tmp import TMP_NAME_FACTORY
+from ...util.type import OptionalStrType
 
 
 if TYPE_CHECKING:   # to avoid circular import b/w _EntityABC & Session
-    from .session import Session
+    from ..session import Session
 
 
 class _EntityABC:
@@ -28,12 +28,12 @@ class _EntityABC:
             return self._session
 
         else:
-            from .session import DEFAULT_SESSION
+            from ..session import DEFAULT_SESSION
             return DEFAULT_SESSION
 
     @session.setter
     def session(self, session: Session, /) -> None:
-        from .session import Session
+        from ..session import Session
 
         assert isinstance(session, Session), \
             TypeError(f'*** {session} NOT OF TYPE {Session.__name__} ***')

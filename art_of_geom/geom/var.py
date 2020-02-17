@@ -8,8 +8,8 @@ from sympy.core.symbol import Symbol
 from typing import Union
 
 from ..util.tmp import TMP_NAME_FACTORY
-from ..util.types import NUMERIC_TYPES, OptionalStrType, OptionalSymPyExprType, OptionalStrOrSymPyExprType
-from .abc import _EntityABC
+from ..util.type import NUMERIC_TYPES, OptionalStrType, OptionalSymPyExprType, OptionalStrOrSymPyExprType
+from ._abc._entity import _EntityABC
 
 
 class Variable(_EntityABC, Symbol):
