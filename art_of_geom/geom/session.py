@@ -1,18 +1,14 @@
-from __future__ import annotations   # to avoid circular import b/w _EntityABC & Session
+from __future__ import annotations
 
 
 __all__ = 'Session', 'DEFAULT_SESSION'
 
 
 from sympy.assumptions.assume import AssumptionsContext
-from typing import TYPE_CHECKING
 
 from ..util.tmp import TMP_NAME_FACTORY
 from ..util.types import OptionalStrType
-
-
-if TYPE_CHECKING:   # to avoid circular import b/w _EntityABC & Session
-    from .abc import _EntityABC
+from .abc import _EntityABC
 
 
 class Session:
@@ -32,8 +28,6 @@ class Session:
     __str__ = __repr__
 
     def __setattr__(self, name: str, value, /) -> None:
-        from .abc import _EntityABC
-
         if isinstance(value, _EntityABC):
             value.session = self
             self.entities[name] = value
@@ -42,8 +36,6 @@ class Session:
             object.__setattr__(self, name, value)
 
     def __setitem__(self, name: str, entity: _EntityABC, /) -> None:
-        from .abc import _EntityABC
-
         _EntityABC._validate_name(name)
 
         assert isinstance(entity, _EntityABC), \
@@ -56,8 +48,6 @@ class Session:
         return self.entities[name]
 
     def __getitem__(self, name: str, /) -> _EntityABC:
-        from .abc import _EntityABC
-
         _EntityABC._validate_name(name)
 
         return self.entities[name]
@@ -66,8 +56,6 @@ class Session:
         del self.entities[name]
 
     def __delitem__(self, name: str) -> None:
-        from .abc import _EntityABC
-
         _EntityABC._validate_name(name)
 
         del self.entities[name]
