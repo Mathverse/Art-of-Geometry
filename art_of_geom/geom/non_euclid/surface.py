@@ -1,7 +1,7 @@
 __all__ = '_NonEuclidSurfaceABC',
 
 
-from ..abc import _GeometryEntityABC
+from art_of_geom.geom._abc._entity import _GeometryEntityABC
 
 
 class _NonEuclidSpaceABC:

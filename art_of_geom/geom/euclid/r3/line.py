@@ -13,8 +13,8 @@ from sympy.geometry.line import LinearEntity3D, Line3D, Ray3D, Segment3D
 from typing import Optional, Tuple
 
 from ....util.compat import cached_property
-from ..coord import T
-from ..line import \
+from art_of_geom.geom.euclid._abc._coord import T
+from art_of_geom.geom.euclid._abc._line import \
     _EuclidLinearEntityABC, _EuclidConcreteLinearEntityABC, _EuclidLinearEntityAtInfinityABC, \
     _EuclidLineABC, _EuclidConcreteLineABC, _EuclidLineAtInfinityABC, \
     _EuclidRayABC, _EuclidSegmentABC
@@ -40,6 +40,7 @@ class _LineInR3ABC(_LinearEntityInR3ABC, _EuclidLineABC):
 
 
 class LineInR3(_LineInR3ABC, _EuclidConcreteLineABC, Line3D):
+    @_LineInR3ABC._with_dependency_tracking
     @_LineInR3ABC._with_name_assignment
     def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, /) -> Line3D:
         assert isinstance(point_0, PointInR3), \

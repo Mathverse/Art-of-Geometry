@@ -9,7 +9,7 @@ from sympy.geometry.point import Point3D
 from typing import Tuple
 
 from ....util.compat import cached_property
-from ..coord import U, V
+from art_of_geom.geom.euclid._abc._coord import U, V
 from .abc import _EuclidGeometryEntityInR3ABC
 from .coord import X, Y, Z
 from .line import LineInR3

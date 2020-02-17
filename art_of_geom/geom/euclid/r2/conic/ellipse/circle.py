@@ -5,11 +5,10 @@ from sympy.assumptions.ask import Q
 from sympy.assumptions.assume import global_assumptions
 from sympy.core.expr import Expr
 from sympy.functions.elementary.trigonometric import cos, sin
-from sympy.geometry.ellipse import Circle as Circle2D
 from typing import Optional, Tuple
 
 from ......util.compat import cached_property
-from ....coord import THETA
+from art_of_geom.geom.euclid._abc._coord import THETA
 from ...abc import _EuclidGeometryEntityInR2ABC
 from ...coord import X, Y
 from ...point import PointInR2

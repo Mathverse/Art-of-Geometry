@@ -14,8 +14,8 @@ from sympy.geometry.point import Point2D
 from typing import Optional, Tuple
 
 from ....util.compat import cached_property
-from ..coord import T
-from ..line import \
+from art_of_geom.geom.euclid._abc._coord import T
+from art_of_geom.geom.euclid._abc._line import \
     _EuclidLinearEntityABC, _EuclidConcreteLinearEntityABC, _EuclidLinearEntityAtInfinityABC, \
     _EuclidLineABC, _EuclidConcreteLineABC, _EuclidLineAtInfinityABC, \
     _EuclidRayABC, _EuclidSegmentABC

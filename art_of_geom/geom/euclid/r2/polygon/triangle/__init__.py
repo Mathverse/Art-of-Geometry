@@ -4,7 +4,7 @@ __all__ = 'TriangleInR2', 'TriangleR2', 'Triangle'
 from sympy.geometry.polygon import Triangle as Triangle2D
 from sympy.geometry.exceptions import GeometryError
 
-from .....abc import _GeometryEntityABC
+from art_of_geom.geom._abc._entity import _GeometryEntityABC
 from ...point import PointInR2
 
 

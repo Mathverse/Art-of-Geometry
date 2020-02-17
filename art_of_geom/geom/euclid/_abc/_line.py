@@ -7,11 +7,11 @@ __all__ = \
 from sympy.geometry.line import LinearEntity, Line, Ray, Segment
 from sympy.geometry.point import Point
 
-from ...util.compat import cached_property
-from ..line import \
+from ....util.compat import cached_property
+from ....geom._abc._line import \
     _LinearEntityABC, _ConcreteLinearEntityABC, _LinearEntityAtInfinityABC, \
-    _LineABC, _ConcreteLineABC, _ConcreteDirectedLineABC, _LineAtInfinityABC, _DirectedLineAtInfinityABC
-from ..point import _ConcretePointABC
+    _LineABC, _ConcreteLineABC, _LineAtInfinityABC
+from ....geom._abc._point import _ConcretePointABC
 
 
 class _EuclidLinearEntityABC(_LinearEntityABC):
@@ -23,6 +23,7 @@ class _EuclidConcreteLinearEntityABC(_EuclidLinearEntityABC, _ConcreteLinearEnti
     def unit_direction(self) -> Point:
         return self.direction.unit
 
+    @_EuclidLinearEntityABC._with_dependency_tracking
     @_EuclidLinearEntityABC._with_name_assignment
     def perpendicular_projection_of_point(self, point: _ConcretePointABC, /) -> _ConcretePointABC:
         return self.point_0 + self.unit_direction.dot(point - self.point_0) * self.unit_direction

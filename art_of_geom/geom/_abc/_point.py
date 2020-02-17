@@ -9,20 +9,23 @@ from ._entity import _GeometryEntityABC
 
 
 class _PointABC(_GeometryEntityABC):
-    @property
-    def _short_repr(self) -> str:
-        return f'Pt {self.name}'
-
     @cached_property
+    @_GeometryEntityABC._with_dependency_tracking
     def distance_from_origin(self) -> Variable:
         raise NotImplementedError
 
 
 class _ConcretePointABC(_PointABC, Point):
     @property
+    def _short_repr(self) -> str:
+        return f'Pt {self.name}'
+
+    @property
     def free(self) -> bool:
         raise NotImplementedError
 
 
 class _PointAtInfinityABC(_PointABC):
-    pass
+    @property
+    def _short_repr(self) -> str:
+        return f'Pt@Inf {self.name}'

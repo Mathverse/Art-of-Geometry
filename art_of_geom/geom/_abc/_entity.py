@@ -160,6 +160,7 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
         self._name = None
 
     @abstractmethod
+    @_EntityABC._with_dependency_tracking
     @_EntityABC._with_name_assignment
     def same(self) -> _GeometryEntityABC:
         raise NotImplementedError

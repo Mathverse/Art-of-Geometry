@@ -11,8 +11,8 @@ from sympy.geometry.point import Point3D
 from ....geom.var import Variable, OptionalVariableOrNumericType, VARIABLE_AND_NUMERIC_TYPES
 from ....util.compat import cached_property
 from ....util.tmp import TMP_NAME_FACTORY
-from ....util.types import NUMERIC_TYPES, OptionalStrType, print_obj_and_type
-from ..point import _EuclidPointABC, _EuclidConcretePointABC, _EuclidPointAtInfinityABC
+from ....util.type import NUMERIC_TYPES, OptionalStrType, print_obj_and_type
+from art_of_geom.geom.euclid._abc._point import _EuclidPointABC, _EuclidConcretePointABC, _EuclidPointAtInfinityABC
 from .abc import _EuclidGeometryEntityInR3ABC
 
 

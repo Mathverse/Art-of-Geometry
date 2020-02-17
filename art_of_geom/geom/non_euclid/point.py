@@ -1,7 +1,7 @@
 __all__ = '_NonEuclidPointABC', '_NonEuclidConcretePointABC', '_NonEuclidPointAtInfinityABC'
 
 
-from ..point import _PointABC, _ConcretePointABC, _PointAtInfinityABC
+from art_of_geom.geom._abc._point import _PointABC, _ConcretePointABC, _PointAtInfinityABC
 
 
 class _NonEuclidPointABC(_PointABC):

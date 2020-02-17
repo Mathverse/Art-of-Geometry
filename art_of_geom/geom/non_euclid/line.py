@@ -1,7 +1,7 @@
 __all__ = '_NonEuclidLineABC',
 
 
-from ..line import _LineABC
+from art_of_geom.geom._abc._line import _LineABC
 
 
 class _NonEuclidLineABC(_LineABC):
