@@ -5,7 +5,7 @@ from abc import abstractmethod
 from sympy.core.expr import Expr
 from typing import Tuple
 
-from ....util.compat import cached_property
+from ...._util._compat import cached_property
 from art_of_geom.geom._abc._entity import _GeometryEntityABC
 
 

@@ -12,7 +12,7 @@ from sympy.core.expr import Expr
 from sympy.geometry.line import LinearEntity3D, Line3D, Ray3D, Segment3D
 from typing import Optional, Tuple
 
-from ....util.compat import cached_property
+from ...._util._compat import cached_property
 from art_of_geom.geom.euclid._abc._coord import T
 from art_of_geom.geom.euclid._abc._line import \
     _EuclidLinearEntityABC, _EuclidConcreteLinearEntityABC, _EuclidLinearEntityAtInfinityABC, \

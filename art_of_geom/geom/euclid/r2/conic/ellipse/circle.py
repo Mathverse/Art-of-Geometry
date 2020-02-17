@@ -7,7 +7,7 @@ from sympy.core.expr import Expr
 from sympy.functions.elementary.trigonometric import cos, sin
 from typing import Optional, Tuple
 
-from ......util.compat import cached_property
+from ......_util._compat import cached_property
 from art_of_geom.geom.euclid._abc._coord import THETA
 from ...abc import _EuclidGeometryEntityInR2ABC
 from ...coord import X, Y

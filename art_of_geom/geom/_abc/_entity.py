@@ -12,9 +12,9 @@ from sympy.core.symbol import Symbol
 from sympy.geometry.entity import GeometryEntity
 from typing import Iterable, Optional, Tuple, TYPE_CHECKING
 
-from ...util.compat import cached_property
-from ...util.tmp import TMP_NAME_FACTORY
-from ...util.type import OptionalStrType
+from ..._util._compat import cached_property
+from ..._util._tmp import TMP_NAME_FACTORY
+from ..._util._type import OptionalStrType
 
 
 if TYPE_CHECKING:   # to avoid circular import b/w _EntityABC & Session

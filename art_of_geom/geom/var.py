@@ -7,8 +7,8 @@ from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from typing import Union
 
-from ..util.tmp import TMP_NAME_FACTORY
-from ..util.type import NUMERIC_TYPES, OptionalStrType, OptionalSymPyExprType, OptionalStrOrSymPyExprType
+from .._util._tmp import TMP_NAME_FACTORY
+from .._util._type import NUMERIC_TYPES, OptionalStrType, OptionalSymPyExprType, OptionalStrOrSymPyExprType
 from ._abc._entity import _EntityABC
 
 

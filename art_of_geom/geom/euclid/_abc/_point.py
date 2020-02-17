@@ -7,8 +7,8 @@ __all__ = '_EuclidPointABC', '_EuclidConcretePointABC', '_EuclidPointAtInfinityA
 from sympy.core.numbers import oo
 
 from ....geom.var import Variable
-from ....util.compat import cached_property
-from ....util.type import print_obj_and_type
+from ...._util._compat import cached_property
+from ...._util._type import print_obj_and_type
 from ..._abc._point import _PointABC, _ConcretePointABC, _PointAtInfinityABC
 
 

@@ -3,7 +3,7 @@ __all__ = '_PointABC', '_ConcretePointABC', '_PointAtInfinityABC'
 
 from sympy.geometry.point import Point
 
-from ...util.compat import cached_property
+from ..._util._compat import cached_property
 from ..var import Variable
 from ._entity import _GeometryEntityABC
 
