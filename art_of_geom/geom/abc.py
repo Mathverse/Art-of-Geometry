@@ -32,7 +32,7 @@ class _EntityABC:
             return DEFAULT_SESSION
 
     @session.setter
-    def session(self, session: Session) -> None:
+    def session(self, session: Session, /) -> None:
         from .session import Session
 
         assert isinstance(session, Session), \
@@ -46,7 +46,7 @@ class _EntityABC:
             TypeError(f'*** {name} NOT NON-EMPTY STRING ***')
 
     @staticmethod
-    def _with_name_assignment(_method=None, *, tmp_if_empty=False):
+    def _with_name_assignment(_method=None, /, *, tmp_if_empty=False):
 
         def decorator(method, /):
 
@@ -59,7 +59,7 @@ class _EntityABC:
                     -> Optional[_EntityABC]:
                 result = method(cls_or_self, *args, **kwargs)
 
-                if tmp_if_empty and not name:
+                if tmp_if_empty and (not name):
                     name = TMP_NAME_FACTORY()
 
                 if method.__name__ == '__new__':
@@ -95,11 +95,11 @@ class _EntityABC:
         return self._dependencies
 
     @dependencies.setter
-    def dependencies(self, dependencies: Iterable[_EntityABC]) -> None:
+    def dependencies(self, dependencies: Iterable[_EntityABC], /) -> None:
         self._dependencies = dependencies
 
     @staticmethod
-    def _with_dependency_tracking(method):
+    def _with_dependency_tracking(method, /):
         @wraps(method)
         def method_with_dependency_tracking(cls_or_self, *args, **kwargs) -> Optional[_EntityABC]:
             dependencies = \
@@ -109,7 +109,6 @@ class _EntityABC:
             result = method(cls_or_self, *args, **kwargs)
 
             if method.__name__ == '__new__':
-                assert result is not None
                 result.dependencies = dependencies
                 return result
 
