@@ -10,7 +10,7 @@ from inspect import isfunction
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.geometry.entity import GeometryEntity
-from typing import Optional, Tuple, TYPE_CHECKING
+from typing import Iterable, Optional, Tuple, TYPE_CHECKING
 
 from ..util.compat import cached_property
 from ..util.tmp import TMP_NAME_FACTORY
@@ -88,14 +88,14 @@ class _EntityABC:
           else decorator
 
     @property
-    def dependencies(self) -> Tuple[_EntityABC]:
+    def dependencies(self) -> Iterable[_EntityABC]:
         if not hasattr(self, '_dependencies'):
             self._dependencies = tuple()
 
         return self._dependencies
 
     @dependencies.setter
-    def dependencies(self, dependencies: Tuple[_EntityABC]) -> None:
+    def dependencies(self, dependencies: Iterable[_EntityABC]) -> None:
         self._dependencies = dependencies
 
     @staticmethod
