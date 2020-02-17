@@ -120,7 +120,13 @@ class _EntityABC:
                 result.dependencies = dependencies
                 return result
 
+        method_with_dependency_tracking._tracking_dependencies = True
+
         return method_with_dependency_tracking
+
+    @staticmethod
+    def _track_dependencies(Class, /):
+        return Class
 
     @property
     @abstractmethod
