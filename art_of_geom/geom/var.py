@@ -6,8 +6,8 @@ __all__ = \
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from typing import Union
-from uuid import uuid4
 
+from ..util.tmp import TMP_NAME_FACTORY
 from ..util.types import NUMERIC_TYPES, OptionalStrType, OptionalSymPyExprType, OptionalStrOrSymPyExprType
 from .abc import _EntityABC
 
@@ -33,7 +33,7 @@ class Variable(_EntityABC, Symbol):
                 cls,
                 name=name
                     if isinstance(name, str) and name
-                    else str(uuid4()),
+                    else TMP_NAME_FACTORY(),
                 **assumptions)
 
     def __init__(
