@@ -8,7 +8,7 @@ __all__ = \
 
 from sympy.geometry.point import Point3D
 
-from ....geom.var import Variable, OptionalVariableType, VARIABLE_AND_NUMERIC_TYPES
+from ....geom.var import Variable, OptionalVariableOrNumericType, VARIABLE_AND_NUMERIC_TYPES
 from ....util.compat import cached_property
 from ....util.tmp import TMP_NAME_FACTORY
 from ....util.types import NUMERIC_TYPES, OptionalStrType, print_obj_and_type
@@ -23,7 +23,7 @@ class _PointInR3ABC(_EuclidGeometryEntityInR3ABC, _EuclidPointABC):
 class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
     def __new__(
             cls,
-            /, x: OptionalVariableType = None, y: OptionalVariableType = None, z: OptionalVariableType = None,
+            /, x: OptionalVariableOrNumericType = None, y: OptionalVariableOrNumericType = None, z: OptionalVariableOrNumericType = None,
             *, name: OptionalStrType = None) \
             -> Point3D:
         if not name:
@@ -78,6 +78,12 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
         point._dependencies = dependencies
 
         return point
+
+    @property
+    def free(self) -> bool:
+        return ((not isinstance(self.x, Variable)) or self.x.free) \
+           and ((not isinstance(self.y, Variable)) or self.y.free) \
+           and ((not isinstance(self.z, Variable)) or self.z.free)
 
     @property
     def name(self) -> str:

@@ -19,7 +19,9 @@ class _PointABC(_GeometryEntityABC):
 
 
 class _ConcretePointABC(_PointABC, Point):
-    pass
+    @property
+    def free(self) -> bool:
+        raise NotImplementedError
 
 
 class _PointAtInfinityABC(_PointABC):

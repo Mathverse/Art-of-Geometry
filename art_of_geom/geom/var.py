@@ -1,11 +1,11 @@
 __all__ = \
     'Variable', 'Var', \
-    'OptionalVariableType', 'VARIABLE_AND_NUMERIC_TYPES'
+    'VARIABLE_AND_NUMERIC_TYPES', 'OptionalVariableOrNumericType'
 
 
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
-from typing import Optional
+from typing import Union
 from uuid import uuid4
 
 from ..util.types import NUMERIC_TYPES, OptionalStrType, OptionalSymPyExprType, OptionalStrOrSymPyExprType
@@ -68,6 +68,5 @@ Var = Variable
 
 
 # type constants
-OptionalVariableType = Optional[Variable]
-
 VARIABLE_AND_NUMERIC_TYPES = (Variable,) + NUMERIC_TYPES
+OptionalVariableOrNumericType = Union[VARIABLE_AND_NUMERIC_TYPES + (None,)]
