@@ -47,9 +47,7 @@ class _EntityABC:
 
     @staticmethod
     def _with_name_assignment(_method=None, /, *, tmp_if_empty=False):
-
         def decorator(method, /):
-
             @wraps(method)
             def method_with_name_assignment(
                     cls_or_self,
