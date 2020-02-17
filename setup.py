@@ -1,6 +1,6 @@
 import os
 from ruamel import yaml
-from setuptools import find_namespace_packages, find_packages, setup
+from setuptools import find_namespace_packages, setup
 
 
 _PACKAGE_NAMESPACE_NAME = 'art_of_geom'
@@ -31,8 +31,7 @@ setup(
     description=_metadata['DESCRIPTION'],
     long_description=_metadata['DESCRIPTION'],
     keywords=_metadata['DESCRIPTION'],
-    packages=find_packages(),
-    include_package_data=True,
+    packages=find_namespace_packages(include=f'{_PACKAGE_NAMESPACE_NAME}.*'),
     setup_requires=
         [s for s in
             {i.strip()
