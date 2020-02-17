@@ -132,7 +132,7 @@ class DirectedPlaneInR3(PlaneInR3):
 
 
 class PlaneAtInfinityInR3(_PlaneInR3ABC):
-    @_PlaneInR3ABC._with_name_assignment(uuid_if_empty=True)
+    @_PlaneInR3ABC._with_name_assignment(tmp_if_empty=True)
     def __init__(self, normal_direction: Point3D) -> None:
         assert isinstance(normal_direction, Point3D), \
             TypeError(f'*** NORMAL DIRECTION {normal_direction} NOT OF TYPE {Point3D.__name__} ***')

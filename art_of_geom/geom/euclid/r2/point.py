@@ -7,11 +7,11 @@ __all__ = \
 
 
 from sympy.geometry.point import Point2D
-from uuid import uuid4
 
 from ....geom.var import Variable, OptionalVariableType, VARIABLE_AND_NUMERIC_TYPES
 from ....util.compat import cached_property
-from ....util.types import OptionalStrType, print_obj_and_type
+from ....util.tmp import TMP_NAME_FACTORY
+from ....util.types import NUMERIC_TYPES, OptionalStrType, print_obj_and_type
 from ..point import _EuclidPointABC, _EuclidConcretePointABC, _EuclidPointAtInfinityABC
 from .abc import _EuclidGeometryEntityInR2ABC
 
@@ -27,19 +27,31 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
             *, name: OptionalStrType = None) \
             -> Point2D:
         if not name:
-            name = str(uuid4())
+            name = TMP_NAME_FACTORY()
+
+        dependencies = []
 
         if x is None:
             x = Variable(f'[{name}.x]', real=True)
+            dependencies.append(x)
+
+        elif isinstance(x, Variable):
+            dependencies.append(x)
+
         else:
-            assert isinstance(x, VARIABLE_AND_NUMERIC_TYPES), \
+            assert isinstance(x, NUMERIC_TYPES), \
                 TypeError(f'*** X COORDINATE {print_obj_and_type(x)} '
                           f'NOT OF ONE OF TYPES {VARIABLE_AND_NUMERIC_TYPES} ***')
 
         if y is None:
             y = Variable(f'[{name}.y]', real=True)
+            dependencies.append(y)
+
+        elif isinstance(y, Variable):
+            dependencies.append(y)
+
         else:
-            assert isinstance(y, VARIABLE_AND_NUMERIC_TYPES), \
+            assert isinstance(y, NUMERIC_TYPES), \
                 TypeError(f'*** Y COORDINATE {print_obj_and_type(y)} '
                           f'NOT OF ONE OF TYPES {VARIABLE_AND_NUMERIC_TYPES} ***')
 
@@ -50,6 +62,8 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
                 )
 
         point._name = name
+
+        point._dependencies = dependencies
 
         return point
 
@@ -104,10 +118,11 @@ Pt = Point = PointR2 = PointInR2
 
 
 class PointAtInfinityInR2(_PointInR2ABC, _EuclidPointAtInfinityABC):
-    @_PointInR2ABC._with_name_assignment(uuid_if_empty=True)
-    def __init__(self, direction: Point2D, /) -> None:
-        assert isinstance(direction, Point2D), \
-            TypeError(f'*** DIRECTION {direction} NOT OF TYPE {Point2D.__name__} ***')
+    @_PointInR2ABC._with_dependency_tracking
+    @_PointInR2ABC._with_name_assignment(tmp_if_empty=True)
+    def __init__(self, direction: PointInR2, /) -> None:
+        assert isinstance(direction, PointInR2), \
+            TypeError(f'*** DIRECTION {direction} NOT OF TYPE {PointInR2.__name__} ***')
 
         self.direction = direction
 

@@ -11,9 +11,9 @@ from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.geometry.entity import GeometryEntity
 from typing import Optional, Tuple, TYPE_CHECKING
-from uuid import uuid4
 
 from ..util.compat import cached_property
+from ..util.tmp import TMP_NAME_FACTORY
 from ..util.types import OptionalStrType
 
 
@@ -46,7 +46,7 @@ class _EntityABC:
             TypeError(f'*** {name} NOT NON-EMPTY STRING ***')
 
     @staticmethod
-    def _with_name_assignment(_method=None, *, uuid_if_empty=False):
+    def _with_name_assignment(_method=None, *, tmp_if_empty=False):
 
         def decorator(method, /):
 
@@ -59,8 +59,8 @@ class _EntityABC:
                     -> Optional[_EntityABC]:
                 result = method(cls_or_self, *args, **kwargs)
 
-                if uuid_if_empty and not name:
-                    name = str(uuid4())
+                if tmp_if_empty and not name:
+                    name = TMP_NAME_FACTORY()
 
                 if method.__name__ == '__new__':
                     if isinstance(result, Symbol):

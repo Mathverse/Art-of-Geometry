@@ -8,7 +8,7 @@ from sympy.core.symbol import Symbol
 from typing import Optional
 from uuid import uuid4
 
-from ..util.types import OptionalStrType, OptionalSymPyExprType, OptionalStrOrSymPyExprType
+from ..util.types import NUMERIC_TYPES, OptionalStrType, OptionalSymPyExprType, OptionalStrOrSymPyExprType
 from .abc import _EntityABC
 
 
@@ -70,4 +70,4 @@ Var = Variable
 # type constants
 OptionalVariableType = Optional[Variable]
 
-VARIABLE_AND_NUMERIC_TYPES = Variable, complex, float, int
+VARIABLE_AND_NUMERIC_TYPES = (Variable,) + NUMERIC_TYPES

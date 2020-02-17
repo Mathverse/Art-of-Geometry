@@ -1,4 +1,5 @@
 __all__ = \
+    'NUMERIC_TYPES', \
     'OptionalStrType', \
     'OptionalSymPyExprType', \
     'OptionalStrOrSymPyExprType', \
@@ -6,8 +7,11 @@ __all__ = \
 
 
 from sympy.core.expr import Expr
+from sympy.core.numbers import Number
 from typing import Optional, Union
 
+
+NUMERIC_TYPES = Number, complex, float, int
 
 OptionalStrType = Optional[str]
 
