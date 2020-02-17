@@ -17,7 +17,7 @@ from ..util.tmp import TMP_NAME_FACTORY
 from ..util.types import OptionalStrType
 
 
-if TYPE_CHECKING:   # to avoid circular import b/w _GeometryEntityABC & Session
+if TYPE_CHECKING:   # to avoid circular import b/w _EntityABC & Session
     from .session import Session
 
 
