@@ -3,9 +3,13 @@
 
 from random import choice
 
+import art_of_geom._util._debug
 from art_of_geom.geom.euclid.r3.point import Pt, PtAtInf
 from art_of_geom.geom.euclid.r3.line import Ln, LnAtInf, Ray, Seg
 from art_of_geom.geom.session import Session, DEFAULT_SESSION
+
+
+art_of_geom._util._debug.ON = True
 
 
 s = Session() \
