@@ -5,7 +5,7 @@ __all__ = \
 
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
-from typing import Optional, Union
+from typing import Optional
 from uuid import uuid4
 
 from ..util.types import OptionalStrType, OptionalSymPyExprType, OptionalStrOrSymPyExprType

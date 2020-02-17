@@ -10,7 +10,7 @@ from inspect import isfunction
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.geometry.entity import GeometryEntity
-from typing import Tuple, TYPE_CHECKING
+from typing import Optional, Tuple, TYPE_CHECKING
 from uuid import uuid4
 
 from ..util.compat import cached_property
@@ -56,7 +56,7 @@ class _EntityABC:
                     *args,
                     name: OptionalStrType = None,
                     **kwargs) \
-                    -> _EntityABC:
+                    -> Optional[_EntityABC]:
                 result = method(cls_or_self, *args, **kwargs)
 
                 if uuid_if_empty and not name:
@@ -88,26 +88,56 @@ class _EntityABC:
           else decorator
 
     @property
-    @abstractmethod
-    def _short_repr(self) -> str:
-        raise NotImplementedError
-
-    def __repr__(self) -> str:
-        return f'{self.session._str_prefix}{self._short_repr}'
-    
-    def __str__(self) -> str:
-        return repr(self)
-
-    @property
     def dependencies(self) -> Tuple[_EntityABC]:
         if not hasattr(self, '_dependencies'):
-            self._dependencies = Tuple[_EntityABC]()
+            self._dependencies = tuple()
 
         return self._dependencies
 
     @dependencies.setter
     def dependencies(self, dependencies: Tuple[_EntityABC]) -> None:
         self._dependencies = dependencies
+
+    @staticmethod
+    def _with_dependency_tracking(method):
+        @wraps(method)
+        def method_with_dependency_tracking(cls_or_self, *args, **kwargs) -> Optional[_EntityABC]:
+            dependencies = \
+                [i for i in args + tuple(kwargs.values())
+                   if isinstance(i, _EntityABC)]
+
+            result = method(cls_or_self, *args, **kwargs)
+
+            if method.__name__ == '__new__':
+                assert result is not None
+                result.dependencies = dependencies
+                return result
+
+            elif method.__name__ == '__init__':
+                assert result is None
+                cls_or_self.dependencies = dependencies
+
+            else:
+                assert isinstance(result, _EntityABC), \
+                    TypeError(f'*** RESULT {result} NOT OF TYPE {_EntityABC.__name__} ***')
+                result.dependencies = dependencies
+                return result
+
+        return method_with_dependency_tracking
+
+    @property
+    @abstractmethod
+    def _short_repr(self) -> str:
+        raise NotImplementedError
+
+    def __repr__(self) -> str:
+        return f"{self.session._str_prefix}{self.__module__} {self._short_repr}"' {}'.format(
+                f"<- ({', '.join(dependency._short_repr for dependency in dependencies)})"
+                if (dependencies := self.dependencies)
+                else '(FREE)')
+    
+    def __str__(self) -> str:
+        return repr(self)
 
 
 class _GeometryEntityABC(_EntityABC, GeometryEntity):

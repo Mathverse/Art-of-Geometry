@@ -7,7 +7,6 @@ __all__ = \
 
 
 from sympy.geometry.point import Point3D
-from typing import Optional
 from uuid import uuid4
 
 from ....geom.var import Variable, OptionalVariableType, VARIABLE_AND_NUMERIC_TYPES
@@ -88,7 +87,7 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
     @classmethod
     @_PointInR3ABC._with_name_assignment
     def _from_sympy_point_3d(cls, sympy_point_3d: Point3D, /) -> PointInR3:
-        return PointInR3(sympy_point_3d.x, sympy_point_3d.y, sympy_point_3d.z)
+        return PointInR3(Variable(sympy_point_3d.x), Variable(sympy_point_3d.y), Variable(sympy_point_3d.z))
 
     def __neg__(self) -> PointInR3:
         return self._from_sympy_point_3d(super().__neg__())

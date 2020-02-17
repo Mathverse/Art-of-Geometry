@@ -67,12 +67,11 @@ class LineInR3(_LineInR3ABC, _EuclidConcreteLineABC, Line3D):
                             f'NEITHER OF TYPE {PointInR3.__name__} '
                             f'NOR OF TYPE {PointAtInfinityInR3.__name__} ***')
 
+    @_LineInR3ABC._with_dependency_tracking
     @_LineInR3ABC._with_name_assignment
     def __init__(self, point_0: PointInR3, point_1: _PointInR3ABC, /) -> None:
         self.point_0 = point_0
         self.point_1 = point_1
-
-        self.dependencies = point_0, point_1
 
     @cached_property
     def point_at_infinity(self) -> PointAtInfinityInR3:
