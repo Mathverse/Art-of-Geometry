@@ -59,7 +59,7 @@ class Variable(_EntityABC, Symbol):
         return f"Var {self.name}{f' = {self.expr}' if self.expr else ''}"
 
     @property
-    def free(self):
+    def free(self) -> bool:
         return self.expr is None
 
 
