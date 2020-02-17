@@ -75,13 +75,9 @@ class LineInR3(_LineInR3ABC, _EuclidConcreteLineABC, Line3D):
 
     @cached_property
     def point_at_infinity(self) -> PointAtInfinityInR3:
-        if self._point_1_at_infinity:
-            return self.point_1
-
-        else:
-            pt_at_inf = PointAtInfinityInR3(self.direction)
-            pt_at_inf.dependencies = self.point_0, self.point_1
-            return pt_at_inf
+        return self.point_1 \
+            if self._point_1_at_infinity \
+          else PointAtInfinityInR3(self.direction)
 
     @cached_property
     def parametric_equations(self) -> Tuple[Expr, Expr, Expr]:

@@ -73,13 +73,9 @@ class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
 
     @cached_property
     def point_at_infinity(self) -> PointAtInfinityInR2:
-        if self._point_1_at_infinity:
-            return self.point_1
-
-        else:
-            pt_at_inf = PointAtInfinityInR2(self.direction)
-            pt_at_inf.dependencies = self.point_0, self.point_1
-            return pt_at_inf
+        return self.point_1 \
+            if self._point_1_at_infinity \
+          else PointAtInfinityInR2(self.direction)
 
     @cached_property
     def equation(self) -> Expr:
