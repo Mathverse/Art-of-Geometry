@@ -6,8 +6,8 @@ __all__ = 'Session', 'DEFAULT_SESSION'
 
 from sympy.assumptions.assume import AssumptionsContext
 from typing import TYPE_CHECKING
-from uuid import uuid4
 
+from ..util.tmp import TMP_NAME_FACTORY
 from ..util.types import OptionalStrType
 
 
@@ -20,7 +20,7 @@ class Session:
         self.name = \
             name \
             if isinstance(name, str) \
-            else str(uuid4())
+            else TMP_NAME_FACTORY()
 
         self.entities = {}
 
@@ -30,12 +30,6 @@ class Session:
         return f"Geometry Session{f' {name.upper()}' if (name := self.name) else ''}"
 
     __str__ = __repr__
-
-    @property
-    def _str_prefix(self) -> str:
-        return f'{name}: ' \
-            if (name := self.name) \
-          else ''
 
     def __setattr__(self, name: str, value, /) -> None:
         from .abc import _EntityABC

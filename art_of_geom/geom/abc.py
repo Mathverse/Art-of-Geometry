@@ -131,10 +131,16 @@ class _EntityABC:
         raise NotImplementedError
 
     def __repr__(self) -> str:
-        return f"{self.session._str_prefix}{self.__module__} {self._short_repr}"' {}'.format(
+        return '{}{}.{} {} {}'.format(
+                f'Session "{session_name}": '
+                    if (session_name := self.session.name)
+                    else '',
+                self.__module__,
+                type(self).__name__,
+                self.name,
                 f"<- ({', '.join(dependency._short_repr for dependency in dependencies)})"
-                if (dependencies := self.dependencies)
-                else '(FREE)')
+                    if (dependencies := self.dependencies)
+                    else '(FREE)')
     
     def __str__(self) -> str:
         return repr(self)
