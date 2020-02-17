@@ -14,21 +14,25 @@ from ._point import _PointABC
 
 class _LinearEntityABC(_GeometryEntityABC):
     @abstractmethod
+    @_GeometryEntityABC._with_dependency_tracking
     @_GeometryEntityABC._with_name_assignment
     def parallel_line(self, through_point: _PointABC, /) -> _LineABC:
         raise NotImplementedError
 
     @abstractmethod
+    @_GeometryEntityABC._with_dependency_tracking
     @_GeometryEntityABC._with_name_assignment
     def perpendicular_projection_of_point(self, point: _PointABC, /) -> _PointABC:
         raise NotImplementedError
 
     # alias
+    @_GeometryEntityABC._with_dependency_tracking
     @_GeometryEntityABC._with_name_assignment
     def perpendicular_projection(self, point: _PointABC, /) -> _PointABC:
         return self.perpendicular_projection_of_point(point)
 
     @abstractmethod
+    @_GeometryEntityABC._with_dependency_tracking
     @_GeometryEntityABC._with_name_assignment
     def perpendicular_line(self, through_point: _PointABC, /) -> _LineABC:
         raise NotImplementedError
@@ -44,11 +48,13 @@ class _LinearEntityAtInfinityABC(_LinearEntityABC):
 
 class _LineABC(_LinearEntityABC):
     @abstractmethod
+    @_LinearEntityABC._with_dependency_tracking
     @_LinearEntityABC._with_name_assignment
     def perspective_projection_of_point(self, /, perspector: _PointABC, point: _PointABC) -> _PointABC:
         raise NotImplementedError
 
     # alias
+    @_LinearEntityABC._with_dependency_tracking
     @_LinearEntityABC._with_name_assignment
     def perspective_projection(self, /, perspector: _PointABC, point: _PointABC) -> _PointABC:
         return self.perspective_projection_of_point(perspector=perspector, point=point)
