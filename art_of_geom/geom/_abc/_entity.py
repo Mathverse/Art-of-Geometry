@@ -47,8 +47,8 @@ class _EntityABC:
 
         setattr(self, self._SESSION_ATTR_KEY, session)
 
-    _NAME_NULLABLE = True
     _NAME_ATTR_KEY = '_name'
+    _NAME_NULLABLE = True
 
     @staticmethod
     def _validate_name(name: str, /) -> None:
@@ -185,10 +185,8 @@ class _EntityABC:
                         entity_related_obj,
                         predicate=lambda member: not (isabstract(member) or isclass(member))))
 
-            __new__ = class_members.pop('__new__')
-            __init__ = class_members.pop('__init__')
-
-            if isfunction(__new__):   # if __new__ is implemented somewhere in __mro__
+            # if __new__ is implemented somewhere in __mro__
+            if isfunction(__new__ := class_members.pop('__new__')):
                 entity_related_obj.__new__ = \
                     decorate(
                         __new__,
@@ -197,7 +195,8 @@ class _EntityABC:
                             if entity_related_obj._NAME_NULLABLE
                             else TMP_NAME_FACTORY)
 
-            if isfunction(__init__):   # if __init__ is implemented somewhere in __mro__
+            # if __init__ is implemented somewhere in __mro__
+            if isfunction(__init__ := class_members.pop('__init__')):
                 entity_related_obj.__init__ = \
                     decorate(
                         __init__,
