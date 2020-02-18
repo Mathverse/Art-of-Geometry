@@ -6,19 +6,28 @@ __all__ = '_EntityABC', '_GeometryEntityABC'
 
 from abc import abstractmethod
 from functools import wraps
-from inspect import isfunction
+from inspect import \
+    getmembers, \
+    isfunction, ismethod, \
+    isdatadescriptor, ismemberdescriptor, ismethoddescriptor, isgetsetdescriptor
+from logging import Handler, INFO, Logger
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.geometry.entity import GeometryEntity
 from typing import Iterable, Optional, Tuple, TYPE_CHECKING
 
+import art_of_geom._util._debug
 from ..._util._compat import cached_property
+from ..._util._log import STDOUT_HANDLER, logger
 from ..._util._tmp import TMP_NAME_FACTORY
 from ..._util._type import OptionalStrType
 
 
 if TYPE_CHECKING:   # to avoid circular import b/w _EntityABC & Session
     from ..session import Session
+
+
+_ENTITY_CLASS_NAMES = set()
 
 
 class _EntityABC:
@@ -128,18 +137,30 @@ class _EntityABC:
     def _track_dependencies(Class, /):
         return Class
 
+    @classmethod
+    def __class_full_name__(cls) -> str:
+        return f'{cls.__module__}.{cls.__qualname__}'
+
+    @classmethod
+    def class_logger(cls, *handlers: Handler, level: Optional[int] = INFO) -> Logger:
+        return logger(cls.__class_full_name__(), *handlers, level=level)
+
+    @cached_property
+    @classmethod
+    def class_stdout_logger(cls) -> Logger:
+        return cls.class_logger(STDOUT_HANDLER)
+
     @property
     @abstractmethod
     def _short_repr(self) -> str:
         raise NotImplementedError
 
     def __repr__(self) -> str:
-        return '{}{}.{} {} {}'.format(
+        return '{}{} {} {}'.format(
                 f'Session "{session_name}": '
                     if (session_name := self.session.name)
                     else '',
-                self.__module__,
-                type(self).__name__,
+                self.__class_full_name__(),
                 self.name,
                 f"<- ({', '.join(dependency._short_repr for dependency in dependencies)})"
                     if (dependencies := self.dependencies)
@@ -147,6 +168,13 @@ class _EntityABC:
     
     def __str__(self) -> str:
         return repr(self)
+
+    def logger(self, *handlers: Handler, level: Optional[_Level] = INFO) -> Logger:
+        return logger(str(self), *handlers, level=level)
+
+    @cached_property
+    def stdout_logger(self) -> Logger:
+        return self.logger(STDOUT_HANDLER)
 
 
 class _GeometryEntityABC(_EntityABC, GeometryEntity):
