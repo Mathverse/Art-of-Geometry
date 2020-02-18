@@ -20,6 +20,7 @@ class _PointInR2ABC(_EuclidGeometryEntityInR2ABC, _EuclidPointABC):
     pass
 
 
+@_PointInR2ABC.assign_name_and_dependencies
 class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
     def __new__(
             cls,
@@ -89,13 +90,11 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
             if isinstance(self.y, Variable):
                 self.y.name = f'[{name}.y]'
 
-    @_PointInR2ABC._with_name_assignment
     def same(self) -> PointInR2:
         return PointInR2(self.x, self.y)
 
     @classmethod
-    @_PointInR2ABC._with_name_assignment
-    def _from_sympy_point_2d(cls, sympy_point_2d: Point2D, /):
+    def _from_sympy_point_2d(cls, sympy_point_2d: Point2D, /) -> PointInR2:
         return PointInR2(Variable(sympy_point_2d.x), Variable(sympy_point_2d.y))
 
     def __neg__(self) -> PointInR2:
@@ -122,9 +121,8 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
 Pt = Point = PointR2 = PointInR2
 
 
+@_PointInR2ABC.assign_name_and_dependencies
 class PointAtInfinityInR2(_PointInR2ABC, _EuclidPointAtInfinityABC):
-    @_PointInR2ABC._with_dependency_tracking
-    @_PointInR2ABC._with_name_assignment(tmp_if_empty=True)
     def __init__(self, direction: PointInR2, /) -> None:
         assert isinstance(direction, PointInR2), \
             TypeError(f'*** DIRECTION {direction} NOT OF TYPE {PointInR2.__name__} ***')

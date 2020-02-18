@@ -1,15 +1,15 @@
 #!/usr/bin/env python3.8
 
 
+import art_of_geom._util._debug
+art_of_geom._util._debug.ON = True
+
+
 from random import choice
 
-import art_of_geom._util._debug
 from art_of_geom.geom.euclid.r2.point import Pt, PtAtInf
 from art_of_geom.geom.euclid.r2.line import Ln, LnAtInf, Ray, Seg
 from art_of_geom.geom.session import Session, DEFAULT_SESSION
-
-
-art_of_geom._util._debug.ON = True
 
 
 s = Session() \

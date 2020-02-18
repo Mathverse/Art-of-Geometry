@@ -28,12 +28,9 @@ class _EuclidPointAtInfinityABC(_EuclidPointABC, _PointAtInfinityABC):
 
         return self.direction.is_scalar_multiple(point_at_infinity.direction)
 
-    @_EuclidPointABC._with_dependency_tracking
-    @_EuclidPointABC._with_name_assignment
     def same(self) -> _EuclidPointAtInfinityABC:
         return type(self)(self.direction)
 
     @cached_property
-    @_EuclidPointABC._with_dependency_tracking
     def distance_from_origin(self) -> Variable:
         return oo

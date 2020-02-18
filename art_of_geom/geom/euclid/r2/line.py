@@ -40,8 +40,8 @@ class _LineInR2ABC(_LinearEntityInR2ABC, _EuclidLineABC):
     pass
 
 
+@_LineInR2ABC.assign_name_and_dependencies
 class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
-    @_LineInR2ABC._with_name_assignment
     def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, /) -> Line2D:
         assert isinstance(point_0, PointInR2), \
             TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR2.__name__} ***')
@@ -65,8 +65,6 @@ class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
                             f'NEITHER OF TYPE {PointInR2.__name__} '
                             f'NOR OF TYPE {PointAtInfinityInR2.__name__} ***')
 
-    @_LineInR2ABC._with_dependency_tracking
-    @_LineInR2ABC._with_name_assignment
     def __init__(self, point_0: PointInR2, point_1: _PointInR2ABC, /) -> None:
         self.point_0 = point_0
         self.point_1 = point_1
@@ -87,15 +85,12 @@ class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
         return X - self.point_0.x - self.direction.x * T, \
                Y - self.point_0.y - self.direction.y * T
 
-    @_LineInR2ABC._with_name_assignment
     def same(self) -> LineInR2:
         return LineInR2(self.point_0, self.point_1)
 
-    @_LineInR2ABC._with_name_assignment
     def parallel_line(self, through_point: PointInR2, /) -> LineInR2:
         return LineInR2(through_point, PointAtInfinityInR2(self.direction))
 
-    @_LineInR2ABC._with_name_assignment
     def perpendicular_line(self, through_point: PointInR2, /) -> LineInR2:
         return LineInR2(through_point, PointAtInfinityInR2(self.direction.orthogonal_direction))
 
@@ -104,8 +99,8 @@ class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
 Ln = Line = LineR2 = LineInR2
 
 
+@_LineInR2ABC.assign_name_and_dependencies
 class LineAtInfinityInR2(_LineInR2ABC, _EuclidLineAtInfinityABC):
-    @_LineInR2ABC._with_name_assignment
     def __init__(self, normal_direction: Point2D, /) -> None:
         assert isinstance(normal_direction, Point2D), \
             TypeError(f'*** NORMAL DIRECTION {normal_direction} NOT OF TYPE {Point2D.__name__} ***')
@@ -118,15 +113,12 @@ class LineAtInfinityInR2(_LineInR2ABC, _EuclidLineAtInfinityABC):
 
         return self.normal_direction.is_scalar_multiple(line_at_infinity.normal_direction)
 
-    @_LineInR2ABC._with_name_assignment
     def same(self) -> LineAtInfinityInR2:
         return LineAtInfinityInR2(self.normal_direction)
 
-    @_LineInR2ABC._with_name_assignment
     def parallel_line(self, through_point: PointInR2, /) -> LineInR2:
         return LineInR2(through_point, PointAtInfinityInR2(self.normal_direction.orthogonal_direction))
 
-    @_LineInR2ABC._with_name_assignment
     def perpendicular_line(self, through_point: PointInR2, /) -> LineInR2:
         return LineInR2(through_point, PointAtInfinityInR2(self.normal_direction))
 
@@ -135,8 +127,8 @@ class LineAtInfinityInR2(_LineInR2ABC, _EuclidLineAtInfinityABC):
 LnAtInf = LineAtInf = LineAtInfinity = LineAtInfinityR2 = LineAtInfinityInR2
 
 
+@_ConcreteLinearEntityInR2ABC.assign_name_and_dependencies
 class RayInR2(_ConcreteLinearEntityInR2ABC, _EuclidRayABC, Ray2D):
-    @_ConcreteLinearEntityInR2ABC._with_name_assignment
     def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, /) -> Ray2D:
         assert isinstance(point_0, PointInR2), \
             TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR2.__name__} ***')

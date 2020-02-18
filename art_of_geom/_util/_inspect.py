@@ -7,15 +7,19 @@ from inspect import \
     isdatadescriptor, ismemberdescriptor, ismethoddescriptor, isgetsetdescriptor
 
 
-def describe(obj):
+def describe(obj, /, Class=False):
     return {class_member_name: describe(class_member)
             for class_member_name, class_member in getmembers(obj)} \
-        if isclass(obj) \
+        if Class \
       else dict(
             Abstract=isabstract(obj),
             Class=isclass(obj),
-            Function=isfunction(obj),
-            Method=ismethod(obj),
+            Function=(is_function := isfunction(obj)),
+            Method=(is_method := ismethod(obj)),
+            Annotations=
+                obj.__annotations__
+                if is_function or is_method
+                else None,
             DataDescriptor=isdatadescriptor(obj),
             MemberDescriptor=ismemberdescriptor(obj),
             MethodDescriptor=ismethoddescriptor(obj),

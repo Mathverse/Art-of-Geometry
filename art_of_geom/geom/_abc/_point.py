@@ -10,7 +10,6 @@ from ._entity import _GeometryEntityABC
 
 class _PointABC(_GeometryEntityABC):
     @cached_property
-    @_GeometryEntityABC._with_dependency_tracking
     def distance_from_origin(self) -> Variable:
         raise NotImplementedError
 

@@ -23,8 +23,6 @@ class _EuclidConcreteLinearEntityABC(_EuclidLinearEntityABC, _ConcreteLinearEnti
     def unit_direction(self) -> Point:
         return self.direction.unit
 
-    @_EuclidLinearEntityABC._with_dependency_tracking
-    @_EuclidLinearEntityABC._with_name_assignment
     def perpendicular_projection_of_point(self, point: _ConcretePointABC, /) -> _ConcretePointABC:
         return self.point_0 + self.unit_direction.dot(point - self.point_0) * self.unit_direction
 
