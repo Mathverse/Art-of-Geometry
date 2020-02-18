@@ -8,7 +8,7 @@ from sympy.core.symbol import Symbol
 from typing import Union
 
 from .._util._tmp import TMP_NAME_FACTORY
-from .._util._type import NUMERIC_TYPES, OptionalStrType, OptionalSymPyExprType, OptionalStrOrSymPyExprType
+from .._util._type import NUMERIC_TYPES, OptionalStrOrCallableReturningStrType, OptionalSymPyExprType, OptionalStrOrSymPyExprType
 from ._abc._entity import _EntityABC
 
 
@@ -16,7 +16,7 @@ class Variable(_EntityABC, Symbol):
     def __new__(
             cls,
             expr_or_name: OptionalStrOrSymPyExprType = None, /,
-            *, expr: OptionalSymPyExprType = None, name: OptionalStrType = None,
+            *, expr: OptionalSymPyExprType = None, name: OptionalStrOrCallableReturningStrType = TMP_NAME_FACTORY,
             **assumptions: bool) \
             -> Symbol:
         if isinstance(expr_or_name, Expr):
@@ -29,17 +29,18 @@ class Variable(_EntityABC, Symbol):
 
             name = expr_or_name
 
-        return super().__new__(
-                cls,
-                name=name
-                    if isinstance(name, str) and name
-                    else TMP_NAME_FACTORY(),
-                **assumptions)
+        if callable(name):
+            name = name()
+        elif not name:
+            name = TMP_NAME_FACTORY()
+        cls._validate_name(name)
+
+        return super().__new__(cls, name=name, **assumptions)
 
     def __init__(
             self,
             expr_or_name: OptionalStrOrSymPyExprType = None, /,
-            *, expr: OptionalSymPyExprType = None, name: OptionalStrType = None,
+            *, expr: OptionalSymPyExprType = None, name: OptionalStrOrCallableReturningStrType = None,
             **assumptions: bool) \
             -> None:
         if isinstance(expr_or_name, Expr):
