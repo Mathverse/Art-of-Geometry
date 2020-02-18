@@ -226,7 +226,7 @@ class _EntityABC:
                         entity_related_obj, class_member_name,
                         classmethod(decorate(class_member.__func__, assign_name=True)))
 
-                if ismethod(class_member) and decorable(class_member):   # method
+                if ismethod(class_member) and decorable(class_member):   # instance method
                     setattr(
                         entity_related_obj, class_member_name,
                         decorate(class_member, assign_name=True))
