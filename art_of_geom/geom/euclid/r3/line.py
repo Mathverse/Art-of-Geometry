@@ -39,9 +39,8 @@ class _LineInR3ABC(_LinearEntityInR3ABC, _EuclidLineABC):
     pass
 
 
+@_LineInR3ABC.assign_name_and_dependencies
 class LineInR3(_LineInR3ABC, _EuclidConcreteLineABC, Line3D):
-    @_LineInR3ABC._with_dependency_tracking
-    @_LineInR3ABC._with_name_assignment
     def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, /) -> Line3D:
         assert isinstance(point_0, PointInR3), \
             TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR3.__name__} ***')
@@ -68,8 +67,6 @@ class LineInR3(_LineInR3ABC, _EuclidConcreteLineABC, Line3D):
                             f'NEITHER OF TYPE {PointInR3.__name__} '
                             f'NOR OF TYPE {PointAtInfinityInR3.__name__} ***')
 
-    @_LineInR3ABC._with_dependency_tracking
-    @_LineInR3ABC._with_name_assignment
     def __init__(self, point_0: PointInR3, point_1: _PointInR3ABC, /) -> None:
         self.point_0 = point_0
         self.point_1 = point_1
@@ -86,11 +83,9 @@ class LineInR3(_LineInR3ABC, _EuclidConcreteLineABC, Line3D):
                Y - self.point_0.y - self.direction.y * T, \
                Z - self.point_0.z - self.direction.z * T
 
-    @_LineInR3ABC._with_name_assignment
     def parallel_line(self, through_point: PointInR3, /) -> LineInR3:
         return LineInR3(through_point, PointAtInfinityInR3(self.direction))
 
-    @_LineInR3ABC._with_name_assignment
     def perpendicular_line(self, through_point: PointInR3, /) -> LineInR3:
         return LineInR3(through_point, self.perpendicular_projection_of_point(through_point))
         # TODO: CASE WHEN through_point ON THIS LINE

@@ -8,6 +8,7 @@ from abc import abstractmethod
 from functools import wraps
 from inspect import getfullargspec, getmembers, isabstract, isclass, isfunction, ismethod, ismethoddescriptor
 from logging import Handler, INFO, Logger
+from pprint import pprint
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.geometry.entity import GeometryEntity
@@ -87,23 +88,27 @@ class _EntityABC:
                     name: OptionalStrType = None,
                     **kwargs) \
                     -> Optional[_EntityABC]:
+                _to_assign_name = ('name' not in getfullargspec(function).kwonlyargs)
+
+                if _to_assign_name:
+                    try:
+                        result = function(cls_or_self, *args, **kwargs)
+                    except Exception as err:
+                        print(f'*** {function}({cls_or_self}, *{args}, **{kwargs}): {err} ***')
+                        pprint(describe(function))
+                        raise err
+
+                else:
+                    try:
+                        result = function(cls_or_self, *args, name=name, **kwargs)
+                    except Exception as err:
+                        print(f'*** {function}({cls_or_self}, *{args}, **{kwargs}): {err} ***')
+                        pprint(describe(function))
+                        raise err
+
                 dependencies = \
                     [i for i in ((cls_or_self,) + args + tuple(kwargs.values()))
                        if isinstance(i, _EntityABC)]
-
-                if 'name' in getfullargspec(function).kwonlyargs:
-                    result = function(cls_or_self, *args, name=name, **kwargs)
-
-                    _to_assign_name = False
-
-                else:
-                    result = function(cls_or_self, *args, **kwargs)
-
-                    if name:
-                        _EntityABC._validate_name(name)
-                        _to_assign_name = True
-                    else:
-                        _to_assign_name = False
 
                 if function.__name__ == '__new__':
                     if _to_assign_name:
@@ -131,7 +136,8 @@ class _EntityABC:
                     assert isinstance(result, _EntityABC), \
                         TypeError(f'*** RESULT {result} NOT OF TYPE {_EntityABC.__name__} ***')
 
-                    if _to_assign_name:
+                    if _to_assign_name and name:
+                        _EntityABC._validate_name(name)
                         result.name = name
 
                     result.dependencies = dependencies

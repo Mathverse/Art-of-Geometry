@@ -131,8 +131,8 @@ class DirectedPlaneInR3(PlaneInR3):
     pass
 
 
+@_PlaneInR3ABC.assign_name_and_dependencies
 class PlaneAtInfinityInR3(_PlaneInR3ABC):
-    @_PlaneInR3ABC._with_name_assignment(tmp_if_empty=True)
     def __init__(self, normal_direction: Point3D) -> None:
         assert isinstance(normal_direction, Point3D), \
             TypeError(f'*** NORMAL DIRECTION {normal_direction} NOT OF TYPE {Point3D.__name__} ***')
