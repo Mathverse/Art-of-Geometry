@@ -16,7 +16,7 @@ from typing import Iterable, Optional, Tuple, TYPE_CHECKING
 
 import art_of_geom._util._debug
 from ..._util._compat import cached_property
-from ..._util._inspect import describe
+from ..._util._inspect import is_class_method, is_special_op, describe
 from ..._util._log import STDOUT_HANDLER, logger
 from ..._util._type import OptionalStrType
 
@@ -70,23 +70,35 @@ class _EntityABC:
 
     @staticmethod
     def assign_name_and_dependencies(entity_related_obj, /):
-        def decorable(function, /):
-            return False \
-                if getattr(function, '_DECORATED_WITH_NAME_AND_DEPENDENCIES_ASSIGNMENT', False) \
-              else ((True
-                     if (len(qual_name_parts := function.__qualname__.split('.')) == 2) and
-                        (return_annotation == qual_name_parts[0])
-                     else (isclass(return_annotation_obj := eval(return_annotation, sys.modules[function.__module__].__dict__)) and
-                           issubclass(return_annotation_obj, _EntityABC)))
-                    if isinstance(return_annotation := function.__annotations__.get('return'), str)
-                    else False)
+        def decorable(function, /) -> Optional[bool]:
+            assert isfunction(function) or ismethod(function), \
+                f'*** {function} NEITHER FUNCTION NOR METHOD ***'
+
+            if not getattr(function, '_DECORATED_WITH_NAME_AND_DEPENDENCIES_ASSIGNMENT', False):
+                if isinstance(return_annotation := function.__annotations__.get('return'), str):
+                    if (len(qual_name_parts := function.__qualname__.split('.')) == 2) and \
+                            (return_annotation == qual_name_parts[0]):
+                        return True
+
+                    else:
+                        try:
+                            return_annotation_obj = \
+                                eval(return_annotation,
+                                     sys.modules[function.__module__].__dict__)
+
+                        except NameError:
+                            return False
+
+                        else:
+                            return isclass(return_annotation_obj) \
+                               and issubclass(return_annotation_obj, _EntityABC)
 
         def decorate(function, /):
-            assert isfunction(function) \
-                or ismethod(function)
+            assert isfunction(function) or ismethod(function), \
+                f'*** {function} NEITHER FUNCTION NOR METHOD ***'
 
             if art_of_geom._util._debug.ON:
-                print(f'DECORATING {function.__qualname__}...')
+                print(f'DECORATING {function.__qualname__} {describe(function)}...')
 
             @wraps(function)
             def function_with_name_and_dependencies_assignment(
@@ -103,19 +115,7 @@ class _EntityABC:
                 if name_already_in_arg_spec:
                     kwargs['name'] = name
 
-                possible_cls_or_self = args[0]
-
-                try:
-                    result = function(*args, **kwargs)
-
-                except Exception:
-                    # to avoid TypeError "expects N positional arguments but (N + 1) are given"
-                    # when instance calls classmethod/staticmethod or when class calls staticmethod
-
-                    assert isinstance(possible_cls_or_self, _EntityABC) \
-                        or issubclass(possible_cls_or_self, _EntityABC)
-
-                    result = function(*args[1:], **kwargs)
+                result = function(*args, **kwargs)
 
                 to_assign_name = (not name_already_in_arg_spec)
 
@@ -132,18 +132,19 @@ class _EntityABC:
                     return result
 
                 elif function.__name__ == '__init__':
-                    assert isinstance(possible_cls_or_self, _EntityABC)
+                    self = args[0]
+                    assert isinstance(self, _EntityABC)
 
                     assert result is None
 
                     if to_assign_name:
-                        if isinstance(possible_cls_or_self, Symbol):
-                            possible_cls_or_self.name = name
+                        if isinstance(self, Symbol):
+                            self.name = name
                         else:
-                            setattr(possible_cls_or_self, possible_cls_or_self._NAME_ATTR_KEY, name)
+                            setattr(self, self._NAME_ATTR_KEY, name)
 
-                    if not hasattr(possible_cls_or_self, possible_cls_or_self._DEPENDENCIES_ATTR_KEY):
-                        possible_cls_or_self.dependencies = dependencies[1:]
+                    if not hasattr(self, self._DEPENDENCIES_ATTR_KEY):
+                        self.dependencies = dependencies[1:]
 
                 else:
                     assert isinstance(result, _EntityABC), \
@@ -164,10 +165,10 @@ class _EntityABC:
 
         if isclass(entity_related_obj):
             assert issubclass(entity_related_obj, _EntityABC), \
-                f'*** CLASS TO DECORATE MUST BE SUB-CLASS OF {_EntityABC.__name__} ***'
+                f'*** {entity_related_obj} TO DECORATE NOT SUB-CLASS OF {_EntityABC.__name__} ***'
 
             assert not isabstract(entity_related_obj), \
-                '*** ABSTRACT CLASSES NOT DECORATED ***'
+                f'*** {entity_related_obj} ABSTRACT AND NOT DECORABLE ***'
 
             class_members = \
                 dict(getmembers(
@@ -188,14 +189,34 @@ class _EntityABC:
                     entity_related_obj.__new__ = decorate(__new__)
 
             for class_member_name, class_member in class_members.items():
-                if (isfunction(class_member) or ismethod(class_member)) and decorable(class_member):
-                    setattr(entity_related_obj, class_member_name, decorate(class_member))
+                if isfunction(class_member) and decorable(class_member):
+                    if is_special_op(class_member):   # __special_op__
+                        setattr(
+                            entity_related_obj, class_member_name,
+                            decorate(class_member))
 
-                elif isinstance(class_member, cached_property) and decorable(class_member.func):
-                    setattr(entity_related_obj, class_member_name, cached_property(decorate(class_member.func)))
+                    else:   # static method
+                        setattr(
+                            entity_related_obj, class_member_name,
+                            staticmethod(decorate(class_member)))
 
-                elif isinstance(class_member, property):
-                    pass
+                elif is_class_method(class_member) and decorable(class_member.__func__):   # class method
+                    setattr(
+                        entity_related_obj, class_member_name,
+                        classmethod(decorate(class_member.__func__)))
+
+                if ismethod(class_member) and decorable(class_member):   # method
+                    setattr(
+                        entity_related_obj, class_member_name,
+                        decorate(class_member))
+
+                elif isinstance(class_member, cached_property) and decorable(class_member.func):   # cached property
+                    setattr(
+                        entity_related_obj, class_member_name,
+                        cached_property(decorate(class_member.func)))
+
+                elif isinstance(class_member, property) and decorable(class_member.fget):   # property getter
+                    class_member.fget = decorate(class_member.fget)
 
             return entity_related_obj
 
