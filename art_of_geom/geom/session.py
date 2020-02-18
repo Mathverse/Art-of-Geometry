@@ -7,16 +7,18 @@ __all__ = 'Session', 'DEFAULT_SESSION'
 from sympy.assumptions.assume import AssumptionsContext
 
 from .._util._tmp import TMP_NAME_FACTORY
-from .._util._type import OptionalStrType
+from .._util._type import OptionalStrOrCallableReturningStrType
 from ._abc._entity import _EntityABC
 
 
 class Session:
-    def __init__(self, name: OptionalStrType = None, /) -> None:
-        self.name = \
-            name \
-            if isinstance(name, str) \
-            else TMP_NAME_FACTORY()
+    def __init__(self, name: OptionalStrOrCallableReturningStrType = TMP_NAME_FACTORY, /) -> None:
+        if callable(name):
+            name = name()
+        elif not name:
+            name = TMP_NAME_FACTORY()
+        _EntityABC._validate_name(name)
+        self.name = name
 
         self.entities = {}
 
