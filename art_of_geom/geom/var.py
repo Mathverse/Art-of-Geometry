@@ -18,7 +18,7 @@ class Variable(_EntityABC, Symbol):
     def __new__(
             cls,
             expr_or_name: OptionalStrOrSymPyExprType = None, /,
-            *, expr: OptionalSymPyExprType = None, name: OptionalStrOrCallableReturningStrType = TMP_NAME_FACTORY,
+            *, expr: OptionalSymPyExprType = None, name: OptionalStrOrCallableReturningStrType = None,
             **assumptions: bool) \
             -> Symbol:
         if isinstance(expr_or_name, Expr):
