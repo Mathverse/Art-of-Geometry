@@ -13,6 +13,8 @@ from ._abc._entity import _EntityABC
 
 
 class Variable(_EntityABC, Symbol):
+    _NAME_NULLABLE = False
+
     def __new__(
             cls,
             expr_or_name: OptionalStrOrSymPyExprType = None, /,

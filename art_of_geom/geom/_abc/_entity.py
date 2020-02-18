@@ -46,6 +46,7 @@ class _EntityABC:
 
         setattr(self, self._SESSION_ATTR_KEY, session)
 
+    _NAME_NULLABLE = True
     _NAME_ATTR_KEY = '_name'
 
     @staticmethod
