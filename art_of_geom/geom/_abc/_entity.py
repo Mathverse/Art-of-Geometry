@@ -243,7 +243,8 @@ class _EntityABC:
 
         else:
             assert isfunction(entity_related_obj)
-            return decorate(entity_related_obj)
+
+            return decorate(entity_related_obj, assign_name=True)
 
     @classmethod
     def __class_full_name__(cls) -> str:
