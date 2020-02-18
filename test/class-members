@@ -111,6 +111,9 @@ class C:
         return divmod(other, self._x)
 
 
+print(C.__new__); pprint(describe(C.__new__), sort_dicts=False); print()
+print(C.__init__); pprint(describe(C.__init__), sort_dicts=False); print()
+
 print(C.print); pprint(describe(C.print), sort_dicts=False); print()
 
 print(C.default_x); pprint(describe(C.default_x), sort_dicts=False); print()
