@@ -79,7 +79,7 @@ class _EntityABC:
                 or ismethod(function)
 
             if art_of_geom._util._debug.ON:
-                print(f'DECORATING {function}...')
+                print(f'DECORATING {function.__qualname__}...')
 
             @wraps(function)
             def function_with_name_and_dependencies_assignment(
@@ -95,7 +95,7 @@ class _EntityABC:
                         result = function(cls_or_self, *args, **kwargs)
                     except Exception as err:
                         print(f'*** {function}({cls_or_self}, *{args}, **{kwargs}): {err} ***')
-                        pprint(describe(function))
+                        pprint(describe(function), sort_dicts=False)
                         raise err
 
                 else:
@@ -103,7 +103,7 @@ class _EntityABC:
                         result = function(cls_or_self, *args, name=name, **kwargs)
                     except Exception as err:
                         print(f'*** {function}({cls_or_self}, *{args}, **{kwargs}): {err} ***')
-                        pprint(describe(function))
+                        pprint(describe(function), sort_dicts=False)
                         raise err
 
                 dependencies = \
