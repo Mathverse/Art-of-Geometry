@@ -131,7 +131,8 @@ class _EntityABC:
                     if to_assign_name:
                         if isinstance(result, Symbol):
                             result.name = name
-                        else:
+
+                        elif not hasattr(result, result._NAME_ATTR_KEY):
                             setattr(result, result._NAME_ATTR_KEY, name)
 
                     if not hasattr(result, result._DEPENDENCIES_ATTR_KEY):
@@ -148,7 +149,8 @@ class _EntityABC:
                     if to_assign_name:
                         if isinstance(self, Symbol):
                             self.name = name
-                        else:
+
+                        elif not hasattr(self, self._NAME_ATTR_KEY):
                             setattr(self, self._NAME_ATTR_KEY, name)
 
                     if not hasattr(self, self._DEPENDENCIES_ATTR_KEY):
@@ -186,15 +188,27 @@ class _EntityABC:
             __new__ = class_members.pop('__new__')
             __init__ = class_members.pop('__init__')
 
-            if isfunction(__init__) or ismethod(__init__):
-                entity_related_obj.__init__ = decorate(__init__, assign_name=True)
+            if isfunction(__new__):   # if __new__ is implemented somewhere in __mro__
+                entity_related_obj.__new__ = \
+                    decorate(
+                        __new__,
+                        assign_name=
+                            True
+                            if entity_related_obj._NAME_NULLABLE
+                            else TMP_NAME_FACTORY)
+
+            if isfunction(__init__):   # if __init__ is implemented somewhere in __mro__
+                entity_related_obj.__init__ = \
+                    decorate(
+                        __init__,
+                        assign_name=
+                            True
+                            if entity_related_obj._NAME_NULLABLE
+                            else TMP_NAME_FACTORY)
 
             else:
                 assert ismethoddescriptor(__init__), \
                     f'??? {entity_related_obj.__name__} MRO MISSING __init__ METHOD: {describe(__init__)} ???'
-
-                if isfunction(__new__):
-                    entity_related_obj.__new__ = decorate(__new__, assign_name=True)
 
             for class_member_name, class_member in class_members.items():
                 if isfunction(class_member) and decorable(class_member):
