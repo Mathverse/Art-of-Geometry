@@ -107,7 +107,7 @@ class _EntityABC:
                         raise err
 
                 dependencies = \
-                    [i for i in ((cls_or_self,) + args + tuple(kwargs.values()))
+                    [i for i in (args + tuple(kwargs.values()))
                        if isinstance(i, _EntityABC)]
 
                 if function.__name__ == '__new__':
@@ -139,6 +139,9 @@ class _EntityABC:
                     if _to_assign_name and name:
                         _EntityABC._validate_name(name)
                         result.name = name
+
+                    if isinstance(cls_or_self, _EntityABC):
+                        dependencies.insert(0, cls_or_self)
 
                     result.dependencies = dependencies
 
