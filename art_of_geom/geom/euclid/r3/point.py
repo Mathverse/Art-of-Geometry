@@ -77,9 +77,8 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
                     evaluate=False   # if True (default), all floats are turn into exact types
                 )
 
-        point._name = name
-
-        point._dependencies = dependencies
+        setattr(point, cls._NAME_ATTR_KEY, name)
+        setattr(point, cls._DEPENDENCIES_ATTR_KEY, dependencies)
 
         return point
 

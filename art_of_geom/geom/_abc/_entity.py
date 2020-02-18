@@ -19,7 +19,7 @@ from ..._util._compat import cached_property
 from ..._util._inspect import is_class_method, is_special_op, describe
 from ..._util._log import STDOUT_HANDLER, logger
 from ..._util._tmp import TMP_NAME_FACTORY
-from ..._util._type import OptionalStrOrCallableReturningStrType
+from ..._util._type import CallableReturningStrType, OptionalStrOrCallableReturningStrType
 
 
 if TYPE_CHECKING:   # to avoid circular import b/w _EntityABC & Session
@@ -95,7 +95,7 @@ class _EntityABC:
                             return isclass(return_annotation_obj) \
                                and issubclass(return_annotation_obj, _EntityABC)
 
-        def decorate(function: Callable, /, *, assign_name: Union[bool, Callable] = True) -> Callable:
+        def decorate(function: Callable, /, *, assign_name: Union[bool, CallableReturningStrType] = True) -> Callable:
             assert isfunction(function) or ismethod(function), \
                 f'*** {function} NEITHER FUNCTION NOR METHOD ***'
 
@@ -105,15 +105,21 @@ class _EntityABC:
             @wraps(function)
             def function_with_name_and_dependencies_assignment(
                     *args,
-                    name: OptionalStrType = None,
+                    name: OptionalStrOrCallableReturningStrType =
+                        assign_name
+                        if isfunction(assign_name)
+                        else None,
                     **kwargs) \
                     -> Optional[_EntityABC]:
                 dependencies = \
                     [i for i in (args + tuple(kwargs.values()))
                        if isinstance(i, _EntityABC)]
 
-                name_already_in_arg_spec = ('name' in getfullargspec(function).kwonlyargs)
+                if isfunction(name):
+                    name = name()
+                    _EntityABC._validate_name(name)
 
+                name_already_in_arg_spec = ('name' in getfullargspec(function).kwonlyargs)
                 if name_already_in_arg_spec:
                     kwargs['name'] = name
 
@@ -181,14 +187,14 @@ class _EntityABC:
             __init__ = class_members.pop('__init__')
 
             if isfunction(__init__) or ismethod(__init__):
-                entity_related_obj.__init__ = decorate(__init__)
+                entity_related_obj.__init__ = decorate(__init__, assign_name=True)
 
             else:
                 assert ismethoddescriptor(__init__), \
                     f'??? {entity_related_obj.__name__} MRO MISSING __init__ METHOD: {describe(__init__)} ???'
 
                 if isfunction(__new__):
-                    entity_related_obj.__new__ = decorate(__new__)
+                    entity_related_obj.__new__ = decorate(__new__, assign_name=True)
 
             for class_member_name, class_member in class_members.items():
                 if isfunction(class_member) and decorable(class_member):
