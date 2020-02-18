@@ -8,6 +8,7 @@ from abc import abstractmethod
 from functools import wraps
 from inspect import getfullargspec, getmembers, isabstract, isclass, isfunction, ismethod, ismethoddescriptor
 from logging import Handler, INFO, Logger
+from pprint import pprint
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.geometry.entity import GeometryEntity
@@ -100,7 +101,8 @@ class _EntityABC:
                 f'*** {function} NEITHER FUNCTION NOR METHOD ***'
 
             if art_of_geom._util._debug.ON:
-                print(f'DECORATING {function.__qualname__} {describe(function)}...')
+                print(f'DECORATING {function.__qualname__} {function}...')
+                pprint(describe(function), sort_dicts=False)
 
             @wraps(function)
             def function_with_name_and_dependencies_assignment(
@@ -170,6 +172,14 @@ class _EntityABC:
                     return result
 
             function_with_name_and_dependencies_assignment._DECORATED_WITH_NAME_AND_DEPENDENCIES_ASSIGNMENT = True
+
+            function_with_name_and_dependencies_assignment.__annotations__['name'] = OptionalStrOrCallableReturningStrType
+
+            if art_of_geom._util._debug.ON:
+                print(f'DECORATED {function_with_name_and_dependencies_assignment.__qualname__} '
+                      f'{function_with_name_and_dependencies_assignment}')
+                pprint(describe(function_with_name_and_dependencies_assignment), sort_dicts=False)
+                print()
 
             return function_with_name_and_dependencies_assignment
 
