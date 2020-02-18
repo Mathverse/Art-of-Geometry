@@ -12,13 +12,14 @@ from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.geometry.entity import GeometryEntity
 import sys
-from typing import Iterable, Optional, Tuple, TYPE_CHECKING
+from typing import Callable, Iterable, Optional, Tuple, TYPE_CHECKING, Union
 
 import art_of_geom._util._debug
 from ..._util._compat import cached_property
 from ..._util._inspect import is_class_method, is_special_op, describe
 from ..._util._log import STDOUT_HANDLER, logger
-from ..._util._type import OptionalStrType
+from ..._util._tmp import TMP_NAME_FACTORY
+from ..._util._type import OptionalStrOrCallableReturningStrType
 
 
 if TYPE_CHECKING:   # to avoid circular import b/w _EntityABC & Session
@@ -70,8 +71,8 @@ class _EntityABC:
         setattr(self, self._DEPENDENCIES_ATTR_KEY, dependencies)
 
     @staticmethod
-    def assign_name_and_dependencies(entity_related_obj, /):
-        def decorable(function, /) -> Optional[bool]:
+    def assign_name_and_dependencies(entity_related_obj: Callable, /) -> Callable:
+        def decorable(function: Callable, /) -> Optional[bool]:
             assert isfunction(function) or ismethod(function), \
                 f'*** {function} NEITHER FUNCTION NOR METHOD ***'
 
@@ -94,7 +95,7 @@ class _EntityABC:
                             return isclass(return_annotation_obj) \
                                and issubclass(return_annotation_obj, _EntityABC)
 
-        def decorate(function, /, *, assign_name=True):
+        def decorate(function: Callable, /, *, assign_name: Union[bool, Callable] = True) -> Callable:
             assert isfunction(function) or ismethod(function), \
                 f'*** {function} NEITHER FUNCTION NOR METHOD ***'
 

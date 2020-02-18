@@ -11,7 +11,7 @@ from sympy.geometry.point import Point2D
 from ....geom.var import Variable, OptionalVariableOrNumericType, VARIABLE_AND_NUMERIC_TYPES
 from ...._util._compat import cached_property
 from ...._util._tmp import TMP_NAME_FACTORY
-from ...._util._type import NUMERIC_TYPES, OptionalStrType, print_obj_and_type
+from ...._util._type import NUMERIC_TYPES, OptionalStrOrCallableReturningStrType, print_obj_and_type
 from art_of_geom.geom.euclid._abc._point import _EuclidPointABC, _EuclidConcretePointABC, _EuclidPointAtInfinityABC
 from .abc import _EuclidGeometryEntityInR2ABC
 
@@ -25,10 +25,13 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
     def __new__(
             cls,
             x: OptionalVariableOrNumericType = None, y: OptionalVariableOrNumericType = None,
-            *, name: OptionalStrType = None) \
+            *, name: OptionalStrOrCallableReturningStrType = None) \
             -> Point2D:
-        if not name:
+        if callable(name):
+            name = name()
+        elif not name:
             name = TMP_NAME_FACTORY()
+        cls._validate_name(name)
 
         dependencies = []
 
