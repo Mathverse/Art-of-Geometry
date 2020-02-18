@@ -93,7 +93,7 @@ class _EntityABC:
                             return isclass(return_annotation_obj) \
                                and issubclass(return_annotation_obj, _EntityABC)
 
-        def decorate(function, /):
+        def decorate(function, /, *, assign_name=True):
             assert isfunction(function) or ismethod(function), \
                 f'*** {function} NEITHER FUNCTION NOR METHOD ***'
 
@@ -117,7 +117,7 @@ class _EntityABC:
 
                 result = function(*args, **kwargs)
 
-                to_assign_name = (not name_already_in_arg_spec)
+                to_assign_name = assign_name and (not name_already_in_arg_spec)
 
                 if function.__name__ == '__new__':
                     if to_assign_name:
@@ -193,30 +193,30 @@ class _EntityABC:
                     if is_special_op(class_member):   # __special_op__
                         setattr(
                             entity_related_obj, class_member_name,
-                            decorate(class_member))
+                            decorate(class_member, assign_name=False))
 
                     else:   # static method
                         setattr(
                             entity_related_obj, class_member_name,
-                            staticmethod(decorate(class_member)))
+                            staticmethod(decorate(class_member, assign_name=True)))
 
                 elif is_class_method(class_member) and decorable(class_member.__func__):   # class method
                     setattr(
                         entity_related_obj, class_member_name,
-                        classmethod(decorate(class_member.__func__)))
+                        classmethod(decorate(class_member.__func__, assign_name=True)))
 
                 if ismethod(class_member) and decorable(class_member):   # method
                     setattr(
                         entity_related_obj, class_member_name,
-                        decorate(class_member))
+                        decorate(class_member, assign_name=True))
 
                 elif isinstance(class_member, cached_property) and decorable(class_member.func):   # cached property
                     setattr(
                         entity_related_obj, class_member_name,
-                        cached_property(decorate(class_member.func)))
+                        cached_property(decorate(class_member.func, assign_name=False)))
 
                 elif isinstance(class_member, property) and decorable(class_member.fget):   # property getter
-                    class_member.fget = decorate(class_member.fget)
+                    class_member.fget = decorate(class_member.fget, assign_name=False)
 
             return entity_related_obj
 
