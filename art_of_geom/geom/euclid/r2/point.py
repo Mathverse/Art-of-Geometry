@@ -93,8 +93,8 @@ class PointInR2(_PointInR2ABC, _EuclidConcretePointABC, Point2D):
     def same(self) -> PointInR2:
         return PointInR2(self.x, self.y)
 
-    @classmethod
-    def _from_sympy_point_2d(cls, sympy_point_2d: Point2D, /) -> PointInR2:
+    @staticmethod
+    def _from_sympy_point_2d(sympy_point_2d: Point2D, /) -> PointInR2:
         return PointInR2(Variable(sympy_point_2d.x), Variable(sympy_point_2d.y))
 
     def __neg__(self) -> PointInR2:

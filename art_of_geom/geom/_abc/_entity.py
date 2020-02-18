@@ -8,7 +8,6 @@ from abc import abstractmethod
 from functools import wraps
 from inspect import getfullargspec, getmembers, isabstract, isclass, isfunction, ismethod, ismethoddescriptor
 from logging import Handler, INFO, Logger
-from pprint import pprint
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.geometry.entity import GeometryEntity
@@ -27,10 +26,12 @@ if TYPE_CHECKING:   # to avoid circular import b/w _EntityABC & Session
 
 
 class _EntityABC:
+    _SESSION_ATTR_KEY = '_session'
+
     @property
     def session(self) -> Session:
-        if hasattr(self, '_session') and self._session:
-            return self._session
+        if s := getattr(self, self._SESSION_ATTR_KEY, None):
+            return s
 
         else:
             from ..session import DEFAULT_SESSION
@@ -43,23 +44,29 @@ class _EntityABC:
         assert isinstance(session, Session), \
             TypeError(f'*** {session} NOT OF TYPE {Session.__name__} ***')
 
-        self._session = session
+        setattr(self, self._SESSION_ATTR_KEY, session)
+
+    _NAME_ATTR_KEY = '_name'
 
     @staticmethod
     def _validate_name(name: str, /) -> None:
         assert isinstance(name, str) and name, \
             TypeError(f'*** {name} NOT NON-EMPTY STRING ***')
 
+    _DEPENDENCIES_ATTR_KEY = '_dependencies'
+
     @property
     def dependencies(self) -> Iterable[_EntityABC]:
-        if not hasattr(self, '_dependencies'):
-            self._dependencies = tuple()
+        if (deps := getattr(self, self._DEPENDENCIES_ATTR_KEY, None)) is None:
+            setattr(self, self._DEPENDENCIES_ATTR_KEY, empty_deps := tuple())
+            return empty_deps
 
-        return self._dependencies
+        else:
+            return deps
 
     @dependencies.setter
     def dependencies(self, dependencies: Iterable[_EntityABC], /) -> None:
-        self._dependencies = dependencies
+        setattr(self, self._DEPENDENCIES_ATTR_KEY, dependencies)
 
     @staticmethod
     def assign_name_and_dependencies(entity_related_obj, /):
@@ -83,67 +90,71 @@ class _EntityABC:
 
             @wraps(function)
             def function_with_name_and_dependencies_assignment(
-                    cls_or_self,
                     *args,
                     name: OptionalStrType = None,
                     **kwargs) \
                     -> Optional[_EntityABC]:
-                _to_assign_name = ('name' not in getfullargspec(function).kwonlyargs)
-
-                if _to_assign_name:
-                    try:
-                        result = function(cls_or_self, *args, **kwargs)
-                    except Exception as err:
-                        print(f'*** {function}({cls_or_self}, *{args}, **{kwargs}): {err} ***')
-                        pprint(describe(function), sort_dicts=False)
-                        raise err
-
-                else:
-                    try:
-                        result = function(cls_or_self, *args, name=name, **kwargs)
-                    except Exception as err:
-                        print(f'*** {function}({cls_or_self}, *{args}, **{kwargs}): {err} ***')
-                        pprint(describe(function), sort_dicts=False)
-                        raise err
-
                 dependencies = \
                     [i for i in (args + tuple(kwargs.values()))
                        if isinstance(i, _EntityABC)]
 
+                name_already_in_arg_spec = ('name' in getfullargspec(function).kwonlyargs)
+
+                if name_already_in_arg_spec:
+                    kwargs['name'] = name
+
+                possible_cls_or_self = args[0]
+
+                try:
+                    result = function(*args, **kwargs)
+
+                except Exception:
+                    # to avoid TypeError "expects N positional arguments but (N + 1) are given"
+                    # when instance calls classmethod/staticmethod or when class calls staticmethod
+
+                    assert isinstance(possible_cls_or_self, _EntityABC) \
+                        or issubclass(possible_cls_or_self, _EntityABC)
+
+                    result = function(*args[1:], **kwargs)
+
+                to_assign_name = (not name_already_in_arg_spec)
+
                 if function.__name__ == '__new__':
-                    if _to_assign_name:
+                    if to_assign_name:
                         if isinstance(result, Symbol):
                             result.name = name
                         else:
-                            result._name = name
+                            setattr(result, result._NAME_ATTR_KEY, name)
 
-                    result.dependencies = dependencies
+                    if not hasattr(result, result._DEPENDENCIES_ATTR_KEY):
+                        result.dependencies = dependencies
 
                     return result
 
                 elif function.__name__ == '__init__':
+                    assert isinstance(possible_cls_or_self, _EntityABC)
+
                     assert result is None
 
-                    if _to_assign_name:
-                        if isinstance(cls_or_self, Symbol):
-                            cls_or_self.name = name
+                    if to_assign_name:
+                        if isinstance(possible_cls_or_self, Symbol):
+                            possible_cls_or_self.name = name
                         else:
-                            cls_or_self._name = name
+                            setattr(possible_cls_or_self, possible_cls_or_self._NAME_ATTR_KEY, name)
 
-                    cls_or_self.dependencies = dependencies
+                    if not hasattr(possible_cls_or_self, possible_cls_or_self._DEPENDENCIES_ATTR_KEY):
+                        possible_cls_or_self.dependencies = dependencies[1:]
 
                 else:
                     assert isinstance(result, _EntityABC), \
                         TypeError(f'*** RESULT {result} NOT OF TYPE {_EntityABC.__name__} ***')
 
-                    if _to_assign_name and name:
+                    if to_assign_name and name:
                         _EntityABC._validate_name(name)
                         result.name = name
 
-                    if isinstance(cls_or_self, _EntityABC):
-                        dependencies.insert(0, cls_or_self)
-
-                    result.dependencies = dependencies
+                    if not hasattr(result, result._DEPENDENCIES_ATTR_KEY):
+                        result.dependencies = dependencies
 
                     return result
 
@@ -234,18 +245,18 @@ class _EntityABC:
 class _GeometryEntityABC(_EntityABC, GeometryEntity):
     @property
     def name(self) -> str:
-        return self._name
+        return getattr(self, self._NAME_ATTR_KEY)
 
     @name.setter
     def name(self, name: str, /) -> None:
         self._validate_name(name)
 
-        if name != self._name:
-            self._name = name
+        if name != getattr(self, self._NAME_ATTR_KEY):
+            setattr(self, self._NAME_ATTR_KEY, name)
 
     @name.deleter
     def name(self) -> None:
-        self._name = None
+        setattr(self, self._NAME_ATTR_KEY, None)
 
     @abstractmethod
     def same(self) -> _GeometryEntityABC:
