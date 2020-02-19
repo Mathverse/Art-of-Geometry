@@ -22,7 +22,7 @@ class _PointABC(_GeometryEntityABC):
         return not (self == other_point)
 
 
-class _ConcretePointABC(_PointABC, Point):
+class _ConcretePointABC(_PointABC):   # don't inherit SymPy Point prematurely
     @property
     def _short_repr(self) -> str:
         return f'Pt {self.name}'
