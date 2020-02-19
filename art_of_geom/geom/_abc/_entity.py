@@ -20,7 +20,7 @@ from typing import Callable, Iterable, Optional, Tuple, TYPE_CHECKING, Union
 
 import art_of_geom._util._debug
 from ..._util._compat import cached_property
-from ..._util._inspect import is_static_method, is_class_method, is_special_op, describe
+from ..._util._inspect import is_static_method, is_class_method, is_instance_method, describe
 from ..._util._log import STDOUT_HANDLER, logger
 from ..._util._tmp import TMP_NAME_FACTORY
 from ..._util._type import CallableReturningStrType, OptionalStrOrCallableReturningStrType
@@ -77,8 +77,8 @@ class _EntityABC:
     @staticmethod
     def assign_name_and_dependencies(entity_related_obj: Callable, /) -> Callable:
         def decorable(function: Callable, /) -> Optional[bool]:
-            assert isfunction(function) or ismethod(function), \
-                f'*** {function} NEITHER FUNCTION NOR METHOD ***'
+            assert isfunction(function), \
+                TypeError(f'*** {function} NOT A FUNCTION ***')
 
             if not getattr(function, '_DECORATED_WITH_NAME_AND_DEPENDENCIES_ASSIGNMENT', False):
                 if isinstance(return_annotation := function.__annotations__.get('return'), str):
@@ -100,8 +100,8 @@ class _EntityABC:
                                and issubclass(return_annotation_obj, _EntityABC)
 
         def decorate(function: Callable, /, *, assign_name: Union[bool, CallableReturningStrType] = True) -> Callable:
-            assert isfunction(function) or ismethod(function), \
-                f'*** {function} NEITHER FUNCTION NOR METHOD ***'
+            assert isfunction(function), \
+                TypeError(f'*** {function} NOT A FUNCTION ***')
 
             if art_of_geom._util._debug.ON:
                 print(f'DECORATING {function.__qualname__}{signature(function, follow_wrapped=False)}')
@@ -285,31 +285,12 @@ class _EntityABC:
                             pprint(describe(decorated_class_member).__dict__, sort_dicts=False)
                             print()
 
-                    # __special_operator__
-                    elif is_special_op(class_member):
-                        if art_of_geom._util._debug.ON:
-                            print(f'DECORATING SPECIAL OPERATOR {class_member.__qualname__}'
-                                  f'{signature(class_member, follow_wrapped=False)}')
-                            pprint(describe(class_member).__dict__, sort_dicts=False)
-                            print('==>')
-
-                        setattr(
-                            entity_related_obj, class_member_name,
-                            decorate(class_member, assign_name=True))   # TODO: consider if False is more appropriate
-
-                        if art_of_geom._util._debug.ON:
-                            decorated_class_member = getattr(entity_related_obj, class_member_name)
-
-                            print('==>')
-                            print(f'DECORATED SPECIAL OPERATOR {decorated_class_member.__qualname__}'
-                                  f'{signature(decorated_class_member, follow_wrapped=False)}')
-                            pprint(describe(decorated_class_member).__dict__, sort_dicts=False)
-                            print()
-
-                    # Instance Method
+                    # Unbound Instance Method
                     else:
+                        assert is_instance_method(class_member, bound=False)
+
                         if art_of_geom._util._debug.ON:
-                            print(f'DECORATING INSTANCE METHOD {class_member.__qualname__}'
+                            print(f'DECORATING UNBOUND INSTANCE METHOD {class_member.__qualname__}'
                                   f'{signature(class_member, follow_wrapped=False)}')
                             pprint(describe(class_member).__dict__, sort_dicts=False)
                             print('==>')
@@ -322,7 +303,7 @@ class _EntityABC:
                             decorated_class_member = getattr(entity_related_obj, class_member_name)
 
                             print('==>')
-                            print(f'DECORATED INSTANCE METHOD {decorated_class_member.__qualname__}'
+                            print(f'DECORATED UNBOUND INSTANCE METHOD {decorated_class_member.__qualname__}'
                                   f'{signature(decorated_class_member, follow_wrapped=False)}')
                             pprint(describe(decorated_class_member).__dict__, sort_dicts=False)
                             print()

@@ -1,5 +1,5 @@
 __all__ = \
-    'is_static_method', 'is_class_method', 'is_instance_method', 'is_special_op', \
+    'is_static_method', 'is_class_method', 'is_instance_method', 'is_instance_special_operator', \
     'describe'
 
 
@@ -20,23 +20,27 @@ def is_static_method(obj) -> bool:
 def is_class_method(obj) -> bool:
     return ismethod(obj) \
        and isclass(obj.__self__) \
-       and ismethod(obj.__func__)
+       and isfunction(obj.__func__)
 
 
-def is_instance_method(obj) -> bool:
-    return ismethod(obj) \
-       and (self := getattr(obj, '__self__', None)) \
-       and (not isclass(self))
+def is_instance_method(obj, /, *, bound: bool = True) -> bool:
+    if bound:
+        return ismethod(obj) \
+           and (not isclass(obj.__self__))
+
+    else:
+        return isfunction(obj) \
+           and (not hasattr(obj, '__self__'))
 
 
-def is_special_op(obj) -> bool:
-    return isfunction(obj) \
+def is_instance_special_operator(obj, /, *, bound: bool = True) -> bool:
+    return is_instance_method(obj, bound=bound) \
        and (name := obj.__name__).startswith('__') \
        and name.endswith('__')
 
 
-def describe(obj, /, Class=False) -> SimpleNamespace:
-    if Class:
+def describe(obj, /, is_class: bool = False) -> SimpleNamespace:
+    if is_class:
         return SimpleNamespace(
                 **{class_member_name: describe(class_member)
                    for class_member_name, class_member in getmembers(obj)})
@@ -58,12 +62,23 @@ def describe(obj, /, Class=False) -> SimpleNamespace:
         if is_method := ismethod(obj):
             descriptions.Is.append('Method')
 
+        if is_static_method(obj):
+            descriptions.Is.append('StaticMethod')
+            func = obj.__func__
+
         if is_class_method(obj):
             descriptions.Is.append('ClassMethod')
             func = obj.__func__
 
-        if is_instance_method(obj):
-            descriptions.Is.append('InstanceMethod')
+        if is_instance_method(obj, bound=True):
+            descriptions.Is.append('InstanceMethodBound')
+        elif is_instance_method(obj, bound=False):
+            descriptions.Is.append('InstanceMethodUnbound')
+
+        if is_instance_special_operator(obj, bound=True):
+            descriptions.Is.append('InstanceSpecialOperatorBound')
+        elif is_instance_special_operator(obj, bound=False):
+            descriptions.Is.append('InstanceSpecialOperatorUnbound')
 
         if is_property := isinstance(obj, property):
             descriptions.Is.append('Property')
@@ -72,9 +87,6 @@ def describe(obj, /, Class=False) -> SimpleNamespace:
         if is_cached_property := isinstance(obj, cached_property):
             descriptions.Is.append('CachedProperty')
             func = obj.func
-
-        if is_special_op(obj):
-            descriptions.Is.append('SpecialOp')
 
         if isdatadescriptor(obj):
             descriptions.Is.append('DataDescriptor')
