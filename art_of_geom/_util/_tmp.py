@@ -1,4 +1,4 @@
-__all__ = 'TMP_NAME_FACTORY',
+__all__ = 'TMP_NAME_FACTORY', 'tmp_file_name', 'str_uuid'
 
 
 import os

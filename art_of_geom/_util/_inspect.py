@@ -70,14 +70,14 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:
             descriptions.Is.append('ClassMethod')
             func = obj.__func__
 
-        if is_instance_method(obj, bound=True):
+        if is_bound_instance_method := is_instance_method(obj, bound=True):
             descriptions.Is.append('InstanceMethodBound')
-        elif is_instance_method(obj, bound=False):
+        elif is_unbound_instance_method := is_instance_method(obj, bound=False):
             descriptions.Is.append('InstanceMethodUnbound')
 
-        if is_instance_special_operator(obj, bound=True):
+        if is_bound_instance_special_operator := is_instance_special_operator(obj, bound=True):
             descriptions.Is.append('InstanceSpecialOperatorBound')
-        elif is_instance_special_operator(obj, bound=False):
+        elif is_unbound_instance_special_operator := is_instance_special_operator(obj, bound=False):
             descriptions.Is.append('InstanceSpecialOperatorUnbound')
 
         if is_property := isinstance(obj, property):
@@ -100,7 +100,11 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:
         if isgetsetdescriptor(obj):
             descriptions.Is.append('GetSetDescriptor')
 
-        if is_function or is_method or is_property or is_cached_property:
+        if is_function or is_method or \
+                is_static_method or is_class_method or \
+                is_bound_instance_method or is_unbound_instance_method or \
+                is_bound_instance_special_operator or is_unbound_instance_special_operator or \
+                is_property or is_cached_property:
             descriptions.Annotations = func.__annotations__
 
         return descriptions

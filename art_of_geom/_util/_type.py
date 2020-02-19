@@ -18,7 +18,7 @@ OptionalStrOrCallableReturningStrType = Union[str, CallableReturningStrType, Non
 
 
 OptionalSymPyExprType = Optional[Expr]
-OptionalStrOrSymPyExprType = Union[Expr, str, None]
+OptionalStrOrSymPyExprType = Union[str, Expr, None]
 
 
 def print_obj_and_type(obj, /):
