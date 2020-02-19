@@ -1,4 +1,4 @@
-__all__ = '_EuclidGeometryEntityInR3ABC',
+__all__ = '_EuclideanGeometryEntityInR3ABC',
 
 
 from abc import abstractmethod
@@ -9,7 +9,7 @@ from ...._util._compat import cached_property
 from ..._abc._entity import _GeometryEntityABC
 
 
-class _EuclidGeometryEntityInR3ABC(_GeometryEntityABC):
+class _EuclideanGeometryEntityInR3ABC(_GeometryEntityABC):
     @cached_property
     @abstractmethod
     def parametric_equations(self) -> Tuple[Expr, Expr, Expr]:

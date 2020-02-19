@@ -13,10 +13,10 @@ from ...._util._compat import cached_property
 from ...._util._tmp import TMP_NAME_FACTORY
 from ...._util._type import NUMERIC_TYPES, OptionalStrOrCallableReturningStrType, print_obj_and_type
 from .._abc._point import _EuclideanPointABC, _EuclideanConcretePointABC, _EuclideanPointAtInfinityABC
-from ._abc import _EuclidGeometryEntityInR3ABC
+from ._abc import _EuclideanGeometryEntityInR3ABC
 
 
-class _PointInR3ABC(_EuclidGeometryEntityInR3ABC, _EuclideanPointABC):
+class _PointInR3ABC(_EuclideanGeometryEntityInR3ABC, _EuclideanPointABC):
     pass
 
 
