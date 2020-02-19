@@ -217,7 +217,6 @@ class _EntityABC:
                 print(f'DECORATED {function_with_name_and_dependencies_assignment.__qualname__}'
                       f'{signature(function_with_name_and_dependencies_assignment)}')
                 pprint(describe(function_with_name_and_dependencies_assignment).__dict__, sort_dicts=False)
-                print()
 
             return function_with_name_and_dependencies_assignment
 
@@ -260,31 +259,97 @@ class _EntityABC:
             for class_member_name, class_member in class_members.items():
                 if isfunction(class_member) and decorable(class_member):
                     if is_special_op(class_member):   # __special_op__
+                        if art_of_geom._util._debug.ON:
+                            print(f'DECORATING SPECIAL OP {class_member.__qualname__}'
+                                  f'{signature(class_member, follow_wrapped=False)}')
+                            pprint(describe(class_member).__dict__, sort_dicts=False)
+                            print('==>')
+
                         setattr(
                             entity_related_obj, class_member_name,
                             decorate(class_member, assign_name=False))
 
+                        if art_of_geom._util._debug.ON:
+                            decorated_class_member = getattr(entity_related_obj, class_member_name)
+
+                            print('==>')
+                            print(f'DECORATED SPECIAL OP {decorated_class_member.__qualname__}'
+                                  f'{signature(decorated_class_member, follow_wrapped=False)}')
+                            pprint(describe(decorated_class_member).__dict__, sort_dicts=False)
+                            print()
+
                     else:   # static method
+                        if art_of_geom._util._debug.ON:
+                            print(f'DECORATING STATIC METHOD {class_member.__qualname__}'
+                                  f'{signature(class_member, follow_wrapped=False)}')
+                            pprint(describe(class_member).__dict__, sort_dicts=False)
+                            print('==>')
+
                         setattr(
                             entity_related_obj, class_member_name,
                             staticmethod(decorate(class_member, assign_name=True)))
 
+                        if art_of_geom._util._debug.ON:
+                            decorated_class_member = getattr(entity_related_obj, class_member_name)
+
+                            print('==>')
+                            print(f'DECORATED STATIC METHOD {decorated_class_member.__qualname__}'
+                                  f'{signature(decorated_class_member, follow_wrapped=False)}')
+                            pprint(describe(decorated_class_member).__dict__, sort_dicts=False)
+                            print()
+
                 elif is_class_method(class_member) and decorable(class_member.__func__):   # class method
+                    if art_of_geom._util._debug.ON:
+                        print(f'DECORATING CLASS METHOD {class_member.__qualname__}'
+                              f'{signature(class_member, follow_wrapped=False)}')
+                        pprint(describe(class_member).__dict__, sort_dicts=False)
+                        print('==>')
+
                     setattr(
                         entity_related_obj, class_member_name,
                         classmethod(decorate(class_member.__func__, assign_name=True)))
 
+                    if art_of_geom._util._debug.ON:
+                        decorated_class_member = getattr(entity_related_obj, class_member_name)
+
+                        print('==>')
+                        print(f'DECORATED CLASS METHOD {decorated_class_member.__qualname__}'
+                              f'{signature(decorated_class_member, follow_wrapped=False)}')
+                        pprint(describe(decorated_class_member).__dict__, sort_dicts=False)
+                        print()
+
                 elif is_instance_method(class_member) and decorable(class_member):   # instance method
+                    if art_of_geom._util._debug.ON:
+                        print(f'DECORATING INSTANCE METHOD {class_member.__qualname__}'
+                              f'{signature(class_member, follow_wrapped=False)}')
+                        pprint(describe(class_member).__dict__, sort_dicts=False)
+                        print('==>')
+
                     setattr(
                         entity_related_obj, class_member_name,
                         decorate(class_member, assign_name=True))
 
+                    if art_of_geom._util._debug.ON:
+                        decorated_class_member = getattr(entity_related_obj, class_member_name)
+
+                        print('==>')
+                        print(f'DECORATED INSTANCE METHOD {decorated_class_member.__qualname__}'
+                              f'{signature(decorated_class_member, follow_wrapped=False)}')
+                        pprint(describe(decorated_class_member).__dict__, sort_dicts=False)
+                        print()
+
                 elif isinstance(class_member, cached_property) and decorable(class_member.func):   # cached property
+                    if art_of_geom._util._debug.ON:
+                        print('DECORATING CACHED PROPERTY...')
+
                     setattr(
                         entity_related_obj, class_member_name,
                         cached_property(decorate(class_member.func, assign_name=False)))
 
                 elif isinstance(class_member, property) and decorable(class_member.fget):   # property getter
+                    if art_of_geom._util._debug.ON:
+                        print('DECORATING PROPERTY GETTER...')
+
                     class_member.fget = decorate(class_member.fget, assign_name=False)
 
             return entity_related_obj
