@@ -12,20 +12,22 @@ from ....geom.var import Variable, OptionalVariableOrNumericType, VARIABLE_AND_N
 from ...._util._compat import cached_property
 from ...._util._tmp import TMP_NAME_FACTORY
 from ...._util._type import NUMERIC_TYPES, OptionalStrOrCallableReturningStrType, print_obj_and_type
-from art_of_geom.geom.euclid._abc._point import _EuclidPointABC, _EuclidConcretePointABC, _EuclidPointAtInfinityABC
-from .abc import _EuclidGeometryEntityInR3ABC
+from .._abc._point import _EuclideanPointABC, _EuclideanConcretePointABC, _EuclideanPointAtInfinityABC
+from ._abc import _EuclidGeometryEntityInR3ABC
 
 
-class _PointInR3ABC(_EuclidGeometryEntityInR3ABC, _EuclidPointABC):
+class _PointInR3ABC(_EuclidGeometryEntityInR3ABC, _EuclideanPointABC):
     pass
 
 
 @_PointInR3ABC.assign_name_and_dependencies
-class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
+class PointInR3(_PointInR3ABC, _EuclideanConcretePointABC, Point3D):
     def __new__(
             cls,
-            /, x: OptionalVariableOrNumericType = None, y: OptionalVariableOrNumericType = None, z: OptionalVariableOrNumericType = None,
-            *, name: OptionalStrOrCallableReturningStrType = None) \
+            /, x: OptionalVariableOrNumericType = None,
+               y: OptionalVariableOrNumericType = None,
+               z: OptionalVariableOrNumericType = None,
+            *, name: OptionalStrOrCallableReturningStrType = TMP_NAME_FACTORY) \
             -> Point3D:
         if callable(name):
             name = name()
@@ -90,14 +92,14 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
 
     @property
     def name(self) -> str:
-        return self._name
+        return getattr(self, self._NAME_ATTR_KEY)
 
     @name.setter
     def name(self, name: str, /) -> None:
         self._validate_name(name)
-        
-        if name != self.name:
-            self._name = name
+
+        if name != getattr(self, self._NAME_ATTR_KEY):
+            setattr(self, self._NAME_ATTR_KEY, name)
 
             if isinstance(self.x, Variable):
                 self.x.name = f'[{name}.x]'
@@ -107,6 +109,10 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
 
             if isinstance(self.z, Variable):
                 self.z.name = f'[{name}.z]'
+
+    @name.deleter
+    def name(self):
+        self.name = TMP_NAME_FACTORY()
 
     def same(self) -> PointInR3:
         return PointInR3(self.x, self.y, self.z)
@@ -127,11 +133,16 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
     def __mul__(self, n: Variable, /) -> PointInR3:
         return self._from_sympy_point_3d(super().__mul__(n))
 
-    def __div__(self, n: Variable, /) -> PointInR3:
+    def __truediv__(self, n: Variable, /) -> PointInR3:
         return self._from_sympy_point_3d(super().__div__(n))
 
+    def euclidean_distance(self, other_point_in_r3: _EuclideanPointABC, /) -> Variable:
+        return Variable((self.x - other_point_in_r3.x) ** 2 +
+                        (self.y - other_point_in_r3.y) ** 2 +
+                        (self.z - other_point_in_r3.z) ** 2)
+
     @cached_property
-    def distance_from_origin(self) -> Variable:
+    def euclidean_distance_from_origin(self) -> Variable:
         return Variable(self.x ** 2 + self.y ** 2 + self.z ** 2)
 
 
@@ -140,7 +151,7 @@ Pt = Point = PointR3 = PointInR3
 
 
 @_PointInR3ABC.assign_name_and_dependencies
-class PointAtInfinityInR3(_PointInR3ABC, _EuclidPointAtInfinityABC):
+class PointAtInfinityInR3(_PointInR3ABC, _EuclideanPointAtInfinityABC):
     def __init__(self, direction: PointInR3, /) -> None:
         assert isinstance(direction, PointInR3), \
             TypeError(f'*** DIRECTION {direction} NOT {PointInR3.__name__} ***')
