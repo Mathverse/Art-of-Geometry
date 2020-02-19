@@ -7,7 +7,8 @@ art_of_geom._util._debug.ON = True
 
 from random import choice
 
-from art_of_geom.geom.euclid._r1.point import Pt, PtAtInf
+from art_of_geom.geom.euclid._r0._abc._point import PointR0
+from art_of_geom.geom.euclid._r1.point import PointR1, PtAtInf
 from art_of_geom.geom.session import Session, DEFAULT_SESSION
 
 
@@ -16,5 +17,7 @@ s = Session() \
     else DEFAULT_SESSION
 
 
-s.P = Pt(name='P'); print(s.P)
+s.S = PointR0; print(s.S)
+
+s.P = PointR1(name='P'); print(s.P)
 s.p = PtAtInf; print(s.p)
