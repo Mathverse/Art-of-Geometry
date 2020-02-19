@@ -1,5 +1,5 @@
 __all__ = \
-    'is_class_method', 'is_instance_method', 'is_special_op', \
+    'is_static_method', 'is_class_method', 'is_instance_method', 'is_special_op', \
     'describe'
 
 
@@ -12,14 +12,21 @@ from types import SimpleNamespace
 from ._compat import cached_property
 
 
+def is_static_method(obj) -> bool:
+    return isfunction(obj) \
+       and isfunction(getattr(obj, '__func__', None))
+
+
 def is_class_method(obj) -> bool:
     return ismethod(obj) \
-       and isclass(obj.__self__)
+       and isclass(obj.__self__) \
+       and ismethod(obj.__func__)
 
 
 def is_instance_method(obj) -> bool:
     return ismethod(obj) \
-       and (not isclass(obj.__self__))
+       and (self := getattr(obj, '__self__', None)) \
+       and (not isclass(self))
 
 
 def is_special_op(obj) -> bool:
