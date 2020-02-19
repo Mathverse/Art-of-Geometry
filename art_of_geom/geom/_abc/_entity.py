@@ -104,8 +104,9 @@ class _EntityABC:
                 f'*** {function} NEITHER FUNCTION NOR METHOD ***'
 
             if art_of_geom._util._debug.ON:
-                print(f'DECORATING {function.__qualname__}{signature(function, follow_wrapped=False)}...')
-                pprint(describe(function), sort_dicts=False)
+                print(f'DECORATING {function.__qualname__}{signature(function, follow_wrapped=False)}')
+                pprint(describe(function).__dict__, sort_dicts=False)
+                print('==>')
 
             name_already_in_arg_spec = ('name' in getfullargspec(function).kwonlyargs)
 
@@ -215,7 +216,7 @@ class _EntityABC:
             if art_of_geom._util._debug.ON:
                 print(f'DECORATED {function_with_name_and_dependencies_assignment.__qualname__}'
                       f'{signature(function_with_name_and_dependencies_assignment)}')
-                pprint(describe(function_with_name_and_dependencies_assignment), sort_dicts=False)
+                pprint(describe(function_with_name_and_dependencies_assignment).__dict__, sort_dicts=False)
                 print()
 
             return function_with_name_and_dependencies_assignment
