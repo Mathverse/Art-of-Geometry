@@ -111,9 +111,9 @@ class PointInR3(_PointInR3ABC, _EuclidConcretePointABC, Point3D):
     def same(self) -> PointInR3:
         return PointInR3(self.x, self.y, self.z)
 
-    @staticmethod
-    def _from_sympy_point_3d(sympy_point_3d: Point3D, /) -> PointInR3:
-        return PointInR3(Variable(sympy_point_3d.x), Variable(sympy_point_3d.y), Variable(sympy_point_3d.z))
+    @classmethod
+    def _from_sympy_point_3d(cls, sympy_point_3d: Point3D, /) -> PointInR3:
+        return cls(Variable(sympy_point_3d.x), Variable(sympy_point_3d.y), Variable(sympy_point_3d.z))
 
     def __neg__(self) -> PointInR3:
         return self._from_sympy_point_3d(super().__neg__())

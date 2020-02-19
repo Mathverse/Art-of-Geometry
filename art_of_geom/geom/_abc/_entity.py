@@ -20,7 +20,7 @@ from typing import Callable, Iterable, Optional, Tuple, TYPE_CHECKING, Union
 
 import art_of_geom._util._debug
 from ..._util._compat import cached_property
-from ..._util._inspect import is_class_method, is_special_op, describe
+from ..._util._inspect import is_class_method, is_instance_method, is_special_op, describe
 from ..._util._log import STDOUT_HANDLER, logger
 from ..._util._tmp import TMP_NAME_FACTORY
 from ..._util._type import CallableReturningStrType, OptionalStrOrCallableReturningStrType
@@ -274,7 +274,7 @@ class _EntityABC:
                         entity_related_obj, class_member_name,
                         classmethod(decorate(class_member.__func__, assign_name=True)))
 
-                if ismethod(class_member) and decorable(class_member):   # instance method
+                elif is_instance_method(class_member) and decorable(class_member):   # instance method
                     setattr(
                         entity_related_obj, class_member_name,
                         decorate(class_member, assign_name=True))
