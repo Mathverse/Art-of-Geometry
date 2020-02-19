@@ -64,7 +64,7 @@ class _EntityABC:
     @property
     def dependencies(self) -> Iterable[_EntityABC]:
         if (deps := getattr(self, self._DEPENDENCIES_ATTR_KEY, None)) is None:
-            setattr(self, self._DEPENDENCIES_ATTR_KEY, empty_deps := tuple())
+            setattr(self, self._DEPENDENCIES_ATTR_KEY, empty_deps := ())
             return empty_deps
 
         else:

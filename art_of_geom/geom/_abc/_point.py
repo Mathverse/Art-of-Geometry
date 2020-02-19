@@ -13,9 +13,10 @@ from ._entity import _GeometryEntityABC
 class _PointABC(_GeometryEntityABC):
     _NAME_NULLABLE = False
 
-    @abstractmethod
-    def __eq__(self, other_point: _PointABC, /) -> bool:
-        raise NotImplementedError
+    # *** ALREADY IMPLEMENTED IN SymPy ***
+    # @abstractmethod
+    # def __eq__(self, other_point: _PointABC, /) -> bool:
+    #     raise NotImplementedError
 
     def __ne__(self, other_point: _PointABC, /) -> bool:
         return not (self == other_point)
