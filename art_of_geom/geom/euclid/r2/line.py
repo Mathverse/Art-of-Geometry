@@ -16,32 +16,32 @@ from typing import Optional, Tuple
 from ...._util._compat import cached_property
 from art_of_geom.geom.euclid._abc._coord import T
 from art_of_geom.geom.euclid._abc._line import \
-    _EuclidLinearEntityABC, _EuclidConcreteLinearEntityABC, _EuclidLinearEntityAtInfinityABC, \
-    _EuclidLineABC, _EuclidConcreteLineABC, _EuclidLineAtInfinityABC, \
-    _EuclidRayABC, _EuclidSegmentABC
-from .abc import _EuclidGeometryEntityInR2ABC
+    _EuclideanLinearEntityABC, _EuclideanConcreteLinearEntityABC, _EuclideanLinearEntityAtInfinityABC, \
+    _EuclideanLineABC, _EuclideanConcreteLineABC, _EuclideanLineAtInfinityABC, \
+    _EuclideanRayABC, _EuclideanSegmentABC
+from ._abc import _EuclideanGeometryEntityInR2ABC
 from .coord import X, Y
 from .point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
 
-class _LinearEntityInR2ABC(_EuclidGeometryEntityInR2ABC, _EuclidLinearEntityABC):
+class _LinearEntityInR2ABC(_EuclideanGeometryEntityInR2ABC, _EuclideanLinearEntityABC):
     pass
 
 
-class _ConcreteLinearEntityInR2ABC(_LinearEntityInR2ABC, _EuclidConcreteLinearEntityABC, LinearEntity2D):
+class _ConcreteLinearEntityInR2ABC(_LinearEntityInR2ABC, _EuclideanConcreteLinearEntityABC, LinearEntity2D):
     pass
 
 
-class _LinearEntityAtInfinityInR2ABC(_LinearEntityInR2ABC, _EuclidLinearEntityAtInfinityABC):
+class _LinearEntityAtInfinityInR2ABC(_LinearEntityInR2ABC, _EuclideanLinearEntityAtInfinityABC):
     pass
 
 
-class _LineInR2ABC(_LinearEntityInR2ABC, _EuclidLineABC):
+class _LineInR2ABC(_LinearEntityInR2ABC, _EuclideanLineABC):
     pass
 
 
 @_LineInR2ABC.assign_name_and_dependencies
-class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
+class LineInR2(_LineInR2ABC, _EuclideanConcreteLineABC, Line2D):
     def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, /) -> Line2D:
         assert isinstance(point_0, PointInR2), \
             TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR2.__name__} ***')
@@ -88,11 +88,11 @@ class LineInR2(_LineInR2ABC, _EuclidConcreteLineABC, Line2D):
     def same(self) -> LineInR2:
         return LineInR2(self.point_0, self.point_1)
 
-    def parallel_line(self, through_point: PointInR2, /) -> LineInR2:
-        return LineInR2(through_point, PointAtInfinityInR2(self.direction))
+    def parallel_line(self, through_euclidean_point: PointInR2, /) -> LineInR2:
+        return LineInR2(through_euclidean_point, PointAtInfinityInR2(self.direction))
 
-    def perpendicular_line(self, through_point: PointInR2, /) -> LineInR2:
-        return LineInR2(through_point, PointAtInfinityInR2(self.direction.orthogonal_direction))
+    def perpendicular_line(self, through_euclidean_point: PointInR2, /) -> LineInR2:
+        return LineInR2(through_euclidean_point, PointAtInfinityInR2(self.direction.orthogonal_direction))
 
 
 # alias
@@ -100,7 +100,7 @@ Ln = Line = LineR2 = LineInR2
 
 
 @_LineInR2ABC.assign_name_and_dependencies
-class LineAtInfinityInR2(_LineInR2ABC, _EuclidLineAtInfinityABC):
+class LineAtInfinityInR2(_LineInR2ABC, _EuclideanLineAtInfinityABC):
     def __init__(self, normal_direction: Point2D, /) -> None:
         assert isinstance(normal_direction, Point2D), \
             TypeError(f'*** NORMAL DIRECTION {normal_direction} NOT OF TYPE {Point2D.__name__} ***')
@@ -116,11 +116,11 @@ class LineAtInfinityInR2(_LineInR2ABC, _EuclidLineAtInfinityABC):
     def same(self) -> LineAtInfinityInR2:
         return LineAtInfinityInR2(self.normal_direction)
 
-    def parallel_line(self, through_point: PointInR2, /) -> LineInR2:
-        return LineInR2(through_point, PointAtInfinityInR2(self.normal_direction.orthogonal_direction))
+    def parallel_line(self, through_euclidean_point: PointInR2, /) -> LineInR2:
+        return LineInR2(through_euclidean_point, PointAtInfinityInR2(self.normal_direction.orthogonal_direction))
 
-    def perpendicular_line(self, through_point: PointInR2, /) -> LineInR2:
-        return LineInR2(through_point, PointAtInfinityInR2(self.normal_direction))
+    def perpendicular_line(self, through_euclidean_point: PointInR2, /) -> LineInR2:
+        return LineInR2(through_euclidean_point, PointAtInfinityInR2(self.normal_direction))
 
 
 # aliases
@@ -128,7 +128,7 @@ LnAtInf = LineAtInf = LineAtInfinity = LineAtInfinityR2 = LineAtInfinityInR2
 
 
 @_ConcreteLinearEntityInR2ABC.assign_name_and_dependencies
-class RayInR2(_ConcreteLinearEntityInR2ABC, _EuclidRayABC, Ray2D):
+class RayInR2(_ConcreteLinearEntityInR2ABC, _EuclideanRayABC, Ray2D):
     def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, /) -> Ray2D:
         assert isinstance(point_0, PointInR2), \
             TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR2.__name__} ***')
@@ -176,7 +176,7 @@ class RayInR2(_ConcreteLinearEntityInR2ABC, _EuclidRayABC, Ray2D):
 Ray = RayR2 = RayInR2
 
 
-class SegmentInR2(_ConcreteLinearEntityInR2ABC, _EuclidSegmentABC, Segment2D):
+class SegmentInR2(_ConcreteLinearEntityInR2ABC, _EuclideanSegmentABC, Segment2D):
     def __new__(
             cls,
             point_0: PointInR2, point_1: PointInR2, /,

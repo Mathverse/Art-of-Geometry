@@ -11,13 +11,13 @@ from typing import Optional, Tuple
 
 from ....._util._compat import cached_property
 from art_of_geom.geom.euclid._abc._coord import THETA
-from ..abc import _EuclidGeometryEntityInR2ABC
+from .._abc import _EuclideanGeometryEntityInR2ABC
 from ..coord import X, Y
 from ..line import _LineInR2ABC, LineInR2, LineAtInfinityInR2
 from ..point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
 
-class ConicInR2(_EuclidGeometryEntityInR2ABC):
+class ConicInR2(_EuclideanGeometryEntityInR2ABC):
     def __init__(
             self,
             /, focus: PointInR2, vertex: PointInR2, eccentricity: Expr,
@@ -38,7 +38,7 @@ class ConicInR2(_EuclidGeometryEntityInR2ABC):
         self.focus_to_vertex_direction = vertex - focus
         self.vertex_to_focus_direction = -self.focus_to_vertex_direction
 
-        self.focus_to_vertex_distance = self.focus_to_vertex_direction.distance_from_origin
+        self.focus_to_vertex_distance = self.focus_to_vertex_direction.euclidean_distance_from_origin
 
         self.eccentricity = eccentricity
 

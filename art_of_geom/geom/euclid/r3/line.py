@@ -15,32 +15,32 @@ from typing import Optional, Tuple
 from ...._util._compat import cached_property
 from art_of_geom.geom.euclid._abc._coord import T
 from art_of_geom.geom.euclid._abc._line import \
-    _EuclidLinearEntityABC, _EuclidConcreteLinearEntityABC, _EuclidLinearEntityAtInfinityABC, \
-    _EuclidLineABC, _EuclidConcreteLineABC, _EuclidLineAtInfinityABC, \
-    _EuclidRayABC, _EuclidSegmentABC
-from .abc import _EuclidGeometryEntityInR3ABC
+    _EuclideanLinearEntityABC, _EuclideanConcreteLinearEntityABC, _EuclideanLinearEntityAtInfinityABC, \
+    _EuclideanLineABC, _EuclideanConcreteLineABC, _EuclideanLineAtInfinityABC, \
+    _EuclideanRayABC, _EuclideanSegmentABC
+from ._abc import _EuclideanGeometryEntityInR3ABC
 from .coord import X, Y, Z
 from .point import _PointInR3ABC, PointInR3, PointAtInfinityInR3
 
 
-class _LinearEntityInR3ABC(_EuclidGeometryEntityInR3ABC, _EuclidLinearEntityABC):
+class _LinearEntityInR3ABC(_EuclideanGeometryEntityInR3ABC, _EuclideanLinearEntityABC):
     pass
 
 
-class _ConcreteLinearEntityInR3ABC(_LinearEntityInR3ABC, _EuclidConcreteLinearEntityABC, LinearEntity3D):
+class _ConcreteLinearEntityInR3ABC(_LinearEntityInR3ABC, _EuclideanConcreteLinearEntityABC, LinearEntity3D):
     pass
 
 
-class _LinearEntityAtInfinityInR3ABC(_LinearEntityInR3ABC, _EuclidLinearEntityAtInfinityABC):
+class _LinearEntityAtInfinityInR3ABC(_LinearEntityInR3ABC, _EuclideanLinearEntityAtInfinityABC):
     pass
 
 
-class _LineInR3ABC(_LinearEntityInR3ABC, _EuclidLineABC):
+class _LineInR3ABC(_LinearEntityInR3ABC, _EuclideanLineABC):
     pass
 
 
 @_LineInR3ABC.assign_name_and_dependencies
-class LineInR3(_LineInR3ABC, _EuclidConcreteLineABC, Line3D):
+class LineInR3(_LineInR3ABC, _EuclideanConcreteLineABC, Line3D):
     def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, /) -> Line3D:
         assert isinstance(point_0, PointInR3), \
             TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR3.__name__} ***')
@@ -83,11 +83,11 @@ class LineInR3(_LineInR3ABC, _EuclidConcreteLineABC, Line3D):
                Y - self.point_0.y - self.direction.y * T, \
                Z - self.point_0.z - self.direction.z * T
 
-    def parallel_line(self, through_point: PointInR3, /) -> LineInR3:
-        return LineInR3(through_point, PointAtInfinityInR3(self.direction))
+    def parallel_line(self, through_euclidean_point: PointInR3, /) -> LineInR3:
+        return LineInR3(through_euclidean_point, PointAtInfinityInR3(self.direction))
 
-    def perpendicular_line(self, through_point: PointInR3, /) -> LineInR3:
-        return LineInR3(through_point, self.perpendicular_projection_of_point(through_point))
+    def perpendicular_line(self, through_euclidean_point: PointInR3, /) -> LineInR3:
+        return LineInR3(through_euclidean_point, self.perpendicular_projection_of_point(through_euclidean_point))
         # TODO: CASE WHEN through_point ON THIS LINE
 
 
@@ -95,7 +95,7 @@ class LineInR3(_LineInR3ABC, _EuclidConcreteLineABC, Line3D):
 Ln = Line = LineR3 = LineInR3
 
 
-class LineAtInfinityInR3(_LineInR3ABC, _EuclidLineAtInfinityABC):
+class LineAtInfinityInR3(_LineInR3ABC, _EuclideanLineAtInfinityABC):
     # TODO
     pass
 
@@ -104,7 +104,7 @@ class LineAtInfinityInR3(_LineInR3ABC, _EuclidLineAtInfinityABC):
 LnAtInf = LineAtInf = LineAtInfinity = LineAtInfinityR3 = LineAtInfinityInR3
 
 
-class RayInR3(_LinearEntityInR3ABC, _EuclidRayABC, Ray3D):
+class RayInR3(_LinearEntityInR3ABC, _EuclideanRayABC, Ray3D):
     def __new__(cls, point_0: PointInR3, point_1: _PointInR3ABC, *, name: Optional[str] = None) -> Ray3D:
         assert isinstance(point_0, PointInR3), \
             TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR3.__name__} ***')
@@ -152,7 +152,7 @@ class RayInR3(_LinearEntityInR3ABC, _EuclidRayABC, Ray3D):
 Ray = RayR3 = RayInR3
 
 
-class SegmentInR3(_LinearEntityInR3ABC, _EuclidSegmentABC, Segment3D):
+class SegmentInR3(_LinearEntityInR3ABC, _EuclideanSegmentABC, Segment3D):
     def __new__(
             cls,
             point_0: PointInR3, point_1: PointInR3, /,

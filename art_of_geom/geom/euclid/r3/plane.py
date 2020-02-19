@@ -10,13 +10,13 @@ from typing import Tuple
 
 from ...._util._compat import cached_property
 from art_of_geom.geom.euclid._abc._coord import U, V
-from .abc import _EuclidGeometryEntityInR3ABC
+from ._abc import _EuclideanGeometryEntityInR3ABC
 from .coord import X, Y, Z
 from .line import LineInR3
 from .point import _PointInR3ABC, PointInR3, PointAtInfinityInR3
 
 
-class _PlaneInR3ABC(_EuclidGeometryEntityInR3ABC):
+class _PlaneInR3ABC(_EuclideanGeometryEntityInR3ABC):
     pass
 
 
