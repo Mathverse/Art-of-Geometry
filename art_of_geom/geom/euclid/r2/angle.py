@@ -2,11 +2,11 @@ from sympy.core.mod import Mod
 from sympy.core.numbers import pi
 from sympy.core.singleton import S
 
-from .abc import _EuclidGeometryEntityInR2ABC
+from ._abc import _EuclideanGeometryEntityInR2ABC
 from .line import LineInR2, RayInR2
 
 
-class _AngleABC(_EuclidGeometryEntityInR2ABC):
+class _AngleABC(_EuclideanGeometryEntityInR2ABC):
     pass
 
 
