@@ -176,6 +176,7 @@ class RayInR2(_ConcreteLinearEntityInR2ABC, _EuclideanRayABC, Ray2D):
 Ray = RayR2 = RayInR2
 
 
+@_ConcreteLinearEntityInR2ABC.assign_name_and_dependencies
 class SegmentInR2(_ConcreteLinearEntityInR2ABC, _EuclideanSegmentABC, Segment2D):
     def __new__(
             cls,
