@@ -115,8 +115,11 @@ class PointInR2(_PointInR2ABC, _EuclideanConcretePointABC, Point2D):
     def __mul__(self, n: Variable, /) -> PointInR2:
         return self._from_sympy_point_2d(super().__mul__(n))
 
-    def __div__(self, n: Variable, /) -> PointInR2:
+    def __truediv__(self, n: Variable, /) -> PointInR2:
         return self._from_sympy_point_2d(super().__div__(n))
+
+    def euclidean_distance(self, other_point_in_r2: PointInR2, /) -> Variable:
+        return Variable((self.x - other_point_in_r2.x) ** 2 + (self.y - other_point_in_r2.y) ** 2)
 
     @cached_property
     def euclidean_distance_from_origin(self) -> Variable:
