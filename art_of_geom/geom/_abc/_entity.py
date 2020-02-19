@@ -6,7 +6,10 @@ __all__ = '_EntityABC', '_GeometryEntityABC'
 
 from abc import abstractmethod
 from functools import wraps
-from inspect import getfullargspec, getmembers, isabstract, isclass, isfunction, ismethod, ismethoddescriptor
+from inspect import \
+    getfullargspec, getmembers, \
+    isabstract, isclass, isfunction, ismethod, ismethoddescriptor, \
+    Parameter, signature
 from logging import Handler, INFO, Logger
 from pprint import pprint
 from sympy.core.expr import Expr
@@ -101,16 +104,22 @@ class _EntityABC:
                 f'*** {function} NEITHER FUNCTION NOR METHOD ***'
 
             if art_of_geom._util._debug.ON:
-                print(f'DECORATING {function.__qualname__} {function}...')
+                print(f'DECORATING {function.__qualname__}{signature(function, follow_wrapped=False)}...')
                 pprint(describe(function), sort_dicts=False)
+
+            name_already_in_arg_spec = ('name' in getfullargspec(function).kwonlyargs)
+
+            assign_name = assign_name and (not name_already_in_arg_spec)
+
+            default_name = \
+                assign_name \
+                if isfunction(assign_name) \
+                else None
 
             @wraps(function)
             def function_with_name_and_dependencies_assignment(
                     *args,
-                    name: OptionalStrOrCallableReturningStrType =
-                        assign_name
-                        if isfunction(assign_name)
-                        else None,
+                    name: OptionalStrOrCallableReturningStrType = default_name,
                     **kwargs) \
                     -> Optional[_EntityABC]:
                 dependencies = \
@@ -121,16 +130,13 @@ class _EntityABC:
                     name = name()
                     _EntityABC._validate_name(name)
 
-                name_already_in_arg_spec = ('name' in getfullargspec(function).kwonlyargs)
                 if name_already_in_arg_spec:
                     kwargs['name'] = name
 
                 result = function(*args, **kwargs)
 
-                to_assign_name = assign_name and (not name_already_in_arg_spec)
-
                 if function.__name__ == '__new__':
-                    if to_assign_name:
+                    if assign_name:
                         if isinstance(result, Symbol):
                             result.name = name
 
@@ -148,7 +154,7 @@ class _EntityABC:
 
                     assert result is None
 
-                    if to_assign_name:
+                    if assign_name:
                         if isinstance(self, Symbol):
                             self.name = name
 
@@ -162,7 +168,7 @@ class _EntityABC:
                     assert isinstance(result, _EntityABC), \
                         TypeError(f'*** RESULT {result} NOT OF TYPE {_EntityABC.__name__} ***')
 
-                    if to_assign_name and name:
+                    if assign_name and name:
                         _EntityABC._validate_name(name)
                         result.name = name
 
@@ -173,11 +179,42 @@ class _EntityABC:
 
             function_with_name_and_dependencies_assignment._DECORATED_WITH_NAME_AND_DEPENDENCIES_ASSIGNMENT = True
 
-            function_with_name_and_dependencies_assignment.__annotations__['name'] = OptionalStrOrCallableReturningStrType
+            if not name_already_in_arg_spec:
+                function_with_name_and_dependencies_assignment.__annotations__['name'] = \
+                    OptionalStrOrCallableReturningStrType
+
+                function_signature = \
+                    signature(
+                        function_with_name_and_dependencies_assignment,
+                        follow_wrapped=True)
+
+                function_parameters = list(function_signature.parameters.values())
+
+                name_parameter = \
+                    Parameter(
+                        name='name',
+                        kind=Parameter.KEYWORD_ONLY,
+                        default=default_name,
+                        annotation=OptionalStrOrCallableReturningStrType)
+
+                try:
+                    kwargs_parameter_index = \
+                        next(i
+                             for i, parameter in enumerate(function_parameters)
+                             if parameter.kind == Parameter.VAR_KEYWORD)
+
+                except StopIteration:
+                    function_parameters.append(name_parameter)
+
+                else:
+                    function_parameters.insert(kwargs_parameter_index, name_parameter)
+
+                function_with_name_and_dependencies_assignment.__signature__ = \
+                    function_signature.replace(parameters=function_parameters)
 
             if art_of_geom._util._debug.ON:
-                print(f'DECORATED {function_with_name_and_dependencies_assignment.__qualname__} '
-                      f'{function_with_name_and_dependencies_assignment}')
+                print(f'DECORATED {function_with_name_and_dependencies_assignment.__qualname__}'
+                      f'{signature(function_with_name_and_dependencies_assignment)}')
                 pprint(describe(function_with_name_and_dependencies_assignment), sort_dicts=False)
                 print()
 
