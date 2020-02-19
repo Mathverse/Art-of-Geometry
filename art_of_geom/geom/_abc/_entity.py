@@ -8,7 +8,7 @@ from abc import abstractmethod
 from functools import wraps
 from inspect import \
     getfullargspec, getmembers, \
-    isabstract, isclass, isfunction, ismethod, ismethoddescriptor, \
+    isabstract, isclass, isfunction, ismethoddescriptor, \
     Parameter, signature
 from logging import Handler, INFO, Logger
 from pprint import pprint
@@ -75,7 +75,7 @@ class _EntityABC:
         setattr(self, self._DEPENDENCIES_ATTR_KEY, dependencies)
 
     @staticmethod
-    def assign_name_and_dependencies(entity_related_obj: Callable, /) -> Callable:
+    def assign_name_and_dependencies(entity_related_callable_obj: Callable, /) -> Callable:
         def decorable(function: Callable, /) -> Optional[bool]:
             assert isfunction(function), \
                 TypeError(f'*** {function} NOT A FUNCTION ***')
@@ -220,26 +220,26 @@ class _EntityABC:
 
             return function_with_name_and_dependencies_assignment
 
-        if isclass(entity_related_obj):
-            assert issubclass(entity_related_obj, _EntityABC), \
-                f'*** {entity_related_obj} TO DECORATE NOT SUB-CLASS OF {_EntityABC.__name__} ***'
+        if isclass(entity_related_callable_obj):
+            assert issubclass(entity_related_callable_obj, _EntityABC), \
+                TypeError(f'*** {entity_related_callable_obj} TO DECORATE NOT SUB-CLASS OF {_EntityABC.__name__} ***')
 
-            assert not isabstract(entity_related_obj), \
-                f'*** {entity_related_obj} ABSTRACT AND NOT DECORABLE ***'
+            assert not isabstract(entity_related_callable_obj), \
+                TypeError(f'*** {entity_related_callable_obj} ABSTRACT AND NOT DECORABLE ***')
 
             class_members = \
                 dict(getmembers(
-                        entity_related_obj,
+                        entity_related_callable_obj,
                         predicate=lambda member: not (isabstract(member) or isclass(member))))
 
             # if __new__ is implemented somewhere in __mro__
             if isfunction(__new__ := class_members.pop('__new__')):
-                entity_related_obj.__new__ = \
+                entity_related_callable_obj.__new__ = \
                     decorate(
                         __new__,
                         assign_name=
                             True
-                            if entity_related_obj._NAME_NULLABLE
+                            if entity_related_callable_obj._NAME_NULLABLE
                             else TMP_NAME_FACTORY)
 
                 if art_of_geom._util._debug.ON:
@@ -247,12 +247,12 @@ class _EntityABC:
 
             # if __init__ is implemented somewhere in __mro__
             if isfunction(__init__ := class_members.pop('__init__')):
-                entity_related_obj.__init__ = \
+                entity_related_callable_obj.__init__ = \
                     decorate(
                         __init__,
                         assign_name=
                             True
-                            if entity_related_obj._NAME_NULLABLE
+                            if entity_related_callable_obj._NAME_NULLABLE
                             else TMP_NAME_FACTORY)
 
                 if art_of_geom._util._debug.ON:
@@ -260,7 +260,7 @@ class _EntityABC:
 
             else:
                 assert ismethoddescriptor(__init__), \
-                    f'??? {entity_related_obj.__name__} MRO MISSING __init__ METHOD: {describe(__init__)} ???'
+                    f'??? {entity_related_callable_obj.__name__} MRO MISSING __init__ METHOD: {describe(__init__)} ???'
 
             for class_member_name, class_member in class_members.items():
                 if isfunction(class_member) and decorable(class_member):
@@ -273,11 +273,11 @@ class _EntityABC:
                             print('==>')
 
                         setattr(
-                            entity_related_obj, class_member_name,
+                            entity_related_callable_obj, class_member_name,
                             staticmethod(decorate(class_member, assign_name=True)))
 
                         if art_of_geom._util._debug.ON:
-                            decorated_class_member = getattr(entity_related_obj, class_member_name)
+                            decorated_class_member = getattr(entity_related_callable_obj, class_member_name)
 
                             print('==>')
                             print(f'DECORATED STATIC METHOD {decorated_class_member.__qualname__}'
@@ -296,11 +296,11 @@ class _EntityABC:
                             print('==>')
 
                         setattr(
-                            entity_related_obj, class_member_name,
+                            entity_related_callable_obj, class_member_name,
                             decorate(class_member, assign_name=True))
 
                         if art_of_geom._util._debug.ON:
-                            decorated_class_member = getattr(entity_related_obj, class_member_name)
+                            decorated_class_member = getattr(entity_related_callable_obj, class_member_name)
 
                             print('==>')
                             print(f'DECORATED UNBOUND INSTANCE METHOD {decorated_class_member.__qualname__}'
@@ -317,11 +317,11 @@ class _EntityABC:
                         print('==>')
 
                     setattr(
-                        entity_related_obj, class_member_name,
+                        entity_related_callable_obj, class_member_name,
                         classmethod(decorate(class_member.__func__, assign_name=True)))
 
                     if art_of_geom._util._debug.ON:
-                        decorated_class_member = getattr(entity_related_obj, class_member_name)
+                        decorated_class_member = getattr(entity_related_callable_obj, class_member_name)
 
                         print('==>')
                         print(f'DECORATED CLASS METHOD {decorated_class_member.__qualname__}'
@@ -335,7 +335,7 @@ class _EntityABC:
                         print('DECORATING CACHED PROPERTY...')
 
                     setattr(
-                        entity_related_obj, class_member_name,
+                        entity_related_callable_obj, class_member_name,
                         cached_property(decorate(class_member.func, assign_name=False)))
 
                     if art_of_geom._util._debug.ON:
@@ -351,12 +351,12 @@ class _EntityABC:
                     if art_of_geom._util._debug.ON:
                         print()
 
-            return entity_related_obj
+            return entity_related_callable_obj
 
         else:
-            assert isfunction(entity_related_obj)
+            assert isfunction(entity_related_callable_obj)
 
-            return decorate(entity_related_obj, assign_name=True)
+            return decorate(entity_related_callable_obj, assign_name=True)
 
     @classmethod
     def __class_full_name__(cls) -> str:
