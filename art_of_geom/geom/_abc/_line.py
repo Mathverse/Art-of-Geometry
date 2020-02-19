@@ -13,21 +13,7 @@ from ._point import _PointABC
 
 
 class _LinearEntityABC(_GeometryEntityABC):
-    @abstractmethod
-    def parallel_line(self, through_point: _PointABC, /) -> _LineABC:
-        raise NotImplementedError
-
-    @abstractmethod
-    def perpendicular_projection_of_point(self, point: _PointABC, /) -> _PointABC:
-        raise NotImplementedError
-
-    # alias
-    def perpendicular_projection(self, point: _PointABC, /) -> _PointABC:
-        return self.perpendicular_projection_of_point(point)
-
-    @abstractmethod
-    def perpendicular_line(self, through_point: _PointABC, /) -> _LineABC:
-        raise NotImplementedError
+    pass
 
 
 class _ConcreteLinearEntityABC(_LinearEntityABC):
