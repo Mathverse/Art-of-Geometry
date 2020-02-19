@@ -45,6 +45,10 @@ class PointInR1(_EuclideanConcretePointABC):
         setattr(self, self._NAME_ATTR_KEY, name)
         setattr(self, self._DEPENDENCIES_ATTR_KEY, dependencies)
 
+    @property
+    def free(self) -> bool:
+        return (not isinstance(self.x, Variable)) or self.x.free
+
     def euclidean_distance(self, other_euclidean_point: PointInR1, /) -> Variable:
         return Variable(abs(self.x - other_euclidean_point.x))
 
