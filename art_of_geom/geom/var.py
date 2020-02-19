@@ -59,7 +59,7 @@ class Variable(_EntityABC, Symbol):
 
     @property
     def _short_repr(self) -> str:
-        return f"Var {self.name}{f' = {self.expr}' if self.expr else ''}"
+        return f"var {self.name}{f' = {self.expr}' if self.expr else ''}"
 
     @property
     def free(self) -> bool:
