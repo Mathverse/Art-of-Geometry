@@ -49,6 +49,24 @@ class PointInR1(_EuclideanConcretePointABC):
     def free(self) -> bool:
         return (not isinstance(self.x, Variable)) or self.x.free
 
+    @property
+    def name(self) -> str:
+        return getattr(self, self._NAME_ATTR_KEY)
+
+    @name.setter
+    def name(self, name: str, /) -> None:
+        self._validate_name(name)
+
+        if name != getattr(self, self._NAME_ATTR_KEY):
+            setattr(self, self._NAME_ATTR_KEY, name)
+
+            if isinstance(self.x, Variable):
+                self.x.name = f'[{name}.x]'
+
+    @name.deleter
+    def name(self):
+        self.name = TMP_NAME_FACTORY()
+
     def euclidean_distance(self, other_euclidean_point: PointInR1, /) -> Variable:
         return Variable(abs(self.x - other_euclidean_point.x))
 
