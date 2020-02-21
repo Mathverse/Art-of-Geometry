@@ -1,8 +1,8 @@
 __all__ = '_EllipticSurfaceABC',
 
 
-from ..surface import _NonEuclidSurfaceABC
+from ..surface import _NonEuclideanSurfaceABC
 
 
-class _EllipticSurfaceABC(_NonEuclidSurfaceABC):
+class _EllipticSurfaceABC(_NonEuclideanSurfaceABC):
     pass
