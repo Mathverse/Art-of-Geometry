@@ -35,7 +35,7 @@ extensions = (
     'recommonmark',   # Markdown parser
 
     'sphinx.ext.autodoc',  # Include documentation from docstrings
-    # 'sphinx.ext.autodoc.typehints',
+    'sphinx.ext.autodoc.typehints',
 
     'sphinx.ext.autosectionlabel',  # Allow reference sections using its title
     'sphinx.ext.autosummary',   # Generate autodoc summaries
