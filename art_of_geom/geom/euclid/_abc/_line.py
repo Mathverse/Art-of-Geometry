@@ -16,11 +16,11 @@ from ...._util._compat import cached_property
 from ....geom._abc._line import \
     _LinearEntityABC, _ConcreteLinearEntityABC, _LinearEntityAtInfinityABC, \
     _LineABC, _ConcreteLineABC, _ConcreteDirectedLineABC, _LineAtInfinityABC, _DirectedLineAtInfinityABC
-
+from ._entity import _EuclideanGeometryEntityABC
 from ._point import _EuclideanPointABC, _EuclideanConcretePointABC
 
 
-class _EuclideanLinearEntityABC(_LinearEntityABC):
+class _EuclideanLinearEntityABC(_EuclideanGeometryEntityABC, _LinearEntityABC):
     @abstractmethod
     def parallel_line(self, through_euclidean_point: _EuclideanPointABC, /) -> _EuclideanLineABC:
         raise NotImplementedError
