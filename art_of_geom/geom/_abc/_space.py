@@ -1,3 +1,6 @@
+__all__ = '_SpaceABC',
+
+
 from ._entity import _GeometryEntityABC
 
 
