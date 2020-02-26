@@ -426,3 +426,15 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
     @abstractmethod
     def parametric_equations(self) -> Tuple[Expr, ...]:
         raise NotImplementedError
+
+    @abstractmethod
+    def intersect(
+            self, other_geometry_entity: _GeometryEntityABC, /) \
+            -> Union[_GeometryEntityABC, Iterable[_GeometryEntityABC]]:
+        raise NotImplementedError
+
+    # alias
+    def intersection(
+            self, other_geometry_entity: _GeometryEntityABC, /) \
+            -> Union[_GeometryEntityABC, Iterable[_GeometryEntityABC]]:
+        return self.intersect(other_geometry_entity)
