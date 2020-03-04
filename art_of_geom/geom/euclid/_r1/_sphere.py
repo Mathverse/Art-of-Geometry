@@ -1,6 +1,6 @@
 __all__ = \
-    'SphereInR1', 'SphereR1', 'Sphere', \
-    'CircleInR1', 'CircleR1', 'Circle'
+    'CircleInR1', 'CircleR1', 'Circle', \
+    'SphereInR1', 'SphereR1', 'Sphere'
 
 
 from ...._util._compat import cached_property
