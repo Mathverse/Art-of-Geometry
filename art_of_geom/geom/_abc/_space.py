@@ -1,4 +1,4 @@
-__all__ = '_SpaceABC',
+__all__ = '_SpaceABC', '_HalfSpaceABC'
 
 
 from ._entity import _GeometryEntityABC
@@ -10,6 +10,6 @@ class _SpaceABC(_GeometryEntityABC):
 
 
 class _HalfSpaceABC(_GeometryEntityABC):
-    def __init__(self, boundary: _SpaceABC, normal_vector: _ConcretePointABC) -> None:
+    def __init__(self, boundary: _SpaceABC, point: _ConcretePointABC) -> None:
         self.boundary = boundary
-        self.normal_vector = normal_vector
+        self.point = point
