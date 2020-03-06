@@ -7,11 +7,11 @@ from sympy.core.expr import Expr
 from sympy.functions.elementary.trigonometric import cos, sin
 from typing import Optional, Tuple
 
-from ......_util._compat import cached_property
-from ...._abc._coord import THETA
-from ..._abc._entity import _EuclideanGeometryEntityInR2ABC
-from ...coord import X, Y
-from ...point import PointInR2
+from ...._util._compat import cached_property
+from .._abc._coord import THETA
+from ._abc._entity import _EuclideanGeometryEntityInR2ABC
+from .coord import X, Y
+from .point import PointInR2
 
 
 class CircleInR2(_EuclideanGeometryEntityInR2ABC):
