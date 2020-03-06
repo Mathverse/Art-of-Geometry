@@ -9,8 +9,8 @@ from sympy.geometry.point import Point3D
 from typing import Tuple
 
 from ...._util._compat import cached_property
-from art_of_geom.geom.euclid._abc._coord import U, V
-from ._abc import _EuclideanGeometryEntityInR3ABC
+from .._abc._coord import U, V
+from ._abc._entity import _EuclideanGeometryEntityInR3ABC
 from .coord import X, Y, Z
 from .line import LineInR3
 from .point import _PointInR3ABC, PointInR3, PointAtInfinityInR3

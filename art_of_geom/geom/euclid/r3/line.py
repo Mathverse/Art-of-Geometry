@@ -13,12 +13,12 @@ from sympy.geometry.line import LinearEntity3D, Line3D, Ray3D, Segment3D
 from typing import Optional, Tuple
 
 from ...._util._compat import cached_property
-from art_of_geom.geom.euclid._abc._coord import T
-from art_of_geom.geom.euclid._abc._line import \
+from .._abc._coord import T
+from .._abc._line import \
     _EuclideanLinearEntityABC, _EuclideanConcreteLinearEntityABC, _EuclideanLinearEntityAtInfinityABC, \
     _EuclideanLineABC, _EuclideanConcreteLineABC, _EuclideanLineAtInfinityABC, \
     _EuclideanRayABC, _EuclideanSegmentABC
-from ._abc import _EuclideanGeometryEntityInR3ABC
+from ._abc._entity import _EuclideanGeometryEntityInR3ABC
 from .coord import X, Y, Z
 from .point import _PointInR3ABC, PointInR3, PointAtInfinityInR3
 
