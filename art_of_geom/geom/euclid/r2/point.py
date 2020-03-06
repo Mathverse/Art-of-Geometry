@@ -13,7 +13,7 @@ from ...._util._compat import cached_property
 from ...._util._tmp import TMP_NAME_FACTORY
 from ...._util._type import NUMERIC_TYPES, OptionalStrOrCallableReturningStrType, print_obj_and_type
 from .._abc._point import _EuclideanPointABC, _EuclideanConcretePointABC, _EuclideanPointAtInfinityABC
-from ._abc import _EuclideanGeometryEntityInR2ABC
+from ._abc._entity import _EuclideanGeometryEntityInR2ABC
 
 
 class _PointInR2ABC(_EuclideanGeometryEntityInR2ABC, _EuclideanPointABC):

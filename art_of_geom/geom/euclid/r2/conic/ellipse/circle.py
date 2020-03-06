@@ -8,8 +8,8 @@ from sympy.functions.elementary.trigonometric import cos, sin
 from typing import Optional, Tuple
 
 from ......_util._compat import cached_property
-from art_of_geom.geom.euclid._abc._coord import THETA
-from ..._abc import _EuclideanGeometryEntityInR2ABC
+from ...._abc._coord import THETA
+from ..._abc._entity import _EuclideanGeometryEntityInR2ABC
 from ...coord import X, Y
 from ...point import PointInR2
 
