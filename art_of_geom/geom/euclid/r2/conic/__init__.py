@@ -27,8 +27,6 @@ class ConicInR2(_EuclideanGeometryEntityInR2ABC):
         assert isinstance(vertex, PointInR2), \
             TypeError(f'*** VERTEX {vertex} NOT OF TYPE {PointInR2.__name__} ***')
 
-        global_assumptions.add(Q.nonnegative(eccentricity))
-
         self.focus = focus
 
         self.vertex = vertex
@@ -52,24 +50,28 @@ class ConicInR2(_EuclideanGeometryEntityInR2ABC):
         return f'Conic {self.name}'
 
     @cached_property
+    def abs_eccentricity(self) -> Variable:
+        return Variable(abs(self.eccentricity))
+
+    @cached_property
     def is_circle(self) -> bool:
         return self.eccentricity == S.Zero
 
     @cached_property
     def is_ellipse(self) -> bool:
-        return S.Zero < self.eccentricity < S.One
+        return S.Zero < self.abs_eccentricity < S.One
 
     @cached_property
     def is_parabola(self) -> bool:
-        return self.eccentricity == S.One
+        return self.abs_eccentricity == S.One
 
     @cached_property
     def is_hyperbola(self) -> bool:
-        return S.One < self.eccentricity < oo
+        return S.One < self.abs_eccentricity < oo
 
     @cached_property
     def is_line(self) -> bool:
-        return self.eccentricity == oo
+        return self.abs_eccentricity == oo
 
     @cached_property
     def linear_eccentricity(self) -> Expr:
