@@ -7,9 +7,10 @@ from sympy.core.expr import Expr
 from sympy.core.numbers import oo
 from sympy.core.singleton import S
 from sympy.functions.elementary.trigonometric import atan2, cos, sin
-from typing import Optional, Tuple
+from typing import Tuple
 
 from ....._util._compat import cached_property
+from ....var import Variable
 from ..._abc._coord import THETA
 from .._abc._entity import _EuclideanGeometryEntityInR2ABC
 from ..coord import X, Y
@@ -17,12 +18,9 @@ from ..line import _LineInR2ABC, LineInR2, LineAtInfinityInR2
 from ..point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
 
+@_EuclideanGeometryEntityInR2ABC.assign_name_and_dependencies
 class ConicInR2(_EuclideanGeometryEntityInR2ABC):
-    def __init__(
-            self,
-            /, focus: PointInR2, vertex: PointInR2, eccentricity: Expr,
-            *, name: Optional[str] = None) \
-            -> None:
+    def __init__(self, /, focus: PointInR2, vertex: PointInR2, eccentricity: Variable) -> None:
         assert isinstance(focus, PointInR2), \
             TypeError(f'*** FOCUS {focus} NOT OF TYPE {PointInR2.__name__} ***')
 

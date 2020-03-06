@@ -3,20 +3,16 @@ __all__ = 'HyperbolaInR2', 'HyperbolaR2', 'Hyperbola'
 
 from sympy.assumptions.ask import Q
 from sympy.assumptions.assume import global_assumptions
-from sympy.core.expr import Expr
 from sympy.core.singleton import S
-from typing import Optional
 
+from ....var import Variable
 from ..point import PointInR2
 from . import ConicInR2
 
 
+@ConicInR2.assign_name_and_dependencies
 class HyperbolaInR2(ConicInR2):
-    def __init__(
-            cls,
-            /, focus: PointInR2, vertex: PointInR2, eccentricity: Expr,
-            *, name: Optional[str] = None) \
-            -> None:
+    def __init__(self, /, focus: PointInR2, vertex: PointInR2, eccentricity: Variable) -> None:
         global_assumptions.add(
             Q.positive(eccentricity - S.One),
             Q.finite(eccentricity))
@@ -24,8 +20,7 @@ class HyperbolaInR2(ConicInR2):
         super().__init__(
             focus=focus,
             vertex=vertex,
-            eccentricity=eccentricity,
-            name=name)
+            eccentricity=eccentricity)
 
     def __repr__(self) -> str:
         return f'Hyperbola {self.name}'
