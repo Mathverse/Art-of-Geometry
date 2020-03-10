@@ -5,4 +5,4 @@ SetUpTools >= 46.0.0
 Twine >= 3.1.1
 Wheel >= 0.34.2
 
-VirtualEnv >= 20.0.9
+VirtualEnv >= 20.0.10
