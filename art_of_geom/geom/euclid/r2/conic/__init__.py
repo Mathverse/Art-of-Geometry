@@ -1,8 +1,6 @@
 __all_ = 'ConicInR2', 'ConicR2', 'Conic'
 
 
-from sympy.assumptions.ask import Q
-from sympy.assumptions.assume import global_assumptions
 from sympy.core.expr import Expr
 from sympy.core.numbers import oo
 from sympy.core.singleton import S
@@ -37,8 +35,6 @@ class ConicInR2(_EuclideanGeometryEntityInR2ABC):
         self.focus_to_vertex_distance = self.focus_to_vertex_direction.euclidean_distance_from_origin
 
         self.eccentricity = eccentricity
-
-        self._name = name
 
     @property
     def name(self) -> str:
