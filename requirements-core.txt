@@ -1,5 +1,5 @@
 # SciPy
-NumPy >= 1.18.1
+NumPy >= 1.18.2
 SymPy >= 1.5.1
 
 # Tensor-Processing
