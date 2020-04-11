@@ -2,5 +2,5 @@
 # MAnimLib >= 0.1.10   # lacks deps in Py3.8
 MatPlotLib >= 3.2.1
 # MayaVi >= 4.7.1   # depends on VTK
-PyQt5 >= 5.14.1
+PyQt5 >= 5.14.2
 # VTK >= 8.1.2   # No Py3.8
