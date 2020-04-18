@@ -7,3 +7,4 @@ Wheel >= 0.34.2
 
 PIPEnv >= 2018.11.16
 VirtualEnv >= 20.0.18
+VirtualEnvWrapper >= 4.8.4
