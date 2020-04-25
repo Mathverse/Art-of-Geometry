@@ -438,3 +438,18 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
             self, other_geometry_entity: _GeometryEntityABC, /) \
             -> Union[_GeometryEntityABC, Iterable[_GeometryEntityABC]]:
         return self.intersect(other_geometry_entity)
+
+    # alias
+    def cut(self, other_geometry_entity: _GeometryEntityABC, /) \
+            -> Union[_GeometryEntityABC, Iterable[_GeometryEntityABC]]:
+        return self.intersect(other_geometry_entity)
+
+    # tangent
+    def tangent_at_point(self, point, /) -> _GeometryEntityABC:
+        raise NotImplementedError
+
+    def tangent_through_point(self, point, /) -> _GeometryEntityABC:
+        raise NotImplementedError
+
+    def tangent(self, point, /) -> _GeometryEntityABC:
+        return self.tangent_through_point(point)
