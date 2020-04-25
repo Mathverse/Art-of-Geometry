@@ -430,6 +430,11 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
     def parametric_equations(self) -> Tuple[Expr, ...]:
         raise NotImplementedError
 
+    # INCIDENCE
+    @abstractmethod
+    def incident_with(self, other_geometry_entity: _GeometryEntityABC) -> bool:
+        raise NotImplementedError
+
     # NORMAL DIRECTION
     @abstractmethod
     def normal_direction_at_point(self, point: _PointABC, /) -> _PointABC:
