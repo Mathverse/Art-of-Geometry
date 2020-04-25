@@ -28,6 +28,8 @@ from ..._util._type import CallableReturningStrType, OptionalStrOrCallableReturn
 
 if TYPE_CHECKING:   # to avoid circular import b/w _EntityABC & Session
     from ..session import Session
+    from ._point import _PointABC
+    from ._line import _LinearEntityABC, _LineABC
 
 
 class _EntityABC:
@@ -417,6 +419,7 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
     def same(self) -> _GeometryEntityABC:
         raise NotImplementedError
 
+    # EQUATION & PARAMETRIC EQUATIONS
     @cached_property
     @abstractmethod
     def equation(self) -> Expr:
@@ -427,29 +430,46 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
     def parametric_equations(self) -> Tuple[Expr, ...]:
         raise NotImplementedError
 
+    # NORMAL DIRECTION
     @abstractmethod
+    def normal_direction_at_point(self, point: _PointABC, /) -> _PointABC:
+        raise NotImplementedError
+
+    # alias
+    def normal_direction(self, point: _PointABC, /) -> _PointABC:
+        return self.normal_direction_at_point(point)
+
+    # PERPENDICULAR LINE
+    @abstractmethod
+    def perpendicular_line_at_point(self, point: _PointABC, /) -> _LineABC:
+        raise NotImplementedError
+
+    # alias
+    def perpendicular_line(self, point: _PointABC, /) -> _LineABC:
+        raise self.perpendicular_line_at_point(point)
+
+    # TANGENT
+    @abstractmethod
+    def tangent_at_point(self, point: _PointABC, /) -> _LinearEntityABC:
+        raise NotImplementedError
+
+    # alias
+    def tangent(self, point: _PointABC, /) -> _LinearEntityABC:
+        return self.tangent_at_point(point)
+
+    # CUTTING / INTERSECTION
+    @abstractmethod
+    def cut(self, other_geometry_entity: _GeometryEntityABC, /) \
+            -> Union[_GeometryEntityABC, Iterable[_GeometryEntityABC]]:
+        raise NotImplementedError
+
+    # aliases
     def intersect(
             self, other_geometry_entity: _GeometryEntityABC, /) \
             -> Union[_GeometryEntityABC, Iterable[_GeometryEntityABC]]:
-        raise NotImplementedError
+        return self.cut(other_geometry_entity)
 
-    # alias
     def intersection(
             self, other_geometry_entity: _GeometryEntityABC, /) \
             -> Union[_GeometryEntityABC, Iterable[_GeometryEntityABC]]:
-        return self.intersect(other_geometry_entity)
-
-    # alias
-    def cut(self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> Union[_GeometryEntityABC, Iterable[_GeometryEntityABC]]:
-        return self.intersect(other_geometry_entity)
-
-    # tangent
-    def tangent_at_point(self, point, /) -> _GeometryEntityABC:
-        raise NotImplementedError
-
-    def tangent_through_point(self, point, /) -> _GeometryEntityABC:
-        raise NotImplementedError
-
-    def tangent(self, point, /) -> _GeometryEntityABC:
-        return self.tangent_through_point(point)
+        return self.cut(other_geometry_entity)
