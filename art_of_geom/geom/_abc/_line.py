@@ -6,10 +6,7 @@ __all__ = \
     '_LineABC', '_ConcreteLineABC', '_ConcreteDirectedLineABC', '_LineAtInfinityABC', '_DirectedLineAtInfinityABC'
 
 
-from abc import abstractmethod
-
 from ._entity import _GeometryEntityABC
-from ._point import _PointABC
 
 
 class _LinearEntityABC(_GeometryEntityABC):
@@ -25,13 +22,7 @@ class _LinearEntityAtInfinityABC(_LinearEntityABC):
 
 
 class _LineABC(_LinearEntityABC):
-    @abstractmethod
-    def perspective_projection_of_point(self, /, perspector: _PointABC, point: _PointABC) -> _PointABC:
-        raise NotImplementedError
-
-    # alias
-    def perspective_projection(self, /, perspector: _PointABC, point: _PointABC) -> _PointABC:
-        return self.perspective_projection_of_point(perspector=perspector, point=point)
+    pass
 
 
 class _ConcreteLineABC(_LineABC, _ConcreteLinearEntityABC):
