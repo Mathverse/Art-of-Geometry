@@ -478,3 +478,13 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
             self, other_geometry_entity: _GeometryEntityABC, /) \
             -> Union[_GeometryEntityABC, Iterable[_GeometryEntityABC]]:
         return self.cut(other_geometry_entity)
+
+    def __and__(
+            self, other_geometry_entity: _GeometryEntityABC, /) \
+            -> Union[_GeometryEntityABC, Iterable[_GeometryEntityABC]]:
+        return self.cut(other_geometry_entity)
+
+    def __rand__(
+            self, other_geometry_entity: _GeometryEntityABC, /) \
+            -> Union[_GeometryEntityABC, Iterable[_GeometryEntityABC]]:
+        return self.cut(other_geometry_entity)
