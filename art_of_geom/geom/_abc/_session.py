@@ -6,9 +6,9 @@ __all__ = 'Session', 'DEFAULT_SESSION'
 
 from sympy.assumptions.assume import AssumptionsContext
 
-from .._util._tmp import TMP_NAME_FACTORY
-from .._util._type import OptionalStrOrCallableReturningStrType
-from ._abc._entity import _EntityABC
+from ..._util._tmp import TMP_NAME_FACTORY
+from ..._util._type import OptionalStrOrCallableReturningStrType
+from ._entity import _EntityABC
 
 
 class Session:

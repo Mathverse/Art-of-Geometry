@@ -27,7 +27,7 @@ from ..._util._type import CallableReturningStrType, OptionalStrOrCallableReturn
 
 
 if TYPE_CHECKING:   # to avoid circular import b/w _EntityABC & Session
-    from ..session import Session
+    from ._session import Session
     from ._point import _PointABC
     from ._line import _LinearEntityABC, _LineABC
 
@@ -41,12 +41,12 @@ class _EntityABC:
             return s
 
         else:
-            from ..session import DEFAULT_SESSION
+            from ._session import DEFAULT_SESSION
             return DEFAULT_SESSION
 
     @session.setter
     def session(self, session: Session, /) -> None:
-        from ..session import Session
+        from ._session import Session
 
         assert isinstance(session, Session), \
             TypeError(f'*** {session} NOT OF TYPE {Session.__name__} ***')

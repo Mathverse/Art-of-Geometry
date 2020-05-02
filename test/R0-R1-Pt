@@ -9,7 +9,7 @@ from random import choice
 
 from art_of_geom.geom.euclid._r0._point import PointR0
 from art_of_geom.geom.euclid._r1.point import PointR1, PtAtInf
-from art_of_geom.geom.session import Session, DEFAULT_SESSION
+from art_of_geom.geom._abc._session import Session, DEFAULT_SESSION
 
 
 s = Session() \
