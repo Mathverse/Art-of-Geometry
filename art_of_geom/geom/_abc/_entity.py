@@ -444,6 +444,9 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
     def normal_direction(self, point: _PointABC, /) -> _PointABC:
         return self.normal_direction_at_point(point)
 
+    def normal(self, point: _PointABC, /) -> _PointABC:
+        return self.normal_direction_at_point(point)
+
     # PERPENDICULAR LINE
     @abstractmethod
     def perpendicular_line_at_point(self, point: _PointABC, /) -> _LineABC:
