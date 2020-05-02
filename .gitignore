@@ -110,6 +110,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+VirtualEnv/
 
 # Spyder project settings
 .spyderproject
@@ -137,8 +138,6 @@ dmypy.json
 # Visual Studio Code
 .vscode/
 
-# VirtualEnv
-VirtualEnv/
 
 # test
 test/*.ipynb
