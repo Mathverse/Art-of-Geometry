@@ -18,7 +18,10 @@ from ..point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
 @_EuclideanGeometryEntityInR2ABC.assign_name_and_dependencies
 class ConicInR2(_EuclideanGeometryEntityInR2ABC):
-    def __init__(self, /, focus: PointInR2, vertex: PointInR2, eccentricity: Variable) -> None:
+    def __init__(
+            self,
+            /, focus: PointInR2, vertex: PointInR2, eccentricity: Variable,
+            *, direction_sign: Variable = Variable(S.One)) -> None:
         assert isinstance(focus, PointInR2), \
             TypeError(f'*** FOCUS {focus} NOT OF TYPE {PointInR2.__name__} ***')
 
@@ -35,12 +38,14 @@ class ConicInR2(_EuclideanGeometryEntityInR2ABC):
         self.focus_to_vertex_distance = self.focus_to_vertex_direction.euclidean_distance_from_origin
 
         self.eccentricity = eccentricity
+        
+        self.direction_sign = direction_sign
 
     @property
     def name(self) -> str:
         return self._name \
             if self._name \
-          else f'{self.focus.name}(vtx: {self.vertex.name}, ecc: {self.eccentricity})'
+          else f'{self.focus.name}(vtx: {self.vertex.name}, ecc: {self.eccentricity}, dir: {self.direction_sign})'
 
     def __repr__(self) -> str:
         return f'Conic {self.name}'
@@ -213,33 +218,36 @@ class ConicInR2(_EuclideanGeometryEntityInR2ABC):
 
     @cached_property
     def _major_axis_angle(self):
-        return atan2(y=self.vertex_to_focus_direction.y,
-                     x=self.vertex_to_focus_direction.x)
+        return Variable(
+                atan2(y=self.vertex_to_focus_direction.y,
+                      x=self.vertex_to_focus_direction.x))
 
     @cached_property
     def parametric_equations(self) -> Tuple[Expr, Expr]:
         # θ is True Anomaly angle
 
+        signed_theta = self.direction_sign * THETA
+
         if self.is_circle:
-            return X - self.focus.x - self.focus_to_vertex_distance * cos(THETA), \
-                   Y - self.focus.y - self.focus_to_vertex_distance * sin(THETA)
+            return X - self.focus.x - self.focus_to_vertex_distance * cos(signed_theta), \
+                   Y - self.focus.y - self.focus_to_vertex_distance * sin(signed_theta)
 
         elif self.is_parabola:
             r = self.semi_latus_rectum / \
                 (1 - cos(THETA - self._major_axis_angle))
 
-            return X - self.focus.x - r * cos(THETA), \
-                   Y - self.focus.y - r * sin(THETA)
+            return X - self.focus.x - r * cos(signed_theta), \
+                   Y - self.focus.y - r * sin(signed_theta)
 
         elif self.is_line:
             return self.directrix.parametric_equations
 
         else:
             r = self.semi_latus_rectum / \
-                (1 - self.eccentricity * cos(THETA - self._major_axis_angle))
+                (1 - self.eccentricity * cos(signed_theta - self._major_axis_angle))
 
-            return X - self.focus.x - r * cos(THETA), \
-                   Y - self.focus.y - r * sin(THETA)
+            return X - self.focus.x - r * cos(signed_theta), \
+                   Y - self.focus.y - r * sin(signed_theta)
 
 
 # aliases

@@ -12,7 +12,10 @@ from . import ConicInR2
 
 @ConicInR2.assign_name_and_dependencies
 class HyperbolaInR2(ConicInR2):
-    def __init__(self, /, focus: PointInR2, vertex: PointInR2, eccentricity: Variable) -> None:
+    def __init__(
+            self,
+            /, focus: PointInR2, vertex: PointInR2, eccentricity: Variable,
+            *, direction_sign: Variable = Variable(S.One)) -> None:
         global_assumptions.add(
             Q.positive(eccentricity - S.One),
             Q.finite(eccentricity))
