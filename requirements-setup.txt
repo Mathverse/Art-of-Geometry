@@ -1,10 +1,10 @@
 PIP >= 20.1.1
 PyYAML >= 5.3.1
 Ruamel.YAML >= 0.16.10
-SetUpTools >= 46.4.0
+SetUpTools >= 47.1.1
 Twine >= 3.1.1
 Wheel >= 0.34.2
 
-PIPEnv >= 2018.11.26
+PIPEnv >= 2020.6.2
 VirtualEnv >= 20.0.21
 VirtualEnvWrapper >= 4.8.4
