@@ -8,3 +8,6 @@ Wheel >= 0.34.2
 PIPEnv >= 2020.6.2
 VirtualEnv >= 20.0.21
 VirtualEnvWrapper >= 4.8.4
+
+# required for MayaVi installation
+VTK >= 9.0.0

@@ -1,6 +1,5 @@
 # Kivy >= 1.11.1   # No Py3.8
 # MAnimLib >= 0.1.11   # depends on PyCairo
 MatPlotLib >= 3.2.1
-# MayaVi >= 4.7.1   # depends on VTK
+MayaVi >= 4.7.1   # depends on VTK
 PyQt5 >= 5.15.0
-VTK >= 9.0.0
