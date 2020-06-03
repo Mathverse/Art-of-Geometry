@@ -1,6 +1,6 @@
 # SciPy
 NumPy >= 1.18.4
-SymPy >= 1.5.1
+SymPy >= 1.6
 
 # Tensor-Processing
 Torch >= 1.5.0
