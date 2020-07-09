@@ -1,9 +1,9 @@
 # SciPy
-NumPy >= 1.18.5
-SymPy >= 1.6
+NumPy >= 1.19.0
+SymPy >= 1.6.1
 
 # Tensor-Processing
-Torch >= 1.5.0
+Torch >= 1.5.1
 # TensorFlow >= 2.1.0   # No Py3.8
 
 # misc
