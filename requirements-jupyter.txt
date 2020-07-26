@@ -1,9 +1,9 @@
-IPyKernel >= 5.3.2
+IPyKernel >= 5.3.4
 IPython >= 7.16.1
 IPyWidgets >= 7.5.1
 Jinja2 >= 2.11.2
 Jupyter >= 1.0.0
-Jupyter-Client >= 6.1.5
+Jupyter-Client >= 6.1.6
 Jupyter-Console >= 6.1.0
 Jupyter-Core >= 4.6.3
 NBConvert >= 5.6.1

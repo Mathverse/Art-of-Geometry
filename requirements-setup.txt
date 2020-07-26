@@ -6,7 +6,7 @@ Twine >= 3.2.0
 Wheel >= 0.34.2
 
 PIPEnv >= 2020.6.2
-VirtualEnv >= 20.0.26
+VirtualEnv >= 20.0.28
 VirtualEnvWrapper >= 4.8.4
 
 # required for MayaVi installation

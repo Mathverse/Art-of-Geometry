@@ -1,5 +1,5 @@
 Kivy >= 2.0.0rc3
 MAnimLib >= 0.1.11
-MatPlotLib >= 3.2.2
+MatPlotLib >= 3.3.0
 # MayaVi >= 4.7.1   # fails on Python 3.8; install dev instead: git+https://github.com/Enthought/MayaVi
 PyQt5 >= 5.15.0
