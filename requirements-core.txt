@@ -4,7 +4,8 @@ SymPy >= 1.6.2
 
 # Tensor-Processing
 Torch >= 1.6.0
-TensorFlow >= 2.3.0
+# TensorFlow >= 2.3.0
+    # tensorflow 2.3.0 depends on numpy<1.19.0 and >=1.16.0
 
 # misc
 Cached-Property >= 1.5.1
