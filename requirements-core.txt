@@ -1,10 +1,10 @@
 # SciPy
-NumPy >= 1.19.0
-SymPy >= 1.6.1
+NumPy >= 1.19.1
+SymPy >= 1.6.2
 
 # Tensor-Processing
-Torch >= 1.5.1
-# TensorFlow >= 2.1.0   # No Py3.8
+Torch >= 1.6.0
+TensorFlow >= 2.3.0
 
 # misc
 Cached-Property >= 1.5.1

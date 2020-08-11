@@ -4,5 +4,6 @@
 git pull
 
 
-python3.8 -m pip install -r requirements-setup.txt --upgrade
-python3.8 -m pip install -e . --upgrade
+python3 -m pip install -r requirements-setup.txt --upgrade
+python3 -m pip uninstall Art-of-Geometry
+python3 -m pip install -e . --upgrade
