@@ -1,12 +1,12 @@
 PIP >= 20.2.2
 PyYAML >= 5.3.1
 Ruamel.YAML >= 0.16.10
-SetUpTools >= 49.3.1
+SetUpTools >= 50.0.1
 Twine >= 3.2.0
-Wheel >= 0.34.2
+Wheel >= 0.35.1
 
-PIPEnv >= 2020.6.2
-VirtualEnv >= 20.0.30
+PIPEnv >= 2020.8.13
+VirtualEnv >= 20.0.31
 VirtualEnvWrapper >= 4.8.4
 
 # required for MayaVi installation
