@@ -9,5 +9,6 @@ Jupyter-Core >= 4.6.3
 NBConvert >= 6.0.7
 NBFormat >= 5.0.8
 Notebook >= 6.1.4
-Tornado >= 6.1
+Tornado >= 6.0.4
+    # 6.1?
 WidgetsNBExtension >= 3.5.1
