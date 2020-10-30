@@ -1,5 +1,5 @@
 CommonMark >= 0.9.1
-NBSphinx >= 0.7.1
+NBSphinx >= 0.8.0
 ReCommonMark >= 0.6.0
 Sphinx >= 3.2.1
 Sphinx-AutoBuild >= 2020.9.1
