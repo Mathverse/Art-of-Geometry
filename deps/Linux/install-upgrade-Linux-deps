@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
 
-apt install libcairo2-dev
-apt upgrade libcairo2-dev
+apt update
+
+apt install -y libcairo2-dev
+apt upgrade -y libcairo2-dev
