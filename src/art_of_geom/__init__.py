@@ -1,4 +1,4 @@
-"""Art-of-Geometry package."""
+"""Art of Geometry package."""
 
 
 from collections.abc import Sequence
