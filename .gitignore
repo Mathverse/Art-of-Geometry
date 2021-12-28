@@ -2,9 +2,15 @@
 dist/
 *.egg-info/
 .mypy_cache/
+*.pyc
 __pycache__/
 .pytest_cache/
 .ropeproject/
+
+
+# Jupyter Notebooks
+*.ipynb
+.ipynb_checkpoints/
 
 
 # Visual Studio Code
