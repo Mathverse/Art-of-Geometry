@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-
-git pull
-
-
-python3 -m pip install -r requirements-setup.txt --upgrade --use-feature=2020-resolver
-python3 -m pip uninstall Art-of-Geometry --yes
-python3 -m pip install -e . --upgrade --use-feature=2020-resolver
