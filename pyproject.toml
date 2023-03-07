@@ -125,3 +125,9 @@ requires = [
   'Wheel >= 0.38.4',
 ]
 build-backend = 'setuptools.build_meta'
+
+
+[tool.pylint]
+disable = [
+  'relative-beyond-top-level',
+]
