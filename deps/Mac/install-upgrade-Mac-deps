@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
 
-brew install cairo pkg-config
-brew upgrade cairo pkg-config
+brew install Cairo Pkg-Config
+brew upgrade Cairo Pkg-Config
