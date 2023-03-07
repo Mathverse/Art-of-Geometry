@@ -1,4 +1,3 @@
-Kivy >= 2.1.0
+# Kivy >= 2.1.0
 MatPlotLib >= 3.7.1
-MayaVi >= 4.8.1
-PyQt5 >= 5.15.9
+# MayaVi >= 4.8.1

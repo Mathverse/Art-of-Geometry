@@ -31,7 +31,6 @@ jobs:
       - name: Install Linux Dependencies
         run: >
           sudo apt install --yes
-          libgstreamer-plugins-base1.0-dev
           libpango1.0-dev
 
       - name: PIP-Install Package & Dependencies
