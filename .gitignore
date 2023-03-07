@@ -7,11 +7,12 @@ __pycache__/
 .pytest_cache/
 .ropeproject/
 
+# Poetry
+poetry.lock
 
 # Jupyter Notebooks
 *.ipynb
 .ipynb_checkpoints/
-
 
 # Visual Studio Code
 *.code-workspace
