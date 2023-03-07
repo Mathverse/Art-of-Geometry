@@ -112,6 +112,7 @@ entry-points = {file = 'metadata/entry-points'}
 build = {file = 'metadata/requirements/build.txt'}
 dev = {file = 'metadata/requirements/dev.txt'}
 doc = {file = 'metadata/requirements/doc.txt'}
+manim = {file = 'metadata/requirements/manim.txt'}
 lint = {file = 'metadata/requirements/lint.txt'}
 publish = {file = 'metadata/requirements/publish.txt'}
 test = {file = 'metadata/requirements/test.txt'}
