@@ -3,27 +3,36 @@
 
 from __future__ import annotations
 
-
-__all__ = '_PointABC', '_ConcretePointABC', '_PointAtInfinityABC'
-
-
 from abc import abstractmethod
+from collections.abc import Sequence
+from typing import LiteralString
 
 from ._entity import _GeometryEntityABC
 
 
+__all__: Sequence[LiteralString] = ('_PointABC',
+                                    '_ConcretePointABC',
+                                    '_PointAtInfinityABC')
+
+
 class _PointABC(_GeometryEntityABC):
+    """Point abstract base class."""
+
     _NAME_NULLABLE = False
 
     @abstractmethod
     def __eq__(self, other_point: _PointABC, /) -> bool:
+        """Check equality."""
         raise NotImplementedError
 
     def __ne__(self, other_point: _PointABC, /) -> bool:
-        return not (self == other_point)
+        """Check inequality."""
+        return not self == other_point
 
 
 class _ConcretePointABC(_PointABC):
+    """Concrete Point abstract base class."""
+
     @property
     def _short_repr(self) -> str:
         return f'Pt {self.name}'
@@ -31,10 +40,13 @@ class _ConcretePointABC(_PointABC):
     @property
     @abstractmethod
     def free(self) -> bool:
+        """Check freeness."""
         raise NotImplementedError
 
 
-class _PointAtInfinityABC(_PointABC):
+class _PointAtInfinityABC(_PointABC):  # pylint: disable=abstract-method
+    """Point-at-Infinity abstract base class."""
+
     @property
     def _short_repr(self) -> str:
         return f'Pt@Inf {self.name}'
