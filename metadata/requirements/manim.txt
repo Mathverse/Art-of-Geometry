@@ -1,2 +1,2 @@
-MAnim >= 0.17.2
+MAnim >= 0.17.3
 MAnimGL >= 1.6.1
