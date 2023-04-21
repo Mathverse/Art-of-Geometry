@@ -9,14 +9,14 @@ from sympy.core.numbers import Number
 
 
 __all__: Sequence[str] = (
-    'NUMERIC_TYPES',
+    'NumType',
     'CallableReturningStrType', 'OptionalStrOrCallableReturningStrType',
     'OptionalSymPyExprType', 'OptionalStrOrSymPyExprType',
     'print_obj_and_type',
 )
 
 
-NUMERIC_TYPES = Number, complex, float, int
+NumType: type = Number | complex | float | int
 
 
 CallableReturningStrType = Callable[[], str]
