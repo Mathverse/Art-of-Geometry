@@ -8,7 +8,8 @@ from ._entity import _GeometryEntityABC
 from ._point import _ConcretePointABC
 
 
-__all__: Sequence[str] = '_SpaceABC', '_SubSpaceABC', '_HalfSpaceABC'
+__all__: Sequence[str] = ('_SpaceABC',
+                          '_SubSpaceABC', '_HalfSpaceABC', '_ClosedSubSpaceABC')  # noqa: E501
 
 
 class _SpaceABC(_GeometryEntityABC):
@@ -25,3 +26,7 @@ class _HalfSpaceABC(_SubSpaceABC):
 
     boundary: _SpaceABC
     point: _ConcretePointABC
+
+
+class _ClosedSubSpaceABC(_SubSpaceABC):
+    """Abstract Closed Sub-Space enclosed within Boundary(ies)."""
