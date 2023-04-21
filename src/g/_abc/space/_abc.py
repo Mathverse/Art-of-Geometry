@@ -1,10 +1,14 @@
-__all__ = '_SpaceABC', '_HalfSpaceABC'
+"""Abstract Space."""
 
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 
 from ._entity import _GeometryEntityABC
 from ._point import _ConcretePointABC
+
+
+__all__: Sequence[str] = '_SpaceABC', '_SubSpaceABC', '_HalfSpaceABC'
 
 
 class _SpaceABC(_GeometryEntityABC):
