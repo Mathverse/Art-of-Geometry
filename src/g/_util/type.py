@@ -1,13 +1,19 @@
-__all__ = \
-    'NUMERIC_TYPES', \
-    'CallableReturningStrType', 'OptionalStrOrCallableReturningStrType', \
-    'OptionalSymPyExprType', 'OptionalStrOrSymPyExprType', \
-    'print_obj_and_type'
+"""Data Types."""
 
+
+from collections.abc import Sequence
+from typing import Callable, Optional, Union
 
 from sympy.core.expr import Expr
 from sympy.core.numbers import Number
-from typing import Callable, Optional, Union
+
+
+__all__: Sequence[str] = (
+    'NUMERIC_TYPES',
+    'CallableReturningStrType', 'OptionalStrOrCallableReturningStrType',
+    'OptionalSymPyExprType', 'OptionalStrOrSymPyExprType',
+    'print_obj_and_type',
+)
 
 
 NUMERIC_TYPES = Number, complex, float, int
