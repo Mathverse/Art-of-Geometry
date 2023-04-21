@@ -1,15 +1,24 @@
-__all__ = \
-    'is_static_method', 'is_class_method', 'is_instance_method', 'is_instance_special_operator', \
-    'describe'
+from collections.abc import Sequence
 
 
-from inspect import \
-    getmembers, \
-    isabstract, isclass, isfunction, ismethod, \
-    isdatadescriptor, ismemberdescriptor, ismethoddescriptor, isgetsetdescriptor
+from inspect import (getmembers,
+                     isabstract, isclass, isfunction, ismethod,
+                     isdatadescriptor,
+                     ismemberdescriptor,
+                     ismethoddescriptor,
+                     isgetsetdescriptor)
 from types import SimpleNamespace
 
 from ._compat import cached_property
+
+
+__all__: Sequence[str] = (
+    'is_static_method',
+    'is_class_method',
+    'is_instance_method',
+    'is_instance_special_operator',
+    'describe',
+)
 
 
 def is_static_method(obj) -> bool:
