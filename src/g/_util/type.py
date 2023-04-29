@@ -1,31 +1,32 @@
 """Data Types."""
 
 
-from collections.abc import Sequence
-from typing import Callable, Optional, Union
+from collections.abc import Callable, Sequence
+from typing import Optional
 
 from sympy.core.expr import Expr
 from sympy.core.numbers import Number
 
 
 __all__: Sequence[str] = (
-    'NumType',
-    'CallableReturningStrType', 'OptionalStrOrCallableReturningStrType',
-    'OptionalSymPyExprType', 'OptionalStrOrSymPyExprType',
+    'Num',
+    'CallableReturningStr', 'OptionalStrOrCallableReturningStr',
+    'OptionalSymPyExpr', 'OptionalStrOrSymPyExpr',
     'print_obj_and_type',
 )
 
 
-NumType: type = Number | complex | float | int
+Num: type = Number | complex | float | int
 
 
-CallableReturningStrType = Callable[[], str]
-OptionalStrOrCallableReturningStrType = Union[str, CallableReturningStrType, None]
+CallableReturningStr: type = Callable[[], str]
+OptionalStrOrCallableReturningStr: type = Optional[str | CallableReturningStr]
 
 
-OptionalSymPyExprType = Optional[Expr]
-OptionalStrOrSymPyExprType = Union[str, Expr, None]
+OptionalSymPyExpr: type = Optional[Expr]
+OptionalStrOrSymPyExpr: type = Optional[str | Expr]
 
 
 def print_obj_and_type(obj, /):
+    """Print object and its type."""
     return f'{obj} ({type(obj)}'
