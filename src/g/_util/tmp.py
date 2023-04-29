@@ -1,18 +1,26 @@
-__all__ = 'TMP_NAME_FACTORY', 'tmp_file_name', 'str_uuid'
+"""Temporary (File) Name/ID Utilities."""
 
 
+from collections.abc import Sequence
 import os
 from tempfile import NamedTemporaryFile
 from uuid import uuid4
 
+from .type import CallableReturningStr
 
-def tmp_file_name():
+
+__all__: Sequence[str] = 'TMP_NAME_FACTORY', 'tmp_file_name', 'str_uuid'
+
+
+def tmp_file_name() -> str:
+    """Return temporary file name."""
     with NamedTemporaryFile() as named_tmp_file:
         return os.path.basename(named_tmp_file.name)
 
 
-def str_uuid():
+def str_uuid() -> str:
+    """Return string UUID."""
     return str(uuid4())
 
 
-TMP_NAME_FACTORY = tmp_file_name
+TMP_NAME_FACTORY: CallableReturningStr = tmp_file_name
