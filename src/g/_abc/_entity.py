@@ -18,7 +18,7 @@ from sympy.geometry.entity import GeometryEntity
 import sys
 from typing import Callable, Iterable, Optional, Tuple, TYPE_CHECKING, Union
 
-import art_of_geom._util._debug
+from ..._util import debug
 from ..._util._compat import cached_property
 from ..._util._inspect import is_static_method, is_class_method, is_instance_method, describe
 from ..._util._log import STDOUT_HANDLER, logger
@@ -387,7 +387,7 @@ class _EntityABC:
                 f"<- ({', '.join(dependency._short_repr for dependency in dependencies)})"
                     if (dependencies := self.dependencies)
                     else '(FREE)')
-    
+
     def __str__(self) -> str:
         return repr(self)
 
@@ -424,7 +424,7 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
     @abstractmethod
     def equation(self) -> Expr:
         raise NotImplementedError
-    
+
     @cached_property
     @abstractmethod
     def parametric_equations(self) -> Tuple[Expr, ...]:
