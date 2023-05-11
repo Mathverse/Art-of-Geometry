@@ -38,7 +38,7 @@ class Session:
         # initialize SymPy assumptions
         self.sympy_assumptions: AssumptionsContext = AssumptionsContext()
 
-    def __repr__(self: Self) -> str:
+    def __repr__(self: Self, /) -> str:
         """Return string representation."""
         return f"Geometry Session{f' {_.upper()}' if (_ := self.name) else ''}"
 
