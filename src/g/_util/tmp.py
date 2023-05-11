@@ -14,7 +14,15 @@ __all__: Sequence[str] = 'TMP_NAME_FACTORY', 'tmp_file_name', 'str_uuid'
 
 def tmp_file_name() -> str:
     """Return temporary file name."""
-    with NamedTemporaryFile() as named_tmp_file:
+    with NamedTemporaryFile(mode='w+b',
+                            buffering=- 1,
+                            encoding=None,
+                            newline=None,
+                            suffix=None,
+                            prefix=None,
+                            dir=None,
+                            delete=True,
+                            errors=None) as named_tmp_file:
         return os.path.basename(named_tmp_file.name)
 
 
