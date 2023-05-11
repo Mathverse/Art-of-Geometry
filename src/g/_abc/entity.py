@@ -19,16 +19,15 @@ import sys
 from typing import Optional, Self, TYPE_CHECKING
 
 from .._util import debug
-from .._util.inspect import is_static_method, is_class_method, is_instance_method, describe
+from .._util.inspect import is_static_method, is_class_method, is_instance_method, describe  # noqa: E501
 from .._util.log import STDOUT_HANDLER, logger
-from .._util.tmp import TMP_NAME_FACTORY
-from .._util.type import CallableReturningStr, OptionalStrOrCallableReturningStr
+from .._util.type import CallableReturningStr, OptionalStrOrCallableReturningStr  # noqa: E501
+from .._util.unique_name import UNIQUE_NAME_FACTORY
 
-
-if TYPE_CHECKING:  # to avoid circular import b/w _EntityABC & Session
-    from ._session import Session
-    from ._point import _PointABC
-    from ._line import _LinearEntityABC, _LineABC
+if TYPE_CHECKING:  # avoid circular import between _EntityABC & Session
+    from .session import Session
+    from .point import _PointABC
+    from .line import _LinearEntityABC, _LineABC
 
 
 __all__: Sequence[str] = '_EntityABC', '_GeometryEntityABC'
@@ -40,7 +39,7 @@ class _EntityABC:
     _SESSION_ATTR_KEY: str = '_session'
 
     @property
-    def session(self) -> Session:
+    def session(self: Self) -> Session:
         if s := getattr(self, self._SESSION_ATTR_KEY, None):
             return s
 
@@ -49,7 +48,7 @@ class _EntityABC:
             return DEFAULT_SESSION
 
     @session.setter
-    def session(self, session: Session, /) -> None:
+    def session(self: Self, session: Session, /) -> None:
         from .session import Session
 
         assert isinstance(session, Session), \
