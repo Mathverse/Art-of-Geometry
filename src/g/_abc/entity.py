@@ -67,7 +67,8 @@ class _EntityABC:
     _DEPENDENCIES_ATTR_KEY = '_dependencies'
 
     @property
-    def dependencies(self) -> Iterable[_EntityABC]:
+    def dependencies(self: Self) -> Iterable[_EntityABC]:
+        """Get dependencies."""
         if (deps := getattr(self, self._DEPENDENCIES_ATTR_KEY, None)) is None:
             setattr(self, self._DEPENDENCIES_ATTR_KEY, empty_deps := ())
             return empty_deps
@@ -76,7 +77,8 @@ class _EntityABC:
             return deps
 
     @dependencies.setter
-    def dependencies(self, dependencies: Iterable[_EntityABC], /) -> None:
+    def dependencies(self: Self, dependencies: Iterable[_EntityABC], /) -> None:
+        """Set dependencies."""
         setattr(self, self._DEPENDENCIES_ATTR_KEY, dependencies)
 
     @staticmethod
