@@ -77,12 +77,12 @@ class _EntityABC:
             return deps
 
     @dependencies.setter
-    def dependencies(self: Self, dependencies: Iterable[_EntityABC], /) -> None:
+    def dependencies(self: Self, dependencies: Iterable[_EntityABC], /) -> None:  # noqa: E501
         """Set dependencies."""
         setattr(self, self._DEPENDENCIES_ATTR_KEY, dependencies)
 
     @staticmethod
-    def assign_name_and_dependencies(entity_related_callable_obj: Callable, /) -> Callable:
+    def assign_name_and_dependencies(entity_related_callable_obj: Callable, /) -> Callable:  # noqa: E501
         def decorable(function: Callable, /) -> Optional[bool]:
             assert isfunction(function), \
                 TypeError(f'*** {function} NOT A FUNCTION ***')
@@ -106,11 +106,11 @@ class _EntityABC:
                             return isclass(return_annotation_obj) \
                                and issubclass(return_annotation_obj, _EntityABC)
 
-        def decorate(function: Callable, /, *, assign_name: Union[bool, CallableReturningStrType] = True) -> Callable:
+        def decorate(function: Callable, /, *, assign_name: Union[bool, CallableReturningStr] = True) -> Callable:
             assert isfunction(function), \
                 TypeError(f'*** {function} NOT A FUNCTION ***')
 
-            if art_of_geom._util._debug.ON:
+            if debug.ON:
                 print(f'DECORATING {function.__qualname__}{signature(function, follow_wrapped=False)}')
                 pprint(describe(function).__dict__, sort_dicts=False)
                 print('==>')
@@ -127,7 +127,7 @@ class _EntityABC:
             @wraps(function)
             def function_with_name_and_dependencies_assignment(
                     *args,
-                    name: OptionalStrOrCallableReturningStrType = default_name,
+                    name: OptionalStrOrCallableReturningStr = default_name,
                     **kwargs) \
                     -> Optional[_EntityABC]:
                 dependencies = \
@@ -189,7 +189,7 @@ class _EntityABC:
 
             if not name_already_in_arg_spec:
                 function_with_name_and_dependencies_assignment.__annotations__['name'] = \
-                    OptionalStrOrCallableReturningStrType
+                    OptionalStrOrCallableReturningStr
 
                 function_signature = \
                     signature(
@@ -203,7 +203,7 @@ class _EntityABC:
                         name='name',
                         kind=Parameter.KEYWORD_ONLY,
                         default=default_name,
-                        annotation=OptionalStrOrCallableReturningStrType)
+                        annotation=OptionalStrOrCallableReturningStr)
 
                 try:
                     kwargs_parameter_index = \
@@ -220,7 +220,7 @@ class _EntityABC:
                 function_with_name_and_dependencies_assignment.__signature__ = \
                     function_signature.replace(parameters=function_parameters)
 
-            if art_of_geom._util._debug.ON:
+            if debug.ON:
                 print(f'DECORATED {function_with_name_and_dependencies_assignment.__qualname__}'
                       f'{signature(function_with_name_and_dependencies_assignment)}')
                 pprint(describe(function_with_name_and_dependencies_assignment).__dict__, sort_dicts=False)
@@ -247,9 +247,9 @@ class _EntityABC:
                         assign_name=
                             True
                             if entity_related_callable_obj._NAME_NULLABLE
-                            else TMP_NAME_FACTORY)
+                            else UNIQUE_NAME_FACTORY)
 
-                if art_of_geom._util._debug.ON:
+                if debug.ON:
                     print()
 
             # if __init__ is implemented somewhere in __mro__
@@ -260,9 +260,9 @@ class _EntityABC:
                         assign_name=
                             True
                             if entity_related_callable_obj._NAME_NULLABLE
-                            else TMP_NAME_FACTORY)
+                            else UNIQUE_NAME_FACTORY)
 
-                if art_of_geom._util._debug.ON:
+                if debug.ON:
                     print()
 
             else:
@@ -273,7 +273,7 @@ class _EntityABC:
                 if isfunction(class_member) and decorable(class_member):
                     # Static Method
                     if is_static_method(class_member):
-                        if art_of_geom._util._debug.ON:
+                        if debug.ON:
                             print(f'DECORATING STATIC METHOD {class_member.__qualname__}'
                                   f'{signature(class_member, follow_wrapped=False)}')
                             pprint(describe(class_member).__dict__, sort_dicts=False)
@@ -283,7 +283,7 @@ class _EntityABC:
                             entity_related_callable_obj, class_member_name,
                             staticmethod(decorate(class_member, assign_name=True)))
 
-                        if art_of_geom._util._debug.ON:
+                        if debug.ON:
                             decorated_class_member = getattr(entity_related_callable_obj, class_member_name)
 
                             print('==>')
@@ -296,7 +296,7 @@ class _EntityABC:
                     else:
                         assert is_instance_method(class_member, bound=False)
 
-                        if art_of_geom._util._debug.ON:
+                        if debug.ON:
                             print(f'DECORATING UNBOUND INSTANCE METHOD {class_member.__qualname__}'
                                   f'{signature(class_member, follow_wrapped=False)}')
                             pprint(describe(class_member).__dict__, sort_dicts=False)
@@ -306,7 +306,7 @@ class _EntityABC:
                             entity_related_callable_obj, class_member_name,
                             decorate(class_member, assign_name=True))
 
-                        if art_of_geom._util._debug.ON:
+                        if debug.ON:
                             decorated_class_member = getattr(entity_related_callable_obj, class_member_name)
 
                             print('==>')
@@ -317,7 +317,7 @@ class _EntityABC:
 
                 # Class Method
                 elif is_class_method(class_member) and decorable(class_member.__func__):
-                    if art_of_geom._util._debug.ON:
+                    if debug.ON:
                         print(f'DECORATING CLASS METHOD {class_member.__qualname__}'
                               f'{signature(class_member, follow_wrapped=False)}')
                         pprint(describe(class_member).__dict__, sort_dicts=False)
@@ -327,7 +327,7 @@ class _EntityABC:
                         entity_related_callable_obj, class_member_name,
                         classmethod(decorate(class_member.__func__, assign_name=True)))
 
-                    if art_of_geom._util._debug.ON:
+                    if debug.ON:
                         decorated_class_member = getattr(entity_related_callable_obj, class_member_name)
 
                         print('==>')
@@ -338,24 +338,24 @@ class _EntityABC:
 
                 # Cached Property
                 elif isinstance(class_member, cached_property) and decorable(class_member.func):
-                    if art_of_geom._util._debug.ON:
+                    if debug.ON:
                         print('DECORATING CACHED PROPERTY...')
 
                     setattr(
                         entity_related_callable_obj, class_member_name,
                         cached_property(decorate(class_member.func, assign_name=False)))
 
-                    if art_of_geom._util._debug.ON:
+                    if debug.ON:
                         print()
 
                 # Property Getter
                 elif isinstance(class_member, property) and decorable(class_member.fget):
-                    if art_of_geom._util._debug.ON:
+                    if debug.ON:
                         print('DECORATING PROPERTY GETTER...')
 
                     class_member.fget = decorate(class_member.fget, assign_name=False)
 
-                    if art_of_geom._util._debug.ON:
+                    if debug.ON:
                         print()
 
             return entity_related_callable_obj
@@ -379,10 +379,10 @@ class _EntityABC:
 
     @property
     @abstractmethod
-    def _short_repr(self) -> str:
+    def _short_repr(self: Self) -> str:
         raise NotImplementedError
 
-    def __repr__(self) -> str:
+    def __repr__(self: Self) -> str:
         return '{}{} {} {}'.format(
                 f'Session "{session_name}": '
                     if (session_name := self.session.name)
@@ -393,106 +393,106 @@ class _EntityABC:
                     if (dependencies := self.dependencies)
                     else '(FREE)')
 
-    def __str__(self) -> str:
+    def __str__(self: Self) -> str:
         return repr(self)
 
-    def logger(self, *handlers: Handler, level: Optional[int] = INFO) -> Logger:
+    def logger(self: Self, *handlers: Handler, level: Optional[int] = INFO) -> Logger:
         return logger(str(self), *handlers, level=level)
 
     @cached_property
-    def stdout_logger(self) -> Logger:
+    def stdout_logger(self: Self) -> Logger:
         return self.logger(STDOUT_HANDLER)
 
 
 class _GeometryEntityABC(_EntityABC, GeometryEntity):
     @property
-    def name(self) -> str:
+    def name(self: Self) -> str:
         return getattr(self, self._NAME_ATTR_KEY)
 
     @name.setter
-    def name(self, name: str, /) -> None:
+    def name(self: Self, name: str, /) -> None:
         self._validate_name(name)
 
         if name != getattr(self, self._NAME_ATTR_KEY):
             setattr(self, self._NAME_ATTR_KEY, name)
 
     @name.deleter
-    def name(self) -> None:
+    def name(self: Self) -> None:
         setattr(self, self._NAME_ATTR_KEY, None)
 
     @abstractmethod
-    def same(self) -> _GeometryEntityABC:
+    def same(self: Self) -> _GeometryEntityABC:
         raise NotImplementedError
 
     # EQUATION & PARAMETRIC EQUATIONS
     @cached_property
     @abstractmethod
-    def equation(self) -> Expr:
+    def equation(self: Self) -> Expr:
         raise NotImplementedError
 
     @cached_property
     @abstractmethod
-    def parametric_equations(self) -> Tuple[Expr, ...]:
+    def parametric_equations(self: Self) -> tuple[Expr, ...]:
         raise NotImplementedError
 
     # INCIDENCE
     @abstractmethod
-    def incident_with(self, other_geometry_entity: _GeometryEntityABC) -> bool:
+    def incident_with(self: Self, other_geometry_entity: _GeometryEntityABC) -> bool:
         raise NotImplementedError
 
     # NORMAL DIRECTION
     @abstractmethod
-    def normal_direction_at_point(self, point: _PointABC, /) -> _PointABC:
+    def normal_direction_at_point(self: Self, point: _PointABC, /) -> _PointABC:
         raise NotImplementedError
 
     # alias
-    def normal_direction(self, point: _PointABC, /) -> _PointABC:
+    def normal_direction(self: Self, point: _PointABC, /) -> _PointABC:
         return self.normal_direction_at_point(point)
 
-    def normal(self, point: _PointABC, /) -> _PointABC:
+    def normal(self: Self, point: _PointABC, /) -> _PointABC:
         return self.normal_direction_at_point(point)
 
     # PERPENDICULAR LINE
     @abstractmethod
-    def perpendicular_line_at_point(self, point: _PointABC, /) -> _LineABC:
+    def perpendicular_line_at_point(self: Self, point: _PointABC, /) -> _LineABC:
         raise NotImplementedError
 
     # alias
-    def perpendicular_line(self, point: _PointABC, /) -> _LineABC:
+    def perpendicular_line(self: Self, point: _PointABC, /) -> _LineABC:
         raise self.perpendicular_line_at_point(point)
 
     # TANGENT
     @abstractmethod
-    def tangent_at_point(self, point: _PointABC, /) -> _LinearEntityABC:
+    def tangent_at_point(self: Self, point: _PointABC, /) -> _LinearEntityABC:
         raise NotImplementedError
 
     # alias
-    def tangent(self, point: _PointABC, /) -> _LinearEntityABC:
+    def tangent(self: Self, point: _PointABC, /) -> _LinearEntityABC:
         return self.tangent_at_point(point)
 
     # CUTTING / INTERSECTION
     @abstractmethod
-    def cut(self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> Union[_GeometryEntityABC, Iterable[_GeometryEntityABC]]:
+    def cut(self: Self, other_geometry_entity: _GeometryEntityABC, /) \
+            -> (_GeometryEntityABC | Iterable[_GeometryEntityABC]):
         raise NotImplementedError
 
     # aliases
     def intersect(
-            self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> Union[_GeometryEntityABC, Iterable[_GeometryEntityABC]]:
+            self: Self, other_geometry_entity: _GeometryEntityABC, /) \
+            -> (_GeometryEntityABC | Iterable[_GeometryEntityABC]):
         return self.cut(other_geometry_entity)
 
     def intersection(
-            self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> Union[_GeometryEntityABC, Iterable[_GeometryEntityABC]]:
+            self: Self, other_geometry_entity: _GeometryEntityABC, /) \
+            -> (_GeometryEntityABC | Iterable[_GeometryEntityABC]):
         return self.cut(other_geometry_entity)
 
     def __and__(
-            self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> Union[_GeometryEntityABC, Iterable[_GeometryEntityABC]]:
+            self: Self, other_geometry_entity: _GeometryEntityABC, /) \
+            -> (_GeometryEntityABC | Iterable[_GeometryEntityABC]):
         return self.cut(other_geometry_entity)
 
     def __rand__(
-            self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> Union[_GeometryEntityABC, Iterable[_GeometryEntityABC]]:
+            self: Self, other_geometry_entity: _GeometryEntityABC, /) \
+            -> (_GeometryEntityABC | Iterable[_GeometryEntityABC]):
         return self.cut(other_geometry_entity)
