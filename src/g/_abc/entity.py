@@ -37,7 +37,7 @@ __all__: Sequence[str] = '_EntityABC', '_GeometryEntityABC'
 class _EntityABC:
     """Abstract Entity."""
 
-    _SESSION_ATTR_KEY = '_session'
+    _SESSION_ATTR_KEY: str = '_session'
 
     @property
     def session(self) -> Session:
@@ -45,12 +45,12 @@ class _EntityABC:
             return s
 
         else:
-            from ._session import DEFAULT_SESSION
+            from .session import DEFAULT_SESSION
             return DEFAULT_SESSION
 
     @session.setter
     def session(self, session: Session, /) -> None:
-        from ._session import Session
+        from .session import Session
 
         assert isinstance(session, Session), \
             TypeError(f'*** {session} NOT OF TYPE {Session.__name__} ***')
