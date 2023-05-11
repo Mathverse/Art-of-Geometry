@@ -12,7 +12,7 @@ __all__: Sequence[str] = (
     'Num',
     'CallableReturningStr', 'OptionalStrOrCallableReturningStr',
     'OptionalSymPyExpr', 'OptionalStrOrSymPyExpr',
-    'print_obj_and_type',
+    'obj_and_type_str',
 )
 
 
@@ -27,6 +27,6 @@ OptionalSymPyExpr: type = Optional[Expr]
 OptionalStrOrSymPyExpr: type = Optional[str | Expr]
 
 
-def print_obj_and_type(obj, /):
-    """Print object and its type."""
+def obj_and_type_str(obj, /) -> str:
+    """Return string representation of object and its type."""
     return f'{obj} ({type(obj)}'
