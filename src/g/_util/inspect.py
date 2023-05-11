@@ -88,11 +88,11 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901
 
         if is_property := isinstance(obj, property):
             descriptions.Is.append('Property')
-            func = obj.fget
+            func: Callable = obj.fget
 
         if is_cached_property := isinstance(obj, cached_property):
             descriptions.Is.append('CachedProperty')
-            func = obj.func
+            func: Callable = obj.func
 
         if isdatadescriptor(obj):
             descriptions.Is.append('DataDescriptor')
