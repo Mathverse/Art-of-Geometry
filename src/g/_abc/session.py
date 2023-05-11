@@ -1,67 +1,100 @@
-from __future__ import annotations
+"""Session."""
 
 
-__all__ = 'Session', 'DEFAULT_SESSION'
-
+from collections.abc import Sequence
+from typing import Any, Self
 
 from sympy.assumptions.assume import AssumptionsContext
 
-from ..._util._tmp import TMP_NAME_FACTORY
-from ..._util._type import OptionalStrOrCallableReturningStrType
-from ._entity import _EntityABC
+from .._util.tmp import TMP_NAME_FACTORY
+from .._util.type import OptionalStrOrCallableReturningStr
+from .entity import _EntityABC
+
+
+__all__: Sequence[str] = 'Session', 'DEFAULT_SESSION'
 
 
 class Session:
-    def __init__(self, name: OptionalStrOrCallableReturningStrType = TMP_NAME_FACTORY, /) -> None:
+    """Session."""
+
+    def __init__(self: Self,
+                 name: OptionalStrOrCallableReturningStr = TMP_NAME_FACTORY, /) -> None:  # noqa: E501
+        """Initialize session."""
+        # generate name if not already given as string
         if callable(name):
-            name = name()
+            name: str = name()
         elif not name:
-            name = TMP_NAME_FACTORY()
+            name: str = TMP_NAME_FACTORY()
+
+        # validate name
         _EntityABC._validate_name(name)
-        self.name = name
 
-        self.entities = {}
+        # assign name
+        self.name: str = name
 
-        self.sympy_assumptions = AssumptionsContext()
+        # initialize entities collection
+        self.entities: dict[str, _EntityABC] = {}
 
-    def __repr__(self) -> str:
-        return f"Geometry Session{f' {name.upper()}' if (name := self.name) else ''}"
+        # initialize SymPy assumptions
+        self.sympy_assumptions: AssumptionsContext = AssumptionsContext()
+
+    def __repr__(self: Self) -> str:
+        """Return string representation."""
+        return f"Geometry Session{f' {_.upper()}' if (_ := self.name) else ''}"
 
     __str__ = __repr__
 
-    def __setattr__(self, name: str, value, /) -> None:
+    def __setattr__(self: Self, name: str, value: Any, /) -> None:
+        """Assign entity, if applicable."""
         if isinstance(value, _EntityABC):
-            value.session = self
-            self.entities[name] = value
+            # validate entity name
+            _EntityABC._validate_name(name)
+
+            # assign entity session
+            value.session: Self = self
+
+            # add entity to session's entities collection
+            self.entities[name]: Any = value
 
         else:
             object.__setattr__(self, name, value)
 
-    def __setitem__(self, name: str, entity: _EntityABC, /) -> None:
+    def __setitem__(self: Self, name: str, entity: _EntityABC, /) -> None:
+        """Assign entity."""
+        # validate entity name
         _EntityABC._validate_name(name)
 
+        # validate entity type
         assert isinstance(entity, _EntityABC), \
             TypeError(f'*** {entity} NOT OF TYPE {_EntityABC.__name__} ***')
 
-        entity.session = self
-        self.entities[name] = entity
+        # assign entity session
+        entity.session: Self = self
 
-    def __getattr__(self, name: str, /) -> _EntityABC:
+        # add entity to session's entities collection
+        self.entities[name]: _EntityABC = entity
+
+    def __getattr__(self: Self, name: str, /) -> _EntityABC:
+        """Get entity by name."""
         return self.entities[name]
 
-    def __getitem__(self, name: str, /) -> _EntityABC:
+    def __getitem__(self: Self, name: str, /) -> _EntityABC:
+        """Get entity by name."""
         _EntityABC._validate_name(name)
 
         return self.entities[name]
 
-    def __delattr__(self, name: str) -> None:
+    def __delattr__(self: Self, name: str, /) -> None:
+        """Delete entity by name."""
         del self.entities[name]
 
-    def __delitem__(self, name: str) -> None:
+    def __delitem__(self: Self, name: str, /) -> None:
+        """Delete entity by name."""
+        # validate entity name
         _EntityABC._validate_name(name)
 
         del self.entities[name]
 
 
-# Global Geometry Session
-DEFAULT_SESSION = Session('')
+# default/global session
+DEFAULT_SESSION: Session = Session('')
