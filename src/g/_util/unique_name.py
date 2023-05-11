@@ -9,7 +9,7 @@ from uuid import uuid4
 from .type import CallableReturningStr
 
 
-__all__: Sequence[str] = 'UNIQUE_NAME_FACTORY', 'tmp_file_name', 'str_uuid'
+__all__: Sequence[str] = 'tmp_file_name', 'str_uuid', 'UNIQUE_NAME_FACTORY'
 
 
 def tmp_file_name() -> str:
