@@ -474,25 +474,27 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
     @abstractmethod
     def cut(self: Self, other_geometry_entity: _GeometryEntityABC, /) \
             -> (_GeometryEntityABC | Iterable[_GeometryEntityABC]):
+        """Intersection."""
         raise NotImplementedError
 
     # aliases
-    def intersect(
-            self: Self, other_geometry_entity: _GeometryEntityABC, /) \
+    def intersect(self: Self, other_geometry_entity: _GeometryEntityABC, /) \
             -> (_GeometryEntityABC | Iterable[_GeometryEntityABC]):
+        """Intersection."""
         return self.cut(other_geometry_entity)
 
     def intersection(
             self: Self, other_geometry_entity: _GeometryEntityABC, /) \
             -> (_GeometryEntityABC | Iterable[_GeometryEntityABC]):
+        """Intersection."""
         return self.cut(other_geometry_entity)
 
-    def __and__(
-            self: Self, other_geometry_entity: _GeometryEntityABC, /) \
+    def __and__(self: Self, other_geometry_entity: _GeometryEntityABC, /) \
             -> (_GeometryEntityABC | Iterable[_GeometryEntityABC]):
+        """Intersection."""
         return self.cut(other_geometry_entity)
 
-    def __rand__(
-            self: Self, other_geometry_entity: _GeometryEntityABC, /) \
+    def __rand__(self: Self, other_geometry_entity: _GeometryEntityABC, /) \
             -> (_GeometryEntityABC | Iterable[_GeometryEntityABC]):
+        """Intersection."""
         return self.cut(other_geometry_entity)
