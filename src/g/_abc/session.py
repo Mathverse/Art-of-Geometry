@@ -6,7 +6,7 @@ from typing import Any, Self
 
 from sympy.assumptions.assume import AssumptionsContext
 
-from .._util.tmp import TMP_NAME_FACTORY
+from .._util.unique_name import UNIQUE_NAME_FACTORY
 from .._util.type import OptionalStrOrCallableReturningStr
 from .entity import _EntityABC
 
@@ -18,13 +18,13 @@ class Session:
     """Session."""
 
     def __init__(self: Self,
-                 name: OptionalStrOrCallableReturningStr = TMP_NAME_FACTORY, /) -> None:  # noqa: E501
+                 name: OptionalStrOrCallableReturningStr = UNIQUE_NAME_FACTORY, /) -> None:  # noqa: E501
         """Initialize session."""
         # generate name if not already given as string
         if callable(name):
             name: str = name()
         elif not name:
-            name: str = TMP_NAME_FACTORY()
+            name: str = UNIQUE_NAME_FACTORY()
 
         # validate name
         _EntityABC._validate_name(name)
