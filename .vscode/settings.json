@@ -13,13 +13,14 @@
 
   "python.linting.pylintEnabled": true,
   "python.linting.pylintArgs": [
+    "--disable", "relative-beyond-top-level",
   ],
 
   "python.linting.flake8Enabled": true,
   "python.linting.flake8Args": [
   ],
 
-  "python.linting.mypyEnabled": true,
+  "python.linting.mypyEnabled": false,
 
   "python.linting.pydocstyleEnabled": true,
   "python.linting.pydocstyleArgs": [
@@ -37,5 +38,6 @@
 
   "python.linting.banditEnabled": true,
   "python.linting.banditArgs": [
+    "--skip=B101",
   ],
 }

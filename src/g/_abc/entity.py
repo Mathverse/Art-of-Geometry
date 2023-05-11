@@ -1,11 +1,11 @@
+"""Entity."""
+
+
 from __future__ import annotations
 
-
-__all__ = '_EntityABC', '_GeometryEntityABC'
-
-
 from abc import abstractmethod
-from functools import wraps
+from collections.abc import Callable, Iterable, Sequence
+from functools import cached_property, wraps
 from inspect import \
     getfullargspec, getmembers, \
     isabstract, isclass, isfunction, ismethoddescriptor, \
@@ -16,23 +16,27 @@ from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.geometry.entity import GeometryEntity
 import sys
-from typing import Callable, Iterable, Optional, Tuple, TYPE_CHECKING, Union
+from typing import Optional, Self, TYPE_CHECKING
 
-import art_of_geom._util._debug
-from ..._util._compat import cached_property
-from ..._util._inspect import is_static_method, is_class_method, is_instance_method, describe
-from ..._util._log import STDOUT_HANDLER, logger
-from ..._util._tmp import TMP_NAME_FACTORY
-from ..._util._type import CallableReturningStrType, OptionalStrOrCallableReturningStrType
+from .._util import debug
+from .._util.inspect import is_static_method, is_class_method, is_instance_method, describe
+from .._util.log import STDOUT_HANDLER, logger
+from .._util.tmp import TMP_NAME_FACTORY
+from .._util.type import CallableReturningStr, OptionalStrOrCallableReturningStr
 
 
-if TYPE_CHECKING:   # to avoid circular import b/w _EntityABC & Session
+if TYPE_CHECKING:  # to avoid circular import b/w _EntityABC & Session
     from ._session import Session
     from ._point import _PointABC
     from ._line import _LinearEntityABC, _LineABC
 
 
+__all__: Sequence[str] = '_EntityABC', '_GeometryEntityABC'
+
+
 class _EntityABC:
+    """Abstract Entity."""
+
     _SESSION_ATTR_KEY = '_session'
 
     @property
@@ -387,7 +391,7 @@ class _EntityABC:
                 f"<- ({', '.join(dependency._short_repr for dependency in dependencies)})"
                     if (dependencies := self.dependencies)
                     else '(FREE)')
-    
+
     def __str__(self) -> str:
         return repr(self)
 
@@ -424,7 +428,7 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
     @abstractmethod
     def equation(self) -> Expr:
         raise NotImplementedError
-    
+
     @cached_property
     @abstractmethod
     def parametric_equations(self) -> Tuple[Expr, ...]:
