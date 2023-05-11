@@ -6,8 +6,8 @@ from typing import Any, Self
 
 from sympy.assumptions.assume import AssumptionsContext
 
-from .._util.unique_name import UNIQUE_NAME_FACTORY
 from .._util.type import OptionalStrOrCallableReturningStr
+from .._util.unique_name import UNIQUE_NAME_FACTORY
 from .entity import _EntityABC
 
 
@@ -33,7 +33,7 @@ class Session:
         self.name: str = name
 
         # initialize entities collection
-        self.entities: dict[str, _EntityABC] = {}
+        self.entities: dict[str, _EntityABC] = dict[str, _EntityABC]()
 
         # initialize SymPy assumptions
         self.sympy_assumptions: AssumptionsContext = AssumptionsContext()
@@ -80,6 +80,7 @@ class Session:
 
     def __getitem__(self: Self, name: str, /) -> _EntityABC:
         """Get entity by name."""
+        # validate entity name
         _EntityABC._validate_name(name)
 
         return self.entities[name]
