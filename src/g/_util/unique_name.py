@@ -1,4 +1,4 @@
-"""Temporary (File) Name/ID Utilities."""
+"""Unique Name Utilities."""
 
 
 from collections.abc import Sequence
@@ -9,7 +9,7 @@ from uuid import uuid4
 from .type import CallableReturningStr
 
 
-__all__: Sequence[str] = 'TMP_NAME_FACTORY', 'tmp_file_name', 'str_uuid'
+__all__: Sequence[str] = 'UNIQUE_NAME_FACTORY', 'tmp_file_name', 'str_uuid'
 
 
 def tmp_file_name() -> str:
@@ -31,4 +31,4 @@ def str_uuid() -> str:
     return str(uuid4())
 
 
-TMP_NAME_FACTORY: CallableReturningStr = tmp_file_name
+UNIQUE_NAME_FACTORY: CallableReturningStr = tmp_file_name
