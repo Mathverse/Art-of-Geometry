@@ -37,7 +37,7 @@ __all__: Sequence[LiteralString] = '_EntityABC', '_GeometryEntityABC'
 class _EntityABC:
     """Abstract Entity."""
 
-    _SESSION_ATTR_KEY: str = '_session'
+    _SESSION_ATTR_KEY: LiteralString = '_session'
 
     @property
     def session(self: Self) -> Session:
@@ -57,15 +57,15 @@ class _EntityABC:
 
         setattr(self, self._SESSION_ATTR_KEY, session)
 
-    _NAME_ATTR_KEY = '_name'
-    _NAME_NULLABLE = True
+    _NAME_ATTR_KEY: LiteralString = '_name'
+    _NAME_NULLABLE: bool = True
 
     @staticmethod
     def _validate_name(name: str, /) -> None:
         assert isinstance(name, str) and name, \
             TypeError(f'*** {name} NOT NON-EMPTY STRING ***')
 
-    _DEPENDENCIES_ATTR_KEY = '_dependencies'
+    _DEPENDENCIES_ATTR_KEY: LiteralString = '_dependencies'
 
     @property
     def dependencies(self: Self) -> Iterable[_EntityABC]:
