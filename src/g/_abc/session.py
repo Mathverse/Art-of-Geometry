@@ -2,7 +2,7 @@
 
 
 from collections.abc import Sequence
-from typing import Any, Self
+from typing import Any, LiteralString, Self
 
 from sympy.assumptions.assume import AssumptionsContext
 
@@ -11,7 +11,7 @@ from .._util.unique_name import UNIQUE_NAME_FACTORY
 from .entity import _EntityABC
 
 
-__all__: Sequence[str] = 'Session', 'DEFAULT_SESSION'
+__all__: Sequence[LiteralString] = 'Session', 'DEFAULT_SESSION'
 
 
 class Session:
