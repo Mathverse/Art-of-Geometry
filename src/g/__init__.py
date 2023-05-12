@@ -3,12 +3,13 @@
 
 from collections.abc import Sequence
 from importlib.metadata import version
+from typing import LiteralString
 
 from ._abc.session import Session
 from ._util import debug
 
 
-__all__: Sequence[str] = (
+__all__: Sequence[LiteralString] = (
     '__version__',
 
     'Session',
