@@ -437,7 +437,8 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
 
     # INCIDENCE
     @abstractmethod
-    def incident_with(self: Self, other_geometry_entity: _GeometryEntityABC) -> bool:
+    def incident_with(self: Self, other_geometry_entity: _GeometryEntityABC) -> bool:  # noqa: E501
+        """Check incidence."""
         raise NotImplementedError
 
     # NORMAL DIRECTION
