@@ -12,11 +12,12 @@ from inspect import \
     Parameter, signature
 from logging import Handler, INFO, Logger
 from pprint import pprint
+import sys
+from typing import LiteralString, Optional, Self, TYPE_CHECKING
+
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 from sympy.geometry.entity import GeometryEntity
-import sys
-from typing import Optional, Self, TYPE_CHECKING
 
 from .._util import debug
 from .._util.inspect import is_static_method, is_class_method, is_instance_method, describe  # noqa: E501
@@ -30,7 +31,7 @@ if TYPE_CHECKING:  # avoid circular import between _EntityABC & Session
     from .line import _LinearEntityABC, _LineABC
 
 
-__all__: Sequence[str] = '_EntityABC', '_GeometryEntityABC'
+__all__: Sequence[LiteralString] = '_EntityABC', '_GeometryEntityABC'
 
 
 class _EntityABC:
