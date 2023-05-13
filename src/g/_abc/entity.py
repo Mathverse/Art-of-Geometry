@@ -237,8 +237,8 @@ class _EntityABC:
 
             class_members = \
                 dict(getmembers(
-                        entity_related_callable_obj,
-                        predicate=lambda member: not (isabstract(member) or isclass(member))))
+                    entity_related_callable_obj,
+                    predicate=lambda member: not (isabstract(member) or isclass(member))))
 
             # if __new__ is implemented somewhere in __mro__
             if isfunction(object=(__new__ := class_members.pop('__new__'))):
@@ -375,14 +375,14 @@ class _EntityABC:
 
     def __repr__(self: Self) -> str:
         return '{}{} {} {}'.format(
-                f'Session "{session_name}": '
-                    if (session_name := self.session.name)
-                    else '',
-                self.__class_full_name__(),
-                self.name,
-                f"<- ({', '.join(dependency._short_repr for dependency in dependencies)})"
-                    if (dependencies := self.dependencies)
-                    else '(FREE)')
+            f'Session "{session_name}": '
+            if (session_name := self.session.name)
+            else '',
+            self.__class_full_name__(),
+            self.name,
+            f"<- ({', '.join(dependency._short_repr for dependency in dependencies)})"
+            if (dependencies := self.dependencies)
+            else '(FREE)')
 
     def __str__(self: Self) -> str:
         return repr(self)
