@@ -242,7 +242,7 @@ class _EntityABC:
                         predicate=lambda member: not (isabstract(member) or isclass(member))))
 
             # if __new__ is implemented somewhere in __mro__
-            if isfunction(__new__ := class_members.pop('__new__')):
+            if isfunction(object=(__new__ := class_members.pop('__new__'))):
                 entity_related_callable_obj.__new__ = \
                     decorate(
                         __new__,
@@ -254,7 +254,7 @@ class _EntityABC:
                     print()
 
             # if __init__ is implemented somewhere in __mro__
-            if isfunction(__init__ := class_members.pop('__init__')):
+            if isfunction(object=(__init__ := class_members.pop('__init__'))):
                 entity_related_callable_obj.__init__ = \
                     decorate(
                         __init__,
@@ -266,11 +266,11 @@ class _EntityABC:
                     print()
 
             else:
-                assert ismethoddescriptor(__init__), \
+                assert ismethoddescriptor(object=__init__), \
                     f'??? {entity_related_callable_obj.__name__} MRO MISSING __init__ METHOD: {describe(__init__)} ???'
 
             for class_member_name, class_member in class_members.items():
-                if isfunction(class_member) and decorable(class_member):
+                if isfunction(object=class_member) and decorable(class_member):
                     # Static Method
                     if is_static_method(class_member):
                         if debug.ON:
