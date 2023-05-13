@@ -19,7 +19,6 @@ from sympy.geometry.entity import GeometryEntity
 
 from .._util import debug
 from .._util.inspect import is_static_method, is_class_method, is_instance_method, describe  # noqa: E501
-from .._util.log import STDOUT_HANDLER, logger
 from .._util.type import CallableReturningStr, OptionalStrOrCallableReturningStr  # noqa: E501
 from .._util.unique_name import UNIQUE_NAME_FACTORY
 
