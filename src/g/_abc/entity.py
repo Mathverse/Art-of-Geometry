@@ -83,10 +83,10 @@ class _EntityABC:
     @staticmethod
     def assign_name_and_dependencies(entity_related_callable_obj: Callable, /) -> Callable:  # noqa: E501
         def decorable(function: Callable, /) -> Optional[bool]:
-            assert isfunction(function), \
+            assert isfunction(object=function), \
                 TypeError(f'*** {function} NOT A FUNCTION ***')
 
-            if not getattr(function, '_DECORATED_WITH_NAME_AND_DEPENDENCIES_ASSIGNMENT', False):
+            if not getattr(function, '_DECORATED_WITH_NAME_AND_DEPENDENCIES_ASSIGNMENT', False):  # noqa: E501
                 if isinstance(return_annotation := function.__annotations__.get('return'), str):
                     if (len(qual_name_parts := function.__qualname__.split('.')) == 2) and \
                             (return_annotation == qual_name_parts[0]):
@@ -102,11 +102,11 @@ class _EntityABC:
                             return False
 
                         else:
-                            return isclass(return_annotation_obj) \
-                               and issubclass(return_annotation_obj, _EntityABC)
+                            return (isclass(object=return_annotation_obj) and
+                                    issubclass(return_annotation_obj, _EntityABC))  # noqa: E501
 
-        def decorate(function: Callable, /, *, assign_name: Union[bool, CallableReturningStr] = True) -> Callable:
-            assert isfunction(function), \
+        def decorate(function: Callable, /, *, assign_name: bool | CallableReturningStr = True) -> Callable:
+            assert isfunction(object=function), \
                 TypeError(f'*** {function} NOT A FUNCTION ***')
 
             if debug.ON:
@@ -114,14 +114,14 @@ class _EntityABC:
                 pprint(describe(function).__dict__, sort_dicts=False)
                 print('==>')
 
-            name_already_in_arg_spec = ('name' in getfullargspec(function).kwonlyargs)
+            name_already_in_arg_spec: bool = (
+                'name' in getfullargspec(func=function).kwonlyargs)
 
             assign_name = assign_name and (not name_already_in_arg_spec)
 
-            default_name = \
-                assign_name \
-                if isfunction(assign_name) \
-                else None
+            default_name = (assign_name
+                            if isfunction(object=assign_name)
+                            else None)
 
             @wraps(function)
             def function_with_name_and_dependencies_assignment(
@@ -129,17 +129,19 @@ class _EntityABC:
                     name: OptionalStrOrCallableReturningStr = default_name,
                     **kwargs) \
                     -> Optional[_EntityABC]:
-                dependencies = \
-                    [i
-                     for i in (args + tuple(kwargs.values()))
-                     if isinstance(i, _EntityABC)]
+                dependencies: Iterable[_EntityABC] = [
+                    i
+                    for i in (args + tuple(kwargs.values()))
+                    if isinstance(i, _EntityABC)]
 
-                if isfunction(name):
-                    name = name()
+                if isfunction(object=name):
+                    name: str = name()
+
+                    # validate name
                     _EntityABC._validate_name(name)
 
                 if name_already_in_arg_spec:
-                    kwargs['name'] = name
+                    kwargs['name']: str = name
 
                 result = function(*args, **kwargs)
 
@@ -152,19 +154,19 @@ class _EntityABC:
                             setattr(result, result._NAME_ATTR_KEY, name)
 
                     if not hasattr(result, result._DEPENDENCIES_ATTR_KEY):
-                        result.dependencies = dependencies
+                        result.dependencies: Iterable[_EntityABC] = dependencies
 
                     return result
 
                 elif function.__name__ == '__init__':
-                    self = args[0]
+                    self: _EntityABC = args[0]
                     assert isinstance(self, _EntityABC)
 
                     assert result is None
 
                     if assign_name:
                         if isinstance(self, Symbol):
-                            self.name = name
+                            self.name: str = name
 
                         elif not hasattr(self, self._NAME_ATTR_KEY):
                             setattr(self, self._NAME_ATTR_KEY, name)
