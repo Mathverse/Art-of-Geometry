@@ -6,10 +6,9 @@ from __future__ import annotations
 from abc import abstractmethod
 from collections.abc import Callable, Iterable, Sequence
 from functools import cached_property, wraps
-from inspect import \
-    getfullargspec, getmembers, \
-    isabstract, isclass, isfunction, ismethoddescriptor, \
-    Parameter, signature
+from inspect import (getfullargspec, getmembers,
+                     isabstract, isclass, isfunction, ismethoddescriptor,
+                     Parameter, signature)
 from logging import Handler, INFO, Logger
 from pprint import pprint
 import sys
@@ -406,14 +405,18 @@ class _EntityABC:
 
 
 class _GeometryEntityABC(_EntityABC, GeometryEntity):
+    """Abstract Geometry Entity."""
+
     @property
     def name(self: Self) -> str:
         return getattr(self, self._NAME_ATTR_KEY)
 
     @name.setter
     def name(self: Self, name: str, /) -> None:
+        # validate name
         self._validate_name(name)
 
+        # assign name if different
         if name != getattr(self, self._NAME_ATTR_KEY):
             setattr(self, self._NAME_ATTR_KEY, name)
 
