@@ -131,8 +131,9 @@ class _EntityABC:
                     **kwargs) \
                     -> Optional[_EntityABC]:
                 dependencies = \
-                    [i for i in (args + tuple(kwargs.values()))
-                       if isinstance(i, _EntityABC)]
+                    [i
+                     for i in (args + tuple(kwargs.values()))
+                     if isinstance(i, _EntityABC)]
 
                 if isfunction(name):
                     name = name()
@@ -244,10 +245,9 @@ class _EntityABC:
                 entity_related_callable_obj.__new__ = \
                     decorate(
                         __new__,
-                        assign_name=
-                            True
-                            if entity_related_callable_obj._NAME_NULLABLE
-                            else UNIQUE_NAME_FACTORY)
+                        assign_name=(True
+                                     if entity_related_callable_obj._NAME_NULLABLE  # noqa: E501
+                                     else UNIQUE_NAME_FACTORY))
 
                 if debug.ON:
                     print()
@@ -257,10 +257,9 @@ class _EntityABC:
                 entity_related_callable_obj.__init__ = \
                     decorate(
                         __init__,
-                        assign_name=
-                            True
-                            if entity_related_callable_obj._NAME_NULLABLE
-                            else UNIQUE_NAME_FACTORY)
+                        assign_name=(True
+                                     if entity_related_callable_obj._NAME_NULLABLE  # noqa: E501
+                                     else UNIQUE_NAME_FACTORY))
 
                 if debug.ON:
                     print()
