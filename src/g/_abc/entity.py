@@ -9,7 +9,6 @@ from functools import cached_property, wraps
 from inspect import (getfullargspec, getmembers,
                      isabstract, isclass, isfunction, ismethoddescriptor,
                      Parameter, signature)
-from logging import Handler, INFO, Logger
 from pprint import pprint
 import sys
 from typing import LiteralString, Optional, Self, TYPE_CHECKING
@@ -367,14 +366,6 @@ class _EntityABC:
     @classmethod
     def __class_full_name__(cls) -> str:
         return f'{cls.__module__}.{cls.__qualname__}'
-
-    @classmethod
-    def class_logger(cls, *handlers: Handler, level: Optional[int] = INFO) -> Logger:
-        return logger(cls.__class_full_name__(), *handlers, level=level)
-
-    @classmethod
-    def class_stdout_logger(cls) -> Logger:
-        return cls.class_logger(STDOUT_HANDLER)
 
     @property
     @abstractmethod
