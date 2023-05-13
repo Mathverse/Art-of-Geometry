@@ -386,13 +386,6 @@ class _EntityABC:
     def __str__(self: Self) -> str:
         return repr(self)
 
-    def logger(self: Self, *handlers: Handler, level: Optional[int] = INFO) -> Logger:
-        return logger(str(self), *handlers, level=level)
-
-    @cached_property
-    def stdout_logger(self: Self) -> Logger:
-        return self.logger(STDOUT_HANDLER)
-
 
 class _GeometryEntityABC(_EntityABC, GeometryEntity):
     """Abstract Geometry Entity."""
