@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from abc import abstractmethod
+from ast import literal_eval
 from collections.abc import Callable, Iterable, Sequence
 from functools import cached_property, wraps
 from inspect import (getfullargspec, getmembers,
@@ -94,8 +95,8 @@ class _EntityABC:
                     else:
                         try:
                             return_annotation_obj = \
-                                eval(return_annotation,
-                                     sys.modules[function.__module__].__dict__)
+                                literal_eval(return_annotation,
+                                             sys.modules[function.__module__].__dict__)
 
                         except NameError:
                             return False
