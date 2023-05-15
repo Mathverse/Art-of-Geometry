@@ -18,4 +18,4 @@ __all__: Sequence[LiteralString] = (
 )
 
 
-__version__: str = version(distribution_name='Art-of-Geometry')
+__version__: LiteralString = version(distribution_name='Art-of-Geometry')
