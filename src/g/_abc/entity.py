@@ -201,7 +201,7 @@ class _EntityABC:
 
                     return result
 
-            function_with_name_and_dependencies_assignment._DECORATED_WITH_NAME_AND_DEPENDENCIES_ASSIGNMENT = True
+            function_with_name_and_dependencies_assignment._DECORATED_WITH_NAME_AND_DEPENDENCIES_ASSIGNMENT: bool = True  # noqa: E501
 
             if not name_already_in_arg_spec:
                 function_with_name_and_dependencies_assignment.__annotations__['name'] = \
@@ -253,7 +253,7 @@ class _EntityABC:
             class_members = \
                 dict(getmembers(
                     entity_related_callable_obj,
-                    predicate=lambda member: not (isabstract(member) or isclass(member))))
+                    predicate=lambda member: not (isabstract(object=member) or isclass(object=member))))
 
             # if __new__ is implemented somewhere in __mro__
             if isfunction(object=(__new__ := class_members.pop('__new__'))):
@@ -408,10 +408,12 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
 
     @property
     def name(self: Self) -> str:
+        """Get name."""
         return getattr(self, self._NAME_ATTR_KEY)
 
     @name.setter
     def name(self: Self, name: str, /) -> None:
+        """Assign name."""
         # validate name
         self._validate_name(name)
 
@@ -421,6 +423,7 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
 
     @name.deleter
     def name(self: Self) -> None:
+        """Delete name / reset it to None."""
         setattr(self, self._NAME_ATTR_KEY, None)
 
     @abstractmethod
