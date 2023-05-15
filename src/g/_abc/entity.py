@@ -89,8 +89,9 @@ class _EntityABC:
                 TypeError(f'*** {function} NOT A FUNCTION ***')
 
             if not getattr(function, '_DECORATED_WITH_NAME_AND_DEPENDENCIES_ASSIGNMENT', False):  # noqa: E501
-                if isinstance(return_annotation := function.__annotations__.get('return'), str):
-                    if (len(qual_name_parts := function.__qualname__.split('.')) == 2) and \
+                if isinstance(return_annotation := function.__annotations__.get('return'), str):  # noqa: E501
+                    if (len(qual_name_parts :=
+                            function.__qualname__.split('.')) == 2) and \
                             (return_annotation == qual_name_parts[0]):
                         return True
 
@@ -107,7 +108,8 @@ class _EntityABC:
                             return (isclass(object=return_annotation_obj) and
                                     issubclass(return_annotation_obj, _EntityABC))  # noqa: E501
 
-        def decorate(function: Callable, /, *, assign_name: bool | CallableReturningStr = True) -> Callable:
+        def decorate(function: Callable, /,
+                     *, assign_name: bool | CallableReturningStr = True) -> Callable:  # noqa: E501
             assert isfunction(object=function), \
                 TypeError(f'*** {function} NOT A FUNCTION ***')
 
@@ -413,17 +415,20 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
 
     @abstractmethod
     def same(self: Self) -> _GeometryEntityABC:
+        """Copy."""
         raise NotImplementedError
 
     # EQUATION & PARAMETRIC EQUATIONS
     @cached_property
     @abstractmethod
     def equation(self: Self) -> Expr:
+        """Cartesian equation."""
         raise NotImplementedError
 
     @cached_property
     @abstractmethod
     def parametric_equations(self: Self) -> tuple[Expr, ...]:
+        """Parametric equations."""
         raise NotImplementedError
 
     # INCIDENCE
