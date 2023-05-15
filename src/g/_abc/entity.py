@@ -114,20 +114,30 @@ class _EntityABC:
                 TypeError(f'*** {function} NOT A FUNCTION ***')
 
             if debug.ON:
-                print(f'DECORATING {function.__qualname__}{signature(function, follow_wrapped=False)}')
-                pprint(describe(function).__dict__, sort_dicts=False)
+                print(f'DECORATING {function.__qualname__}'
+                      f'{signature(obj=function, follow_wrapped=False, eval_str=True)}')  # noqa: E501
+                pprint(object=describe(function).__dict__,
+                       stream=None,
+                       indent=2,
+                       width=80,
+                       depth=None,
+                       compact=False,
+                       sort_dicts=False,
+                       underscore_numbers=False)
                 print('==>')
 
             name_already_in_arg_spec: bool = (
                 'name' in getfullargspec(func=function).kwonlyargs)
 
-            assign_name = assign_name and (not name_already_in_arg_spec)
+            assign_name: bool | CallableReturningStr = \
+                assign_name and (not name_already_in_arg_spec)
 
-            default_name = (assign_name
-                            if isfunction(object=assign_name)
-                            else None)
+            default_name: Optional[CallableReturningStr] = (
+                assign_name
+                if isfunction(object=assign_name)
+                else None)
 
-            @wraps(function)
+            @wraps(wrapped=function)
             def function_with_name_and_dependencies_assignment(
                     *args,
                     name: OptionalStrOrCallableReturningStr = default_name,
