@@ -82,7 +82,9 @@ class _EntityABC:
 
     @staticmethod
     def assign_name_and_dependencies(entity_related_callable_obj: Callable, /) -> Callable:  # noqa: E501
+        """Assign name & dependencies to newly-created entity."""
         def decorable(function: Callable, /) -> Optional[bool]:
+            """Check if class member should be decorated."""
             assert isfunction(object=function), \
                 TypeError(f'*** {function} NOT A FUNCTION ***')
 
@@ -96,7 +98,7 @@ class _EntityABC:
                         try:
                             return_annotation_obj = \
                                 literal_eval(return_annotation,
-                                             sys.modules[function.__module__].__dict__)
+                                             sys.modules[function.__module__].__dict__)  # noqa: E501
 
                         except NameError:
                             return False
@@ -361,7 +363,7 @@ class _EntityABC:
             return entity_related_callable_obj
 
         else:
-            assert isfunction(entity_related_callable_obj)
+            assert isfunction(object=entity_related_callable_obj)
 
             return decorate(entity_related_callable_obj, assign_name=True)
 
