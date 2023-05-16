@@ -5,10 +5,11 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from collections.abc import Sequence
+from functools import cache
 from typing import LiteralString, Self, TYPE_CHECKING
 
 if TYPE_CHECKING:  # avoid circular import between _EntityABC & Session
-    from ..session import Session
+    from ...session import Session
 
 
 __all__: Sequence[LiteralString] = ('_EntityABC',)
@@ -33,20 +34,12 @@ class _EntityABC:
 
     @session.setter
     def session(self: Self, session: Session, /) -> None:
-        from .session import Session
+        from ...session import Session
 
         assert isinstance(session, Session), \
             TypeError(f'*** {session} NOT OF TYPE {Session.__name__} ***')
 
         setattr(self, self._SESSION_ATTR_KEY, session)
-
-    _NAME_ATTR_KEY: LiteralString = '_name'
-    _NAME_NULLABLE: bool = True
-
-    @staticmethod
-    def _validate_name(name: str, /) -> None:
-        assert isinstance(name, str) and name, \
-            TypeError(f'*** {name} NOT NON-EMPTY STRING ***')
 
     _DEPENDENCIES_ATTR_KEY: LiteralString = '_dependencies'
 
@@ -65,6 +58,15 @@ class _EntityABC:
         """Set dependencies."""
         setattr(self, self._DEPENDENCIES_ATTR_KEY, dependencies)
 
+    _NAME_ATTR_KEY: LiteralString = '_name'
+    _NAME_NULLABLE: bool = True
+
+    @staticmethod
+    def _validate_name(name: str, /) -> None:
+        assert isinstance(name, str) and name, \
+            TypeError(f'*** {name} NOT NON-EMPTY STRING ***')
+
+    @cache
     @classmethod
     def __class_full_name__(cls, /) -> str:
         return f'{cls.__module__}.{cls.__qualname__}'
@@ -72,9 +74,11 @@ class _EntityABC:
     @property
     @abstractmethod
     def _short_repr(self: Self, /) -> str:
+        """Return short string representation."""
         raise NotImplementedError
 
     def __repr__(self: Self, /) -> str:
+        """Return string representation."""
         return '{}{} {} {}'.format(
             f'Session "{session_name}": '
             if (session_name := self.session.name)
@@ -86,4 +90,5 @@ class _EntityABC:
             else '(FREE)')
 
     def __str__(self: Self, /) -> str:
+        """Return string representation."""
         return repr(self)
