@@ -12,7 +12,7 @@ from inspect import (getfullargspec, getmembers,
                      Parameter, signature)
 from pprint import pprint
 import sys
-from typing import LiteralString, Optional, Self, TYPE_CHECKING
+from typing import Any, LiteralString, Optional, Self, TYPE_CHECKING
 
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
@@ -162,7 +162,7 @@ class _EntityABC:
                 if function.__name__ == '__new__':
                     if assign_name:
                         if isinstance(result, Symbol):
-                            result.name = name
+                            result.name: str = name
 
                         elif not hasattr(result, result._NAME_ATTR_KEY):
                             setattr(result, result._NAME_ATTR_KEY, name)
@@ -212,9 +212,9 @@ class _EntityABC:
                         function_with_name_and_dependencies_assignment,
                         follow_wrapped=True)
 
-                function_parameters = list(function_signature.parameters.values())
+                function_parameters: list[Any] = list(function_signature.parameters.values())
 
-                name_parameter = \
+                name_parameter: Parameter = \
                     Parameter(
                         name='name',
                         kind=Parameter.KEYWORD_ONLY,
@@ -351,23 +351,27 @@ class _EntityABC:
                         print()
 
                 # Cached Property
-                elif isinstance(class_member, cached_property) and decorable(class_member.func):
+                elif isinstance(class_member, cached_property) and \
+                        decorable(class_member.func):
                     if debug.ON:
                         print('DECORATING CACHED PROPERTY...')
 
                     setattr(
                         entity_related_callable_obj, class_member_name,
-                        cached_property(decorate(class_member.func, assign_name=False)))
+                        cached_property(decorate(class_member.func,
+                                                 assign_name=False)))
 
                     if debug.ON:
                         print()
 
                 # Property Getter
-                elif isinstance(class_member, property) and decorable(class_member.fget):
+                elif isinstance(class_member, property) and \
+                        decorable(class_member.fget):
                     if debug.ON:
                         print('DECORATING PROPERTY GETTER...')
 
-                    class_member.fget = decorate(class_member.fget, assign_name=False)
+                    class_member.fget: Callable = \
+                        decorate(class_member.fget, assign_name=False)
 
                     if debug.ON:
                         print()
@@ -395,7 +399,7 @@ class _EntityABC:
             else '',
             self.__class_full_name__(),
             self.name,
-            f"<- ({', '.join(dependency._short_repr for dependency in dependencies)})"
+            f"<- ({', '.join(dependency._short_repr for dependency in dependencies)})"  # noqa: E501
             if (dependencies := self.dependencies)
             else '(FREE)')
 
@@ -452,7 +456,7 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
 
     # NORMAL DIRECTION
     @abstractmethod
-    def normal_direction_at_point(self: Self, point: _PointABC, /) -> _PointABC:
+    def normal_direction_at_point(self: Self, point: _PointABC, /) -> _PointABC:  # noqa: E501
         raise NotImplementedError
 
     # alias
@@ -464,7 +468,7 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
 
     # PERPENDICULAR LINE
     @abstractmethod
-    def perpendicular_line_at_point(self: Self, point: _PointABC, /) -> _LineABC:
+    def perpendicular_line_at_point(self: Self, point: _PointABC, /) -> _LineABC:  # noqa: E501
         raise NotImplementedError
 
     # alias
