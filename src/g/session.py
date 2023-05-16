@@ -6,8 +6,9 @@ from typing import Any, LiteralString, Optional, Self
 
 from sympy.assumptions.assume import AssumptionsContext
 
-from ._abc_entity.abstract import _EntityABC
-from ._alg import AlgebraBackendStr
+from ._alg import _AlgBackendABC, SymPyBackend
+from ._art import _ArtFrontendABC, MAnimFrontend
+from ._geom.entity.abstract import _EntityABC
 from ._util.unique_name import UNIQUE_NAME_FACTORY
 
 
@@ -17,14 +18,16 @@ __all__: Sequence[LiteralString] = 'Session', 'DEFAULT_SESSION'
 class Session:
     """Session."""
 
-    def __init__(self: Self, name: Optional[str] = None, /,
-                 *, algebra_backend: AlgebraBackendStr = 'SymPy') -> None:
+    def __init__(self: Self, name: Optional[str] = None, /, *,
+                 alg_backend: _AlgBackendABC = SymPyBackend(),
+                 art_frontend: _ArtFrontendABC = MAnimFrontend()) -> None:
         """Initialize session."""
         # assign name
         self.name: str = UNIQUE_NAME_FACTORY() if name is None else name
 
-        # assign algebra backend
-        self.algebra_backend: LiteralString = algebra_backend
+        # assign algebra backend & art frontend
+        self.alg_backend: _AlgBackendABC = alg_backend
+        self.art_frontend: _ArtFrontendABC = art_frontend
 
         # initialize entities collection
         self.entities: dict[str, _EntityABC] = dict[str, _EntityABC]()
@@ -48,7 +51,7 @@ class Session:
             value.session: Self = self
 
             # add entity to session's entities collection
-            self.entities[name]: Any = value
+            self.entities[name]: _EntityABC = value
 
         else:
             object.__setattr__(self, name, value)
