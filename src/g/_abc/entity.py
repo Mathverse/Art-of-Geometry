@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from ast import literal_eval
-from collections.abc import Callable, Iterable, Sequence
+from collections.abc import Callable, Sequence
 from functools import cached_property, wraps
 from inspect import (getfullargspec, getmembers,
                      isabstract, isclass, isfunction, ismethoddescriptor,
@@ -66,7 +66,7 @@ class _EntityABC:
     _DEPENDENCIES_ATTR_KEY: LiteralString = '_dependencies'
 
     @property
-    def dependencies(self: Self) -> Iterable[_EntityABC]:
+    def dependencies(self: Self) -> set[_EntityABC]:
         """Get dependencies."""
         if (deps := getattr(self, self._DEPENDENCIES_ATTR_KEY, None)) is None:
             setattr(self, self._DEPENDENCIES_ATTR_KEY, empty_deps := ())
@@ -76,7 +76,7 @@ class _EntityABC:
             return deps
 
     @dependencies.setter
-    def dependencies(self: Self, dependencies: Iterable[_EntityABC], /) -> None:  # noqa: E501
+    def dependencies(self: Self, dependencies: set[_EntityABC], /) -> None:
         """Set dependencies."""
         setattr(self, self._DEPENDENCIES_ATTR_KEY, dependencies)
 
@@ -143,7 +143,7 @@ class _EntityABC:
                     name: OptionalStrOrCallableReturningStr = default_name,
                     **kwargs) \
                     -> Optional[_EntityABC]:
-                dependencies: Iterable[_EntityABC] = [
+                dependencies: set[_EntityABC] = [
                     i
                     for i in (args + tuple(kwargs.values()))
                     if isinstance(i, _EntityABC)]
@@ -168,7 +168,7 @@ class _EntityABC:
                             setattr(result, result._NAME_ATTR_KEY, name)
 
                     if not hasattr(result, result._DEPENDENCIES_ATTR_KEY):
-                        result.dependencies: Iterable[_EntityABC] = dependencies  # noqa: E501
+                        result.dependencies: set[_EntityABC] = dependencies  # noqa: E501
 
                     return result
 
@@ -510,28 +510,28 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
     # CUTTING / INTERSECTION
     @abstractmethod
     def cut(self: Self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> (_GeometryEntityABC | Iterable[_GeometryEntityABC]):
+            -> (_GeometryEntityABC | set[_GeometryEntityABC]):
         """Intersection."""
         raise NotImplementedError
 
     # aliases
     def intersect(self: Self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> (_GeometryEntityABC | Iterable[_GeometryEntityABC]):
+            -> (_GeometryEntityABC | set[_GeometryEntityABC]):
         """Intersection."""
         return self.cut(other_geometry_entity)
 
     def intersection(
             self: Self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> (_GeometryEntityABC | Iterable[_GeometryEntityABC]):
+            -> (_GeometryEntityABC | set[_GeometryEntityABC]):
         """Intersection."""
         return self.cut(other_geometry_entity)
 
     def __and__(self: Self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> (_GeometryEntityABC | Iterable[_GeometryEntityABC]):
+            -> (_GeometryEntityABC | set[_GeometryEntityABC]):
         """Intersection."""
         return self.cut(other_geometry_entity)
 
     def __rand__(self: Self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> (_GeometryEntityABC | Iterable[_GeometryEntityABC]):
+            -> (_GeometryEntityABC | set[_GeometryEntityABC]):
         """Intersection."""
         return self.cut(other_geometry_entity)
