@@ -18,7 +18,8 @@ class Session:
     """Session."""
 
     def __init__(self: Self,
-                 name: OptionalStrOrCallableReturningStr = UNIQUE_NAME_FACTORY, /) -> None:  # noqa: E501
+                 name: OptionalStrOrCallableReturningStr = UNIQUE_NAME_FACTORY,
+                 /, *, algebra_backend: LiteralString = 'SymPy') -> None:
         """Initialize session."""
         # generate name if not already given as string
         if callable(name):
@@ -31,6 +32,9 @@ class Session:
 
         # assign name
         self.name: str = name
+
+        # assign algebra backend
+        self.algebra_backend: LiteralString = algebra_backend
 
         # initialize entities collection
         self.entities: dict[str, _EntityABC] = dict[str, _EntityABC]()
