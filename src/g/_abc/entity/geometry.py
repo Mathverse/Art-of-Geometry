@@ -1,3 +1,4 @@
+"""Abstract Geometry Entity."""
 
 
 @_EntityABC.assign_name_and_dependencies
