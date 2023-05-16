@@ -2,10 +2,10 @@
 
 
 from collections.abc import Sequence
-from typing import Literal, LiteralString
+from typing import LiteralString
+
+from .abc import _AlgBackendABC
+from .sympy import SymPyBackend
 
 
-__all__: Sequence[LiteralString] = ('AlgebraBackendStr',)
-
-
-AlgebraBackendStr: type = Literal['SymPy']
+__all__: Sequence[LiteralString] = '_AlgBackendABC', 'SymPyBackend'
