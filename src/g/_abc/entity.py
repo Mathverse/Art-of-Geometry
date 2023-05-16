@@ -168,7 +168,7 @@ class _EntityABC:
                             setattr(result, result._NAME_ATTR_KEY, name)
 
                     if not hasattr(result, result._DEPENDENCIES_ATTR_KEY):
-                        result.dependencies: Iterable[_EntityABC] = dependencies
+                        result.dependencies: Iterable[_EntityABC] = dependencies  # noqa: E501
 
                     return result
 
@@ -190,7 +190,8 @@ class _EntityABC:
 
                 else:
                     assert isinstance(result, _EntityABC), \
-                        TypeError(f'*** RESULT {result} NOT OF TYPE {_EntityABC.__name__} ***')
+                        TypeError(f'*** RESULT {result} '
+                                  f'NOT OF TYPE {_EntityABC.__name__} ***')
 
                     if assign_name and name:
                         _EntityABC._validate_name(name)
@@ -204,15 +205,16 @@ class _EntityABC:
             function_with_name_and_dependencies_assignment._DECORATED_WITH_NAME_AND_DEPENDENCIES_ASSIGNMENT: bool = True  # noqa: E501
 
             if not name_already_in_arg_spec:
-                function_with_name_and_dependencies_assignment.__annotations__['name'] = \
-                    OptionalStrOrCallableReturningStr
+                function_with_name_and_dependencies_assignment.__annotations__[
+                    'name'] = OptionalStrOrCallableReturningStr
 
                 function_signature = \
                     signature(
                         function_with_name_and_dependencies_assignment,
                         follow_wrapped=True)
 
-                function_parameters: list[Any] = list(function_signature.parameters.values())
+                function_parameters: list[Any] = \
+                    list(function_signature.parameters.values())
 
                 name_parameter: Parameter = \
                     Parameter(
@@ -231,10 +233,11 @@ class _EntityABC:
                     function_parameters.append(name_parameter)
 
                 else:
-                    function_parameters.insert(kwargs_parameter_index, name_parameter)
+                    function_parameters.insert(kwargs_parameter_index,
+                                               name_parameter)
 
-                function_with_name_and_dependencies_assignment.__signature__ = \
-                    function_signature.replace(parameters=function_parameters)
+                function_with_name_and_dependencies_assignment.__signature__ = (  # noqa: E501
+                    function_signature.replace(parameters=function_parameters))
 
             if debug.ON:
                 print(f'DECORATED {function_with_name_and_dependencies_assignment.__qualname__}'  # noqa: E501
@@ -293,14 +296,16 @@ class _EntityABC:
                     # Static Method
                     if is_static_method(class_member):
                         if debug.ON:
-                            print(f'DECORATING STATIC METHOD {class_member.__qualname__}'
-                                  f'{signature(class_member, follow_wrapped=False)}')
-                            pprint(describe(class_member).__dict__, sort_dicts=False)
+                            print(f'DECORATING STATIC METHOD {class_member.__qualname__}'  # noqa: E501
+                                  f'{signature(class_member, follow_wrapped=False)}')  # noqa: E501
+                            pprint(describe(class_member).__dict__,
+                                   sort_dicts=False)
                             print('==>')
 
                         setattr(
                             entity_related_callable_obj, class_member_name,
-                            staticmethod(decorate(class_member, assign_name=True)))
+                            staticmethod(decorate(class_member,
+                                                  assign_name=True)))
 
                         if debug.ON:
                             decorated_class_member = \
@@ -319,8 +324,8 @@ class _EntityABC:
                         assert is_instance_method(class_member, bound=False)
 
                         if debug.ON:
-                            print(f'DECORATING UNBOUND INSTANCE METHOD {class_member.__qualname__}'
-                                  f'{signature(class_member, follow_wrapped=False)}')
+                            print(f'DECORATING UNBOUND INSTANCE METHOD {class_member.__qualname__}'  # noqa: E501
+                                  f'{signature(class_member, follow_wrapped=False)}')  # noqa: E501
                             pprint(describe(class_member).__dict__,
                                    sort_dicts=False)
                             print('==>')
@@ -342,16 +347,19 @@ class _EntityABC:
                             print()
 
                 # Class Method
-                elif is_class_method(class_member) and decorable(class_member.__func__):
+                elif is_class_method(class_member) and \
+                        decorable(class_member.__func__):
                     if debug.ON:
-                        print(f'DECORATING CLASS METHOD {class_member.__qualname__}'
-                              f'{signature(class_member, follow_wrapped=False)}')
-                        pprint(describe(class_member).__dict__, sort_dicts=False)
+                        print(f'DECORATING CLASS METHOD {class_member.__qualname__}'  # noqa: E501
+                              f'{signature(class_member, follow_wrapped=False)}')  # noqa: E501
+                        pprint(describe(class_member).__dict__,
+                               sort_dicts=False)
                         print('==>')
 
                     setattr(
                         entity_related_callable_obj, class_member_name,
-                        classmethod(decorate(class_member.__func__, assign_name=True)))
+                        classmethod(decorate(class_member.__func__,
+                                             assign_name=True)))
 
                     if debug.ON:
                         decorated_class_member = \
