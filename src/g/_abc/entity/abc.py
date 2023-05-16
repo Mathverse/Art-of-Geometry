@@ -68,7 +68,7 @@ class _EntityABC:
 
     @cache
     @classmethod
-    def __class_full_name__(cls: type, /) -> str:
+    def __class_full_name__(cls: type, /) -> LiteralString:
         return f'{cls.__module__}.{cls.__qualname__}'
 
     @property
