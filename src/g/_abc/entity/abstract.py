@@ -4,31 +4,14 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from collections.abc import Callable, Sequence
-from functools import cached_property, wraps
-from inspect import (getmembers,
-                     isabstract, isclass, isfunction, ismethoddescriptor,
-                     Parameter, signature)
-from pprint import pprint
-import sys
-from typing import Any, LiteralString, Optional, Self, TYPE_CHECKING
-
-from sympy.core.expr import Expr
-from sympy.core.symbol import Symbol
-from sympy.geometry.entity import GeometryEntity
-
-from .._util import debug
-from .._util.inspect import is_static_method, is_class_method, is_instance_method, describe  # noqa: E501
-from .._util.type import CallableReturningStr, OptionalStrOrCallableReturningStr  # noqa: E501
-from .._util.unique_name import UNIQUE_NAME_FACTORY
+from collections.abc import Sequence
+from typing import LiteralString, Self, TYPE_CHECKING
 
 if TYPE_CHECKING:  # avoid circular import between _EntityABC & Session
-    from .session import Session
-    from .point import _PointABC
-    from .line import _LinearEntityABC, _LineABC
+    from ..session import Session
 
 
-__all__: Sequence[LiteralString] = '_EntityABC', '_GeometryEntityABC'
+__all__: Sequence[LiteralString] = ('_EntityABC',)
 
 
 class _EntityABC:
@@ -42,7 +25,10 @@ class _EntityABC:
             return s
 
         else:
-            from .session import DEFAULT_SESSION
+            from ..session import DEFAULT_SESSION
+
+            setattr(self, self._SESSION_ATTR_KEY, DEFAULT_SESSION)
+
             return DEFAULT_SESSION
 
     @session.setter

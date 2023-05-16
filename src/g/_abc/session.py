@@ -8,7 +8,7 @@ from sympy.assumptions.assume import AssumptionsContext
 
 from .._util.type import OptionalStrOrCallableReturningStr
 from .._util.unique_name import UNIQUE_NAME_FACTORY
-from .entity import _EntityABC
+from .entity.abstract import _EntityABC
 
 
 __all__: Sequence[LiteralString] = 'Session', 'DEFAULT_SESSION'
