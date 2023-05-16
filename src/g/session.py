@@ -7,8 +7,13 @@ from typing import Any, LiteralString, Optional, Self
 from sympy.assumptions.assume import AssumptionsContext
 
 from ._abc.entity.abc import _EntityABC
-from ._alg import _AlgBackendABC, SymPyBackend
-from ._art import _ArtFrontendABC, MAnimFrontend
+
+from ._alg.abc import _AlgBackendABC
+from ._alg.sympy import SymPyBackend
+
+from ._art.abc import _ArtFrontendABC
+from ._art.manim import MAnimFrontend
+
 from ._util.unique_name import UNIQUE_NAME_FACTORY
 
 
