@@ -10,30 +10,34 @@ from inspect import (getmembers,
                      ismethoddescriptor,
                      isgetsetdescriptor)
 from types import SimpleNamespace
+from typing import LiteralString
 
 
-__all__: Sequence[str] = ('is_static_method',
-                          'is_class_method',
-                          'is_instance_method',
-                          'is_instance_special_operator',
-                          'describe')
+__all__: Sequence[LiteralString] = ('is_static_method',
+                                    'is_class_method',
+                                    'is_instance_method',
+                                    'is_instance_special_operator',
+                                    'describe')
 
 
 def is_static_method(obj, /) -> bool:
     """Check if object is static method."""
-    return isfunction(obj) and isfunction(getattr(obj, '__func__', None))
+    return (isfunction(object=obj) and
+            isfunction(object=getattr(obj, '__func__', None)))
 
 
 def is_class_method(obj, /) -> bool:
     """Check if object is class method."""
-    return ismethod(obj) and isclass(obj.__self__) and isfunction(obj.__func__)
+    return (ismethod(object=obj) and
+            isclass(object=obj.__self__) and
+            isfunction(object=obj.__func__))
 
 
 def is_instance_method(obj, /, *, bound: bool = True) -> bool:
     """Check if object is instance method."""
-    return ((ismethod(obj) and (not isclass(obj.__self__)))
+    return ((ismethod(object=obj) and (not isclass(object=obj.__self__)))
             if bound
-            else (isfunction(obj) and (not hasattr(obj, '__self__'))))
+            else (isfunction(object=obj) and (not hasattr(obj, '__self__'))))
 
 
 def is_instance_special_operator(obj, /, *, bound: bool = True) -> bool:
@@ -54,16 +58,16 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901
 
         func: Callable = obj
 
-        if isabstract(obj):
+        if isabstract(object=obj):
             descriptions.Is.append('Abstract')
 
-        if isclass(obj):
+        if isclass(object=obj):
             descriptions.Is.append('Class')
 
-        if is_function := isfunction(obj):
+        if is_function := isfunction(object=obj):
             descriptions.Is.append('Function')
 
-        if is_method := ismethod(obj):
+        if is_method := ismethod(object=obj):
             descriptions.Is.append('Method')
 
         if is_static_method(obj):
@@ -94,16 +98,16 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901
             descriptions.Is.append('CachedProperty')
             func: Callable = obj.func
 
-        if isdatadescriptor(obj):
+        if isdatadescriptor(object=obj):
             descriptions.Is.append('DataDescriptor')
 
-        if ismemberdescriptor(obj):
+        if ismemberdescriptor(object=obj):
             descriptions.Is.append('MemberDescriptor')
 
-        if ismethoddescriptor(obj):
+        if ismethoddescriptor(object=obj):
             descriptions.Is.append('MethodDescriptor')
 
-        if isgetsetdescriptor(obj):
+        if isgetsetdescriptor(object=obj):
             descriptions.Is.append('GetSetDescriptor')
 
         if (is_function or is_method or

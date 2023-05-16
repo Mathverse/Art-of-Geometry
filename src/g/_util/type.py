@@ -2,13 +2,13 @@
 
 
 from collections.abc import Callable, Sequence
-from typing import Optional
+from typing import LiteralString, Optional
 
 from sympy.core.expr import Expr
 from sympy.core.numbers import Number
 
 
-__all__: Sequence[str] = (
+__all__: Sequence[LiteralString] = (
     'Num',
     'CallableReturningStr', 'OptionalStrOrCallableReturningStr',
     'OptionalSymPyExpr', 'OptionalStrOrSymPyExpr',

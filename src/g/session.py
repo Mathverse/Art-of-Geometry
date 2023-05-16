@@ -1,48 +1,45 @@
 """Session."""
 
 
-from collections.abc import Sequence
-from typing import Any, Self
+from collections.abc import Callable, Sequence
+from typing import Any, LiteralString, Optional, Self
 
 from sympy.assumptions.assume import AssumptionsContext
 
-from .._util.unique_name import UNIQUE_NAME_FACTORY
-from .._util.type import OptionalStrOrCallableReturningStr
-from .entity import _EntityABC
+from ._alg import _AlgBackendABC, SymPyBackend
+from ._art import _ArtFrontendABC, MAnimFrontend
+from ._geom.entity.abstract import _EntityABC
+from ._util.unique_name import UNIQUE_NAME_FACTORY
 
 
-__all__: Sequence[str] = 'Session', 'DEFAULT_SESSION'
+__all__: Sequence[LiteralString] = 'Session', 'DEFAULT_SESSION'
 
 
 class Session:
     """Session."""
 
-    def __init__(self: Self,
-                 name: OptionalStrOrCallableReturningStr = UNIQUE_NAME_FACTORY, /) -> None:  # noqa: E501
+    def __init__(self: Self, name: Optional[str] = None, /, *,
+                 alg_backend: _AlgBackendABC = SymPyBackend(),
+                 art_frontend: _ArtFrontendABC = MAnimFrontend()) -> None:
         """Initialize session."""
-        # generate name if not already given as string
-        if callable(name):
-            name: str = name()
-        elif not name:
-            name: str = UNIQUE_NAME_FACTORY()
-
-        # validate name
-        _EntityABC._validate_name(name)
-
         # assign name
-        self.name: str = name
+        self.name: str = UNIQUE_NAME_FACTORY() if name is None else name
+
+        # assign algebra backend & art frontend
+        self.alg_backend: _AlgBackendABC = alg_backend
+        self.art_frontend: _ArtFrontendABC = art_frontend
 
         # initialize entities collection
-        self.entities: dict[str, _EntityABC] = {}
+        self.entities: dict[str, _EntityABC] = dict[str, _EntityABC]()
 
         # initialize SymPy assumptions
         self.sympy_assumptions: AssumptionsContext = AssumptionsContext()
 
-    def __repr__(self: Self) -> str:
+    def __repr__(self: Self, /) -> str:
         """Return string representation."""
         return f"Geometry Session{f' {_.upper()}' if (_ := self.name) else ''}"
 
-    __str__ = __repr__
+    __str__: Callable[[Self], str] = __repr__
 
     def __setattr__(self: Self, name: str, value: Any, /) -> None:
         """Assign entity, if applicable."""
@@ -54,7 +51,7 @@ class Session:
             value.session: Self = self
 
             # add entity to session's entities collection
-            self.entities[name]: Any = value
+            self.entities[name]: _EntityABC = value
 
         else:
             object.__setattr__(self, name, value)
@@ -80,6 +77,7 @@ class Session:
 
     def __getitem__(self: Self, name: str, /) -> _EntityABC:
         """Get entity by name."""
+        # validate entity name
         _EntityABC._validate_name(name)
 
         return self.entities[name]
