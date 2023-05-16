@@ -5,9 +5,9 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from collections.abc import Sequence
-from typing import Self, LiteralString
+from typing import LiteralString
 
-from .entity import _GeometryEntityABC
+from ._entity import _GeometryEntityABC
 
 
 __all__: Sequence[LiteralString] = ('_PointABC',
