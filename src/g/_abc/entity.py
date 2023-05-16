@@ -38,7 +38,7 @@ class _EntityABC:
     _SESSION_ATTR_KEY: LiteralString = '_session'
 
     @property
-    def session(self: Self) -> Session:
+    def session(self: Self, /) -> Session:
         if s := getattr(self, self._SESSION_ATTR_KEY, None):
             return s
 
@@ -66,10 +66,10 @@ class _EntityABC:
     _DEPENDENCIES_ATTR_KEY: LiteralString = '_dependencies'
 
     @property
-    def dependencies(self: Self) -> set[_EntityABC]:
+    def dependencies(self: Self, /) -> set[_EntityABC]:
         """Get dependencies."""
         if (deps := getattr(self, self._DEPENDENCIES_ATTR_KEY, None)) is None:
-            setattr(self, self._DEPENDENCIES_ATTR_KEY, empty_deps := ())
+            setattr(self, self._DEPENDENCIES_ATTR_KEY, empty_deps := set[_EntityABC]())  # noqa: E501
             return empty_deps
 
         else:
@@ -407,15 +407,15 @@ class _EntityABC:
             return decorate(entity_related_callable_obj, assign_name=True)
 
     @classmethod
-    def __class_full_name__(cls) -> str:
+    def __class_full_name__(cls, /) -> str:
         return f'{cls.__module__}.{cls.__qualname__}'
 
     @property
     @abstractmethod
-    def _short_repr(self: Self) -> str:
+    def _short_repr(self: Self, /) -> str:
         raise NotImplementedError
 
-    def __repr__(self: Self) -> str:
+    def __repr__(self: Self, /) -> str:
         return '{}{} {} {}'.format(
             f'Session "{session_name}": '
             if (session_name := self.session.name)
@@ -426,7 +426,7 @@ class _EntityABC:
             if (dependencies := self.dependencies)
             else '(FREE)')
 
-    def __str__(self: Self) -> str:
+    def __str__(self: Self, /) -> str:
         return repr(self)
 
 
@@ -434,7 +434,7 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
     """Abstract Geometry Entity."""
 
     @property
-    def name(self: Self) -> str:
+    def name(self: Self, /) -> str:
         """Get name."""
         return getattr(self, self._NAME_ATTR_KEY)
 
@@ -449,36 +449,36 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
             setattr(self, self._NAME_ATTR_KEY, name)
 
     @name.deleter
-    def name(self: Self) -> None:
+    def name(self: Self, /) -> None:
         """Delete name / reset it to None."""
         setattr(self, self._NAME_ATTR_KEY, None)
 
     @abstractmethod
-    def copy(self: Self) -> _GeometryEntityABC:
+    def copy(self: Self, /) -> _GeometryEntityABC:
         """Copy."""
         raise NotImplementedError
 
     # alias
-    def same(self: Self) -> _GeometryEntityABC:
+    def same(self: Self, /) -> _GeometryEntityABC:
         """Copy."""
         raise self.copy()
 
     # EQUATION & PARAMETRIC EQUATIONS
     @cached_property
     @abstractmethod
-    def equation(self: Self) -> Expr:
+    def equation(self: Self, /) -> Expr:
         """Cartesian equation."""
         raise NotImplementedError
 
     @cached_property
     @abstractmethod
-    def parametric_equations(self: Self) -> tuple[Expr, ...]:
+    def parametric_equations(self: Self, /) -> tuple[Expr, ...]:
         """Parametric equations."""
         raise NotImplementedError
 
     # INCIDENCE
     @abstractmethod
-    def incident_with(self: Self, other_geometry_entity: _GeometryEntityABC) -> bool:  # noqa: E501
+    def incident_with(self: Self, other_geometry_entity: _GeometryEntityABC, /) -> bool:  # noqa: E501
         """Check incidence."""
         raise NotImplementedError
 
