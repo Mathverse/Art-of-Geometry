@@ -4,10 +4,9 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from ast import literal_eval
 from collections.abc import Callable, Sequence
 from functools import cached_property, wraps
-from inspect import (getfullargspec, getmembers,
+from inspect import (getmembers,
                      isabstract, isclass, isfunction, ismethoddescriptor,
                      Parameter, signature)
 from pprint import pprint
@@ -98,8 +97,8 @@ class _EntityABC:
                     else:
                         try:
                             return_annotation_obj = \
-                                literal_eval(return_annotation,
-                                             sys.modules[function.__module__].__dict__)  # noqa: E501
+                                eval(return_annotation,  # nosec
+                                     sys.modules[function.__module__].__dict__)
 
                         except NameError:
                             return False
@@ -127,7 +126,7 @@ class _EntityABC:
                 print('==>')
 
             name_already_in_arg_spec: bool = (
-                'name' in getfullargspec(func=function).kwonlyargs)
+                'name' in signature(obj=function).parameters)
 
             assign_name: bool | CallableReturningStr = \
                 assign_name and (not name_already_in_arg_spec)
@@ -430,6 +429,7 @@ class _EntityABC:
         return repr(self)
 
 
+@_EntityABC.assign_name_and_dependencies
 class _GeometryEntityABC(_EntityABC, GeometryEntity):
     """Abstract Geometry Entity."""
 
