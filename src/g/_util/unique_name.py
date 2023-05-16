@@ -4,12 +4,13 @@
 from collections.abc import Sequence
 import os
 from tempfile import NamedTemporaryFile
+from typing import LiteralString
 from uuid import uuid4
 
 from .type import CallableReturningStr
 
 
-__all__: Sequence[str] = 'tmp_file_name', 'str_uuid', 'UNIQUE_NAME_FACTORY'
+__all__: Sequence[LiteralString] = 'tmp_file_name', 'str_uuid', 'UNIQUE_NAME_FACTORY'  # noqa: E501
 
 
 def tmp_file_name() -> str:

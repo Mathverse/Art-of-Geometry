@@ -10,13 +10,14 @@ from inspect import (getmembers,
                      ismethoddescriptor,
                      isgetsetdescriptor)
 from types import SimpleNamespace
+from typing import LiteralString
 
 
-__all__: Sequence[str] = ('is_static_method',
-                          'is_class_method',
-                          'is_instance_method',
-                          'is_instance_special_operator',
-                          'describe')
+__all__: Sequence[LiteralString] = ('is_static_method',
+                                    'is_class_method',
+                                    'is_instance_method',
+                                    'is_instance_special_operator',
+                                    'describe')
 
 
 def is_static_method(obj, /) -> bool:
