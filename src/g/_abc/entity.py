@@ -237,23 +237,27 @@ class _EntityABC:
                     function_signature.replace(parameters=function_parameters)
 
             if debug.ON:
-                print(f'DECORATED {function_with_name_and_dependencies_assignment.__qualname__}'
-                      f'{signature(function_with_name_and_dependencies_assignment)}')
-                pprint(describe(function_with_name_and_dependencies_assignment).__dict__, sort_dicts=False)
+                print(f'DECORATED {function_with_name_and_dependencies_assignment.__qualname__}'  # noqa: E501
+                      f'{signature(function_with_name_and_dependencies_assignment)}')  # noqa: E501
+                pprint(describe(function_with_name_and_dependencies_assignment).__dict__,  # noqa: E501
+                       sort_dicts=False)
 
             return function_with_name_and_dependencies_assignment
 
         if isclass(entity_related_callable_obj):
             assert issubclass(entity_related_callable_obj, _EntityABC), \
-                TypeError(f'*** {entity_related_callable_obj} TO DECORATE NOT SUB-CLASS OF {_EntityABC.__name__} ***')
+                TypeError(f'*** {entity_related_callable_obj} TO DECORATE '
+                          f'NOT SUB-CLASS OF {_EntityABC.__name__} ***')
 
             assert not isabstract(entity_related_callable_obj), \
-                TypeError(f'*** {entity_related_callable_obj} ABSTRACT AND NOT DECORABLE ***')
+                TypeError(f'*** {entity_related_callable_obj} ABSTRACT '
+                          'AND NOT DECORABLE ***')
 
             class_members = \
                 dict(getmembers(
                     entity_related_callable_obj,
-                    predicate=lambda member: not (isabstract(object=member) or isclass(object=member))))
+                    predicate=lambda member: not (isabstract(object=member) or
+                                                  isclass(object=member))))
 
             # if __new__ is implemented somewhere in __mro__
             if isfunction(object=(__new__ := class_members.pop('__new__'))):
@@ -281,7 +285,8 @@ class _EntityABC:
 
             else:
                 assert ismethoddescriptor(object=__init__), \
-                    f'??? {entity_related_callable_obj.__name__} MRO MISSING __init__ METHOD: {describe(__init__)} ???'
+                    (f'??? {entity_related_callable_obj.__name__} MRO '
+                     f'MISSING __init__ METHOD: {describe(__init__)} ???')
 
             for class_member_name, class_member in class_members.items():
                 if isfunction(object=class_member) and decorable(class_member):
@@ -298,12 +303,15 @@ class _EntityABC:
                             staticmethod(decorate(class_member, assign_name=True)))
 
                         if debug.ON:
-                            decorated_class_member = getattr(entity_related_callable_obj, class_member_name)
+                            decorated_class_member = \
+                                getattr(entity_related_callable_obj,
+                                        class_member_name)
 
                             print('==>')
-                            print(f'DECORATED STATIC METHOD {decorated_class_member.__qualname__}'
-                                  f'{signature(decorated_class_member, follow_wrapped=False)}')
-                            pprint(describe(decorated_class_member).__dict__, sort_dicts=False)
+                            print(f'DECORATED STATIC METHOD {decorated_class_member.__qualname__}'  # noqa: E501
+                                  f'{signature(decorated_class_member, follow_wrapped=False)}')  # noqa: E501
+                            pprint(describe(decorated_class_member).__dict__,
+                                   sort_dicts=False)
                             print()
 
                     # Unbound Instance Method
@@ -313,7 +321,8 @@ class _EntityABC:
                         if debug.ON:
                             print(f'DECORATING UNBOUND INSTANCE METHOD {class_member.__qualname__}'
                                   f'{signature(class_member, follow_wrapped=False)}')
-                            pprint(describe(class_member).__dict__, sort_dicts=False)
+                            pprint(describe(class_member).__dict__,
+                                   sort_dicts=False)
                             print('==>')
 
                         setattr(
@@ -321,12 +330,15 @@ class _EntityABC:
                             decorate(class_member, assign_name=True))
 
                         if debug.ON:
-                            decorated_class_member = getattr(entity_related_callable_obj, class_member_name)
+                            decorated_class_member = \
+                                getattr(entity_related_callable_obj,
+                                        class_member_name)
 
                             print('==>')
-                            print(f'DECORATED UNBOUND INSTANCE METHOD {decorated_class_member.__qualname__}'
-                                  f'{signature(decorated_class_member, follow_wrapped=False)}')
-                            pprint(describe(decorated_class_member).__dict__, sort_dicts=False)
+                            print(f'DECORATED UNBOUND INSTANCE METHOD {decorated_class_member.__qualname__}'  # noqa: E501
+                                  f'{signature(decorated_class_member, follow_wrapped=False)}')  # noqa: E501
+                            pprint(describe(decorated_class_member).__dict__,
+                                   sort_dicts=False)
                             print()
 
                 # Class Method
@@ -342,12 +354,15 @@ class _EntityABC:
                         classmethod(decorate(class_member.__func__, assign_name=True)))
 
                     if debug.ON:
-                        decorated_class_member = getattr(entity_related_callable_obj, class_member_name)
+                        decorated_class_member = \
+                            getattr(entity_related_callable_obj,
+                                    class_member_name)
 
                         print('==>')
-                        print(f'DECORATED CLASS METHOD {decorated_class_member.__qualname__}'
-                              f'{signature(decorated_class_member, follow_wrapped=False)}')
-                        pprint(describe(decorated_class_member).__dict__, sort_dicts=False)
+                        print(f'DECORATED CLASS METHOD {decorated_class_member.__qualname__}'  # noqa: E501
+                              f'{signature(decorated_class_member, follow_wrapped=False)}')  # noqa: E501
+                        pprint(describe(decorated_class_member).__dict__,
+                               sort_dicts=False)
                         print()
 
                 # Cached Property
