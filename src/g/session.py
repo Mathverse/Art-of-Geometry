@@ -6,9 +6,9 @@ from typing import Any, LiteralString, Optional, Self
 
 from sympy.assumptions.assume import AssumptionsContext
 
-from .._alg import AlgebraBackendStr
-from .._util.unique_name import UNIQUE_NAME_FACTORY
-from .entity.abstract import _EntityABC
+from ._abc_entity.abstract import _EntityABC
+from ._alg import AlgebraBackendStr
+from ._util.unique_name import UNIQUE_NAME_FACTORY
 
 
 __all__: Sequence[LiteralString] = 'Session', 'DEFAULT_SESSION'
