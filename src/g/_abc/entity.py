@@ -454,9 +454,14 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
         setattr(self, self._NAME_ATTR_KEY, None)
 
     @abstractmethod
-    def same(self: Self) -> _GeometryEntityABC:
+    def copy(self: Self) -> _GeometryEntityABC:
         """Copy."""
         raise NotImplementedError
+
+    # alias
+    def same(self: Self) -> _GeometryEntityABC:
+        """Copy."""
+        raise self.copy()
 
     # EQUATION & PARAMETRIC EQUATIONS
     @cached_property
