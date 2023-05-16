@@ -1,12 +1,12 @@
 """Session."""
 
 
-from collections.abc import Sequence
-from typing import Any, LiteralString, Self
+from collections.abc import Callable, Sequence
+from typing import Any, LiteralString, Optional, Self
 
 from sympy.assumptions.assume import AssumptionsContext
 
-from .._util.type import OptionalStrOrCallableReturningStr
+from .._alg import AlgebraBackendStr
 from .._util.unique_name import UNIQUE_NAME_FACTORY
 from .entity.abstract import _EntityABC
 
@@ -17,21 +17,11 @@ __all__: Sequence[LiteralString] = 'Session', 'DEFAULT_SESSION'
 class Session:
     """Session."""
 
-    def __init__(self: Self,
-                 name: OptionalStrOrCallableReturningStr = UNIQUE_NAME_FACTORY,
-                 /, *, algebra_backend: LiteralString = 'SymPy') -> None:
+    def __init__(self: Self, name: Optional[str] = None, /,
+                 *, algebra_backend: AlgebraBackendStr = 'SymPy') -> None:
         """Initialize session."""
-        # generate name if not already given as string
-        if callable(name):
-            name: str = name()
-        elif not name:
-            name: str = UNIQUE_NAME_FACTORY()
-
-        # validate name
-        _EntityABC._validate_name(name)
-
         # assign name
-        self.name: str = name
+        self.name: str = UNIQUE_NAME_FACTORY() if name is None else name
 
         # assign algebra backend
         self.algebra_backend: LiteralString = algebra_backend
@@ -46,7 +36,7 @@ class Session:
         """Return string representation."""
         return f"Geometry Session{f' {_.upper()}' if (_ := self.name) else ''}"
 
-    __str__ = __repr__
+    __str__: Callable[[Self], str] = __repr__
 
     def __setattr__(self: Self, name: str, value: Any, /) -> None:
         """Assign entity, if applicable."""
