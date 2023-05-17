@@ -71,8 +71,7 @@ def _decorate(function: Callable, /,  # noqa
                underscore_numbers=False)
         print('==>')
 
-    name_already_in_arg_spec: bool = \
-        _EntityABC._NAME_ATTR_KEY in signature(obj=function).parameters
+    name_already_in_arg_spec: bool = 'name' in signature(obj=function).parameters  # noqa: E501
 
     assign_name: bool | CallableReturningStr = \
         assign_name and (not name_already_in_arg_spec)
@@ -97,7 +96,7 @@ def _decorate(function: Callable, /,  # noqa
             _EntityABC._validate_name(name)
 
         if name_already_in_arg_spec:
-            kwargs[_EntityABC._NAME_ATTR_KEY]: str = name
+            kwargs['name']: str = name
 
         result: Optional[_EntityABC] = function(*args, **kwargs)
 
@@ -156,7 +155,7 @@ def _decorate(function: Callable, /,  # noqa
 
     if not name_already_in_arg_spec:
         function_with_dependencies_and_name_assignment.__annotations__[
-            _EntityABC._NAME_ATTR_KEY] = OptionalStrOrCallableReturningStr
+            'name'] = OptionalStrOrCallableReturningStr
 
         function_signature: Signature = \
             signature(function_with_dependencies_and_name_assignment,
@@ -166,7 +165,7 @@ def _decorate(function: Callable, /,  # noqa
             list(function_signature.parameters.values())
 
         name_parameter: Parameter = \
-            Parameter(name=_EntityABC._NAME_ATTR_KEY,
+            Parameter(name='name',
                       kind=Parameter.KEYWORD_ONLY,
                       default=default_name,
                       annotation=OptionalStrOrCallableReturningStr)
