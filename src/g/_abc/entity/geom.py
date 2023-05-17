@@ -17,6 +17,7 @@ from .decor import assign_entity_dependencies_and_name
 if TYPE_CHECKING:
     from ..linear import _LinearEntityABC, _LineABC
     from ..point import _PointABC
+    from ..vector import _VectorABC
 
 
 __all__: Sequence[LiteralString] = ('_GeomEntityABC',)
@@ -77,14 +78,14 @@ class _GeomEntityABC(_EntityABC, GeometryEntity):
 
     # NORMAL DIRECTION
     @abstractmethod
-    def normal_direction_at_point(self: Self, point: _PointABC, /) -> _PointABC:  # noqa: E501
+    def normal_direction_at_point(self: Self, point: _PointABC, /) -> _VectorABC:  # noqa: E501
         raise NotImplementedError
 
     # alias
-    def normal_direction(self: Self, point: _PointABC, /) -> _PointABC:
+    def normal_direction(self: Self, point: _PointABC, /) -> _VectorABC:
         return self.normal_direction_at_point(point)
 
-    def normal(self: Self, point: _PointABC, /) -> _PointABC:
+    def normal(self: Self, point: _PointABC, /) -> _VectorABC:
         return self.normal_direction_at_point(point)
 
     # PERPENDICULAR LINE
