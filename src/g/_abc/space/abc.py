@@ -4,7 +4,7 @@
 from collections.abc import Sequence
 from dataclasses import dataclass
 
-from ._entity import _GeometryEntityABC
+from ._entity import _GeomEntityABC
 from ._point import _ConcretePointABC
 
 
@@ -12,11 +12,11 @@ __all__: Sequence[str] = ('_SpaceABC',
                           '_SubSpaceABC', '_HalfSpaceABC', '_ClosedSubSpaceABC')  # noqa: E501
 
 
-class _SpaceABC(_GeometryEntityABC):
+class _SpaceABC(_GeomEntityABC):
     """Abstract Space."""
 
 
-class _SubSpaceABC(_GeometryEntityABC):
+class _SubSpaceABC(_GeomEntityABC):
     """Abstract Sub-Space."""
 
 
