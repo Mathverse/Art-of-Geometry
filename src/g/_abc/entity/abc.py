@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from collections.abc import Sequence
-from functools import cache
 from typing import LiteralString, Self, TYPE_CHECKING
 
 if TYPE_CHECKING:  # avoid circular import between _EntityABC & Session
@@ -66,7 +65,6 @@ class _EntityABC:
         assert isinstance(name, str) and name, \
             TypeError(f'*** {name} NOT NON-EMPTY STRING ***')
 
-    @cache
     @classmethod
     def __class_full_name__(cls: type, /) -> LiteralString:
         return f'{cls.__module__}.{cls.__qualname__}'
