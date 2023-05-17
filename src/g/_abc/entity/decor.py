@@ -6,7 +6,7 @@ from functools import cached_property, wraps
 from inspect import (getmembers,
                      isabstract, isclass, isfunction, ismethoddescriptor,
                      Parameter,
-                     signature)
+                     Signature, signature)
 from pprint import pprint
 import sys
 from typing import Any, LiteralString, Optional
@@ -23,7 +23,7 @@ from ..._util.unique_name import UNIQUE_NAME_FACTORY
 from .abc import _EntityABC
 
 
-__all__: Sequence[LiteralString] = ('assign_entity_name_and_dependencies',)
+__all__: Sequence[LiteralString] = ('assign_entity_dependencies_and_name',)
 
 
 def _decorable(function: Callable, /) -> Optional[bool]:
@@ -32,7 +32,7 @@ def _decorable(function: Callable, /) -> Optional[bool]:
         TypeError(f'*** {function} NOT A FUNCTION ***')
 
     if not getattr(function,
-                   '_DECORATED_WITH_NAME_AND_DEPENDENCIES_ASSIGNMENT',
+                   '_DECORATED_WITH_DEPENDENCIES_AND_NAME_ASSIGNMENT',
                    False):
         if isinstance(return_annotation := function.__annotations__.get('return'), str):  # noqa: E501
             if (len(qual_name_parts :=
@@ -52,15 +52,15 @@ def _decorable(function: Callable, /) -> Optional[bool]:
                     issubclass(return_annotation_obj, _EntityABC))
 
 
-def __decorate(function: Callable, /,
+def _decorate(function: Callable, /,
               *, assign_name: bool | CallableReturningStr = True) -> Callable:
-    """Decorate function with name & dependencies assignment."""
+    """Decorate function with dependencies & name assignment."""
     assert isfunction(object=function), \
         TypeError(f'*** {function} NOT A FUNCTION ***')
 
     if debug.ON:
         print(f'DECORATING {function.__qualname__}'
-              f'{signature(obj=function, follow_wrapped=False, eval_str=True)}')  # noqa: E501
+              f'{signature(obj=function, follow_wrapped=False)}')
         pprint(object=describe(function).__dict__,
                stream=None,
                indent=2,
@@ -71,26 +71,24 @@ def __decorate(function: Callable, /,
                underscore_numbers=False)
         print('==>')
 
-    name_already_in_arg_spec: bool = 'name' in signature(obj=function).parameters  # noqa: E501
+    name_already_in_arg_spec: bool = \
+        _EntityABC._NAME_ATTR_KEY in signature(obj=function).parameters
 
     assign_name: bool | CallableReturningStr = \
         assign_name and (not name_already_in_arg_spec)
 
-    default_name: Optional[CallableReturningStr] = (
-        assign_name
-        if isfunction(object=assign_name)
-        else None)
+    default_name: Optional[CallableReturningStr] = (assign_name
+                                                    if isfunction(object=assign_name)  # noqa: E501
+                                                    else None)
 
     @wraps(wrapped=function)
-    def function_with_name_and_dependencies_assignment(
+    def function_with_dependencies_and_name_assignment(
             *args: Any,
             name: OptionalStrOrCallableReturningStr = default_name,
-            **kwargs: Any) \
-            -> Optional[_EntityABC]:
-        dependencies: set[_EntityABC] = [
-            i
-            for i in (args + tuple(kwargs.values()))
-            if isinstance(i, _EntityABC)]
+            **kwargs: Any) -> Optional[_EntityABC]:
+        dependencies: set[_EntityABC] = {i
+                                         for i in (args + tuple(kwargs.values()))  # noqa: E501
+                                         if isinstance(i, _EntityABC)}
 
         if isfunction(object=name):
             name: str = name()
@@ -99,11 +97,16 @@ def __decorate(function: Callable, /,
             _EntityABC._validate_name(name)
 
         if name_already_in_arg_spec:
-            kwargs['name']: str = name
+            kwargs[_EntityABC._NAME_ATTR_KEY]: str = name
 
-        result = function(*args, **kwargs)
+        result: Optional[_EntityABC] = function(*args, **kwargs)
 
         if function.__name__ == '__new__':
+            # assign dependencies
+            if not hasattr(result, result._DEPENDENCIES_ATTR_KEY):
+                result.dependencies: set[_EntityABC] = dependencies
+
+            # assign name
             if assign_name:
                 if isinstance(result, Symbol):
                     result.name: str = name
@@ -111,17 +114,19 @@ def __decorate(function: Callable, /,
                 elif not hasattr(result, result._NAME_ATTR_KEY):
                     setattr(result, result._NAME_ATTR_KEY, name)
 
-            if not hasattr(result, result._DEPENDENCIES_ATTR_KEY):
-                result.dependencies: set[_EntityABC] = dependencies  # noqa: E501
-
             return result
 
-        elif function.__name__ == '__init__':
+        if function.__name__ == '__init__':
             self: _EntityABC = args[0]
             assert isinstance(self, _EntityABC)
 
             assert result is None
 
+            # assign dependencies
+            if not hasattr(self, self._DEPENDENCIES_ATTR_KEY):
+                self.dependencies: set[_EntityABC] = dependencies[1:]
+
+            # assign name
             if assign_name:
                 if isinstance(self, Symbol):
                     self.name: str = name
@@ -129,70 +134,69 @@ def __decorate(function: Callable, /,
                 elif not hasattr(self, self._NAME_ATTR_KEY):
                     setattr(self, self._NAME_ATTR_KEY, name)
 
-            if not hasattr(self, self._DEPENDENCIES_ATTR_KEY):
-                self.dependencies = dependencies[1:]
-
         else:
             assert isinstance(result, _EntityABC), \
                 TypeError(f'*** RESULT {result} '
-                            f'NOT OF TYPE {_EntityABC.__name__} ***')
+                          f'NOT OF TYPE {_EntityABC.__name__} ***')
 
-            if assign_name and name:
-                _EntityABC._validate_name(name)
-                result.name = name
-
+            # assign dependencies
             if not hasattr(result, result._DEPENDENCIES_ATTR_KEY):
-                result.dependencies = dependencies
+                result.dependencies: set[_EntityABC] = dependencies
+
+            # assign name
+            if assign_name and name:
+                # validate name
+                _EntityABC._validate_name(name)
+
+                result.name: str = name
 
             return result
 
-    function_with_name_and_dependencies_assignment._DECORATED_WITH_NAME_AND_DEPENDENCIES_ASSIGNMENT: bool = True  # noqa: E501
+    function_with_dependencies_and_name_assignment._DECORATED_WITH_DEPENDENCIES_AND_NAME_ASSIGNMENT: bool = True  # noqa: E501
 
     if not name_already_in_arg_spec:
-        function_with_name_and_dependencies_assignment.__annotations__[
-            'name'] = OptionalStrOrCallableReturningStr
+        function_with_dependencies_and_name_assignment.__annotations__[
+            _EntityABC._NAME_ATTR_KEY] = OptionalStrOrCallableReturningStr
 
-        function_signature = \
-            signature(
-                function_with_name_and_dependencies_assignment,
-                follow_wrapped=False)
+        function_signature: Signature = \
+            signature(function_with_dependencies_and_name_assignment,
+                      follow_wrapped=False)
 
         function_parameters: list[Any] = \
             list(function_signature.parameters.values())
 
         name_parameter: Parameter = \
-            Parameter(
-                name='name',
-                kind=Parameter.KEYWORD_ONLY,
-                default=default_name,
-                annotation=OptionalStrOrCallableReturningStr)
+            Parameter(name=_EntityABC._NAME_ATTR_KEY,
+                      kind=Parameter.KEYWORD_ONLY,
+                      default=default_name,
+                      annotation=OptionalStrOrCallableReturningStr)
 
         try:
             kwargs_parameter_index = \
                 next(i
-                        for i, parameter in enumerate(function_parameters)
-                        if parameter.kind == Parameter.VAR_KEYWORD)
+                     for i, parameter in enumerate(function_parameters)
+                     if parameter.kind == Parameter.VAR_KEYWORD)
 
         except StopIteration:
             function_parameters.append(name_parameter)
 
         else:
             function_parameters.insert(kwargs_parameter_index,
-                                        name_parameter)
+                                       name_parameter)
 
-        function_with_name_and_dependencies_assignment.__signature__ = (  # noqa: E501
+        function_with_dependencies_and_name_assignment.__signature__ = (  # noqa: E501
             function_signature.replace(parameters=function_parameters))
 
     if debug.ON:
-        print(f'DECORATED {function_with_name_and_dependencies_assignment.__qualname__}'  # noqa: E501
-                f'{signature(function_with_name_and_dependencies_assignment)}')  # noqa: E501
-        pprint(describe(function_with_name_and_dependencies_assignment).__dict__,  # noqa: E501
-                sort_dicts=False)
+        print(f'DECORATED {function_with_dependencies_and_name_assignment.__qualname__}'  # noqa: E501
+              f'{signature(function_with_dependencies_and_name_assignment)}')  # noqa: E501
+        pprint(describe(function_with_dependencies_and_name_assignment).__dict__,  # noqa: E501
+               sort_dicts=False)
 
-    return function_with_name_and_dependencies_assignment
+    return function_with_dependencies_and_name_assignment
 
 
-def assign_entity_name_and_dependencies(
+def assign_entity_dependencies_and_name(
         entity_related_callable_obj: Callable, /) -> Callable:
     """Assign name & dependencies to newly-created entity."""
     if isclass(object=entity_related_callable_obj):
@@ -211,24 +215,22 @@ def assign_entity_name_and_dependencies(
 
         # if __new__ is implemented somewhere in __mro__
         if isfunction(object=(__new__ := class_members.pop('__new__'))):
-            entity_related_callable_obj.__new__ = \
-                _decorate(
-                    __new__,
-                    assign_name=(True
-                                 if entity_related_callable_obj._NAME_NULLABLE
-                                 else UNIQUE_NAME_FACTORY))
+            entity_related_callable_obj.__new__: Callable[..., _EntityABC] = \
+                _decorate(__new__,
+                          assign_name=(True
+                                       if entity_related_callable_obj._NAME_NULLABLE  # noqa: E501
+                                       else UNIQUE_NAME_FACTORY))
 
             if debug.ON:
                 print()
 
         # if __init__ is implemented somewhere in __mro__
         if isfunction(object=(__init__ := class_members.pop('__init__'))):
-            entity_related_callable_obj.__init__ = \
-                _decorate(
-                    __init__,
-                    assign_name=(True
-                                 if entity_related_callable_obj._NAME_NULLABLE
-                                 else UNIQUE_NAME_FACTORY))
+            entity_related_callable_obj.__init__: Callable[..., None] = \
+                _decorate(__init__,
+                          assign_name=(True
+                                       if entity_related_callable_obj._NAME_NULLABLE  # noqa: E501
+                                       else UNIQUE_NAME_FACTORY))
 
             if debug.ON:
                 print()
@@ -236,10 +238,10 @@ def assign_entity_name_and_dependencies(
         else:
             assert ismethoddescriptor(object=__init__), \
                 (f'??? {entity_related_callable_obj.__name__} MRO '
-                    f'MISSING __init__ METHOD: {describe(__init__)} ???')
+                 f'MISSING __init__ METHOD: {describe(__init__)} ???')
 
         for class_member_name, class_member in class_members.items():
-            if isfunction(object=class_member) and _decorable((class_member):
+            if isfunction(object=class_member) and _decorable(class_member):
                 # Static Method
                 if is_static_method(class_member):
                     if debug.ON:
@@ -249,10 +251,9 @@ def assign_entity_name_and_dependencies(
                                sort_dicts=False)
                         print('==>')
 
-                    setattr(
-                        entity_related_callable_obj, class_member_name,
-                        staticmethod(_decorate(class_member,
-                                              assign_name=True)))
+                    setattr(entity_related_callable_obj, class_member_name,
+                            staticmethod(_decorate(class_member,
+                                                   assign_name=True)))
 
                     if debug.ON:
                         decorated_class_member = \
@@ -277,9 +278,8 @@ def assign_entity_name_and_dependencies(
                                sort_dicts=False)
                         print('==>')
 
-                    setattr(
-                        entity_related_callable_obj, class_member_name,
-                        _decorate(class_member, assign_name=True))
+                    setattr(entity_related_callable_obj, class_member_name,
+                            _decorate(class_member, assign_name=True))
 
                     if debug.ON:
                         decorated_class_member = \
@@ -294,8 +294,7 @@ def assign_entity_name_and_dependencies(
                         print()
 
             # Class Method
-            elif is_class_method(class_member) and \
-                    _decorable((class_member.__func__):
+            elif is_class_method(class_member) and _decorable(class_member.__func__):  # noqa: E501
                 if debug.ON:
                     print(f'DECORATING CLASS METHOD {class_member.__qualname__}'  # noqa: E501
                           f'{signature(class_member, follow_wrapped=False)}')
@@ -303,10 +302,9 @@ def assign_entity_name_and_dependencies(
                            sort_dicts=False)
                     print('==>')
 
-                setattr(
-                    entity_related_callable_obj, class_member_name,
-                    classmethod(_decorate(class_member.__func__,
-                                         assign_name=True)))
+                setattr(entity_related_callable_obj, class_member_name,
+                        classmethod(_decorate(class_member.__func__,
+                                              assign_name=True)))
 
                 if debug.ON:
                     decorated_class_member = \
@@ -322,21 +320,20 @@ def assign_entity_name_and_dependencies(
 
             # Cached Property
             elif isinstance(class_member, cached_property) and \
-                    _decorable((class_member.func):
+                    _decorable(class_member.func):
                 if debug.ON:
                     print('DECORATING CACHED PROPERTY...')
 
-                setattr(
-                    entity_related_callable_obj, class_member_name,
-                    cached_property(_decorate(class_member.func,
-                                             assign_name=False)))
+                setattr(entity_related_callable_obj, class_member_name,
+                        cached_property(_decorate(class_member.func,
+                                                  assign_name=False)))
 
                 if debug.ON:
                     print()
 
             # Property Getter
             elif isinstance(class_member, property) and \
-                    _decorable((class_member.fget):
+                    _decorable(class_member.fget):
                 if debug.ON:
                     print('DECORATING PROPERTY GETTER...')
 
