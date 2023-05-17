@@ -15,7 +15,7 @@ from .abc import _EntityABC
 from .decor import assign_entity_dependencies_and_name
 
 if TYPE_CHECKING:
-    from ..geodesic import _LinearEntityABC, _LineABC
+    from ..linear import _LinearEntityABC, _LineABC
     from ..point import _PointABC
 
 
