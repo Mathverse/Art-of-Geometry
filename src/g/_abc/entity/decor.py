@@ -27,7 +27,7 @@ __all__: Sequence[LiteralString] = ('assign_entity_name_and_dependencies',)
 
 
 def _decorable(function: Callable, /) -> Optional[bool]:
-    """Check if class member should be decorated."""
+    """Check if function should be decorated."""
     assert isfunction(object=function), \
         TypeError(f'*** {function} NOT A FUNCTION ***')
 
