@@ -1,4 +1,4 @@
-"""Variables."""
+"""Variable."""
 
 
 from collections.abc import Sequence
