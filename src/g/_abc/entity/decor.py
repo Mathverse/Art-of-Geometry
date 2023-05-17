@@ -52,7 +52,7 @@ def _decorable(function: Callable, /) -> Optional[bool]:
                     issubclass(return_annotation_obj, _EntityABC))
 
 
-def _decorate(function: Callable, /,
+def _decorate(function: Callable, /,  # noqa
               *, assign_name: bool | CallableReturningStr = True) -> Callable:
     """Decorate function with dependencies & name assignment."""
     assert isfunction(object=function), \
@@ -196,7 +196,7 @@ def _decorate(function: Callable, /,
     return function_with_dependencies_and_name_assignment
 
 
-def assign_entity_dependencies_and_name(
+def assign_entity_dependencies_and_name(  # noqa
         entity_related_callable_obj: Callable, /) -> Callable:
     """Assign name & dependencies to newly-created entity."""
     if isclass(object=entity_related_callable_obj):

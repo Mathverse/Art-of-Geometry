@@ -1,7 +1,28 @@
 """Abstract Geometry Entity."""
 
 
-@_EntityABC.assign_name_and_dependencies
+from __future__ import annotations
+
+from abc import abstractmethod
+from collections.abc import Sequence
+from functools import cached_property
+from typing import LiteralString, Self, TYPE_CHECKING
+
+from sympy.core.expr import Expr
+from sympy.geometry.entity import GeometryEntity
+
+from .abc import _EntityABC
+from .decor import assign_entity_dependencies_and_name
+
+if TYPE_CHECKING:
+    from ..geodesic import _LinearEntityABC, _LineABC
+    from ..point import _PointABC
+
+
+__all__: Sequence[LiteralString] = ('_GeometryEntityABC',)
+
+
+@assign_entity_dependencies_and_name
 class _GeometryEntityABC(_EntityABC, GeometryEntity):
     """Abstract Geometry Entity."""
 
