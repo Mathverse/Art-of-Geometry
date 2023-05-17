@@ -7,6 +7,7 @@ from typing import Any, LiteralString, Self
 from sympy.assumptions.assume import AssumptionsContext
 
 from ._abc.entity.abc import _EntityABC
+from ._abc.space.abc import _SpaceABC
 
 from ._alg.abc import _AlgBackendABC
 from ._alg.sympy import SymPyBackend
@@ -25,11 +26,15 @@ class Session:
     """Session."""
 
     def __init__(self: Self, name: OptionalStr = None, /, *,
+                 ambient_space: _SpaceABC = None,
                  alg_backend: _AlgBackendABC = SymPyBackend(),
                  art_frontend: _ArtFrontendABC = MAnimFrontend()) -> None:
         """Initialize session."""
         # assign name
         self.name: str = UNIQUE_NAME_FACTORY() if name is None else name
+
+        # assign ambient space
+        self.ambient_space: _SpaceABC = ambient_space
 
         # assign algebra backend & art frontend
         self.alg_backend: _AlgBackendABC = alg_backend
