@@ -14,6 +14,7 @@ from ._alg.sympy import SymPyBackend
 from ._art.abc import _ArtFrontendABC
 from ._art.manim import MAnimFrontend
 
+from ._util.type import OptionalStr
 from ._util.unique_name import UNIQUE_NAME_FACTORY
 
 
@@ -23,7 +24,7 @@ __all__: Sequence[LiteralString] = 'Session', 'DEFAULT_SESSION'
 class Session:
     """Session."""
 
-    def __init__(self: Self, name: Optional[str] = None, /, *,
+    def __init__(self: Self, name: OptionalStr = None, /, *,
                  alg_backend: _AlgBackendABC = SymPyBackend(),
                  art_frontend: _ArtFrontendABC = MAnimFrontend()) -> None:
         """Initialize session."""
