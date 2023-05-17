@@ -7,7 +7,7 @@ from abc import abstractmethod
 from collections.abc import Sequence
 from typing import LiteralString
 
-from ._entity import _GeomEntityABC
+from .entity import _GeomEntityABC
 
 
 __all__: Sequence[LiteralString] = ('_PointABC',
@@ -18,7 +18,7 @@ __all__: Sequence[LiteralString] = ('_PointABC',
 class _PointABC(_GeomEntityABC):
     """Point abstract base class."""
 
-    _NAME_NULLABLE = False
+    _NAME_NULLABLE: bool = False
 
     @abstractmethod
     def __eq__(self, other_point: _PointABC, /) -> bool:
