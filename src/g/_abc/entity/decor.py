@@ -42,7 +42,7 @@ def assign_entity_name_and_dependencies(entity_related_callable_obj: Callable, /
 
                 else:
                     try:
-                        return_annotation_obj = \
+                        return_annotation_obj: type = \
                             eval(return_annotation,  # nosec
                                  sys.modules[function.__module__].__dict__)
 
@@ -51,7 +51,7 @@ def assign_entity_name_and_dependencies(entity_related_callable_obj: Callable, /
 
                     else:
                         return (isclass(object=return_annotation_obj) and
-                                issubclass(return_annotation_obj, _EntityABC))  # noqa: E501
+                                issubclass(return_annotation_obj, _EntityABC))
 
     def decorate(function: Callable, /,
                  *, assign_name: bool | CallableReturningStr = True) -> Callable:  # noqa: E501
@@ -213,7 +213,7 @@ def assign_entity_name_and_dependencies(entity_related_callable_obj: Callable, /
                 decorate(
                     __new__,
                     assign_name=(True
-                                 if entity_related_callable_obj._NAME_NULLABLE  # noqa: E501
+                                 if entity_related_callable_obj._NAME_NULLABLE
                                  else UNIQUE_NAME_FACTORY))
 
             if debug.ON:
@@ -225,7 +225,7 @@ def assign_entity_name_and_dependencies(entity_related_callable_obj: Callable, /
                 decorate(
                     __init__,
                     assign_name=(True
-                                 if entity_related_callable_obj._NAME_NULLABLE  # noqa: E501
+                                 if entity_related_callable_obj._NAME_NULLABLE
                                  else UNIQUE_NAME_FACTORY))
 
             if debug.ON:
@@ -346,8 +346,4 @@ def assign_entity_name_and_dependencies(entity_related_callable_obj: Callable, /
 
         return entity_related_callable_obj
 
-    else:
-        assert isfunction(object=entity_related_callable_obj), \
-            TypeError(f'*** {entity_related_callable_obj} NOT A FUNCTION ***')
-
-        return decorate(entity_related_callable_obj, assign_name=True)
+    return decorate(entity_related_callable_obj, assign_name=True)
