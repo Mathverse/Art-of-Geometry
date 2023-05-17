@@ -1,8 +1,30 @@
 """Abstract Geometry Entity."""
 
 
-@_EntityABC.assign_name_and_dependencies
-class _GeometryEntityABC(_EntityABC, GeometryEntity):
+from __future__ import annotations
+
+from abc import abstractmethod
+from collections.abc import Sequence
+from functools import cached_property
+from typing import LiteralString, Self, TYPE_CHECKING
+
+from sympy.core.expr import Expr
+from sympy.geometry.entity import GeometryEntity
+
+from .abc import _EntityABC
+from .decor import assign_entity_dependencies_and_name
+
+if TYPE_CHECKING:
+    from ..linear import _LinearEntityABC, _LineABC
+    from ..point import _PointABC
+    from ..vector import _VectorABC
+
+
+__all__: Sequence[LiteralString] = ('_GeomEntityABC',)
+
+
+@assign_entity_dependencies_and_name
+class _GeomEntityABC(_EntityABC, GeometryEntity):
     """Abstract Geometry Entity."""
 
     @property
@@ -26,12 +48,12 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
         setattr(self, self._NAME_ATTR_KEY, None)
 
     @abstractmethod
-    def copy(self: Self, /) -> _GeometryEntityABC:
+    def copy(self: Self, /) -> _GeomEntityABC:
         """Copy."""
         raise NotImplementedError
 
     # alias
-    def same(self: Self, /) -> _GeometryEntityABC:
+    def same(self: Self, /) -> _GeomEntityABC:
         """Copy."""
         raise self.copy()
 
@@ -50,20 +72,20 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
 
     # INCIDENCE
     @abstractmethod
-    def incident_with(self: Self, other_geometry_entity: _GeometryEntityABC, /) -> bool:  # noqa: E501
+    def incident_with(self: Self, other_geometry_entity: _GeomEntityABC, /) -> bool:  # noqa: E501
         """Check incidence."""
         raise NotImplementedError
 
     # NORMAL DIRECTION
     @abstractmethod
-    def normal_direction_at_point(self: Self, point: _PointABC, /) -> _PointABC:  # noqa: E501
+    def normal_direction_at_point(self: Self, point: _PointABC, /) -> _VectorABC:  # noqa: E501
         raise NotImplementedError
 
     # alias
-    def normal_direction(self: Self, point: _PointABC, /) -> _PointABC:
+    def normal_direction(self: Self, point: _PointABC, /) -> _VectorABC:
         return self.normal_direction_at_point(point)
 
-    def normal(self: Self, point: _PointABC, /) -> _PointABC:
+    def normal(self: Self, point: _PointABC, /) -> _VectorABC:
         return self.normal_direction_at_point(point)
 
     # PERPENDICULAR LINE
@@ -86,29 +108,29 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
 
     # CUTTING / INTERSECTION
     @abstractmethod
-    def cut(self: Self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> (_GeometryEntityABC | set[_GeometryEntityABC]):
+    def cut(self: Self, other_geometry_entity: _GeomEntityABC, /) \
+            -> (_GeomEntityABC | set[_GeomEntityABC]):
         """Intersection."""
         raise NotImplementedError
 
     # aliases
-    def intersect(self: Self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> (_GeometryEntityABC | set[_GeometryEntityABC]):
+    def intersect(self: Self, other_geometry_entity: _GeomEntityABC, /) \
+            -> (_GeomEntityABC | set[_GeomEntityABC]):
         """Intersection."""
         return self.cut(other_geometry_entity)
 
     def intersection(
-            self: Self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> (_GeometryEntityABC | set[_GeometryEntityABC]):
+            self: Self, other_geometry_entity: _GeomEntityABC, /) \
+            -> (_GeomEntityABC | set[_GeomEntityABC]):
         """Intersection."""
         return self.cut(other_geometry_entity)
 
-    def __and__(self: Self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> (_GeometryEntityABC | set[_GeometryEntityABC]):
+    def __and__(self: Self, other_geometry_entity: _GeomEntityABC, /) \
+            -> (_GeomEntityABC | set[_GeomEntityABC]):
         """Intersection."""
         return self.cut(other_geometry_entity)
 
-    def __rand__(self: Self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> (_GeometryEntityABC | set[_GeometryEntityABC]):
+    def __rand__(self: Self, other_geometry_entity: _GeomEntityABC, /) \
+            -> (_GeomEntityABC | set[_GeomEntityABC]):
         """Intersection."""
         return self.cut(other_geometry_entity)

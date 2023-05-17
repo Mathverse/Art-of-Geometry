@@ -10,6 +10,7 @@ from sympy.core.numbers import Number
 
 __all__: Sequence[LiteralString] = (
     'Num',
+    'OptionalStr',
     'CallableReturningStr', 'OptionalStrOrCallableReturningStr',
     'OptionalSymPyExpr', 'OptionalStrOrSymPyExpr',
     'obj_and_type_str',
@@ -17,6 +18,9 @@ __all__: Sequence[LiteralString] = (
 
 
 Num: type = Number | complex | float | int
+
+
+OptionalStr: type = Optional[str]
 
 
 CallableReturningStr: type = Callable[[], str]

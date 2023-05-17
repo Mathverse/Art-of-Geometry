@@ -1,4 +1,4 @@
-"""Point abtract base classes."""
+"""Abstract Point base classes."""
 
 
 from __future__ import annotations
@@ -7,7 +7,7 @@ from abc import abstractmethod
 from collections.abc import Sequence
 from typing import LiteralString
 
-from ._entity import _GeometryEntityABC
+from .entity import _GeomEntityABC
 
 
 __all__: Sequence[LiteralString] = ('_PointABC',
@@ -15,10 +15,10 @@ __all__: Sequence[LiteralString] = ('_PointABC',
                                     '_PointAtInfinityABC')
 
 
-class _PointABC(_GeometryEntityABC):
-    """Point abstract base class."""
+class _PointABC(_GeomEntityABC):
+    """Abstract Point."""
 
-    _NAME_NULLABLE = False
+    _NAME_NULLABLE: bool = False
 
     @abstractmethod
     def __eq__(self, other_point: _PointABC, /) -> bool:
@@ -31,7 +31,7 @@ class _PointABC(_GeometryEntityABC):
 
 
 class _ConcretePointABC(_PointABC):
-    """Concrete Point abstract base class."""
+    """Abstract Concrete Point."""
 
     @property
     def _short_repr(self) -> str:
@@ -44,8 +44,8 @@ class _ConcretePointABC(_PointABC):
         raise NotImplementedError
 
 
-class _PointAtInfinityABC(_PointABC):  # pylint: disable=abstract-method
-    """Point-at-Infinity abstract base class."""
+class _PointAtInfinityABC(_PointABC):
+    """Abstract Point at Infinity."""
 
     @property
     def _short_repr(self) -> str:

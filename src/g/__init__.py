@@ -6,6 +6,7 @@ from importlib.metadata import version
 from typing import LiteralString
 
 from .session import Session
+from .variable import Variable, Var
 from ._util import debug
 
 
@@ -13,6 +14,8 @@ __all__: Sequence[LiteralString] = (
     '__version__',
 
     'Session',
+
+    'Variable', 'Var',
 
     'debug',
 )
