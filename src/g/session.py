@@ -2,7 +2,7 @@
 
 
 from collections.abc import Callable, Sequence
-from typing import Any, LiteralString, Optional, Self
+from typing import Any, LiteralString, Self
 
 from sympy.assumptions.assume import AssumptionsContext
 
