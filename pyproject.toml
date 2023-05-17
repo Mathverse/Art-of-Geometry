@@ -127,3 +127,9 @@ build-backend = 'setuptools.build_meta'
 disable = [
   'relative-beyond-top-level',
 ]
+
+
+[tool.pytest.ini_options]
+testpaths = [
+  'test',
+]
