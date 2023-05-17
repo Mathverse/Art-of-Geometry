@@ -158,8 +158,7 @@ def _decorate(function: Callable, /,  # noqa
             'name'] = OptionalStrOrCallableReturningStr
 
         function_signature: Signature = \
-            signature(function_with_dependencies_and_name_assignment,
-                      follow_wrapped=False)
+            signature(function, follow_wrapped=False)
 
         function_parameters: list[Any] = \
             list(function_signature.parameters.values())

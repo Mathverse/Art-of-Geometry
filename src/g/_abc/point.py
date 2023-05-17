@@ -7,7 +7,7 @@ from abc import abstractmethod
 from collections.abc import Sequence
 from typing import LiteralString
 
-from ._entity import _GeometryEntityABC
+from ._entity import _GeomEntityABC
 
 
 __all__: Sequence[LiteralString] = ('_PointABC',
@@ -15,7 +15,7 @@ __all__: Sequence[LiteralString] = ('_PointABC',
                                     '_PointAtInfinityABC')
 
 
-class _PointABC(_GeometryEntityABC):
+class _PointABC(_GeomEntityABC):
     """Point abstract base class."""
 
     _NAME_NULLABLE = False

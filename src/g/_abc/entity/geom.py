@@ -19,11 +19,11 @@ if TYPE_CHECKING:
     from ..point import _PointABC
 
 
-__all__: Sequence[LiteralString] = ('_GeometryEntityABC',)
+__all__: Sequence[LiteralString] = ('_GeomEntityABC',)
 
 
 @assign_entity_dependencies_and_name
-class _GeometryEntityABC(_EntityABC, GeometryEntity):
+class _GeomEntityABC(_EntityABC, GeometryEntity):
     """Abstract Geometry Entity."""
 
     @property
@@ -47,12 +47,12 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
         setattr(self, self._NAME_ATTR_KEY, None)
 
     @abstractmethod
-    def copy(self: Self, /) -> _GeometryEntityABC:
+    def copy(self: Self, /) -> _GeomEntityABC:
         """Copy."""
         raise NotImplementedError
 
     # alias
-    def same(self: Self, /) -> _GeometryEntityABC:
+    def same(self: Self, /) -> _GeomEntityABC:
         """Copy."""
         raise self.copy()
 
@@ -71,7 +71,7 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
 
     # INCIDENCE
     @abstractmethod
-    def incident_with(self: Self, other_geometry_entity: _GeometryEntityABC, /) -> bool:  # noqa: E501
+    def incident_with(self: Self, other_geometry_entity: _GeomEntityABC, /) -> bool:  # noqa: E501
         """Check incidence."""
         raise NotImplementedError
 
@@ -107,29 +107,29 @@ class _GeometryEntityABC(_EntityABC, GeometryEntity):
 
     # CUTTING / INTERSECTION
     @abstractmethod
-    def cut(self: Self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> (_GeometryEntityABC | set[_GeometryEntityABC]):
+    def cut(self: Self, other_geometry_entity: _GeomEntityABC, /) \
+            -> (_GeomEntityABC | set[_GeomEntityABC]):
         """Intersection."""
         raise NotImplementedError
 
     # aliases
-    def intersect(self: Self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> (_GeometryEntityABC | set[_GeometryEntityABC]):
+    def intersect(self: Self, other_geometry_entity: _GeomEntityABC, /) \
+            -> (_GeomEntityABC | set[_GeomEntityABC]):
         """Intersection."""
         return self.cut(other_geometry_entity)
 
     def intersection(
-            self: Self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> (_GeometryEntityABC | set[_GeometryEntityABC]):
+            self: Self, other_geometry_entity: _GeomEntityABC, /) \
+            -> (_GeomEntityABC | set[_GeomEntityABC]):
         """Intersection."""
         return self.cut(other_geometry_entity)
 
-    def __and__(self: Self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> (_GeometryEntityABC | set[_GeometryEntityABC]):
+    def __and__(self: Self, other_geometry_entity: _GeomEntityABC, /) \
+            -> (_GeomEntityABC | set[_GeomEntityABC]):
         """Intersection."""
         return self.cut(other_geometry_entity)
 
-    def __rand__(self: Self, other_geometry_entity: _GeometryEntityABC, /) \
-            -> (_GeometryEntityABC | set[_GeometryEntityABC]):
+    def __rand__(self: Self, other_geometry_entity: _GeomEntityABC, /) \
+            -> (_GeomEntityABC | set[_GeomEntityABC]):
         """Intersection."""
         return self.cut(other_geometry_entity)
