@@ -1,6 +1,3 @@
-#!/usr/bin/env python3.8
-
-
 import art_of_geom._util._debug
 art_of_geom._util._debug.ON = True
 
