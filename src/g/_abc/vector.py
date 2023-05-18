@@ -16,4 +16,6 @@ __all__: Sequence[LiteralString] = ('_VectorABC',)
 class _VectorABC(_GeomEntityABC):
     """Abstract Vector."""
 
-    coordinates: tuple[Num]
+    direction_unit_components: tuple[Num]
+
+    magnitude: Num
