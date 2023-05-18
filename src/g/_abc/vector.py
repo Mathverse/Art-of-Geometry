@@ -1,6 +1,6 @@
 """Abstract Vector base class.
 
-In this Art of Geometry package, Vectors are considered fundamental, OBJECTIVE
+In this Art of Geometry package, Vectors are considered fundamental, objective
 geometric entities independent of Spaces and Points.
 
 Each Vector has a direction, represented by a definitive tuple of real numbers
