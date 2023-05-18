@@ -5,11 +5,11 @@ from collections.abc import Callable, Sequence
 from typing import LiteralString, Optional
 
 from sympy.core.expr import Expr
-from sympy.core.numbers import Number
+from sympy.core.numbers import Number, RealNumber
 
 
 __all__: Sequence[LiteralString] = (
-    'Num',
+    'Num', 'RealNum',
     'OptionalStr',
     'CallableReturningStr', 'OptionalStrOrCallableReturningStr',
     'OptionalSymPyExpr', 'OptionalStrOrSymPyExpr',
@@ -18,6 +18,7 @@ __all__: Sequence[LiteralString] = (
 
 
 Num: type = Number | complex | float | int
+RealNum: type = RealNumber | float
 
 
 OptionalStr: type = Optional[str]
