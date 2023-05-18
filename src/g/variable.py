@@ -9,7 +9,8 @@ from sympy.core.symbol import Symbol
 
 from ._abc.entity.abc import _EntityABC
 
-from ._util.type import (Num, OptionalStrOrCallableReturningStr,
+from ._util.type import (Num, RealNum,
+                         OptionalStrOrCallableReturningStr,
                          OptionalSymPyExpr, OptionalStrOrSymPyExpr)
 from ._util.unique_name import UNIQUE_NAME_FACTORY
 
@@ -88,3 +89,6 @@ Var = Variable
 # type constants
 VarOrNum: type = Var | Num
 OptionalVarOrNum: type = Optional[VarOrNum]
+
+RealVarOrNum: type = Var | RealNum
+OptionalRealVarOrNum: type = Optional[RealVarOrNum]

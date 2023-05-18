@@ -24,7 +24,7 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import LiteralString
 
-from .._util.type import RealNum
+from ..variable import RealVarOrNum
 from .entity import _GeomEntityABC
 
 
@@ -35,6 +35,6 @@ __all__: Sequence[LiteralString] = ('_VectorABC',)
 class _VectorABC(_GeomEntityABC):
     """Abstract Vector."""
 
-    direction_unit_components: tuple[RealNum]
+    direction_unit_components: tuple[RealVarOrNum]
 
-    magnitude: RealNum
+    magnitude: RealVarOrNum
