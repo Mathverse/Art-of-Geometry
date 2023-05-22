@@ -16,7 +16,8 @@ from ._util.unique_name import UNIQUE_NAME_FACTORY
 
 
 __all__: Sequence[LiteralString] = ('Variable', 'Var',
-                                    'VarOrNum', 'OptionalVarOrNum')
+                                    'NumOrVar', 'OptionalNumOrVar',
+                                    'RealNumOrVar', 'OptionalRealNumOrVar')
 
 
 class Variable(_EntityABC, Symbol):
@@ -87,8 +88,8 @@ Var = Variable
 
 
 # type constants
-VarOrNum: type = Var | Num
-OptionalVarOrNum: type = Optional[VarOrNum]
+NumOrVar: type = Num | Var
+OptionalNumOrVar: type = Optional[NumOrVar]
 
-RealVarOrNum: type = Var | RealNum
-OptionalRealVarOrNum: type = Optional[RealVarOrNum]
+RealNumOrVar: type = RealNum | Var
+OptionalRealNumOrVar: type = Optional[RealNumOrVar]

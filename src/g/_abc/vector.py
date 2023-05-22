@@ -30,8 +30,8 @@ from typing import LiteralString, Self
 
 from sympy.vector.vector import Vector as SymPyVector
 
-from ..variable import RealVarOrNum
 from .entity.abc import _EntityABC
+from .variable import RealNumOrVar
 
 
 __all__: Sequence[LiteralString] = 'Vector', 'Ux', 'Uy', 'Uz'
@@ -41,19 +41,19 @@ __all__: Sequence[LiteralString] = 'Vector', 'Ux', 'Uy', 'Uz'
 class Vector(_EntityABC, SymPyVector):
     """(3-Dimensional) Vector."""
 
-    x: RealVarOrNum = 1
-    y: RealVarOrNum = 0
-    z: RealVarOrNum = 0
+    x: RealNumOrVar = 1
+    y: RealNumOrVar = 0
+    z: RealNumOrVar = 0
 
     @cache
-    def __len__(self: Self) -> RealVarOrNum:
+    def __len__(self: Self) -> RealNumOrVar:
         """Return length/magnitude/modulus."""
         return (self.x ** 2 + self.y ** 2 + self.z ** 2) ** .5
 
     @cache
     def unit(self) -> Self:
         """Return unit vector."""
-        m: RealVarOrNum = len(self)
+        m: RealNumOrVar = len(self)
         return type(self)(x=self.x / m, y=self.y / m, z=self.z / m)
 
 
