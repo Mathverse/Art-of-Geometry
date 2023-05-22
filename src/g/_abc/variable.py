@@ -7,12 +7,12 @@ from typing import LiteralString, Optional, Self
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 
-from ._abc.entity.abc import _EntityABC
+from .entity.non_geom import _NonGeomEntityABC
 
-from ._util.type import (Num, RealNum,
-                         OptionalStrOrCallableReturningStr,
-                         OptionalSymPyExpr, OptionalStrOrSymPyExpr)
-from ._util.unique_name import UNIQUE_NAME_FACTORY
+from .._util.type import (Num, RealNum,
+                          OptionalStrOrCallableReturningStr,
+                          OptionalSymPyExpr, OptionalStrOrSymPyExpr)
+from .._util.unique_name import UNIQUE_NAME_FACTORY
 
 
 __all__: Sequence[LiteralString] = ('Variable', 'Var',
@@ -20,7 +20,7 @@ __all__: Sequence[LiteralString] = ('Variable', 'Var',
                                     'RealNumOrVar', 'OptionalRealNumOrVar')
 
 
-class Variable(_EntityABC, Symbol):
+class Variable(_NonGeomEntityABC, Symbol):
     """Variable."""
 
     _NAME_NULLABLE: bool = False

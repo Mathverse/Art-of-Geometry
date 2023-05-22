@@ -30,7 +30,7 @@ from typing import LiteralString, Self
 
 from sympy.vector.vector import Vector as SymPyVector
 
-from .entity.abc import _EntityABC
+from .entity.non_geom import _NonGeomEntityABC
 from .variable import RealNumOrVar
 
 
@@ -38,7 +38,7 @@ __all__: Sequence[LiteralString] = 'Vector', 'Ux', 'Uy', 'Uz'
 
 
 @dataclass
-class Vector(_EntityABC, SymPyVector):
+class Vector(_NonGeomEntityABC, SymPyVector):
     """(3-Dimensional) Vector."""
 
     x: RealNumOrVar = 1
