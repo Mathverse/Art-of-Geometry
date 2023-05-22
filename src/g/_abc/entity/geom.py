@@ -48,6 +48,11 @@ class _GeomEntityABC(_EntityABC, GeometryEntity):
         setattr(self, self._NAME_ATTR_KEY, None)
 
     @abstractmethod
+    def point(self, *args, **kwargs) -> _PointABC:
+        """Pick a Point on this Geometric Entity."""
+        raise NotImplementedError
+
+    @abstractmethod
     def copy(self: Self, /) -> _GeomEntityABC:
         """Copy."""
         raise NotImplementedError
