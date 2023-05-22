@@ -1,4 +1,11 @@
-"""Abstract Geometry Entity."""
+"""Abstract Geometric Entity.
+
+Geometric Entities are entities that can be concretized/materialized/
+physicalized/realized/visualized into tangible/visible shapes.
+
+(An example of non-geometric entities is Vectors, which represent directions
+and magnitudes/strengths but are not tied to any location in space.)
+"""
 
 
 from __future__ import annotations
