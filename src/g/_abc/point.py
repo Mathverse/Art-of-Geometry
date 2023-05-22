@@ -8,7 +8,7 @@ from collections.abc import Sequence
 from typing import LiteralString
 
 from .entity import _GeomEntityABC
-from .vector import _VectorABC
+from .vector import Vector
 
 
 __all__: Sequence[LiteralString] = ('_PointABC',
@@ -30,11 +30,11 @@ class _PointABC(_GeomEntityABC):
         """Check inequality."""
         return not self == other_point
 
-    def __add__(self, vector: _VectorABC, /) -> _PointABC:
+    def __add__(self, vector: Vector, /) -> _PointABC:
         """Add vector."""
         raise NotImplementedError
 
-    def __radd__(self, vector: _VectorABC, /) -> _PointABC:
+    def __radd__(self, vector: Vector, /) -> _PointABC:
         """Add vector."""
         return self + vector
 

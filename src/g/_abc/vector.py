@@ -1,10 +1,12 @@
-"""Abstract Vector base class.
+"""Vector.
 
 In this Art of Geometry package, Vectors are considered fundamental, objective
-geometric entities independent of Spaces and Points.
+3-DIMENSIONAL geometric entities independent of Spaces and Points.
 
-Each Vector has a direction, represented by a definitive tuple of real numbers
-whose squares sum to 1, and a magnitude, represented by another real number.
+Each Vector is represented by a definitive triplet of real numbers/variables.
+
+3 unit vectors named Ux, Uy & Uz are instantiated to represent our global/usual
+3-dimensional Euclidean orthogonal spatial directions.
 
 Spaces and their corresponding coordinate systems shall be characterized by
 their various relevant vectors, e.g., basis and direction/orientation vectors.
@@ -22,19 +24,39 @@ characteristic vectors.
 
 from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import LiteralString
+from functools import cache
+from typing import LiteralString, Self
+
+from sympy.vector.vector import Vector as SymPyVector
 
 from ..variable import RealVarOrNum
 from .entity import _GeomEntityABC
 
 
-__all__: Sequence[LiteralString] = ('_VectorABC',)
+__all__: Sequence[LiteralString] = 'Vector', 'Ux', 'Uy', 'Uz'
 
 
 @dataclass
-class _VectorABC(_GeomEntityABC):
-    """Abstract Vector."""
+class Vector(_GeomEntityABC, SymPyVector):
+    """(3-Dimensional) Vector."""
 
-    direction_unit_components: tuple[RealVarOrNum]
+    x: RealVarOrNum = 1
+    y: RealVarOrNum = 0
+    z: RealVarOrNum = 0
 
-    magnitude: RealVarOrNum
+    @cache
+    def __len__(self: Self) -> RealVarOrNum:
+        """Return length/magnitude/modulus."""
+        return (self.x ** 2 + self.y ** 2 + self.z ** 2) ** .5
+
+    @cache
+    def unit(self) -> Self:
+        """Return unit vector."""
+        m: RealVarOrNum = len(self)
+        return type(self)(x=self.x / m, y=self.y / m, z=self.z / m)
+
+
+# global unit vectors
+Ux: Vector = Vector(x=1, y=0, z=0)
+Uy: Vector = Vector(x=0, y=1, z=0)
+Uz: Vector = Vector(x=0, y=0, z=1)
