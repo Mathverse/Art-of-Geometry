@@ -41,7 +41,7 @@ __all__: Sequence[LiteralString] = 'Vector', 'Ux', 'Uy', 'Uz'
 class Vector(_NonGeomEntityABC, SymPyVector):
     """(3-Dimensional) Vector."""
 
-    x: RealNumOrVar = 1
+    x: RealNumOrVar = 0
     y: RealNumOrVar = 0
     z: RealNumOrVar = 0
 
