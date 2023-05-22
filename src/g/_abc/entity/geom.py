@@ -2,10 +2,6 @@
 
 Geometric Entities are entities that can be concretized/materialized/
 physicalized/realized/visualized into tangible/visible shapes.
-
-(Examples of non-geometric entities include numerical Variables and Vectors,
-which represent directions and magnitudes/strengths but are not tied to any
-location in space.)
 """
 
 
@@ -33,7 +29,7 @@ __all__: Sequence[LiteralString] = ('_GeomEntityABC',)
 
 @assign_entity_dependencies_and_name
 class _GeomEntityABC(_EntityABC, GeometryEntity):
-    """Abstract Geometry Entity."""
+    """Abstract Geometric Entity."""
 
     @property
     def name(self: Self, /) -> str:
