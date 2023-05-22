@@ -1,9 +1,10 @@
 """Vector.
 
 In this Art of Geometry package, Vectors are considered fundamental, objective
-3-DIMENSIONAL geometric entities independent of Spaces and Points.
+3-DIMENSIONAL NON-GEOMETRIC entities independent of geometric Spaces & Points.
 
-Each Vector is represented by a definitive triplet of real numbers/variables.
+Each Vector is represented by a definitive triplet of real-valued numbers or
+variables.
 
 3 unit vectors named Ux, Uy & Uz are instantiated to represent our global/usual
 3-dimensional Euclidean orthogonal spatial directions.
@@ -30,14 +31,14 @@ from typing import LiteralString, Self
 from sympy.vector.vector import Vector as SymPyVector
 
 from ..variable import RealVarOrNum
-from .entity import _GeomEntityABC
+from .entity.abc import _EntityABC
 
 
 __all__: Sequence[LiteralString] = 'Vector', 'Ux', 'Uy', 'Uz'
 
 
 @dataclass
-class Vector(_GeomEntityABC, SymPyVector):
+class Vector(_EntityABC, SymPyVector):
     """(3-Dimensional) Vector."""
 
     x: RealVarOrNum = 1
