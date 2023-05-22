@@ -58,6 +58,6 @@ class Vector(_NonGeomEntityABC, SymPyVector):
 
 
 # global unit vectors
-Ux: Vector = Vector(x=1, y=0, z=0)
-Uy: Vector = Vector(x=0, y=1, z=0)
-Uz: Vector = Vector(x=0, y=0, z=1)
+Ux: Vector = Vector(x=1)
+Uy: Vector = Vector(y=1)
+Uz: Vector = Vector(z=1)
