@@ -38,6 +38,10 @@ class _PointABC(_GeomEntityABC):
         """Add vector."""
         return self + vector
 
+    def point(self) -> _PointABC:
+        """Pick itself."""
+        return self
+
 
 class _ConcretePointABC(_PointABC):
     """Abstract Concrete Point."""
