@@ -34,7 +34,8 @@ from .entity.non_geom import _NonGeomEntityABC
 from .variable import RealNumOrVar
 
 
-__all__: Sequence[LiteralString] = 'Vector', 'Ux', 'Uy', 'Uz'
+__all__: Sequence[LiteralString] = ('Vector', 'Vec', 'V',
+                                    'Ux', 'Uy', 'Uz', 'V0')
 
 
 @dataclass
@@ -57,7 +58,14 @@ class Vector(_NonGeomEntityABC, SymPyVector):
         return type(self)(x=self.x / m, y=self.y / m, z=self.z / m)
 
 
+# aliases
+V = Vec = Vector
+
+
 # global unit vectors
-Ux: Vector = Vector(x=1)
-Uy: Vector = Vector(y=1)
-Uz: Vector = Vector(z=1)
+Ux: V = V(x=1)
+Uy: V = V(y=1)
+Uz: V = V(z=1)
+
+# zero vector
+V0: V = V()
