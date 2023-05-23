@@ -1,4 +1,9 @@
-"""Abstract Point base classes."""
+"""Abstract Point base classes.
+
+Points are fundamental geometric entities.
+
+Each Point can belong to multiple Spaces.
+"""
 
 
 from __future__ import annotations
