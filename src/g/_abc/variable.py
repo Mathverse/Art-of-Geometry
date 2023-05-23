@@ -16,6 +16,7 @@ from .._util.unique_name import UNIQUE_NAME_FACTORY
 
 
 __all__: Sequence[LiteralString] = ('Variable', 'Var',
+                                    'RealVariable', 'RealVar',
                                     'NumOrVar', 'OptionalNumOrVar',
                                     'RealNumOrVar', 'OptionalRealNumOrVar')
 
@@ -87,9 +88,17 @@ class Variable(_NonGeomEntityABC, Symbol):
 Var = Variable
 
 
+class RealVariable(Variable):
+    """Real-valued Variable."""
+
+
+# alias
+RealVar = RealVariable
+
+
 # type constants
 NumOrVar: type = Num | Var
 OptionalNumOrVar: type = Optional[NumOrVar]
 
-RealNumOrVar: type = RealNum | Var
+RealNumOrVar: type = RealNum | RealVar
 OptionalRealNumOrVar: type = Optional[RealNumOrVar]
