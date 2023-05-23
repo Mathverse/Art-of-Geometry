@@ -2,7 +2,8 @@
 
 Points are fundamental geometric entities.
 
-Each Point can belong to multiple Spaces.
+Each Point can belong to multiple Spaces, in each of which it can have a set of
+locational coordinates.
 """
 
 
