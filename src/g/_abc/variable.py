@@ -1,4 +1,7 @@
-"""Variable."""
+"""Variable.
+
+Variables are non-geometric entities representing numbers.
+"""
 
 
 from collections.abc import Sequence
