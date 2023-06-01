@@ -4,3 +4,14 @@
 python3 -m pip install PEP517 PIP SetUpTools Wheel --upgrade
 
 python3 -m pip install -e ".[build, dev, doc, lint, manim, publish, test, viz]" --upgrade --user
+
+
+SAGE_PYTHON_EXECUTABLE_NAME=sage-python
+
+if [ -x "$(command -v $SAGE_PYTHON_EXECUTABLE_NAME)" ]; then
+
+  $SAGE_PYTHON_EXECUTABLE_NAME -m pip install PEP517 PIP SetUpTools Wheel --upgrade
+
+  $SAGE_PYTHON_EXECUTABLE_NAME -m pip install -e ".[build, dev, doc, lint, manim, publish, test, viz]" --upgrade --user
+
+fi
