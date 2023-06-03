@@ -5,10 +5,8 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from collections.abc import Sequence
-from functools import cached_property
 from typing import LiteralString, Self, TYPE_CHECKING
 
-from sympy.core.expr import Expr
 from sympy.geometry.entity import GeometryEntity
 
 from .abc import _EntityABC
@@ -56,19 +54,6 @@ class _GeomEntityABC(_EntityABC, GeometryEntity):
     def same(self: Self, /) -> _GeomEntityABC:
         """Copy."""
         raise self.copy()
-
-    # EQUATION & PARAMETRIC EQUATIONS
-    @cached_property
-    @abstractmethod
-    def equation(self: Self, /) -> Expr:
-        """Cartesian equation."""
-        raise NotImplementedError
-
-    @cached_property
-    @abstractmethod
-    def parametric_equations(self: Self, /) -> tuple[Expr, ...]:
-        """Parametric equations."""
-        raise NotImplementedError
 
     # INCIDENCE
     @abstractmethod
