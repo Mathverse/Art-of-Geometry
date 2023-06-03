@@ -13,5 +13,7 @@ Euclidean straight lines, 1-dimensional circles and conic curves are all
 considered Spaces. A Space hence naturally contains lower-dimensional Spaces.
 
 Spaces do not have "hard" boundaries that "prevent" Points from moving across.
-For example, half-planes or hemispheres are not considered Spaces.
+For example, half-planes or hemispheres are not considered Spaces. This means
+that, algebraically, Spaces can be characterized by parametric equations with
+unconstrained parameters.
 """
