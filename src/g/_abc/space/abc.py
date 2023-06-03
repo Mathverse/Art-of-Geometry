@@ -1,19 +1,35 @@
 """Abstract Space."""
 
 
+from abc import abstractmethod
 from collections.abc import Sequence
 from dataclasses import dataclass
+from functools import cached_property
+from typing import LiteralString, Self
+
+from sympy.core.expr import Expr
 
 from ._entity import _GeomEntityABC
 from ._point import _ConcretePointABC
 
 
-__all__: Sequence[str] = ('_SpaceABC',
-                          '_SubSpaceABC', '_HalfSpaceABC', '_ClosedSubSpaceABC')  # noqa: E501
+__all__: Sequence[LiteralString] = ('_SpaceABC',)
 
 
 class _SpaceABC(_GeomEntityABC):
     """Abstract Space."""
+
+    @cached_property
+    @abstractmethod
+    def equation(self: Self, /) -> Expr:
+        """Cartesian equation."""
+        raise NotImplementedError
+
+    @cached_property
+    @abstractmethod
+    def parametric_equations(self: Self, /) -> tuple[Expr, ...]:
+        """Parametric equations."""
+        raise NotImplementedError
 
 
 class _SubSpaceABC(_GeomEntityABC):
