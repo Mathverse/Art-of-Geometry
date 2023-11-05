@@ -16,8 +16,8 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - 3.11
           - 3.12
+          - 3.13.0-alpha.1
           # github.com/actions/python-versions/blob/main/versions-manifest.json
 
     steps:
