@@ -27,7 +27,7 @@ maintainers = [
   {name = 'The Vinh LUONG (LƯƠNG Thế Vinh)', email = 'TheVinhLuong@gmail.com'},
 ]
 
-requires-python = '>= 3.11'
+requires-python = '>= 3.12'
 
 
 dynamic = [
@@ -117,8 +117,8 @@ viz = {file = 'metadata/requirements/viz.txt'}
 
 [build-system]
 requires = [
-  'SetUpTools >= 67.7.2',
-  'Wheel >= 0.40.0',
+  'SetUpTools >= 68.2.2',
+  'Wheel >= 0.41.3',
 ]
 build-backend = 'setuptools.build_meta'
 
