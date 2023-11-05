@@ -2,42 +2,11 @@
   "editor.rulers": [79],
 
   "files.exclude": {
+    "**/*.egg-info": true,
     "**/.git": true,
     "**/.mypy_cache": true,
     "**/__pycache__": true,
     "**/.pytest_cache": true,
     "**/.ropeproject": true,
   },
-
-  "python.linting.enabled": true,
-
-  "python.linting.pylintEnabled": true,
-  "python.linting.pylintArgs": [
-    "--disable", "relative-beyond-top-level",
-  ],
-
-  "python.linting.flake8Enabled": true,
-  "python.linting.flake8Args": [
-  ],
-
-  "python.linting.mypyEnabled": false,
-
-  "python.linting.pydocstyleEnabled": true,
-  "python.linting.pydocstyleArgs": [
-  ],
-
-  "python.linting.pycodestyleEnabled": true,
-  "python.linting.pycodestyleArgs": [
-  ],
-
-  "python.linting.prospectorEnabled": true,
-
-  "python.linting.pylamaEnabled": true,
-  "python.linting.pylamaArgs": [
-  ],
-
-  "python.linting.banditEnabled": true,
-  "python.linting.banditArgs": [
-    "--skip=B101,B311",
-  ],
 }
