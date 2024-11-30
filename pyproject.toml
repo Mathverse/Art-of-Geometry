@@ -41,6 +41,8 @@ dynamic = [
   'optional-dependencies',
 
   'entry-points',
+  'scripts',
+  'gui-scripts',
 ]
 
 
