@@ -1,3 +1,3 @@
-Kivy >= 2.2.1
-MatPlotLib >= 3.8.1
+# Kivy >= 2.3.0  # TODO: fix dependencies
+MatPlotLib >= 3.9.2
 # MayaVi >= 4.8.1  # hard to install

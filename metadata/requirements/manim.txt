@@ -1,2 +1,2 @@
-MAnim >= 0.17.3
-MAnimGL >= 1.6.1
+# MAnim >= 0.18.1  # TODO: wait for MAnim release for Python 3.13
+# MAnimGL >= 1.7.1  # TODO: fix dependencies
