@@ -1,4 +1,5 @@
 # python.org/dev/peps/pep-0621
+# packaging.python.org/en/latest/specifications/pyproject-toml
 # setuptools.pypa.io/en/latest/userguide/pyproject_config.html
 
 
@@ -27,7 +28,7 @@ maintainers = [
   {name = 'The Vinh LUONG (LƯƠNG Thế Vinh)', email = 'TheVinhLuong@gmail.com'},
 ]
 
-requires-python = '>= 3.11'
+requires-python = '>= 3.13'
 
 
 dynamic = [
@@ -41,6 +42,8 @@ dynamic = [
   'optional-dependencies',
 
   'entry-points',
+  'scripts',
+  'gui-scripts',
 ]
 
 
@@ -109,6 +112,7 @@ build = {file = 'metadata/requirements/build.txt'}
 dev = {file = 'metadata/requirements/dev.txt'}
 doc = {file = 'metadata/requirements/doc.txt'}
 manim = {file = 'metadata/requirements/manim.txt'}
+jupyter = {file = 'metadata/requirements/jupyter.txt'}
 lint = {file = 'metadata/requirements/lint.txt'}
 publish = {file = 'metadata/requirements/publish.txt'}
 test = {file = 'metadata/requirements/test.txt'}
@@ -117,8 +121,8 @@ viz = {file = 'metadata/requirements/viz.txt'}
 
 [build-system]
 requires = [
-  'SetUpTools >= 67.7.2',
-  'Wheel >= 0.40.0',
+  'SetUpTools >= 75.6.0',
+  'Wheel >= 0.45.1',
 ]
 build-backend = 'setuptools.build_meta'
 
