@@ -1,4 +1,5 @@
 # python.org/dev/peps/pep-0621
+# packaging.python.org/en/latest/specifications/pyproject-toml
 # setuptools.pypa.io/en/latest/userguide/pyproject_config.html
 
 
@@ -111,6 +112,7 @@ build = {file = 'metadata/requirements/build.txt'}
 dev = {file = 'metadata/requirements/dev.txt'}
 doc = {file = 'metadata/requirements/doc.txt'}
 manim = {file = 'metadata/requirements/manim.txt'}
+jupyter = {file = 'metadata/requirements/jupyter.txt'}
 lint = {file = 'metadata/requirements/lint.txt'}
 publish = {file = 'metadata/requirements/publish.txt'}
 test = {file = 'metadata/requirements/test.txt'}
