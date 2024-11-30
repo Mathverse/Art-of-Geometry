@@ -7,8 +7,8 @@ from typing import LiteralString
 
 from ..variable import RealVarOrNum
 
-from .point import _PointABC
-from .space.abc import _SpaceABC
+from ..point.abc import _PointABC
+from ..space.abc import _SpaceABC
 
 
 __all__: Sequence[LiteralString] = ('_CoordinateSystemABC',)
