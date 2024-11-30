@@ -1,4 +1,4 @@
-"""Cyclic Sequence."""
+"""Cyclic Tuple."""
 
 
 from collections.abc import Sequence
