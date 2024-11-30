@@ -1,7 +1,7 @@
 __all__ = 'EuclideanR1Space', 'EuclideanR1HalfSpace'
 
 
-from ..core._space import _EuclideanSpaceABC, _EuclideanHalfSpaceABC
+from .._core._space import _EuclideanSpaceABC, _EuclideanHalfSpaceABC
 
 
 class EuclideanR1Space(_EuclideanSpaceABC):

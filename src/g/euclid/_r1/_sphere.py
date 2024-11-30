@@ -5,7 +5,7 @@ __all__ = \
 
 from ...._util._compat import cached_property
 from ...var import Variable
-from .core._entity import _EuclideanGeometryEntityInR1ABC
+from ._core._entity import _EuclideanGeometryEntityInR1ABC
 from .point import PointInR1
 
 

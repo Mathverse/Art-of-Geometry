@@ -14,12 +14,12 @@ from sympy.geometry.point import Point2D
 from typing import Optional, Tuple
 
 from ...._util._compat import cached_property
-from ..core._coord import T
-from ..core._line import \
+from .._core._coord import T
+from .._core._line import \
     _EuclideanLinearEntityABC, _EuclideanConcreteLinearEntityABC, _EuclideanLinearEntityAtInfinityABC, \
     _EuclideanLineABC, _EuclideanConcreteLineABC, _EuclideanLineAtInfinityABC, \
     _EuclideanRayABC, _EuclideanSegmentABC
-from .core._entity import _EuclideanGeometryEntityInR2ABC
+from ._core._entity import _EuclideanGeometryEntityInR2ABC
 from .coord import X, Y
 from .point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 

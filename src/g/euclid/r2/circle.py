@@ -10,8 +10,8 @@ from typing import Tuple
 
 from ...._util._compat import cached_property
 from ...var import Variable
-from ..core._coord import THETA
-from .core._entity import _EuclideanGeometryEntityInR2ABC
+from .._core._coord import THETA
+from ._core._entity import _EuclideanGeometryEntityInR2ABC
 from .coord import X, Y
 from .point import PointInR2
 
