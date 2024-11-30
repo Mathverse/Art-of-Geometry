@@ -2,7 +2,7 @@
 
 
 from collections.abc import Callable, Sequence
-from typing import LiteralString, Optional
+from typing import LiteralString
 
 from sympy.core.expr import Expr
 from sympy.core.numbers import Number, RealNumber
@@ -21,15 +21,15 @@ Num: type = Number | complex | float | int
 RealNum: type = RealNumber | float
 
 
-OptionalStr: type = Optional[str]
+OptionalStr: type = str | None
 
 
 CallableReturningStr: type = Callable[[], str]
-OptionalStrOrCallableReturningStr: type = Optional[str | CallableReturningStr]
+OptionalStrOrCallableReturningStr: type = str | CallableReturningStr | None
 
 
-OptionalSymPyExpr: type = Optional[Expr]
-OptionalStrOrSymPyExpr: type = Optional[str | Expr]
+OptionalSymPyExpr: type = Expr | None
+OptionalStrOrSymPyExpr: type = str | Expr | None
 
 
 def obj_and_type_str(obj, /) -> str:
