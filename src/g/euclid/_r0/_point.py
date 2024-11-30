@@ -2,7 +2,7 @@ __all__ = 'PointInR0', 'PointR0', 'Point', 'Pt'
 
 
 from ...._util._tmp import TMP_NAME_FACTORY
-from ..core._point import _EuclideanConcretePointABC
+from .._core._point import _EuclideanConcretePointABC
 
 
 @_EuclideanConcretePointABC.assign_name_and_dependencies

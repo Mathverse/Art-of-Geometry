@@ -11,7 +11,7 @@ from sympy.core.numbers import oo
 from ....geom.var import Variable
 from ...._util._compat import cached_property
 from ...._util._type import print_obj_and_type
-from ...core._point import _PointABC, _ConcretePointABC, _PointAtInfinityABC
+from ..._core._point import _PointABC, _ConcretePointABC, _PointAtInfinityABC
 
 
 class _EuclideanPointABC(_PointABC):

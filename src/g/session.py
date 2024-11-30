@@ -6,8 +6,8 @@ from typing import Any, LiteralString, Self
 
 from sympy.assumptions.assume import AssumptionsContext
 
-from .core.entity.abc import _EntityABC
-from .core.space.abc import _SpaceABC
+from ._core.entity.abc import _EntityABC
+from ._core.space.abc import _SpaceABC
 
 from ._alg.abc import _AlgBackendABC
 from ._alg.sympy import SymPyBackend

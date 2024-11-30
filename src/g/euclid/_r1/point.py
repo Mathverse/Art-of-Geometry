@@ -11,7 +11,7 @@ from sympy.core.singleton import S
 from ...._util._tmp import TMP_NAME_FACTORY
 from ...._util._type import NUMERIC_TYPES, OptionalStrOrCallableReturningStrType, print_obj_and_type
 from ...var import Variable, OptionalVariableOrNumericType, VARIABLE_AND_NUMERIC_TYPES
-from ..core._point import _EuclideanConcretePointABC, _EuclideanPointAtInfinityABC
+from .._core._point import _EuclideanConcretePointABC, _EuclideanPointAtInfinityABC
 
 
 @_EuclideanConcretePointABC.assign_name_and_dependencies

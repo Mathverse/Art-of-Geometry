@@ -3,7 +3,7 @@ __all__ = 'PolygonInR2', 'PolygonR2', 'Polygon'
 
 from sympy.geometry.polygon import Polygon as Polygon2D
 
-from ..core._entity import _EuclideanGeometryEntityInR2ABC
+from .._core._entity import _EuclideanGeometryEntityInR2ABC
 from ..point import PointInR2
 
 

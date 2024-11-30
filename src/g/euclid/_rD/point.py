@@ -4,7 +4,7 @@ __all__ = \
 
 
 
-from ..core._point import _EuclideanConcretePointABC, _EuclideanPointAtInfinityABC
+from .._core._point import _EuclideanConcretePointABC, _EuclideanPointAtInfinityABC
 
 
 

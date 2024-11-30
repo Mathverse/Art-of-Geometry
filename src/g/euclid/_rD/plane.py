@@ -1,7 +1,7 @@
 __all__ = 'PlaneInRD', 'PlaneRD', 'Plane'
 
 
-from ..core._entity import _EuclideanGeometryEntityABC
+from .._core._entity import _EuclideanGeometryEntityABC
 
 
 class PlaneInRD(_EuclideanGeometryEntityABC):
