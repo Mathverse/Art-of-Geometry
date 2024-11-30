@@ -1,4 +1,4 @@
-name: Install Package & Dependencies
+name: Install Package & Dependencies, Lint Code and Run Tests on Windows
 
 on:
   push:
