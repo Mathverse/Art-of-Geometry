@@ -11,7 +11,7 @@ IF "%TARGET%"=="install-editable" GOTO install-editable
 :: INSTALLATION
 :: ============
 :install-editable
-  .\install-editable-dev
+  install\install-editable-dev
   GOTO end
 
 
