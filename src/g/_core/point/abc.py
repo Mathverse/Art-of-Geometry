@@ -13,8 +13,8 @@ from abc import abstractmethod
 from collections.abc import Sequence
 from typing import LiteralString
 
-from .entity import _GeomEntityABC
-from .vector import Vector
+from ..entity.geom import _GeomEntityABC
+from ..vector import Vector
 
 
 __all__: Sequence[LiteralString] = ('_PointABC',
