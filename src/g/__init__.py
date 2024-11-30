@@ -5,8 +5,10 @@ from collections.abc import Sequence
 from importlib.metadata import version
 from typing import LiteralString
 
+from ._core.variable import Variable, Var
+
 from .session import Session
-from .variable import Variable, Var
+
 from ._util.cyclic_tuple import CyclicTuple
 from ._util import debug
 
