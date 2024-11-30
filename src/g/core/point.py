@@ -1,4 +1,10 @@
-"""Abstract Point base classes."""
+"""Abstract Point base classes.
+
+Points are fundamental geometric entities.
+
+Each Point can belong to multiple Spaces, in each of which it can have a set of
+locational coordinates.
+"""
 
 
 from __future__ import annotations
@@ -8,7 +14,7 @@ from collections.abc import Sequence
 from typing import LiteralString
 
 from .entity import _GeomEntityABC
-from .vector import _VectorABC
+from .vector import Vector
 
 
 __all__: Sequence[LiteralString] = ('_PointABC',
@@ -30,13 +36,17 @@ class _PointABC(_GeomEntityABC):
         """Check inequality."""
         return not self == other_point
 
-    def __add__(self, vector: _VectorABC, /) -> _PointABC:
+    def __add__(self, vector: Vector, /) -> _PointABC:
         """Add vector."""
         raise NotImplementedError
 
-    def __radd__(self, vector: _VectorABC, /) -> _PointABC:
+    def __radd__(self, vector: Vector, /) -> _PointABC:
         """Add vector."""
         return self + vector
+
+    def point(self) -> _PointABC:
+        """Pick itself."""
+        return self
 
 
 class _ConcretePointABC(_PointABC):

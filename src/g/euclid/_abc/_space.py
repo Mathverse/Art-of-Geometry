@@ -1,7 +1,7 @@
 __all__ = '_EuclideanSpaceABC', '_EuclideanHalfSpaceABC'
 
 
-from ..._abc._space import _SpaceABC, _HalfSpaceABC
+from ...core._space import _SpaceABC, _HalfSpaceABC
 
 
 class _EuclideanSpaceABC(_SpaceABC):

@@ -14,12 +14,12 @@ from sympy.geometry.point import Point2D
 from typing import Optional, Tuple
 
 from ...._util._compat import cached_property
-from .._abc._coord import T
-from .._abc._line import \
+from ..core._coord import T
+from ..core._line import \
     _EuclideanLinearEntityABC, _EuclideanConcreteLinearEntityABC, _EuclideanLinearEntityAtInfinityABC, \
     _EuclideanLineABC, _EuclideanConcreteLineABC, _EuclideanLineAtInfinityABC, \
     _EuclideanRayABC, _EuclideanSegmentABC
-from ._abc._entity import _EuclideanGeometryEntityInR2ABC
+from .core._entity import _EuclideanGeometryEntityInR2ABC
 from .coord import X, Y
 from .point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
 
@@ -45,21 +45,21 @@ class LineInR2(_LineInR2ABC, _EuclideanConcreteLineABC, Line2D):
     def __new__(cls, point_0: PointInR2, point_1: _PointInR2ABC, /) -> Line2D:
         assert isinstance(point_0, PointInR2), \
             TypeError(f'*** POINT_0 {point_0} NOT OF TYPE {PointInR2.__name__} ***')
-        
+
         if isinstance(point_1, PointInR2):
             line = super().__new__(cls, p1=point_0, pt=point_1)
 
             line._point_1_at_infinity = False
 
             return line
-        
+
         elif isinstance(point_1, PointAtInfinityInR2):
             line = super().__new__(cls, p1=point_0, pt=point_0 + point_1.direction)
 
             line._point_1_at_infinity = True
 
             return line
-        
+
         else:
             raise TypeError(f'*** POINT_1 {point_1} '
                             f'NEITHER OF TYPE {PointInR2.__name__} '

@@ -7,7 +7,7 @@ from abc import abstractmethod
 from collections.abc import Sequence
 from typing import LiteralString, Self, TYPE_CHECKING
 
-if TYPE_CHECKING:  # avoid circular import between _EntityABC & Session
+if TYPE_CHECKING:
     from ...session import Session
 
 

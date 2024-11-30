@@ -1,4 +1,8 @@
-"""Abstract Geometry Entity."""
+"""Abstract Geometric Entity.
+
+Geometric Entities are entities that can be concretized/materialized/
+physicalized/realized/visualized into tangible/visible shapes.
+"""
 
 
 from __future__ import annotations
@@ -15,7 +19,7 @@ from .decor import assign_entity_dependencies_and_name
 if TYPE_CHECKING:
     from ..linear import _LinearEntityABC, _LineABC
     from ..point import _PointABC
-    from ..vector import _VectorABC
+    from ..vector import Vector
 
 
 __all__: Sequence[LiteralString] = ('_GeomEntityABC',)
@@ -23,7 +27,7 @@ __all__: Sequence[LiteralString] = ('_GeomEntityABC',)
 
 @assign_entity_dependencies_and_name
 class _GeomEntityABC(_EntityABC, GeometryEntity):
-    """Abstract Geometry Entity."""
+    """Abstract Geometric Entity."""
 
     @property
     def name(self: Self, /) -> str:
@@ -46,6 +50,11 @@ class _GeomEntityABC(_EntityABC, GeometryEntity):
         setattr(self, self._NAME_ATTR_KEY, None)
 
     @abstractmethod
+    def point(self, *args, **kwargs) -> _PointABC:
+        """Pick a Point on this Geometric Entity."""
+        raise NotImplementedError
+
+    @abstractmethod
     def copy(self: Self, /) -> _GeomEntityABC:
         """Copy."""
         raise NotImplementedError
@@ -63,14 +72,14 @@ class _GeomEntityABC(_EntityABC, GeometryEntity):
 
     # NORMAL DIRECTION
     @abstractmethod
-    def normal_direction_at_point(self: Self, point: _PointABC, /) -> _VectorABC:  # noqa: E501
+    def normal_direction_at_point(self: Self, point: _PointABC, /) -> Vector:  # noqa: E501
         raise NotImplementedError
 
     # alias
-    def normal_direction(self: Self, point: _PointABC, /) -> _VectorABC:
+    def normal_direction(self: Self, point: _PointABC, /) -> Vector:
         return self.normal_direction_at_point(point)
 
-    def normal(self: Self, point: _PointABC, /) -> _VectorABC:
+    def normal(self: Self, point: _PointABC, /) -> Vector:
         return self.normal_direction_at_point(point)
 
     # PERPENDICULAR LINE

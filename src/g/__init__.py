@@ -7,6 +7,7 @@ from typing import LiteralString
 
 from .session import Session
 from .variable import Variable, Var
+from ._util.cyclic_tuple import CyclicTuple
 from ._util import debug
 
 
@@ -16,6 +17,8 @@ __all__: Sequence[LiteralString] = (
     'Session',
 
     'Variable', 'Var',
+
+    'CyclicTuple',
 
     'debug',
 )

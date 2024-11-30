@@ -2,7 +2,7 @@ from sympy.core.mod import Mod
 from sympy.core.numbers import pi
 from sympy.core.singleton import S
 
-from ._abc._entity import _EuclideanGeometryEntityInR2ABC
+from .core._entity import _EuclideanGeometryEntityInR2ABC
 from .line import LineInR2, RayInR2
 
 

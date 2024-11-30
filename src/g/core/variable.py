@@ -1,4 +1,7 @@
-"""Variable."""
+"""Variable.
+
+Variables are non-geometric entities representing numbers.
+"""
 
 
 from collections.abc import Sequence
@@ -7,18 +10,21 @@ from typing import LiteralString, Optional, Self
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 
-from ._abc.entity.abc import _EntityABC
+from .entity.non_geom import _NonGeomEntityABC
 
-from ._util.type import (Num, OptionalStrOrCallableReturningStr,
-                         OptionalSymPyExpr, OptionalStrOrSymPyExpr)
-from ._util.unique_name import UNIQUE_NAME_FACTORY
+from .._util.type import (Num, RealNum,
+                          OptionalStrOrCallableReturningStr,
+                          OptionalSymPyExpr, OptionalStrOrSymPyExpr)
+from .._util.unique_name import UNIQUE_NAME_FACTORY
 
 
 __all__: Sequence[LiteralString] = ('Variable', 'Var',
-                                    'VarOrNum', 'OptionalVarOrNum')
+                                    'RealVariable', 'RealVar',
+                                    'NumOrVar', 'OptionalNumOrVar',
+                                    'RealNumOrVar', 'OptionalRealNumOrVar')
 
 
-class Variable(_EntityABC, Symbol):
+class Variable(_NonGeomEntityABC, Symbol):
     """Variable."""
 
     _NAME_NULLABLE: bool = False
@@ -85,6 +91,17 @@ class Variable(_EntityABC, Symbol):
 Var = Variable
 
 
+class RealVariable(Variable):
+    """Real-valued Variable."""
+
+
+# alias
+RealVar = RealVariable
+
+
 # type constants
-VarOrNum: type = Var | Num
-OptionalVarOrNum: type = Optional[VarOrNum]
+NumOrVar: type = Num | Var
+OptionalNumOrVar: type = Optional[NumOrVar]
+
+RealNumOrVar: type = RealNum | RealVar
+OptionalRealNumOrVar: type = Optional[RealNumOrVar]
