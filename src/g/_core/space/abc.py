@@ -10,7 +10,7 @@ from typing import LiteralString, Self
 from sympy.core.expr import Expr
 
 from ..entity.geom import _GeomEntityABC
-from ..point import _ConcretePointABC
+from ..point.abc import _ConcretePointABC
 
 
 __all__: Sequence[LiteralString] = ('_SpaceABC',)
