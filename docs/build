@@ -4,7 +4,7 @@
 # *** call this script INSIDE PY3.8 VIRTUALENV and INSIDE DOC/ dir ***
 
 
-MODULE_NAME=art_of_geom
+MODULE_NAME=g
 MODULE_PATH=../$MODULE_NAME
 
 DOC_SRC_DIR=source

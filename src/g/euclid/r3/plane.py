@@ -9,8 +9,8 @@ from sympy.geometry.point import Point3D
 from typing import Tuple
 
 from ...._util._compat import cached_property
-from .._abc._coord import U, V
-from ._abc._entity import _EuclideanGeometryEntityInR3ABC
+from ..core._coord import U, V
+from .core._entity import _EuclideanGeometryEntityInR3ABC
 from .coord import X, Y, Z
 from .line import LineInR3
 from .point import _PointInR3ABC, PointInR3, PointAtInfinityInR3
@@ -60,15 +60,15 @@ class PlaneInR3(_PlaneInR3ABC, Plane3D):
 
     def __init__(self, point_0: PointInR3, point_1: _PointInR3ABC, point_2: _PointInR3ABC, *, name: str = None) -> None:
         self.point_0 = point_0
-        
+
         self.point_1 = point_1
         self.line_1 = LineInR3(point_0, point_1)
         self.direction_1 = self.line_1.direction
-        
+
         self.point_2 = point_2
         self.line_2 = LineInR3(point_0, point_2)
         self.direction_2 = self.line_2.direction
-        
+
         self._name = name
 
     @property

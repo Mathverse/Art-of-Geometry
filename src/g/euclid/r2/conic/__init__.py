@@ -9,8 +9,8 @@ from typing import Tuple
 
 from ....._util._compat import cached_property
 from ....var import Variable
-from ..._abc._coord import THETA
-from .._abc._entity import _EuclideanGeometryEntityInR2ABC
+from ...core._coord import THETA
+from ..core._entity import _EuclideanGeometryEntityInR2ABC
 from ..coord import X, Y
 from ..line import _LineInR2ABC, LineInR2, LineAtInfinityInR2
 from ..point import _PointInR2ABC, PointInR2, PointAtInfinityInR2
@@ -38,7 +38,7 @@ class ConicInR2(_EuclideanGeometryEntityInR2ABC):
         self.focus_to_vertex_distance = self.focus_to_vertex_direction.euclidean_distance_from_origin
 
         self.eccentricity = eccentricity
-        
+
         self.direction_sign = direction_sign
 
     @property

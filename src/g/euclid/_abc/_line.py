@@ -13,7 +13,7 @@ from sympy.geometry.line import LinearEntity, Line, Ray, Segment
 from sympy.geometry.point import Point
 
 from ...._util._compat import cached_property
-from ....geom._abc._line import \
+from ....geom.core._line import \
     _LinearEntityABC, _ConcreteLinearEntityABC, _LinearEntityAtInfinityABC, \
     _LineABC, _ConcreteLineABC, _ConcreteDirectedLineABC, _LineAtInfinityABC, _DirectedLineAtInfinityABC
 from ._entity import _EuclideanGeometryEntityABC

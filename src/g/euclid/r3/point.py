@@ -12,8 +12,8 @@ from ....geom.var import Variable, OptionalVariableOrNumericType, VARIABLE_AND_N
 from ...._util._compat import cached_property
 from ...._util._tmp import TMP_NAME_FACTORY
 from ...._util._type import NUMERIC_TYPES, OptionalStrOrCallableReturningStrType, print_obj_and_type
-from .._abc._point import _EuclideanPointABC, _EuclideanConcretePointABC, _EuclideanPointAtInfinityABC
-from ._abc._entity import _EuclideanGeometryEntityInR3ABC
+from ..core._point import _EuclideanPointABC, _EuclideanConcretePointABC, _EuclideanPointAtInfinityABC
+from .core._entity import _EuclideanGeometryEntityInR3ABC
 
 
 class _PointInR3ABC(_EuclideanGeometryEntityInR3ABC, _EuclideanPointABC):
@@ -60,7 +60,7 @@ class PointInR3(_PointInR3ABC, _EuclideanConcretePointABC, Point3D):
             assert isinstance(y, NUMERIC_TYPES), \
                 TypeError(f'*** Y COORDINATE {print_obj_and_type(y)} '
                           f'NOT OF ONE OF TYPES {VARIABLE_AND_NUMERIC_TYPES} ***')
-            
+
         if z is None:
             z = Variable(f'[{name}.z]', real=True)
             dependencies.append(z)
