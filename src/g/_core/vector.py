@@ -28,7 +28,7 @@ from dataclasses import dataclass
 from functools import cache
 from typing import LiteralString, Self
 
-from sympy.vector.vector import Vector as SymPyVector
+# from sympy.vector.vector import Vector as SymPyVector
 
 from .entity.non_geom import _NonGeomEntityABC
 from .variable import RealNumOrVar
@@ -39,7 +39,7 @@ __all__: Sequence[LiteralString] = ('Vector', 'Vec', 'V',
 
 
 @dataclass
-class Vector(_NonGeomEntityABC, SymPyVector):
+class Vector(_NonGeomEntityABC):  # , SymPyVector):
     """(3-Dimensional) Vector."""
 
     x: RealNumOrVar = 0
@@ -63,9 +63,9 @@ V = Vec = Vector
 
 
 # global unit vectors
-# Ux: V = V(x=1)
-# Uy: V = V(y=1)
-# Uz: V = V(z=1)
+Ux: V = V(x=1)
+Uy: V = V(y=1)
+Uz: V = V(z=1)
 
 # zero vector
-# V0: V = V()
+V0: V = V()
