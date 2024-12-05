@@ -63,9 +63,9 @@ V = Vec = Vector
 
 
 # global unit vectors
-# Ux: V = V(x=1)
-# Uy: V = V(y=1)
-# Uz: V = V(z=1)
+Ux: V = V(x=1)
+Uy: V = V(y=1)
+Uz: V = V(z=1)
 
 # zero vector
-# V0: V = V()
+V0: V = V()
