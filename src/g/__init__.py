@@ -6,6 +6,7 @@ from importlib.metadata import version
 from typing import LiteralString
 
 from ._core.variable import Variable, Var
+from ._core.vector import Vector, Vec, V, Ux, Uy, Uz, V0
 
 from .session import Session
 
@@ -19,6 +20,8 @@ __all__: Sequence[LiteralString] = (
     'Session',
 
     'Variable', 'Var',
+
+    'Vector', 'Vec', 'V', 'Ux', 'Uy', 'Uz', 'V0',
 
     'CyclicTuple',
 
