@@ -12,14 +12,14 @@ IF "%TARGET%"=="test-run" GOTO test-run
 :: INSTALLATION
 :: ============
 :install-editable
-  install\install-editable-dev
+  .\install\install-editable-dev
   GOTO end
 
 
 :: TEST
 :: ====
 :test-run
-  test\run
+  .\test\run
   GOTO end
 
 
