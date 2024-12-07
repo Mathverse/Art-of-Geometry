@@ -6,14 +6,19 @@ are not tied to any location in space.
 """
 
 
-from collections.abc import Sequence
-from typing import LiteralString
+from __future__ import annotations
 
-from .abc import _EntityABC
+from typing import TYPE_CHECKING
+
+from .abc import AnEntity
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+    from typing import LiteralString
 
 
-__all__: Sequence[LiteralString] = ('_NonGeomEntityABC',)
+__all__: Sequence[LiteralString] = ('ANonGeomEntity',)
 
 
-class _NonGeomEntityABC(_EntityABC):
+class ANonGeomEntity(AnEntity):
     """Abstract Non-Geometric Entity."""

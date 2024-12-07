@@ -4,22 +4,25 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from collections.abc import Sequence
 from dataclasses import dataclass
 from functools import cached_property
-from typing import LiteralString, Self
+from typing import TYPE_CHECKING
 
 from sympy.core.expr import Expr
 
-from ..entity.geom import _GeomEntityABC
-from ..point.abc import AConcretePoint
+from .._entity import AGeomEntity
+from ..point import AConcretePoint
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+    from typing import LiteralString, Self
 
 
 __all__: Sequence[LiteralString] = ('ASpace',
                                     'ASubSpace', 'AHalfSpace', 'AClosedSubSpace')  # noqa: E501
 
 
-class ASpace(_GeomEntityABC):
+class ASpace(AGeomEntity):
     """Abstract Space."""
 
     @cached_property
@@ -35,7 +38,7 @@ class ASpace(_GeomEntityABC):
         raise NotImplementedError
 
 
-class ASubSpace(_GeomEntityABC):
+class ASubSpace(AGeomEntity):
     """Abstract Sub-Space."""
 
 

@@ -1,8 +1,8 @@
 __all__ = '_TorusLineABC',
 
 
-from g.geom.non_euclid._core.line import _LineABC
+from g.geom.non_euclid._core.line import ALine
 
 
-class _TorusLineABC(_LineABC):
+class _TorusLineABC(ALine):
     pass
