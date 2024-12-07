@@ -5,7 +5,7 @@ Variables are non-geometric entities representing numbers.
 
 
 from collections.abc import Sequence
-from typing import LiteralString, Optional, Self
+from typing import LiteralString, Self
 
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
@@ -62,7 +62,7 @@ class Variable(_NonGeomEntityABC, Symbol):
                  expr_or_name: OptionalStrOrSymPyExpr = None, /, *,
                  expr: OptionalSymPyExpr = None,
                  name: OptionalStrOrCallableReturningStr = None,
-                 **assumptions: bool) -> None:
+                 **assumptions: bool) -> None:  # noqa: ARG002
         """Initialize variable."""
         if isinstance(expr_or_name, Expr):
             assert expr is None, \
@@ -101,7 +101,7 @@ RealVar = RealVariable
 
 # type constants
 NumOrVar: type = Num | Var
-OptionalNumOrVar: type = Optional[NumOrVar]
+OptionalNumOrVar: type = NumOrVar | None
 
 RealNumOrVar: type = RealNum | RealVar
-OptionalRealNumOrVar: type = Optional[RealNumOrVar]
+OptionalRealNumOrVar: type = RealNumOrVar | None
