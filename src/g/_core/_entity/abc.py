@@ -3,10 +3,10 @@
 
 from __future__ import annotations
 
+from abc import abstractmethod
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from abc import abstractmethod
     from collections.abc import Sequence
     from typing import LiteralString, Self
 
