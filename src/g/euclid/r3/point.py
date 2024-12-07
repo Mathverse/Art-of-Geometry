@@ -12,16 +12,16 @@ from ....geom.var import Variable, OptionalVariableOrNumericType, VARIABLE_AND_N
 from ...._util._compat import cached_property
 from ...._util._tmp import TMP_NAME_FACTORY
 from ...._util._type import NUMERIC_TYPES, OptionalStrOrCallableReturningStrType, print_obj_and_type
-from .._core._point import _EuclideanPointABC, _EuclideanConcretePointABC, _EuclideanPointAtInfinityABC
+from .._core._point import AnEuclidPoint, AEuclidConcretePoint, AnEuclidPointAtInf
 from ._core._entity import _EuclideanGeometryEntityInR3ABC
 
 
-class _PointInR3ABC(_EuclideanGeometryEntityInR3ABC, _EuclideanPointABC):
+class _PointInR3ABC(_EuclideanGeometryEntityInR3ABC, AnEuclidPoint):
     pass
 
 
 @_PointInR3ABC.assign_name_and_dependencies
-class PointInR3(_PointInR3ABC, _EuclideanConcretePointABC, Point3D):
+class PointInR3(_PointInR3ABC, AEuclidConcretePoint, Point3D):
     def __new__(
             cls,
             /, x: OptionalVariableOrNumericType = None,
@@ -136,7 +136,7 @@ class PointInR3(_PointInR3ABC, _EuclideanConcretePointABC, Point3D):
     def __truediv__(self, n: Variable, /) -> PointInR3:
         return self._from_sympy_point_3d(super().__div__(n))
 
-    def euclidean_distance(self, other_point_in_r3: _EuclideanPointABC, /) -> Variable:
+    def euclidean_distance(self, other_point_in_r3: AnEuclidPoint, /) -> Variable:
         return Variable((self.x - other_point_in_r3.x) ** 2 +
                         (self.y - other_point_in_r3.y) ** 2 +
                         (self.z - other_point_in_r3.z) ** 2)
@@ -151,7 +151,7 @@ Pt = Point = PointR3 = PointInR3
 
 
 @_PointInR3ABC.assign_name_and_dependencies
-class PointAtInfinityInR3(_PointInR3ABC, _EuclideanPointAtInfinityABC):
+class PointAtInfinityInR3(_PointInR3ABC, AnEuclidPointAtInf):
     def __init__(self, direction: PointInR3, /) -> None:
         assert isinstance(direction, PointInR3), \
             TypeError(f'*** DIRECTION {direction} NOT {PointInR3.__name__} ***')

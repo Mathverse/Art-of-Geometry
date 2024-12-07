@@ -1,46 +1,61 @@
+"""Anstract Euclidean Point classes."""
+
+
 from __future__ import annotations
 
-
-__all__ = '_EuclideanPointABC', '_EuclideanConcretePointABC', '_EuclideanPointAtInfinityABC'
-
-
 from abc import abstractmethod
+from functools import cached_property
+from typing import TYPE_CHECKING
+
 from sympy.core.expr import Expr
 from sympy.core.numbers import oo
 
-from ....geom.var import Variable
-from ...._util._compat import cached_property
-from ...._util._type import print_obj_and_type
-from ..._core._point import APoint, AConcretePoint, APointAtInf
+from g import Var
+from g._core import APoint, AConcretePoint, APointAtInf, RealNumOrVar
+from g._util.type import obj_and_type_str
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+    from typing import LiteralString, Self
 
 
-class _EuclideanPointABC(APoint):
+__all__: Sequence[LiteralString] = ('AnEuclidPoint',
+                                    'AEuclidConcretePoint', 'AnEuclidPointAtInf')  # noqa: E501
+
+
+class AnEuclidPoint(APoint):
+    """Anstract Euclidean Point."""
+
     @abstractmethod
-    def euclidean_distance(self, other_euclidean_point: _EuclideanPointABC, /) -> Variable:
+    def euclid_dist(self: Self, other_euclid_point: AnEuclidPoint, /) -> Var:
+        """Distance from another Euclidean point."""
         raise NotImplementedError
 
     @cached_property
     @abstractmethod
-    def euclidean_distance_from_origin(self) -> Variable:
+    def euclid_dist_from_orig(self: Self) -> RealNumOrVar:
+        """Distance from Origin."""
         raise NotImplementedError
 
 
-class _EuclideanConcretePointABC(_EuclideanPointABC, AConcretePoint):
-    pass
+class AEuclidConcretePoint(AnEuclidPoint, AConcretePoint):
+    """Anstract Euclidean Concrete Point."""
 
 
-class _EuclideanPointAtInfinityABC(_EuclideanPointABC, APointAtInf):
-    def __eq__(self, other_euclidean_point_at_infinity: _EuclideanPointAtInfinityABC, /) -> bool:
+class AnEuclidPointAtInf(AnEuclidPoint, APointAtInf):
+    """Anstract Euclidean Point at Infinity."""
+
+    def __eq__(self, other_euclidean_point_at_infinity: AnEuclidPointAtInf, /) -> bool:
         assert isinstance(other_euclidean_point_at_infinity, _type := type(self)), \
-            TypeError(f'*** OTHER_EUCLIDEAN_POINT_AT_INFINITY {print_obj_and_type(other_euclidean_point_at_infinity)} '
+            TypeError(f'*** OTHER_EUCLIDEAN_POINT_AT_INFINITY {obj_and_type_str(other_euclidean_point_at_infinity)} '
                       f'NOT OF SAME TYPE {_type.__name__} ***')
 
         return self.direction.is_scalar_multiple(other_euclidean_point_at_infinity.direction)
 
-    def same(self) -> _EuclideanPointAtInfinityABC:
+    def same(self) -> AnEuclidPointAtInf:
         return type(self)(self.direction)
 
-    def euclidean_distance(self, other_euclidean_point: _EuclideanPointABC, /) -> Expr:
+    def euclidean_distance(self, other_euclidean_point: AnEuclidPoint, /) -> Expr:
         raise oo
 
     @cached_property
