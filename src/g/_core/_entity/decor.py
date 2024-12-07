@@ -18,7 +18,7 @@ from ..._util import debug
 from ..._util.inspect import (is_static_method, is_class_method,
                               is_instance_method,
                               describe)
-
+from ..._util.type import OptionalStrOrCallableReturningStr
 from ..._util.unique_name import UNIQUE_NAME_FACTORY
 
 from .abc import AnEntity
@@ -26,7 +26,7 @@ from .abc import AnEntity
 if TYPE_CHECKING:
     from collections.abc import Any, Callable, LiteralString, Sequence
 
-    from ..._util.type import CallableReturningStr, OptionalStrOrCallableReturningStr  # noqa: E501
+    from ..._util.type import CallableReturningStr
 
 
 __all__: Sequence[LiteralString] = ('assign_entity_dependencies_and_name',)
