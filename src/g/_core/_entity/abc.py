@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from collections.abc import Sequence
     from typing import LiteralString, Self
 
-    from ...session import Session
+    from g.session import Session
 
 
 __all__: Sequence[LiteralString] = ('AnEntity',)
@@ -27,7 +27,7 @@ class AnEntity:
             return s
 
         else:
-            from ...session import DEFAULT_SESSION
+            from g.session import DEFAULT_SESSION
 
             setattr(self, self._SESS_ATTR_KEY, DEFAULT_SESSION)
 
@@ -35,7 +35,7 @@ class AnEntity:
 
     @session.setter
     def session(self: Self, session: Session, /) -> None:
-        from ...session import Session
+        from g.session import Session
 
         assert isinstance(session, Session), \
             TypeError(f'*** {session} NOT OF TYPE {Session.__name__} ***')
