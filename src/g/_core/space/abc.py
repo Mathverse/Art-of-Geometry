@@ -1,5 +1,7 @@
-"""Abstract Space."""
+"""Abstract Space classes."""
 
+
+from __future__ import annotations
 
 from abc import abstractmethod
 from collections.abc import Sequence
@@ -13,10 +15,11 @@ from ..entity.geom import _GeomEntityABC
 from ..point.abc import AConcretePoint
 
 
-__all__: Sequence[LiteralString] = ('_SpaceABC',)
+__all__: Sequence[LiteralString] = ('ASpace',
+                                    'ASubSpace', 'AHalfSpace', 'AClosedSubSpace')  # noqa: E501
 
 
-class _SpaceABC(_GeomEntityABC):
+class ASpace(_GeomEntityABC):
     """Abstract Space."""
 
     @cached_property
@@ -32,17 +35,17 @@ class _SpaceABC(_GeomEntityABC):
         raise NotImplementedError
 
 
-class _SubSpaceABC(_GeomEntityABC):
+class ASubSpace(_GeomEntityABC):
     """Abstract Sub-Space."""
 
 
 @dataclass
-class _HalfSpaceABC(_SubSpaceABC):
+class AHalfSpace(ASubSpace):
     """Abstract Half Space with a specified Boundary and containing a Point."""
 
-    boundary: _SpaceABC
+    boundary: ASpace
     point: AConcretePoint
 
 
-class _ClosedSubSpaceABC(_SubSpaceABC):
+class AClosedSubSpace(ASubSpace):
     """Abstract Closed Sub-Space enclosed within Boundary(ies)."""
