@@ -13,7 +13,7 @@ IF "%TARGET%"=="test-all" GOTO test-all
 :: INSTALLATION
 :: ============
 :install-editable
-  install\editable-dev
+  install\Windows\editable-dev
   GOTO end
 
 
