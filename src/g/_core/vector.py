@@ -28,7 +28,7 @@ from dataclasses import dataclass
 from functools import cache
 from typing import LiteralString, Self
 
-from .entity.non_geom import _NonGeomEntityABC
+from ._entity.non_geom import _NonGeomEntityABC
 from .variable import RealNumOrVar
 
 

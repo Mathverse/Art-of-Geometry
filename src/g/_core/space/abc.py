@@ -11,7 +11,7 @@ from typing import LiteralString, Self
 
 from sympy.core.expr import Expr
 
-from ..entity.geom import _GeomEntityABC
+from .._entity.geom import _GeomEntityABC
 from ..point.abc import AConcretePoint
 
 

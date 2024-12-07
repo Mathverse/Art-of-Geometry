@@ -6,7 +6,7 @@ from typing import Any, LiteralString, Self
 
 from sympy.assumptions.assume import AssumptionsContext
 
-from ._core.entity.abc import _EntityABC
+from ._core._entity.abc import _EntityABC
 from ._core.space.abc import ASpace
 
 from ._alg.abc import _AlgBackendABC

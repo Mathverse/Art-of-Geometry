@@ -11,7 +11,7 @@ from abc import abstractmethod
 from collections.abc import Sequence
 from typing import LiteralString, Self, TYPE_CHECKING
 
-from sympy.geometry.entity import GeometryEntity
+from sympy.geometry._entity import GeometryEntity
 
 from .abc import _EntityABC
 from .decor import assign_entity_dependencies_and_name

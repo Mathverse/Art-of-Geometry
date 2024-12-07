@@ -13,7 +13,7 @@ from abc import abstractmethod
 from collections.abc import Sequence
 from typing import LiteralString, Self
 
-from ..entity.geom import _GeomEntityABC
+from .._entity.geom import _GeomEntityABC
 from ..vector import Vector
 
 

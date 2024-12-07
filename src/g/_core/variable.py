@@ -10,7 +10,7 @@ from typing import LiteralString, Self
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 
-from .entity.non_geom import _NonGeomEntityABC
+from ._entity.non_geom import _NonGeomEntityABC
 
 from .._util.type import (Num, RealNum,
                           OptionalStrOrCallableReturningStr,
