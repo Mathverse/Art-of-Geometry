@@ -31,5 +31,8 @@ jobs:
       - name: PIP-Install Package & Dependencies
         run: make install-editable
 
+      - name: Lint Code
+        run: make lint-all
+
       - name: Run Tests
         run: make test-run
