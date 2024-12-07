@@ -1,23 +1,28 @@
 """Art of Geometry package."""
 
 
-from collections.abc import Sequence
+from __future__ import annotations
+
 from importlib.metadata import version
-from typing import LiteralString
+from typing import TYPE_CHECKING
 
-from ._core.variable import Variable, Var
-from ._core.vector import Vector, Vec, V, Ux, Uy, Uz, V0
+from ._core import (Variable, Var,
+                    Vector, Vec, V, Ux, Uy, Uz, V0)
 
-from .session import Session
+from .session import Session, DEFAULT_SESSION
 
 from ._util.cyclic_tuple import CyclicTuple
 from ._util import debug
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+    from typing import LiteralString
 
 
 __all__: Sequence[LiteralString] = (
     '__version__',
 
-    'Session',
+    'Session', 'DEFAULT_SESSION',
 
     'Variable', 'Var',
 
