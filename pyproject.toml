@@ -198,7 +198,7 @@ docstring-code-line-length = 'dynamic'
 
 # docs.pytest.org/en/latest/reference/reference.html#confval-addopts
 addopts = [
-  "--import-mode=importlib",
+  '--import-mode=importlib',
 ]
 
 # docs.pytest.org/en/latest/explanation/goodpractices.html#conventions-for-python-test-discovery

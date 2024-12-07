@@ -12,5 +12,5 @@ lint-all:
 
 # TESTING
 # =======
-test-run:
-	@ test/run
+test-all:
+	@ test/all
