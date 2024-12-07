@@ -4,12 +4,15 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from collections.abc import Sequence
-from typing import LiteralString
+from typing import TYPE_CHECKING
 
-from ..point import APoint
-from ..space import ASpace
-from ..variable import RealVarOrNum
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+    from typing import LiteralString
+
+    from ..point import APoint
+    from ..space import ASpace
+    from ..variable import RealVarOrNum
 
 
 __all__: Sequence[LiteralString] = ('ACoordSys',)
