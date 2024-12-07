@@ -1,14 +1,13 @@
 """Art of Geometry package."""
 
+
 from __future__ import annotations
 
 from importlib.metadata import version
 from typing import TYPE_CHECKING
 
-from ._core import (
-    Variable, Var,
-    Vector, Vec, V, Ux, Uy, Uz, V0,
-)
+from ._core import (Variable, Var,
+                    Vector, Vec, V, Ux, Uy, Uz, V0)
 
 from .session import Session, DEFAULT_SESSION
 
