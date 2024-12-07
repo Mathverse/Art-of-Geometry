@@ -6,6 +6,8 @@ are not tied to any location in space.
 """
 
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from .abc import AnEntity
