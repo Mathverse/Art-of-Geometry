@@ -10,12 +10,12 @@ from typing import TYPE_CHECKING
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 
-from ._entity.non_geom import ANonGeomEntity
-
-from .._util.type import (Num, RealNum,
+from g._util.type import (Num, RealNum,
                           OptionalStrOrCallableReturningStr,
                           OptionalSymPyExpr, OptionalStrOrSymPyExpr)
-from .._util.unique_name import UNIQUE_NAME_FACTORY
+from g._util.unique_name import UNIQUE_NAME_FACTORY
+
+from ._entity.non_geom import ANonGeomEntity
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
