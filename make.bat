@@ -7,7 +7,7 @@ SET TARGET=%1
 
 IF "%TARGET%"=="install-editable" GOTO install-editable
 IF "%TARGET%"=="lint-all" GOTO lint-all
-IF "%TARGET%"=="test-run" GOTO test-run
+IF "%TARGET%"=="test-all" GOTO test-all
 
 
 :: INSTALLATION
@@ -26,8 +26,8 @@ IF "%TARGET%"=="test-run" GOTO test-run
 
 :: TESTING
 :: =======
-:test-run
-  test\run
+:test-all
+  test\all
   GOTO end
 
 
