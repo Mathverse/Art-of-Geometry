@@ -1,6 +1,8 @@
 """Abstract base classes & fundamental concepts."""
 
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from ._entity import AGeomEntity, ANonGeomEntity, assign_entity_dependencies_and_name  # noqa: E501
@@ -31,7 +33,6 @@ from .variable import (Variable, Var,
 
 from .vector import (Vector, Vec, V,
                      Ux, Uy, Uz, V0)
-
 
 if TYPE_CHECKING:
     from collections.abc import Sequence

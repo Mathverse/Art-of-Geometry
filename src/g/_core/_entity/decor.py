@@ -24,7 +24,8 @@ from ..._util.unique_name import UNIQUE_NAME_FACTORY
 from .abc import AnEntity
 
 if TYPE_CHECKING:
-    from collections.abc import Any, Callable, LiteralString, Sequence
+    from collections.abc import Any, Callable, Sequence
+    from typing import LiteralString
 
     from ..._util.type import CallableReturningStr
 

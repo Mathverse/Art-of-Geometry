@@ -1,6 +1,8 @@
 """Entity classes & decorators."""
 
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from .decor import assign_entity_dependencies_and_name
