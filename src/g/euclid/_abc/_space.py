@@ -1,12 +1,12 @@
 __all__ = '_EuclideanSpaceABC', '_EuclideanHalfSpaceABC'
 
 
-from ..._core._space import _SpaceABC, _HalfSpaceABC
+from ..._core._space import ASpace, AHalfSpace
 
 
-class _EuclideanSpaceABC(_SpaceABC):
+class _EuclideanSpaceABC(ASpace):
     pass
 
 
-class _EuclideanHalfSpaceABC(_HalfSpaceABC):
+class _EuclideanHalfSpaceABC(AHalfSpace):
     pass
