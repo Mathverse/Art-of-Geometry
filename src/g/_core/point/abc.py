@@ -11,45 +11,43 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from collections.abc import Sequence
-from typing import LiteralString
+from typing import LiteralString, Self
 
 from ..entity.geom import _GeomEntityABC
 from ..vector import Vector
 
 
-__all__: Sequence[LiteralString] = ('_PointABC',
-                                    '_ConcretePointABC',
-                                    '_PointAtInfinityABC')
+__all__: Sequence[LiteralString] = 'APoint', 'AConcretePoint', 'APointAtInf'
 
 
-class _PointABC(_GeomEntityABC):
+class APoint(_GeomEntityABC):
     """Abstract Point."""
 
     _NAME_NULLABLE: bool = False
 
     @abstractmethod
-    def __eq__(self, other_point: _PointABC, /) -> bool:
+    def __eq__(self, other_point: APoint, /) -> bool:
         """Check equality."""
         raise NotImplementedError
 
-    def __ne__(self, other_point: _PointABC, /) -> bool:
+    def __ne__(self, other_point: APoint, /) -> bool:
         """Check inequality."""
         return not self == other_point
 
-    def __add__(self, vector: Vector, /) -> _PointABC:
+    def __add__(self, vector: Vector, /) -> Self:
         """Add vector."""
         raise NotImplementedError
 
-    def __radd__(self, vector: Vector, /) -> _PointABC:
+    def __radd__(self, vector: Vector, /) -> Self:
         """Add vector."""
         return self + vector
 
-    def point(self) -> _PointABC:
+    def point(self) -> Self:
         """Pick itself."""
         return self
 
 
-class _ConcretePointABC(_PointABC):
+class AConcretePoint(APoint):
     """Abstract Concrete Point."""
 
     @property
@@ -63,7 +61,7 @@ class _ConcretePointABC(_PointABC):
         raise NotImplementedError
 
 
-class _PointAtInfinityABC(_PointABC):
+class APointAtInf(APoint):
     """Abstract Point at Infinity."""
 
     @property

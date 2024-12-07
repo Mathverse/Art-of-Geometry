@@ -11,10 +11,10 @@ from sympy.core.numbers import oo
 from ....geom.var import Variable
 from ...._util._compat import cached_property
 from ...._util._type import print_obj_and_type
-from ..._core._point import _PointABC, _ConcretePointABC, _PointAtInfinityABC
+from ..._core._point import APoint, AConcretePoint, APointAtInf
 
 
-class _EuclideanPointABC(_PointABC):
+class _EuclideanPointABC(APoint):
     @abstractmethod
     def euclidean_distance(self, other_euclidean_point: _EuclideanPointABC, /) -> Variable:
         raise NotImplementedError
@@ -25,11 +25,11 @@ class _EuclideanPointABC(_PointABC):
         raise NotImplementedError
 
 
-class _EuclideanConcretePointABC(_EuclideanPointABC, _ConcretePointABC):
+class _EuclideanConcretePointABC(_EuclideanPointABC, AConcretePoint):
     pass
 
 
-class _EuclideanPointAtInfinityABC(_EuclideanPointABC, _PointAtInfinityABC):
+class _EuclideanPointAtInfinityABC(_EuclideanPointABC, APointAtInf):
     def __eq__(self, other_euclidean_point_at_infinity: _EuclideanPointAtInfinityABC, /) -> bool:
         assert isinstance(other_euclidean_point_at_infinity, _type := type(self)), \
             TypeError(f'*** OTHER_EUCLIDEAN_POINT_AT_INFINITY {print_obj_and_type(other_euclidean_point_at_infinity)} '

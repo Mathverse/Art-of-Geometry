@@ -18,7 +18,7 @@ from .decor import assign_entity_dependencies_and_name
 
 if TYPE_CHECKING:
     from ..linear import _LinearEntityABC, _LineABC
-    from ..point import _PointABC
+    from ..point import APoint
     from ..vector import Vector
 
 
@@ -50,7 +50,7 @@ class _GeomEntityABC(_EntityABC, GeometryEntity):
         setattr(self, self._NAME_ATTR_KEY, None)
 
     @abstractmethod
-    def point(self, *args, **kwargs) -> _PointABC:
+    def point(self, *args, **kwargs) -> APoint:
         """Pick a Point on this Geometric Entity."""
         raise NotImplementedError
 
@@ -72,32 +72,32 @@ class _GeomEntityABC(_EntityABC, GeometryEntity):
 
     # NORMAL DIRECTION
     @abstractmethod
-    def normal_direction_at_point(self: Self, point: _PointABC, /) -> Vector:  # noqa: E501
+    def normal_direction_at_point(self: Self, point: APoint, /) -> Vector:  # noqa: E501
         raise NotImplementedError
 
     # alias
-    def normal_direction(self: Self, point: _PointABC, /) -> Vector:
+    def normal_direction(self: Self, point: APoint, /) -> Vector:
         return self.normal_direction_at_point(point)
 
-    def normal(self: Self, point: _PointABC, /) -> Vector:
+    def normal(self: Self, point: APoint, /) -> Vector:
         return self.normal_direction_at_point(point)
 
     # PERPENDICULAR LINE
     @abstractmethod
-    def perpendicular_line_at_point(self: Self, point: _PointABC, /) -> _LineABC:  # noqa: E501
+    def perpendicular_line_at_point(self: Self, point: APoint, /) -> _LineABC:  # noqa: E501
         raise NotImplementedError
 
     # alias
-    def perpendicular_line(self: Self, point: _PointABC, /) -> _LineABC:
+    def perpendicular_line(self: Self, point: APoint, /) -> _LineABC:
         raise self.perpendicular_line_at_point(point)
 
     # TANGENT
     @abstractmethod
-    def tangent_at_point(self: Self, point: _PointABC, /) -> _LinearEntityABC:
+    def tangent_at_point(self: Self, point: APoint, /) -> _LinearEntityABC:
         raise NotImplementedError
 
     # alias
-    def tangent(self: Self, point: _PointABC, /) -> _LinearEntityABC:
+    def tangent(self: Self, point: APoint, /) -> _LinearEntityABC:
         return self.tangent_at_point(point)
 
     # CUTTING / INTERSECTION

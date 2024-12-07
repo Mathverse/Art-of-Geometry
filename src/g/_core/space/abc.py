@@ -10,7 +10,7 @@ from typing import LiteralString, Self
 from sympy.core.expr import Expr
 
 from ..entity.geom import _GeomEntityABC
-from ..point.abc import _ConcretePointABC
+from ..point.abc import AConcretePoint
 
 
 __all__: Sequence[LiteralString] = ('_SpaceABC',)
@@ -41,7 +41,7 @@ class _HalfSpaceABC(_SubSpaceABC):
     """Abstract Half Space with a specified Boundary and containing a Point."""
 
     boundary: _SpaceABC
-    point: _ConcretePointABC
+    point: AConcretePoint
 
 
 class _ClosedSubSpaceABC(_SubSpaceABC):
