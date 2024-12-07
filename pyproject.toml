@@ -133,7 +133,34 @@ disable = [
 ]
 
 
+# docs.pytest.org/en/latest/reference/reference.html#configuration-options
+# docs.pytest.org/en/latest/reference/reference.html#ini-options-ref
 [tool.pytest.ini_options]
+
+# docs.pytest.org/en/latest/reference/reference.html#confval-addopts
+addopts = [
+  "--import-mode=importlib",
+]
+
+# docs.pytest.org/en/latest/explanation/goodpractices.html#conventions-for-python-test-discovery
+# docs.pytest.org/en/latest/example/pythoncollection.html
+
+# docs.pytest.org/en/latest/reference/reference.html#confval-python_files
+python_files = [
+  '*.py',
+]
+# docs.pytest.org/en/latest/reference/reference.html#confval-python_classes
+python_classes = [
+  'Check*', '*Check',
+  'Test*', '*Test',
+]
+# docs.pytest.org/en/latest/reference/reference.html#confval-python_functions
+python_functions = [
+  'check_*', '*_check',
+  'test_*', '*_test',
+]
+
+# docs.pytest.org/en/latest/reference/reference.html#confval-testpaths
 testpaths = [
   'test',
 ]

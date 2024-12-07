@@ -30,3 +30,6 @@ jobs:
 
       - name: PIP-Install Package & Dependencies
         run: make install-editable
+
+      - name: Run Tests
+        run: make test-run
