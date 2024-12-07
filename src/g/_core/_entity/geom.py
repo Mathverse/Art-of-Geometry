@@ -20,7 +20,7 @@ if TYPE_CHECKING:
     from typing import LiteralString, Self
 
     from ..point import APoint
-    from ..space.linear import ALinearEntity, ALine
+    from ..space import ALinearEntity, ALine
     from ..vector import Vector
 
 
