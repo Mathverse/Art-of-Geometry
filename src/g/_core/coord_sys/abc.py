@@ -11,7 +11,6 @@ if TYPE_CHECKING:
     from typing import LiteralString
 
     from ..point import APoint
-    from ..space import ASpace
     from ..variable import RealVarOrNum
 
 
@@ -22,6 +21,6 @@ class ACoordSys:
     """Abstract Coordinate System."""
 
     @abstractmethod
-    def __call__(self, point: APoint, space: ASpace) -> tuple[RealVarOrNum]:
-        """Return Point's coordinate in Space."""
+    def __call__(self, point: APoint) -> tuple[RealVarOrNum]:
+        """Return Point's coordinates."""
         raise NotImplementedError
