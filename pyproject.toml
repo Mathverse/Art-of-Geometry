@@ -155,6 +155,13 @@ ignore = [
   'E402',  # module level import not at top of file
   'F401',  # imported but unused
   'F841',  # local variable is assigned to but never used
+
+  'B019',  # use of `functools.lru_cache` or `functools.cache` on methods can lead to memory leaks
+  'I001',  # import block is un-sorted or un-formatted
+  'Q000',  # single quotes found but double quotes preferred
+  'RUF022',  # `__all__` is not sorted
+  'S101',  # use of `assert` detected
+  'TID252',  # prefer absolute imports over relative imports from parent modules
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
