@@ -1,11 +1,11 @@
-"""Abstract Euclidean Geometric Entity."""
+"""Euclidean Geometric Entity classes."""
 
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from g._core import AGeomEntity
+from .abc import AnEuclidGeomEntity
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -13,7 +13,3 @@ if TYPE_CHECKING:
 
 
 __all__: Sequence[LiteralString] = ('AnEuclidGeomEntity',)
-
-
-class AnEuclidGeomEntity(AGeomEntity):
-    """Abstract Euclidean Geometric Entity."""
