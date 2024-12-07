@@ -1,0 +1,26 @@
+# docs.astral.sh/ruff/configuration
+
+
+extend-exclude = [
+]
+
+line-length = 79
+
+
+[format]
+
+exclude = [
+  "*.py",
+  "*.toml",
+]
+
+
+[lint]
+exclude = [
+  "*.ipynb",
+]
+select = ["ALL"]
+extend-select = [
+]
+ignore = [
+]
