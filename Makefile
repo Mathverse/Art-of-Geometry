@@ -1,7 +1,7 @@
 # INSTALLATION
 # ============
 install-editable:
-	@ install/editable-dev
+	@ install/Linux/editable-dev
 
 
 # LINTING
