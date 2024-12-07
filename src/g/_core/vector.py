@@ -23,13 +23,18 @@ characteristic vectors.
 """
 
 
-from collections.abc import Sequence
+from __future__ import annotations
+
 from dataclasses import dataclass
 from functools import cache
-from typing import LiteralString, Self
+from typing import TYPE_CHECKING
 
-from ._entity.non_geom import _NonGeomEntityABC
+from ._entity import ANonGeomEntity
 from .variable import RealNumOrVar
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+    from typing import LiteralString, Self
 
 
 __all__: Sequence[LiteralString] = ('Vector', 'Vec', 'V',
@@ -37,7 +42,7 @@ __all__: Sequence[LiteralString] = ('Vector', 'Vec', 'V',
 
 
 @dataclass
-class Vector(_NonGeomEntityABC):
+class Vector(ANonGeomEntity):
     """(3-Dimensional) Vector."""
 
     x: RealNumOrVar = 0

@@ -10,17 +10,20 @@ locational coordinates.
 from __future__ import annotations
 
 from abc import abstractmethod
-from collections.abc import Sequence
-from typing import LiteralString, Self
+from typing import TYPE_CHECKING
 
-from .._entity.geom import _GeomEntityABC
+from .._entity import AGeomEntity
 from ..vector import Vector
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+    from typing import LiteralString, Self
 
 
 __all__: Sequence[LiteralString] = 'APoint', 'AConcretePoint', 'APointAtInf'
 
 
-class APoint(_GeomEntityABC):
+class APoint(AGeomEntity):
     """Abstract Point."""
 
     _NAME_NULLABLE: bool = False

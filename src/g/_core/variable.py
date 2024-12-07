@@ -3,19 +3,23 @@
 Variables are non-geometric entities representing numbers.
 """
 
+from __future__ import annotations
 
-from collections.abc import Sequence
-from typing import LiteralString, Self
+from typing import TYPE_CHECKING
 
 from sympy.core.expr import Expr
 from sympy.core.symbol import Symbol
 
-from ._entity.non_geom import _NonGeomEntityABC
+from ._entity.non_geom import ANonGeomEntity
 
 from .._util.type import (Num, RealNum,
                           OptionalStrOrCallableReturningStr,
                           OptionalSymPyExpr, OptionalStrOrSymPyExpr)
 from .._util.unique_name import UNIQUE_NAME_FACTORY
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+    from typing import LiteralString, Self
 
 
 __all__: Sequence[LiteralString] = ('Variable', 'Var',
@@ -24,7 +28,7 @@ __all__: Sequence[LiteralString] = ('Variable', 'Var',
                                     'RealNumOrVar', 'OptionalRealNumOrVar')
 
 
-class Variable(_NonGeomEntityABC, Symbol):
+class Variable(ANonGeomEntity, Symbol):
     """Variable."""
 
     _NAME_NULLABLE: bool = False

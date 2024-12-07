@@ -1,8 +1,8 @@
 __all__ = '_HyperbolicLineABC',
 
 
-from g.geom.non_euclid._core.line import _LineABC
+from g.geom.non_euclid._core.line import ALine
 
 
-class _HyperbolicLineABC(_LineABC):
+class _HyperbolicLineABC(ALine):
     pass

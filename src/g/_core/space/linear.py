@@ -3,71 +3,79 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
-from typing import LiteralString
+from typing import TYPE_CHECKING
+
+from ._entity import AGeomEntity
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+    from typing import LiteralString
 
 
-__all__: Sequence[LiteralString] = (
-    '_LinearEntityABC',
-    '_ConcreteLinearEntityABC',
-    '_LinearEntityAtInfinityABC',
+__all__: Sequence[LiteralString] = ('ALinearEntity',
+                                    'AConcreteLinearEntity',
+                                    'ALinearEntityAtInf',
 
-    '_LineABC',
+                                    'ALine',
 
-    '_ConcreteLineABC',
-    '_ConcreteDirectedLineABC',
+                                    'AConcreteLine',
+                                    'AConcreteDirectedLine',
 
-    '_LineAtInfinityABC',
-    '_DirectedLineAtInfinityABC',
-)
+                                    'ALineAtInf',
+                                    'ADirectedLineAtInf')
 
 
-from ._entity import _GeomEntityABC
+class ALinearEntity(AGeomEntity):
+    """Abstract Linear Entity."""
 
 
-class _LinearEntityABC(_GeomEntityABC):
-    pass
+class AConcreteLinearEntity(ALinearEntity):
+    """Abstract Concrete Linear Entity."""
 
 
-class _ConcreteLinearEntityABC(_LinearEntityABC):
-    pass
+class ALinearEntityAtInf(ALinearEntity):
+    """Abstract Linear Entity at Infinity."""
 
 
-class _LinearEntityAtInfinityABC(_LinearEntityABC):
-    pass
+class ALine(ALinearEntity):
+    """Abstract Line."""
 
 
-class _LineABC(_LinearEntityABC):
-    pass
+class AConcreteLine(ALine, AConcreteLinearEntity):
+    """Abstract Concrete Line."""
 
-
-class _ConcreteLineABC(_LineABC, _ConcreteLinearEntityABC):
     @property
     def name(self) -> str:
+        """Name."""
         return (self._name
                 if self._name
                 else f'-{self.point_0.name}--{self.point_1.name}-')
 
     @property
     def _short_repr(self) -> str:
+        """Short string representation."""
         return f'Ln {self.name}'
 
 
-class _ConcreteDirectedLineABC(_ConcreteLineABC):
+class AConcreteDirectedLine(AConcreteLine):
+    """Abstract Concrete Directed Line."""
+
     @property
     def name(self) -> str:
+        """Name."""
         return (self._name
                 if self._name
                 else f'-{self.point_0.name}->{self.point_1.name}-')
 
     @property
     def _short_repr(self) -> str:
+        """Short string representation."""
         return f'DirLn {self.name}'
 
 
-class _LineAtInfinityABC(_LineABC, _LinearEntityAtInfinityABC):
-    pass
+class ALineAtInf(ALine, ALinearEntityAtInf):
+    """Abstract Line at Infinity."""
 
 
-class _DirectedLineAtInfinityABC(_LineAtInfinityABC):
-    pass
+class ADirectedLineAtInf(ALineAtInf):
+    """Abstract Directed Line at Infinity."""

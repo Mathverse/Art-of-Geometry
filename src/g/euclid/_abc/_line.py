@@ -14,13 +14,13 @@ from sympy.geometry.point import Point
 
 from ...._util._compat import cached_property
 from ....geom._core._line import \
-    _LinearEntityABC, _ConcreteLinearEntityABC, _LinearEntityAtInfinityABC, \
-    _LineABC, _ConcreteLineABC, _ConcreteDirectedLineABC, _LineAtInfinityABC, _DirectedLineAtInfinityABC
+    ALinearEntity, AConcreteLinearEntity, ALinearEntityAtInf, \
+    ALine, AConcreteLine, AConcreteDirectedLine, ALineAtInf, ADirectedLineAtInf
 from ._entity import _EuclideanGeometryEntityABC
 from ._point import _EuclideanPointABC, _EuclideanConcretePointABC
 
 
-class _EuclideanLinearEntityABC(_EuclideanGeometryEntityABC, _LinearEntityABC):
+class _EuclideanLinearEntityABC(_EuclideanGeometryEntityABC, ALinearEntity):
     @abstractmethod
     def parallel_line(self, through_euclidean_point: _EuclideanPointABC, /) -> _EuclideanLineABC:
         raise NotImplementedError
@@ -38,7 +38,7 @@ class _EuclideanLinearEntityABC(_EuclideanGeometryEntityABC, _LinearEntityABC):
         raise NotImplementedError
 
 
-class _EuclideanConcreteLinearEntityABC(_EuclideanLinearEntityABC, _ConcreteLinearEntityABC, LinearEntity):
+class _EuclideanConcreteLinearEntityABC(_EuclideanLinearEntityABC, AConcreteLinearEntity, LinearEntity):
     @cached_property
     def unit_direction(self) -> Point:
         return self.direction.unit
@@ -49,27 +49,27 @@ class _EuclideanConcreteLinearEntityABC(_EuclideanLinearEntityABC, _ConcreteLine
         return self.point_0 + self.unit_direction.dot(euclidean_concrete_point - self.point_0) * self.unit_direction
 
 
-class _EuclideanLinearEntityAtInfinityABC(_EuclideanLinearEntityABC, _LinearEntityAtInfinityABC):
+class _EuclideanLinearEntityAtInfinityABC(_EuclideanLinearEntityABC, ALinearEntityAtInf):
     pass
 
 
-class _EuclideanLineABC(_EuclideanLinearEntityABC, _LineABC):
+class _EuclideanLineABC(_EuclideanLinearEntityABC, ALine):
     pass
 
 
-class _EuclideanConcreteLineABC(_EuclideanLineABC, _EuclideanConcreteLinearEntityABC, _ConcreteLineABC, Line):
+class _EuclideanConcreteLineABC(_EuclideanLineABC, _EuclideanConcreteLinearEntityABC, AConcreteLine, Line):
     pass
 
 
-class _EuclideanConcreteDirectedLineABC(_EuclideanConcreteLineABC, _ConcreteDirectedLineABC):
+class _EuclideanConcreteDirectedLineABC(_EuclideanConcreteLineABC, AConcreteDirectedLine):
     pass
 
 
-class _EuclideanLineAtInfinityABC(_EuclideanLineABC, _EuclideanLinearEntityAtInfinityABC, _LineAtInfinityABC):
+class _EuclideanLineAtInfinityABC(_EuclideanLineABC, _EuclideanLinearEntityAtInfinityABC, ALineAtInf):
     pass
 
 
-class _EuclideanDirectedLineAtInfinityABC(_EuclideanLineAtInfinityABC, _DirectedLineAtInfinityABC):
+class _EuclideanDirectedLineAtInfinityABC(_EuclideanLineAtInfinityABC, ADirectedLineAtInf):
     pass
 
 

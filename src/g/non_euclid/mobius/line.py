@@ -1,8 +1,8 @@
 __all__ = '_MobiusLineABC',
 
 
-from g.geom.non_euclid._core.line import _LineABC
+from g.geom.non_euclid._core.line import ALine
 
 
-class _MobiusLineABC(_LineABC):
+class _MobiusLineABC(ALine):
     pass
