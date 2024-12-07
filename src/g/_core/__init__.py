@@ -5,7 +5,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from ._entity import AGeomEntity, ANonGeomEntity, assign_entity_dependencies_and_name  # noqa: E501
+from ._entity import (AnEntity, AGeomEntity, ANonGeomEntity,
+                      assign_entity_dependencies_and_name)
 
 from .coord_sys import ACoordSys
 
@@ -40,7 +41,8 @@ if TYPE_CHECKING:
 
 
 __all__: Sequence[LiteralString] = (
-    'AGeomEntity', 'ANonGeomEntity', 'assign_entity_dependencies_and_name',
+    'AnEntity', 'AGeomEntity', 'ANonGeomEntity',
+    'assign_entity_dependencies_and_name',
 
     'ACoordSys',
 

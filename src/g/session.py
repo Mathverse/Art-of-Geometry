@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 
 from sympy.assumptions.assume import AssumptionsContext
 
-from ._core import AnEntity, ASpace
+from ._core import AnEntity
 
 from ._alg.abc import _AlgBackendABC
 from ._alg.sympy import SymPyBackend
@@ -21,6 +21,8 @@ from ._util.unique_name import UNIQUE_NAME_FACTORY
 if TYPE_CHECKING:
     from collections.abc import Callable, Sequence
     from typing import Any, LiteralString, Self
+
+    from ._core import ASpace
 
 
 __all__: Sequence[LiteralString] = 'Session', 'DEFAULT_SESSION'
