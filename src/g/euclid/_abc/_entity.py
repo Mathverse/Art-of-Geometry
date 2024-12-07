@@ -1,8 +1,19 @@
-__all__ = '_EuclideanGeometryEntityABC',
+"""Abstract Euclidean Geometry Entity."""
 
 
-from ..._core._entity import _GeometryEntityABC
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from g._core import AGeomEntity
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+    from typing import LiteralString
 
 
-class _EuclideanGeometryEntityABC(_GeometryEntityABC):
-    pass
+__all__: Sequence[LiteralString] = ('AnEuclidGeomEntity',)
+
+
+class AnEuclidGeomEntity(AGeomEntity):
+    """Abstract Euclidean Geometry Entity."""
