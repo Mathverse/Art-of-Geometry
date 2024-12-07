@@ -10,7 +10,7 @@ from __future__ import annotations
 from abc import abstractmethod
 from typing import TYPE_CHECKING
 
-from sympy.geometry._entity import GeometryEntity
+from sympy.geometry.entity import GeometryEntity
 
 from .abc import AnEntity
 from .decor import assign_entity_dependencies_and_name
