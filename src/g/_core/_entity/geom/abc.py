@@ -12,8 +12,8 @@ from typing import TYPE_CHECKING
 
 from sympy.geometry.entity import GeometryEntity
 
-from .abc import AnEntity
-from .decor import assign_entity_dependencies_and_name
+from ..abc import AnEntity
+from ..decor import assign_entity_dependencies_and_name
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
