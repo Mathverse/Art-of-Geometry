@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from .abc import AnEntity
+from ..abc import AnEntity
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
