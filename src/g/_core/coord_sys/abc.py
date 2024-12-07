@@ -8,11 +8,10 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
-    from typing import LiteralString
+    from typing import LiteralString, Self
 
     from ..point import APoint
-    from ..space import ASpace
-    from ..variable import RealVarOrNum
+    from ..variable import NumOrVar
 
 
 __all__: Sequence[LiteralString] = ('ACoordSys',)
@@ -22,6 +21,11 @@ class ACoordSys:
     """Abstract Coordinate System."""
 
     @abstractmethod
-    def __call__(self, point: APoint, space: ASpace) -> tuple[RealVarOrNum]:
-        """Return Point's coordinate in Space."""
+    def __call__(self: Self, *coords: NumOrVar) -> APoint:
+        """Return Point from coordinates."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def locate(self: Self, point: APoint) -> tuple[NumOrVar]:
+        """Return Point's coordinates."""
         raise NotImplementedError
