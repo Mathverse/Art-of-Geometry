@@ -1,4 +1,4 @@
-"""Coordinate System."""
+"""Coordinate System classes."""
 
 
 from collections.abc import Sequence
