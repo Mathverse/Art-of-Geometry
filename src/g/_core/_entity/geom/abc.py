@@ -10,8 +10,6 @@ from __future__ import annotations
 from abc import abstractmethod
 from typing import TYPE_CHECKING
 
-from sympy.geometry.entity import GeometryEntity
-
 from ..abc import AnEntity
 from ..decor import assign_entity_dependencies_and_name
 
@@ -28,7 +26,7 @@ __all__: Sequence[LiteralString] = ('AGeomEntity',)
 
 
 @assign_entity_dependencies_and_name
-class AGeomEntity(AnEntity, GeometryEntity):
+class AGeomEntity(AnEntity):
     """Abstract Geometric Entity."""
 
     @property
