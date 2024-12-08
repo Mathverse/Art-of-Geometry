@@ -1,8 +1,8 @@
 __all__ = '_EuclideanGeometryEntityInR1ABC',
 
 
-from ..._core._entity import _EuclideanGeometryEntityABC
+from ..._core._entity import AnEuclidGeomEntity
 
 
-class _EuclideanGeometryEntityInR1ABC(_EuclideanGeometryEntityABC):
+class _EuclideanGeometryEntityInR1ABC(AnEuclidGeomEntity):
     pass

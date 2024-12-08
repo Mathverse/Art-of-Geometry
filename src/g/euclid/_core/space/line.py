@@ -16,25 +16,25 @@ from ...._util._compat import cached_property
 from ....geom._core._line import \
     ALinearEntity, AConcreteLinearEntity, ALinearEntityAtInf, \
     ALine, AConcreteLine, AConcreteDirectedLine, ALineAtInf, ADirectedLineAtInf
-from ._entity import _EuclideanGeometryEntityABC
-from ._point import _EuclideanPointABC, _EuclideanConcretePointABC
+from ._entity import AnEuclidGeomEntity
+from ._point import AnEuclidPoint, AEuclidConcretePoint
 
 
-class _EuclideanLinearEntityABC(_EuclideanGeometryEntityABC, ALinearEntity):
+class _EuclideanLinearEntityABC(AnEuclidGeomEntity, ALinearEntity):
     @abstractmethod
-    def parallel_line(self, through_euclidean_point: _EuclideanPointABC, /) -> _EuclideanLineABC:
+    def parallel_line(self, through_euclidean_point: AnEuclidPoint, /) -> _EuclideanLineABC:
         raise NotImplementedError
 
     @abstractmethod
-    def perpendicular_projection_of_point(self, euclidean_point: _EuclideanPointABC, /) -> _EuclideanPointABC:
+    def perpendicular_projection_of_point(self, euclidean_point: AnEuclidPoint, /) -> AnEuclidPoint:
         raise NotImplementedError
 
     # alias
-    def perpendicular_projection(self, euclidean_point: _EuclideanPointABC, /) -> _EuclideanPointABC:
+    def perpendicular_projection(self, euclidean_point: AnEuclidPoint, /) -> AnEuclidPoint:
         return self.perpendicular_projection_of_point(euclidean_point)
 
     @abstractmethod
-    def perpendicular_line(self, through_euclidean_point: _EuclideanPointABC, /) -> _EuclideanLineABC:
+    def perpendicular_line(self, through_euclidean_point: AnEuclidPoint, /) -> _EuclideanLineABC:
         raise NotImplementedError
 
 
@@ -44,8 +44,8 @@ class _EuclideanConcreteLinearEntityABC(_EuclideanLinearEntityABC, AConcreteLine
         return self.direction.unit
 
     def perpendicular_projection_of_point(
-            self, euclidean_concrete_point: _EuclideanConcretePointABC, /) \
-            -> _EuclideanConcretePointABC:
+            self, euclidean_concrete_point: AEuclidConcretePoint, /) \
+            -> AEuclidConcretePoint:
         return self.point_0 + self.unit_direction.dot(euclidean_concrete_point - self.point_0) * self.unit_direction
 
 

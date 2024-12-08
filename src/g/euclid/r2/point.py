@@ -12,16 +12,16 @@ from ....geom.var import Variable, OptionalVariableOrNumericType, VARIABLE_AND_N
 from ...._util._compat import cached_property
 from ...._util._tmp import TMP_NAME_FACTORY
 from ...._util._type import NUMERIC_TYPES, OptionalStrOrCallableReturningStrType, print_obj_and_type
-from .._core._point import _EuclideanPointABC, _EuclideanConcretePointABC, _EuclideanPointAtInfinityABC
+from .._core._point import AnEuclidPoint, AEuclidConcretePoint, AnEuclidPointAtInf
 from ._core._entity import _EuclideanGeometryEntityInR2ABC
 
 
-class _PointInR2ABC(_EuclideanGeometryEntityInR2ABC, _EuclideanPointABC):
+class _PointInR2ABC(_EuclideanGeometryEntityInR2ABC, AnEuclidPoint):
     pass
 
 
 @_PointInR2ABC.assign_name_and_dependencies
-class PointInR2(_PointInR2ABC, _EuclideanConcretePointABC, Point2D):
+class PointInR2(_PointInR2ABC, AEuclidConcretePoint, Point2D):
     def __new__(
             cls,
             x: OptionalVariableOrNumericType = None, y: OptionalVariableOrNumericType = None,
@@ -131,7 +131,7 @@ Pt = Point = PointR2 = PointInR2
 
 
 @_PointInR2ABC.assign_name_and_dependencies
-class PointAtInfinityInR2(_PointInR2ABC, _EuclideanPointAtInfinityABC):
+class PointAtInfinityInR2(_PointInR2ABC, AnEuclidPointAtInf):
     def __init__(self, direction: PointInR2, /) -> None:
         assert isinstance(direction, PointInR2), \
             TypeError(f'*** DIRECTION {direction} NOT OF TYPE {PointInR2.__name__} ***')

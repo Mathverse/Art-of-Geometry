@@ -2,11 +2,11 @@ __all__ = 'PointInR0', 'PointR0', 'Point', 'Pt'
 
 
 from ...._util._tmp import TMP_NAME_FACTORY
-from .._core._point import _EuclideanConcretePointABC
+from .._core._point import AEuclidConcretePoint
 
 
-@_EuclideanConcretePointABC.assign_name_and_dependencies
-class _PointInR0(_EuclideanConcretePointABC):
+@AEuclidConcretePoint.assign_name_and_dependencies
+class _PointInR0(AEuclidConcretePoint):
     @property
     def name(self) -> str:
         return getattr(self, self._NAME_ATTR_KEY)

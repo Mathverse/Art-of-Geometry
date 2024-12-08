@@ -1,10 +1,10 @@
 __all__ = 'PlaneInRD', 'PlaneRD', 'Plane'
 
 
-from .._core._entity import _EuclideanGeometryEntityABC
+from .._core._entity import AnEuclidGeomEntity
 
 
-class PlaneInRD(_EuclideanGeometryEntityABC):
+class PlaneInRD(AnEuclidGeomEntity):
     pass
 
 
