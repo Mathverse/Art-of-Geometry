@@ -19,7 +19,16 @@ if TYPE_CHECKING:
 __all__: Sequence[LiteralString] = ('ACoordSys',)
 
 
-@dataclass
+@dataclass(init=True,
+           repr=True,
+           eq=True,
+           order=False,
+           unsafe_hash=True,  # force hashing using unique name
+           frozen=True,  # TODO: decide whether immutability is necessary
+           match_args=True,
+           kw_only=False,
+           slots=False,
+           weakref_slot=False)
 class ACoordSys(ABC):
     """Abstract Coordinate System."""
 
