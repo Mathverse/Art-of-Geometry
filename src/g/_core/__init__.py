@@ -33,6 +33,7 @@ from .variable import (Variable, Var,
                        RealNumOrVar, OptionalRealNumOrVar)
 
 from .vector import (Vector, Vec, V,
+                     OptionalVec,
                      Ux, Uy, Uz, V0)
 
 if TYPE_CHECKING:
@@ -69,5 +70,6 @@ __all__: Sequence[LiteralString] = (
     'RealNumOrVar', 'OptionalRealNumOrVar',
 
     'Vector', 'Vec', 'V',
+    'OptionalVec',
     'Ux', 'Uy', 'Uz', 'V0',
 )
