@@ -30,6 +30,8 @@ __all__: Sequence[LiteralString] = (
 
     'Session', 'DEFAULT_SESSION',
 
+    'EuclidCoordSys', 'EUCLID_COORD_SYS',
+
     'EuclidPoint', 'EuclidConcretePoint', 'EuclidPointAtInf', 'EUCLID_ORIG',
     'Point', 'Pt', 'PointAtInf', 'PtAtInf', 'ORIG',
 
