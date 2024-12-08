@@ -10,9 +10,10 @@ if TYPE_CHECKING:
     from typing import LiteralString
 
     from ..variable import NumOrVar
+    from .euclid import EuclidCoords
 
 
 __all__: Sequence[LiteralString] = ('Coords',)
 
 
-Coords: type = tuple[NumOrVar] | dict[str, NumOrVar]
+Coords: type = tuple[NumOrVar] | dict[str, NumOrVar] | EuclidCoords
