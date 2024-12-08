@@ -38,6 +38,7 @@ if TYPE_CHECKING:
 
 
 __all__: Sequence[LiteralString] = ('Vector', 'Vec', 'V',
+                                    'OptionalVec',
                                     'Ux', 'Uy', 'Uz', 'V0')
 
 
@@ -63,6 +64,10 @@ class Vector(ANonGeomEntity):
 
 # aliases
 V = Vec = Vector
+
+
+# type constants
+OptionalVec: type = Vec | None
 
 
 # global unit vectors

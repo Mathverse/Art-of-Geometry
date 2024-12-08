@@ -1,9 +1,6 @@
 """Abstract Point base classes.
 
 Points are fundamental geometric entities.
-
-Each Point can belong to multiple Spaces, in each of which it can have a set of
-locational coordinates.
 """
 
 
@@ -13,11 +10,12 @@ from abc import abstractmethod
 from typing import TYPE_CHECKING
 
 from .._entity import AGeomEntity
-from ..vector import Vector
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
     from typing import LiteralString, Self
+
+    from ..vector import Vector
 
 
 __all__: Sequence[LiteralString] = 'APoint', 'AConcretePoint', 'APointAtInf'
@@ -45,7 +43,7 @@ class APoint(AGeomEntity):
         """Add vector."""
         return self + vector
 
-    def point(self) -> Self:
+    def pick_a_point(self) -> Self:
         """Pick itself."""
         return self
 
