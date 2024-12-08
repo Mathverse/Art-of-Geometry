@@ -10,7 +10,11 @@ from ._entity import (AnEntity, AGeomEntity, ANonGeomEntity,
 
 from .coord_sys import ACoordSys
 
-from .point import APoint, AConcretePoint, APointAtInf
+from .point import (
+    APoint, AConcretePoint, APointAtInf,
+    EuclidPoint, EuclidConcretePoint, EuclidPointAtInf, EUCLID_ORIG,
+    Point, Pt, PointAtInf, PtAtInf, ORIG,
+)
 
 from .space import (ASpace,
                     ASubSpace, AHalfSpace, AClosedSubSpace,
@@ -48,6 +52,8 @@ __all__: Sequence[LiteralString] = (
     'ACoordSys',
 
     'APoint', 'AConcretePoint', 'APointAtInf',
+    'EuclidPoint', 'EuclidConcretePoint', 'EuclidPointAtInf', 'EUCLID_ORIG',
+    'Point', 'Pt', 'PointAtInf', 'PtAtInf', 'ORIG',
 
     'ASpace',
     'ASubSpace', 'AHalfSpace', 'AClosedSubSpace',
