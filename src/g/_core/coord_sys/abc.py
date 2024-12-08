@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
@@ -20,7 +20,7 @@ __all__: Sequence[LiteralString] = ('ACoordSys',)
 
 
 @dataclass
-class ACoordSys:
+class ACoordSys(ABC):
     """Abstract Coordinate System."""
 
     name: str
