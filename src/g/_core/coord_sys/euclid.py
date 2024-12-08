@@ -6,13 +6,14 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TypedDict, TYPE_CHECKING
 
+from ..point import EuclidConcretePoint, EuclidPointAtInf
 from .abc import ACoordSys
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
     from typing import LiteralString, Self, NotRequired
 
-    from ..point import APoint
+    from ..point import APoint, EuclidPoint
     from ..variable import RealNumOrVar, OptionalRealNumOrVar
     from ..vector import OptionalVec
 
@@ -36,7 +37,7 @@ class EuclidCoords:
     inf_dir: OptionalVec = None
 
 
-EUCLID_COORD_SYS_NAME: LiteralString = 'EUCLID_COORD_SYS'
+EUCLID_COORD_SYS_NAME: LiteralString = 'EUCLID-COORD-SYS'
 
 
 @dataclass(init=True,
@@ -54,9 +55,15 @@ class EuclidCoordSys(ACoordSys):
 
     name: str = EUCLID_COORD_SYS_NAME
 
-    def __call__(self: Self, *coords: RealNumOrVar, **kw_coords: EuclidCoordDict) -> APoint:  # noqa: E501
+    def __call__(self: Self, *coords: RealNumOrVar, **kw_coords: EuclidCoordDict) -> EuclidPoint:  # noqa: E501
         """Return Point from coordinates."""
-        raise NotImplementedError
+        if inf_dir := kw_coords.get('inf_dir'):
+            return EuclidPointAtInf(inf_dir=inf_dir)
+
+        if len(coords) == 3:
+            return EuclidConcretePoint(*coords)
+
+        return EuclidConcretePoint(**kw_coords)
 
     def locate(self: Self, point: APoint) -> EuclidCoords:
         return point.coords[self]

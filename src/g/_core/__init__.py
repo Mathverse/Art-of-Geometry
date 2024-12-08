@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 from ._entity import (AnEntity, AGeomEntity, ANonGeomEntity,
                       assign_entity_dependencies_and_name)
 
-from .coord_sys import ACoordSys
+from .coord_sys import ACoordSys, EuclidCoordSys, EUCLID_COORD_SYS
 
 from .point import (
     APoint, AConcretePoint, APointAtInf,
@@ -50,6 +50,7 @@ __all__: Sequence[LiteralString] = (
     'assign_entity_dependencies_and_name',
 
     'ACoordSys',
+    'EuclidCoordSys', 'EUCLID_COORD_SYS',
 
     'APoint', 'AConcretePoint', 'APointAtInf',
     'EuclidPoint', 'EuclidConcretePoint', 'EuclidPointAtInf', 'EUCLID_ORIG',
