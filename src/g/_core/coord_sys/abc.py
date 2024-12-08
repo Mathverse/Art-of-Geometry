@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 
     from ..point import APoint
     from ..variable import NumOrVar
+    from .type import Coords
 
 
 __all__: Sequence[LiteralString] = ('ACoordSys',)
@@ -26,6 +27,6 @@ class ACoordSys:
         raise NotImplementedError
 
     @abstractmethod
-    def locate(self: Self, point: APoint) -> tuple[NumOrVar]:
+    def locate(self: Self, point: APoint) -> Coords:
         """Return Point's coordinates."""
         raise NotImplementedError
