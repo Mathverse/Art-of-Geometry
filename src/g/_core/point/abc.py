@@ -43,7 +43,7 @@ class APoint(AGeomEntity):
         """Add vector."""
         return self + vector
 
-    def point(self) -> Self:
+    def pick_a_point(self) -> Self:
         """Pick itself."""
         return self
 
