@@ -7,6 +7,8 @@ from importlib.metadata import version
 from typing import TYPE_CHECKING
 
 from ._core import (
+    EuclidCoordSys, EUCLID_COORD_SYS,
+
     EuclidPoint, EuclidConcretePoint, EuclidPointAtInf, EUCLID_ORIG,
     Point, Pt, PointAtInf, PtAtInf, ORIG,
 
