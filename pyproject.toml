@@ -156,6 +156,8 @@ ignore = [
   'F401',  # imported but unused
   'F841',  # local variable is assigned to but never used
 
+  'ANN002',  # missing type annotation for `**args`
+  'ANN003',  # missing type annotation for `**kwargs`
   'B019',  # use of `functools.lru_cache` or `functools.cache` on methods can lead to memory leaks
   'EXE002',  # the file is executable but no shebang is present
   'I001',  # import block is un-sorted or un-formatted
