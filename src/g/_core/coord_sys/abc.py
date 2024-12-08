@@ -20,6 +20,8 @@ __all__: Sequence[LiteralString] = ('ACoordSys',)
 class ACoordSys:
     """Abstract Coordinate System."""
 
+    name: str
+
     @abstractmethod
     def __call__(self: Self, *coords: NumOrVar) -> APoint:
         """Return Point from coordinates."""
