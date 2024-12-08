@@ -17,7 +17,8 @@ if TYPE_CHECKING:
     from ..vector import OptionalVec
 
 
-__all__: Sequence[LiteralString] = 'EuclidCoordSys', 'EUCLID_COORD_SYS'
+__all__: Sequence[LiteralString] = ('EuclidCoords',
+                                    'EuclidCoordSys', 'EUCLID_COORD_SYS')
 
 
 class EuclidCoordDict(TypedDict):
