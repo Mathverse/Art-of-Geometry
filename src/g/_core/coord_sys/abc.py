@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from abc import abstractmethod
+from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -18,8 +19,11 @@ if TYPE_CHECKING:
 __all__: Sequence[LiteralString] = ('ACoordSys',)
 
 
+@dataclass
 class ACoordSys:
     """Abstract Coordinate System."""
+
+    name: str
 
     @abstractmethod
     def __call__(self: Self, *coords: NumOrVar, **kw_coords: NumOrVar) -> APoint:  # noqa: E501
