@@ -1,10 +1,10 @@
 __all__ = 'SphereInRD', 'SphereRD', 'Sphere'
 
 
-from .._core._entity import _EuclideanGeometryEntityABC
+from .._core._entity import AnEuclidGeomEntity
 
 
-class SphereInRD(_EuclideanGeometryEntityABC):
+class SphereInRD(AnEuclidGeomEntity):
     pass
 
 

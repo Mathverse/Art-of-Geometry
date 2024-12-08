@@ -11,11 +11,11 @@ from sympy.core.singleton import S
 from ...._util._tmp import TMP_NAME_FACTORY
 from ...._util._type import NUMERIC_TYPES, OptionalStrOrCallableReturningStrType, print_obj_and_type
 from ...var import Variable, OptionalVariableOrNumericType, VARIABLE_AND_NUMERIC_TYPES
-from .._core._point import _EuclideanConcretePointABC, _EuclideanPointAtInfinityABC
+from .._core._point import AEuclidConcretePoint, AnEuclidPointAtInf
 
 
-@_EuclideanConcretePointABC.assign_name_and_dependencies
-class PointInR1(_EuclideanConcretePointABC):
+@AEuclidConcretePoint.assign_name_and_dependencies
+class PointInR1(AEuclidConcretePoint):
     def __init__(
             self, x: OptionalVariableOrNumericType = None, /,
             *, name: OptionalStrOrCallableReturningStrType = TMP_NAME_FACTORY) \
@@ -78,8 +78,8 @@ class PointInR1(_EuclideanConcretePointABC):
 Pt = Point = PointR1 = PointInR1
 
 
-@_EuclideanConcretePointABC.assign_name_and_dependencies
-class _PointAtInfinityInR1(_EuclideanPointAtInfinityABC):
+@AEuclidConcretePoint.assign_name_and_dependencies
+class _PointAtInfinityInR1(AnEuclidPointAtInf):
     def __init__(self):
         self.direction = PointInR1(S.One)
 

@@ -4,13 +4,13 @@ __all__ = \
 
 
 
-from .._core._point import _EuclideanConcretePointABC, _EuclideanPointAtInfinityABC
+from .._core._point import AEuclidConcretePoint, AnEuclidPointAtInf
 
 
 
 
 
-class PointInRD(_EuclideanConcretePointABC):
+class PointInRD(AEuclidConcretePoint):
     pass
 
 
@@ -18,7 +18,7 @@ class PointInRD(_EuclideanConcretePointABC):
 Pt = Point = PointRD = PointInRD
 
 
-class PointAtInfinityInRD(_EuclideanPointAtInfinityABC):
+class PointAtInfinityInRD(AnEuclidPointAtInf):
     pass
 
 
