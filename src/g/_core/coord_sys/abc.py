@@ -21,7 +21,7 @@ class ACoordSys:
     """Abstract Coordinate System."""
 
     @abstractmethod
-    def __call__(self: Self, *coords: NumOrVar) -> APoint:
+    def __call__(self: Self, *coords: NumOrVar, **kw_coords: NumOrVar) -> APoint:  # noqa: E501
         """Return Point from coordinates."""
         raise NotImplementedError
 
