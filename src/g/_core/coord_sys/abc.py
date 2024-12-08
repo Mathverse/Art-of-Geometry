@@ -3,7 +3,8 @@
 
 from __future__ import annotations
 
-from abc import abstractmethod
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -12,22 +13,33 @@ if TYPE_CHECKING:
 
     from ..point import APoint
     from ..variable import NumOrVar
+    from .type import Coords
 
 
 __all__: Sequence[LiteralString] = ('ACoordSys',)
 
 
-class ACoordSys:
+@dataclass(init=True,
+           repr=True,
+           eq=True,
+           order=False,
+           unsafe_hash=True,  # force hashing using unique name
+           frozen=True,  # TODO: decide whether immutability is necessary
+           match_args=True,
+           kw_only=False,
+           slots=False,
+           weakref_slot=False)
+class ACoordSys(ABC):
     """Abstract Coordinate System."""
 
     name: str
 
     @abstractmethod
-    def __call__(self: Self, *coords: NumOrVar) -> APoint:
+    def __call__(self: Self, *coords: NumOrVar, **kw_coords: NumOrVar) -> APoint:  # noqa: E501
         """Return Point from coordinates."""
         raise NotImplementedError
 
     @abstractmethod
-    def locate(self: Self, point: APoint) -> tuple[NumOrVar]:
+    def locate(self: Self, point: APoint) -> Coords:
         """Return Point's coordinates."""
         raise NotImplementedError
