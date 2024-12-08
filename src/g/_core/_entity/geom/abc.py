@@ -52,7 +52,7 @@ class AGeomEntity(AnEntity, GeometryEntity):
         setattr(self, self._NAME_ATTR_KEY, None)
 
     @abstractmethod
-    def point(self, *args, **kwargs) -> APoint:
+    def pick_a_point(self, *args, **kwargs) -> APoint:
         """Pick a Point on this Geometric Entity."""
         raise NotImplementedError
 
