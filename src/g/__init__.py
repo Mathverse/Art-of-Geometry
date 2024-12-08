@@ -6,8 +6,14 @@ from __future__ import annotations
 from importlib.metadata import version
 from typing import TYPE_CHECKING
 
-from ._core import (Variable, Var,
-                    Vector, Vec, V, Ux, Uy, Uz, V0)
+from ._core import (
+    EuclidPoint, EuclidConcretePoint, EuclidPointAtInf, EUCLID_ORIG,
+    Point, Pt, PointAtInf, PtAtInf, ORIG,
+
+    Variable, Var,
+
+    Vector, Vec, V, Ux, Uy, Uz, V0,
+)
 
 from .session import Session, DEFAULT_SESSION
 
@@ -23,6 +29,9 @@ __all__: Sequence[LiteralString] = (
     '__version__',
 
     'Session', 'DEFAULT_SESSION',
+
+    'EuclidPoint', 'EuclidConcretePoint', 'EuclidPointAtInf', 'EUCLID_ORIG',
+    'Point', 'Pt', 'PointAtInf', 'PtAtInf', 'ORIG',
 
     'Variable', 'Var',
 
