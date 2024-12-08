@@ -10,7 +10,7 @@ from .abc import ACoordSys
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
-    from typing import LiteralString, Self, TypedDict, NotRequired
+    from typing import LiteralString, Self, NotRequired
 
     from ..point import APoint
     from ..variable import RealNumOrVar, OptionalRealNumOrVar
