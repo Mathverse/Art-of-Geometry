@@ -1,4 +1,4 @@
-"""Inspect Function."""
+"""Function Object Inspection."""
 
 
 from __future__ import annotations
