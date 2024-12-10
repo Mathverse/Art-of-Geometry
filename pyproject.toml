@@ -165,6 +165,8 @@ ignore = [
   'Q000',  # single quotes found but double quotes preferred
   'RUF022',  # `__all__` is not sorted
   'S101',  # use of `assert` detected
+  'T201',  # `print` found
+  'T203',  # `pprint` found
   'TID252',  # prefer absolute imports over relative imports from parent modules
 ]
 
