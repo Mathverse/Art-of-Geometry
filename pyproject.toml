@@ -156,12 +156,16 @@ ignore = [
   'F401',  # imported but unused
   'F841',  # local variable is assigned to but never used
 
+  'ANN001',  # missing type annotation for function argument
   'ANN002',  # missing type annotation for `**args`
   'ANN003',  # missing type annotation for `**kwargs`
   'B019',  # use of `functools.lru_cache` or `functools.cache` on methods can lead to memory leaks
   'EXE002',  # the file is executable but no shebang is present
+  'FBT001',  # Boolean-typed positional argument in function definition
+  'FBT002',  # Boolean default positional argument in function definition
   'I001',  # import block is un-sorted or un-formatted
   'INP001',  # file is part of an implicit namespace package; add an `__init__.py`
+  'PLR0912',  # too many branches (> 12)
   'Q000',  # single quotes found but double quotes preferred
   'RUF022',  # `__all__` is not sorted
   'S101',  # use of `assert` detected
