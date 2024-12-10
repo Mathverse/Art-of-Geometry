@@ -1,4 +1,4 @@
-"""Inspect Settable Property."""
+"""Inspect Settable & Deletable Property."""
 
 
 from __future__ import annotations
@@ -25,6 +25,11 @@ class C:
     def p(self: Self, v: int) -> None:
         """Set Property Value."""
         self._p: int = v
+
+    @p.deleter
+    def p(self: Self) -> None:
+        """Set Property Value to 0."""
+        self._p: int = 0
 
 
 print(f'{C.p} Is Property? {is_property(C.p)}')
