@@ -23,6 +23,5 @@ class C:
 print(f'{C.m} Is Function? {isfunction(C.m)}')
 print(f'{C.m} Is Bound Instance Method? {ismethod(C.m)}')
 print(f'{C.m} Is Bound Instance Method? {is_instance_method(C.m, bound=True)}')
-print(f'{C.m} Is Unbound Instance Method?'
-      f' {is_instance_method(C.m, bound=False)}')
+print(f'{C.m} Is Unbound Instance Method? {is_instance_method(C.m, bound=False)}')  # noqa: E501
 pprint(describe(C.m))
