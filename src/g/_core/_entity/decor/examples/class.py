@@ -1,4 +1,4 @@
-"""Inspect Class Object."""
+"""Class Object Inspection."""
 
 
 from __future__ import annotations
@@ -9,9 +9,9 @@ from pprint import pprint
 from g._util.inspect import describe
 
 
-class C:
+class Cls:
     """A Class."""
 
 
-print(f'{C} Is Class? {isclass(C)}')
-pprint(describe(C, is_class=True))
+print(f'{Cls} Is Class? {isclass(Cls)}')
+pprint(describe(Cls, is_class=True))
