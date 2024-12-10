@@ -53,7 +53,20 @@ def is_instance_special_operator(obj, /, *, bound: bool = True) -> bool:
 
 def is_property(obj, /) -> bool:
     """Check if object is property."""
-    return (isinstance(obj, property) and callable(obj.fget))
+    return (isinstance(obj, property) and callable(obj.fget) and
+            (obj.fset is None) and (obj.fdel is None))
+
+
+def is_settable_property(obj, /) -> bool:
+    """Check if object is settable property."""
+    return (isinstance(obj, property) and callable(obj.fget) and
+            callable(obj.fset) and (obj.fdel is None))
+
+
+def is_settable_deletable_property(obj, /) -> bool:
+    """Check if object is settable & deletable property."""
+    return (isinstance(obj, property) and callable(obj.fget) and
+            callable(obj.fset) and callable(obj.fdel))
 
 
 def is_cached_property(obj, /) -> bool:
@@ -104,7 +117,9 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901
             is_instance_special_operator(obj, bound=False)):
         descriptions.Is.append('InstanceSpecialOperatorUnbound')
 
-    if _is_property := is_property(obj):
+    if _is_property := (is_property(obj) or
+                        is_settable_property(obj) or
+                        is_settable_deletable_property(obj)):
         descriptions.Is.append('Property')
         func: Callable = obj.fget
 
