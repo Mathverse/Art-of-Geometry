@@ -56,6 +56,11 @@ def is_property(obj, /) -> bool:
     return (isinstance(obj, property) and callable(obj.fget))
 
 
+def is_cached_property(obj, /) -> bool:
+    """Check if object is cached property."""
+    return (isinstance(obj, cached_property) and callable(obj.func))
+
+
 def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901
     """Describe object."""
     if is_class:
@@ -103,7 +108,7 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901
         descriptions.Is.append('Property')
         func: Callable = obj.fget
 
-    if is_cached_property := isinstance(obj, cached_property):
+    if _is_cached_property := is_cached_property(obj):
         descriptions.Is.append('CachedProperty')
         func: Callable = obj.func
 
@@ -124,7 +129,7 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901
             is_bound_instance_method or is_unbound_instance_method or
             is_bound_instance_special_operator or
             is_unbound_instance_special_operator or
-            _is_property or is_cached_property):
+            _is_property or _is_cached_property):
         descriptions.Annotations = getattr(func, '__annotations__', None)
 
     return descriptions
