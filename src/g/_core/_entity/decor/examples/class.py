@@ -8,4 +8,4 @@ class C:
     """A Class."""
 
 
-print(isclass(C))
+print(f'{C} Is Class? {isclass(C)}')
