@@ -17,7 +17,7 @@ class C:
 
     @property
     def p(self: Self) -> None:
-        """A Property"""  # noqa: D401
+        """A Property."""
 
 
 print(f'{C.p} Is Property? {is_property(C.p)}')
