@@ -13,19 +13,12 @@ if TYPE_CHECKING:
     from typing import Self
 
 
-def f() -> None:
-    """A Function."""  # noqa: D401
-
-
 class C:
     """A Class."""
 
     def m(self: Self) -> None:
         """An Instance Method."""  # noqa: D401
 
-
-print(f'{f} Is Function? {isfunction(f)}')
-pprint(describe(f))
 
 print(f'{C.m} Is Function? {isfunction(C.m)}')
 print(f'{C.m} Is Bound Instance Method? {ismethod(C.m)}')
