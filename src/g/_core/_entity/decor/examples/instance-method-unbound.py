@@ -1,4 +1,4 @@
-"""Inspect Function or Unbound Instance Method."""
+"""Inspect Unbound Instance Method."""
 
 
 from __future__ import annotations
