@@ -1,7 +1,8 @@
 """Inspection Utilities."""
 
 
-from collections.abc import Callable, Sequence
+from __future__ import annotations
+
 from functools import cached_property
 from inspect import (getmembers,
                      isabstract, isclass, isfunction, ismethod,
@@ -10,7 +11,11 @@ from inspect import (getmembers,
                      ismethoddescriptor,
                      isgetsetdescriptor)
 from types import SimpleNamespace
-from typing import LiteralString
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Sequence
+    from typing import LiteralString
 
 
 __all__: Sequence[LiteralString] = ('is_static_method',
@@ -53,69 +58,68 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901
             **{class_member_name: describe(class_member)
                for class_member_name, class_member in getmembers(obj)})
 
-    else:
-        descriptions: SimpleNamespace = SimpleNamespace(Is=[])
+    descriptions: SimpleNamespace = SimpleNamespace(Is=[])
 
-        func: Callable = obj
+    func: Callable = obj
 
-        if isabstract(object=obj):
-            descriptions.Is.append('Abstract')
+    if isabstract(object=obj):
+        descriptions.Is.append('Abstract')
 
-        if isclass(object=obj):
-            descriptions.Is.append('Class')
+    if isclass(object=obj):
+        descriptions.Is.append('Class')
 
-        if is_function := isfunction(object=obj):
-            descriptions.Is.append('Function')
+    if is_function := isfunction(object=obj):
+        descriptions.Is.append('Function')
 
-        if is_method := ismethod(object=obj):
-            descriptions.Is.append('Method')
+    if is_method := ismethod(object=obj):
+        descriptions.Is.append('Method')
 
-        if is_static_method(obj):
-            descriptions.Is.append('StaticMethod')
-            func: Callable = obj.__func__
+    if is_static_method(obj):
+        descriptions.Is.append('StaticMethod')
+        func: Callable = obj.__func__
 
-        if is_class_method(obj):
-            descriptions.Is.append('ClassMethod')
-            func: Callable = obj.__func__
+    if is_class_method(obj):
+        descriptions.Is.append('ClassMethod')
+        func: Callable = obj.__func__
 
-        if is_bound_instance_method := is_instance_method(obj, bound=True):
-            descriptions.Is.append('InstanceMethodBound')
-        elif is_unbound_instance_method := is_instance_method(obj, bound=False):  # noqa: E501
-            descriptions.Is.append('InstanceMethodUnbound')
+    if is_bound_instance_method := is_instance_method(obj, bound=True):
+        descriptions.Is.append('InstanceMethodBound')
+    elif is_unbound_instance_method := is_instance_method(obj, bound=False):
+        descriptions.Is.append('InstanceMethodUnbound')
 
-        if (is_bound_instance_special_operator :=
-                is_instance_special_operator(obj, bound=True)):
-            descriptions.Is.append('InstanceSpecialOperatorBound')
-        elif (is_unbound_instance_special_operator :=
-                is_instance_special_operator(obj, bound=False)):
-            descriptions.Is.append('InstanceSpecialOperatorUnbound')
+    if (is_bound_instance_special_operator :=
+            is_instance_special_operator(obj, bound=True)):
+        descriptions.Is.append('InstanceSpecialOperatorBound')
+    elif (is_unbound_instance_special_operator :=
+            is_instance_special_operator(obj, bound=False)):
+        descriptions.Is.append('InstanceSpecialOperatorUnbound')
 
-        if is_property := isinstance(obj, property):
-            descriptions.Is.append('Property')
-            func: Callable = obj.fget
+    if is_property := isinstance(obj, property):
+        descriptions.Is.append('Property')
+        func: Callable = obj.fget
 
-        if is_cached_property := isinstance(obj, cached_property):
-            descriptions.Is.append('CachedProperty')
-            func: Callable = obj.func
+    if is_cached_property := isinstance(obj, cached_property):
+        descriptions.Is.append('CachedProperty')
+        func: Callable = obj.func
 
-        if isdatadescriptor(object=obj):
-            descriptions.Is.append('DataDescriptor')
+    if isdatadescriptor(object=obj):
+        descriptions.Is.append('DataDescriptor')
 
-        if ismemberdescriptor(object=obj):
-            descriptions.Is.append('MemberDescriptor')
+    if ismemberdescriptor(object=obj):
+        descriptions.Is.append('MemberDescriptor')
 
-        if ismethoddescriptor(object=obj):
-            descriptions.Is.append('MethodDescriptor')
+    if ismethoddescriptor(object=obj):
+        descriptions.Is.append('MethodDescriptor')
 
-        if isgetsetdescriptor(object=obj):
-            descriptions.Is.append('GetSetDescriptor')
+    if isgetsetdescriptor(object=obj):
+        descriptions.Is.append('GetSetDescriptor')
 
-        if (is_function or is_method or
-                is_static_method or is_class_method or
-                is_bound_instance_method or is_unbound_instance_method or
-                is_bound_instance_special_operator or
-                is_unbound_instance_special_operator or
-                is_property or is_cached_property):
-            descriptions.Annotations = func.__annotations__
+    if (is_function or is_method or
+            is_static_method or is_class_method or
+            is_bound_instance_method or is_unbound_instance_method or
+            is_bound_instance_special_operator or
+            is_unbound_instance_special_operator or
+            is_property or is_cached_property):
+        descriptions.Annotations = func.__annotations__
 
-        return descriptions
+    return descriptions
