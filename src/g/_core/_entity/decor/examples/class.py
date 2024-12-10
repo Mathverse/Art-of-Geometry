@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from inspect import isclass
+from pprint import pprint
 
 from g._util.inspect import describe
 
@@ -13,4 +14,4 @@ class C:
 
 
 print(f'{C} Is Class? {isclass(C)}')
-describe(C, is_class=True)
+pprint(describe(C, is_class=True))
