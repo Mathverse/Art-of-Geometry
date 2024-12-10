@@ -53,14 +53,12 @@ def is_instance_special_operator(obj, /, *, bound: bool = True) -> bool:
 
 def is_property(obj, /) -> bool:
     """Check if object is property."""
-    return (isinstance(obj, property) and callable(obj.fget) and
-            (obj.fset is None) and (obj.fdel is None))
+    return (isinstance(obj, property) and callable(obj.fget))
 
 
 def is_settable_property(obj, /) -> bool:
     """Check if object is settable property."""
-    return (isinstance(obj, property) and callable(obj.fget) and
-            callable(obj.fset) and (obj.fdel is None))
+    return (isinstance(obj, property) and callable(obj.fget) and callable(obj.fset))  # noqa: E501
 
 
 def is_settable_deletable_property(obj, /) -> bool:
