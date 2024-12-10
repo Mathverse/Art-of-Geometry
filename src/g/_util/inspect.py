@@ -51,6 +51,11 @@ def is_instance_special_operator(obj, /, *, bound: bool = True) -> bool:
             (name := obj.__name__).startswith('__') and name.endswith('__'))
 
 
+def is_property(obj, /) -> bool:
+    """Check if object is property."""
+    return (isinstance(obj, property) and callable(obj.fget))
+
+
 def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901
     """Describe object."""
     if is_class:
@@ -94,7 +99,7 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901
             is_instance_special_operator(obj, bound=False)):
         descriptions.Is.append('InstanceSpecialOperatorUnbound')
 
-    if is_property := isinstance(obj, property):
+    if _is_property := is_property(obj):
         descriptions.Is.append('Property')
         func: Callable = obj.fget
 
@@ -119,7 +124,7 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901
             is_bound_instance_method or is_unbound_instance_method or
             is_bound_instance_special_operator or
             is_unbound_instance_special_operator or
-            is_property or is_cached_property):
-        descriptions.Annotations = func.__annotations__
+            _is_property or is_cached_property):
+        descriptions.Annotations = getattr(func, '__annotations__', None)
 
     return descriptions
