@@ -5,11 +5,25 @@ from __future__ import annotations
 
 from functools import cached_property
 from inspect import (getmembers,
-                     isabstract, isclass, isfunction, ismethod,
+                     isabstract,
+                     isasyncgen, isasyncgenfunction,
+                     isawaitable,
+                     isbuiltin,
+                     isclass,
+                     iscode,
+                     iscoroutine, iscoroutinefunction,
                      isdatadescriptor,
+                     isframe,
+                     isfunction,
+                     isgenerator, isgeneratorfunction,
+                     isgetsetdescriptor,
                      ismemberdescriptor,
+                     ismethod,
                      ismethoddescriptor,
-                     isgetsetdescriptor)
+                     ismethodwrapper,
+                     ismodule,
+                     isroutine,
+                     istraceback)
 from types import SimpleNamespace
 from typing import TYPE_CHECKING
 
@@ -72,7 +86,7 @@ def is_cached_property(obj, /) -> bool:
     return (isinstance(obj, cached_property) and callable(obj.func))
 
 
-def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901
+def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901,E501,PLR0915
     """Describe object."""
     if is_class:
         return SimpleNamespace(
@@ -128,14 +142,38 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901
     if isdatadescriptor(object=obj):
         descriptions.Is.append('DataDescriptor')
 
-    if ismemberdescriptor(object=obj):
-        descriptions.Is.append('MemberDescriptor')
-
     if ismethoddescriptor(object=obj):
         descriptions.Is.append('MethodDescriptor')
 
+    # asynchronous implementations only
+    if isasyncgen(object=obj):
+        descriptions.Is.append('AsyncGen')
+
+    if isasyncgenfunction(obj=obj):
+        descriptions.Is.append('AsyncGenFunction')
+
+    # C implementations only
     if isgetsetdescriptor(object=obj):
         descriptions.Is.append('GetSetDescriptor')
+
+    if ismemberdescriptor(object=obj):
+        descriptions.Is.append('MemberDescriptor')
+
+    # other, not relevant but just for completeness
+    if isbuiltin(object=obj):
+        descriptions.Is.append('BuiltIn')
+
+    if iscode(object=obj):
+        descriptions.Is.append('Code')
+
+    if isframe(object=obj):
+        descriptions.Is.append('Frame')
+
+    if ismodule(object=obj):
+        descriptions.Is.append('Module')
+
+    if istraceback(object=obj):
+        descriptions.Is.append('Traceback')
 
     if (is_function or is_method or
             is_static_method or is_class_method or
