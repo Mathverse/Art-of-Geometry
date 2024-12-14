@@ -1,4 +1,4 @@
-"""Inspect Cached Property."""
+"""Cached-Property Object Inspection."""
 
 
 from __future__ import annotations
@@ -13,13 +13,13 @@ if TYPE_CHECKING:
     from typing import Self
 
 
-class C:
+class Cls:
     """A Class."""
 
     @cached_property
-    def cp(self: Self) -> None:
+    def cached_pty(self: Self) -> None:
         """A Cached Property."""
 
 
-print(f'{C.cp} Is Cached Property? {is_cached_property(C.cp)}')
-pprint(describe(C.cp))
+print(f'{Cls.cached_pty} Is Cached Property? {is_cached_property(Cls.cached_pty)}')  # noqa: E501
+pprint(describe(Cls.cached_pty))
