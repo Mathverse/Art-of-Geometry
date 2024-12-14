@@ -28,7 +28,7 @@ __all__: Sequence[LiteralString] = ('is_static_method',
 def is_static_method(obj, /) -> bool:
     """Check if object is static method."""
     return (isfunction(object=obj) and
-            isfunction(object=getattr(obj, '__func__', None)))
+            isclass(object=getattr(obj, '__class__', None)))
 
 
 def is_class_method(obj, /) -> bool:
@@ -97,7 +97,7 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901
 
     if is_static_method(obj):
         descriptions.Is.append('StaticMethod')
-        func: Callable = obj.__func__
+        func: Callable = obj
 
     if is_class_method(obj):
         descriptions.Is.append('ClassMethod')
