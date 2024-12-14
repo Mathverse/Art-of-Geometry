@@ -1,9 +1,10 @@
 """Generator Object Inspection."""
 
 
+from collections.abc import Generator
 from inspect import isgenerator
 
 
-g = (i for i in range(0))
+gen: Generator[int, None, None] = (i for i in range(0))  # noqa: UP043
 
-print(f'{g} Is Generator? {isgenerator(g)}')
+print(f'{gen} Is Generator? {isgenerator(gen)}')
