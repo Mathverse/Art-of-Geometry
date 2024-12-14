@@ -13,17 +13,17 @@ class Cls:
     """A Class."""
 
     @classmethod
-    def cls_method(cls) -> None:
+    def cls_meth(cls) -> None:
         """A Class Method."""  # noqa: D401
 
 
-print(f'{Cls.cls_method} Is Method? {ismethod(Cls.cls_method)}')
-print(f'{Cls.cls_method} Is Class Method? {is_class_method(Cls.cls_method)}')
-pprint(describe(Cls.cls_method))
+print(f'{Cls.cls_meth} Is Method? {ismethod(Cls.cls_meth)}')
+print(f'{Cls.cls_meth} Is Class Method? {is_class_method(Cls.cls_meth)}')
+pprint(describe(Cls.cls_meth))
 
 
 inst: Cls = Cls()
 
-print(f'{inst.cls_method} Is Method? {ismethod(inst.cls_method)}')
-print(f'{inst.cls_method} Is Class Method? {is_class_method(inst.cls_method)}')
-pprint(describe(inst.cls_method))
+print(f'{inst.cls_meth} Is Method? {ismethod(inst.cls_meth)}')
+print(f'{inst.cls_meth} Is Class Method? {is_class_method(inst.cls_meth)}')
+pprint(describe(inst.cls_meth))
