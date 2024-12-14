@@ -108,7 +108,7 @@ def _decorate(function: Callable, /,  # noqa: C901,PLR0915
             name: str = name()
 
             # validate name
-            AnEntity._validate_name(name)  # noqa: SLF001
+            AnEntity._validate_name(name)
 
         if name_already_in_arg_spec:
             kwargs[_NAME_ATTR_KEY]: str = name
@@ -117,7 +117,7 @@ def _decorate(function: Callable, /,  # noqa: C901,PLR0915
 
         if function.__name__ == '__new__':
             # assign dependencies
-            if not hasattr(result, result._DEPS_ATTR_KEY):  # noqa: SLF001
+            if not hasattr(result, result._DEPS_ATTR_KEY):
                 result.dependencies: set[AnEntity] = dependencies
 
             # assign name
@@ -125,8 +125,8 @@ def _decorate(function: Callable, /,  # noqa: C901,PLR0915
                 if isinstance(result, Symbol):
                     result.name: str = name
 
-                elif not hasattr(result, result._NAME_ATTR_KEY):  # noqa: E501,RUF100,SLF001
-                    setattr(result, result._NAME_ATTR_KEY, name)  # noqa: E501,RUF100,SLF001
+                elif not hasattr(result, result._NAME_ATTR_KEY):  # noqa: E501,RUF100
+                    setattr(result, result._NAME_ATTR_KEY, name)  # noqa: E501,RUF100
 
             return result
 
@@ -145,8 +145,8 @@ def _decorate(function: Callable, /,  # noqa: C901,PLR0915
                 if isinstance(self, Symbol):
                     self.name: str = name
 
-                elif not hasattr(self, self._NAME_ATTR_KEY):  # noqa: E501,RUF100,SLF001
-                    setattr(self, self._NAME_ATTR_KEY, name)  # noqa: E501,RUF100,SLF001
+                elif not hasattr(self, self._NAME_ATTR_KEY):
+                    setattr(self, self._NAME_ATTR_KEY, name)
 
             return None
 
@@ -154,19 +154,19 @@ def _decorate(function: Callable, /,  # noqa: C901,PLR0915
             TypeError(f'*** RESULT {result} NOT OF TYPE {AnEntity.__name__} ***')  # noqa: E501
 
         # assign dependencies
-        if not hasattr(result, result._DEPS_ATTR_KEY):  # noqa: E501,RUF100,SLF001
+        if not hasattr(result, result._DEPS_ATTR_KEY):
             result.dependencies: set[AnEntity] = dependencies
 
         # assign name
         if assign_name and name:
             # validate name
-            AnEntity._validate_name(name)  # noqa: SLF001
+            AnEntity._validate_name(name)
 
             result.name: str = name
 
         return result
 
-    function_with_dependencies_and_name_assignment._DECORATED_WITH_DEPENDENCIES_AND_NAME_ASSIGNMENT: bool = True  # noqa: E501,SLF001
+    function_with_dependencies_and_name_assignment._DECORATED_WITH_DEPENDENCIES_AND_NAME_ASSIGNMENT: bool = True  # noqa: E501
 
     if not name_already_in_arg_spec:
         function_with_dependencies_and_name_assignment.__annotations__[
@@ -230,7 +230,7 @@ def assign_entity_dependencies_and_name(entity_related_callable: Callable, /) ->
             entity_related_callable.__new__: Callable[..., AnEntity] = \
                 _decorate(__new__,
                           assign_name=(True
-                                       if entity_related_callable._NAME_NULLABLE  # noqa: E501,SLF001
+                                       if entity_related_callable._NAME_NULLABLE  # noqa: E501
                                        else UNIQUE_NAME_FACTORY))
 
             if debug.ON:
@@ -241,7 +241,7 @@ def assign_entity_dependencies_and_name(entity_related_callable: Callable, /) ->
             entity_related_callable.__init__: Callable[..., None] = \
                 _decorate(__init__,
                           assign_name=(True
-                                       if entity_related_callable._NAME_NULLABLE  # noqa: E501,SLF001
+                                       if entity_related_callable._NAME_NULLABLE  # noqa: E501
                                        else UNIQUE_NAME_FACTORY))
 
             if debug.ON:
