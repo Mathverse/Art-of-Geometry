@@ -145,12 +145,28 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901,E
     if ismethoddescriptor(object=obj):
         descriptions.Is.append('MethodDescriptor')
 
+    # generators only
+    if isgenerator(object=obj):
+        descriptions.Is.append('Generator')
+
+    if isgeneratorfunction(obj=obj):
+        descriptions.Is.append('GeneratorFunction')
+
     # asynchronous implementations only
     if isasyncgen(object=obj):
         descriptions.Is.append('AsyncGen')
 
     if isasyncgenfunction(obj=obj):
         descriptions.Is.append('AsyncGenFunction')
+
+    if isawaitable(object=obj):
+        descriptions.Is.append('Awaitable')
+
+    if iscoroutine(object=obj):
+        descriptions.Is.append('Coroutine')
+
+    if iscoroutinefunction(obj=obj):
+        descriptions.Is.append('CoroutineFunction')
 
     # C implementations only
     if isgetsetdescriptor(object=obj):
