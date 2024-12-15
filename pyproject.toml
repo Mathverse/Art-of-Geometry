@@ -166,9 +166,12 @@ ignore = [
   'I001',  # import block is un-sorted or un-formatted
   'INP001',  # file is part of an implicit namespace package; add an `__init__.py`
   'PLR0912',  # too many branches (> 12)
+  'PT018',  # assertion should be broken down into multiple parts
   'Q000',  # single quotes found but double quotes preferred
   'RUF022',  # `__all__` is not sorted
+  'RUF100',  # unused `noqa` directive
   'S101',  # use of `assert` detected
+  'SLF001',  # private member accessed
   'T201',  # `print` found
   'T203',  # `pprint` found
   'TID252',  # prefer absolute imports over relative imports from parent modules
