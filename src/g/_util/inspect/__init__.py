@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from inspect import (getmembers,
+from inspect import (get_annotations, getmembers,
                      isabstract,
                      isasyncgen, isasyncgenfunction,
                      isawaitable,
@@ -23,12 +23,14 @@ from inspect import (getmembers,
                      ismethodwrapper,
                      ismodule,
                      isroutine,
-                     istraceback)
+                     istraceback,
+                     signature)
 from types import SimpleNamespace
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Sequence
+    from inspect import Signature
     from typing import LiteralString
 
 
@@ -103,6 +105,9 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901,E
     if isclass(object=obj):
         descriptions.Is.append('Class')
 
+    if is_routine := isroutine(object=obj):
+        descriptions.Is.append('Routine')
+
     if is_function := isfunction(object=obj):
         descriptions.Is.append('Function')
 
@@ -144,6 +149,9 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901,E
 
     if ismethoddescriptor(object=obj):
         descriptions.Is.append('MethodDescriptor')
+
+    if ismethodwrapper(object=obj):
+        descriptions.Is.append('MethodWrapper')
 
     # generators only
     if isgenerator(object=obj):
@@ -191,12 +199,19 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901,E
     if istraceback(object=obj):
         descriptions.Is.append('Traceback')
 
-    if (is_function or is_method or
+    if (is_routine or is_function or is_method or
             is_static_method or is_class_method or
             is_bound_instance_method or is_unbound_instance_method or
             is_bound_instance_special_operator or
             is_unbound_instance_special_operator or
             _is_property or _is_cached_property):
-        descriptions.Annotations = getattr(func, '__annotations__', None)
+        descriptions.Signature: Signature = signature(func,
+                                                      follow_wrapped=True,
+                                                      globals=None, locals=None,  # noqa: E501
+                                                      eval_str=True)
+
+        descriptions.Annotations = get_annotations(func,
+                                                   globals=None, locals=None,
+                                                   eval_str=True)
 
     return descriptions
