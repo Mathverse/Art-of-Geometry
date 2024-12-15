@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property, wraps
-from inspect import (getmembers,
+from inspect import (get_annotations, getmembers,
                      isabstract, isclass, isfunction, ismethoddescriptor,
                      Parameter,
                      Signature, signature)
@@ -28,7 +28,7 @@ from .abc import AnEntity
 
 if TYPE_CHECKING:
     from collections.abc import Any, Callable, Sequence
-    from typing import LiteralString
+    from typing import Any, LiteralString
 
     from g._util.type import CallableReturningStr
 
@@ -44,19 +44,26 @@ def _decorable(function: Callable, /) -> bool:
     assert isfunction(object=function), \
         TypeError(f'*** {function} NOT A FUNCTION ***')
 
+    function_module_dict: dict[str, Any] = sys.modules[function.__module__].__dict__  # noqa: E501
+
     if (not getattr(function,
                     '_DECORATED_WITH_DEPENDENCIES_AND_NAME_ASSIGNMENT',
                     False)) and \
-            isinstance(return_annotation := function.__annotations__.get('return'), str):  # noqa: E501
+            (return_annotation :=
+             get_annotations(obj=function,
+                             globals=function_module_dict,
+                             locals=None,
+                             eval_str=False).get('return')):
+        print(function.__annotations__)
         if (len(qual_name_parts :=
                 function.__qualname__.split('.')) == 2) and \
                 (return_annotation == qual_name_parts[0]):  # noqa: PLR2004
             return True
 
         try:
-            return_annotation_obj: type = \
-                eval(return_annotation,  # noqa: S307
-                     sys.modules[function.__module__].__dict__)
+            return_annotation_obj: type = eval(return_annotation,  # noqa: S307
+                                               globals=function_module_dict,
+                                               locals=None)
 
         except NameError:
             return False
@@ -75,7 +82,7 @@ def _decorate(function: Callable, /,  # noqa: C901,PLR0915
 
     if debug.ON:
         print(f'DECORATING {function.__qualname__}'
-              f'{signature(obj=function, follow_wrapped=False)}')
+              f'{signature(obj=function, follow_wrapped=False, eval_str=True)}')
         pprint(object=describe(function).__dict__,
                stream=None,
                indent=2,
