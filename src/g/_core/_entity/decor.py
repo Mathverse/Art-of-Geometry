@@ -27,7 +27,7 @@ from g._util.unique_name import UNIQUE_NAME_FACTORY
 from .abc import AnEntity
 
 if TYPE_CHECKING:
-    from collections.abc import Any, Callable, Sequence
+    from collections.abc import Callable, Sequence
     from typing import Any, LiteralString
 
     from g._util.type import CallableReturningStr
@@ -82,7 +82,7 @@ def _decorate(function: Callable, /,  # noqa: C901,PLR0915
 
     if debug.ON:
         print(f'DECORATING {function.__qualname__}'
-              f'{signature(obj=function, follow_wrapped=False, eval_str=True)}')
+              f'{signature(obj=function, follow_wrapped=False, eval_str=True)}')  # noqa: E501
         pprint(object=describe(function).__dict__,
                stream=None,
                indent=2,
