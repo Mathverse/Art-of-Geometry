@@ -96,7 +96,7 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901,E
     """Describe object."""
     if is_class:
         return SimpleNamespace(
-            **{class_member_name: describe(class_member, key_name=class_member_name)  # noqa: E501
+            **{class_member_name: describe(class_member)  # noqa: E501
                for class_member_name, class_member in getmembers(object=obj, predicate=None)})  # noqa: E501
 
     descriptions: SimpleNamespace = SimpleNamespace(Is=set())
