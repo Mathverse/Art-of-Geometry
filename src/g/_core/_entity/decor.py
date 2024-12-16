@@ -38,6 +38,8 @@ __all__: Sequence[LiteralString] = ('assign_entity_dependencies_and_name',)
 
 _ALREADY_DECORATED_ATTR_KEY: LiteralString = '_DECORATED_WITH_DEPENDENCIES_AND_NAME_ASSIGNMENT'  # noqa: E501
 
+_G_MODULE_NAME: LiteralString = 'g'
+
 _NAME_ATTR_KEY: LiteralString = 'name'
 
 _SELF_TYPE_STR: LiteralString = 'Self'
@@ -60,11 +62,15 @@ def _decorable(function: Callable, /) -> bool:
 
         try:
             return_annotation_obj: type = eval(return_annotation,  # noqa: S307
-                                               globals=function_module_dict,
+                                               globals=sys.modules[function.__module__].__dict__,  # noqa: E501
                                                locals=None)
-
         except NameError:
-            return False
+            try:
+                return_annotation_obj: type = eval(return_annotation,  # noqa: E501,S307
+                                                   globals=sys.modules[_G_MODULE_NAME].__dict__,  # noqa: E501
+                                                   locals=None)
+            except NameError:
+                return False
 
         return (isclass(object=return_annotation_obj) and
                 issubclass(return_annotation_obj, AnEntity))
