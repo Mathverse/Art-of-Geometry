@@ -1,4 +1,4 @@
-"""Inspect Bound Instance Method."""
+"""Instance-Method Object Inspection."""
 
 
 from __future__ import annotations
@@ -13,18 +13,23 @@ if TYPE_CHECKING:
     from typing import Self
 
 
-class C:
+class Cls:
     """A Class."""
 
-    def m(self: Self) -> None:
+    def meth(self: Self) -> None:
         """An Instance Method."""  # noqa: D401
 
 
-i: C = C()
+print(f'{Cls.meth} Is Function? {isfunction(Cls.meth)}')
+print(f'{Cls.meth} Is Bound Instance Method? {ismethod(Cls.meth)}')
+print(f'{Cls.meth} Is Bound Instance Method? {is_instance_method(Cls.meth, bound=True)}')  # noqa: E501
+print(f'{Cls.meth} Is Unbound Instance Method? {is_instance_method(Cls.meth, bound=False)}')  # noqa: E501
 
 
-print(f'{i.m} Is Function? {isfunction(i.m)}')
-print(f'{i.m} Is Bound Instance Method? {ismethod(i.m)}')
-print(f'{i.m} Is Bound Instance Method? {is_instance_method(i.m, bound=True)}')
-print(f'{i.m} Is Unbound Instance Method? {is_instance_method(i.m, bound=False)}')  # noqa: E501
-pprint(describe(i.m))
+inst: Cls = Cls()
+
+print(f'{inst.meth} Is Function? {isfunction(inst.meth)}')
+print(f'{inst.meth} Is Bound Instance Method? {ismethod(inst.meth)}')
+print(f'{inst.meth} Is Bound Instance Method? {is_instance_method(inst.meth, bound=True)}')  # noqa: E501
+print(f'{inst.meth} Is Unbound Instance Method? {is_instance_method(inst.meth, bound=False)}')  # noqa: E501
+pprint(describe(inst.meth))
