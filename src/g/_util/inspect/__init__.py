@@ -56,7 +56,7 @@ def is_static_method(obj, /) -> bool:
     # relying on self-argument naming convention
     # TODO: make more rigorous
     return _SELF_ARG_NAME not in signature(obj=obj, follow_wrapped=True,
-                                           globals=None, locals=None, eval_str=True).parameters  # noqa: E501
+                                           globals=None, locals=None, eval_str=False).parameters  # noqa: E501
 
 
 def is_class_method(obj, /) -> bool:
@@ -77,7 +77,7 @@ def is_instance_method(obj, /, *, bound: bool = True) -> bool:
     # relying on self-argument naming convention
     # TODO: make more rigorous
     return _SELF_ARG_NAME in signature(obj=obj, follow_wrapped=True,
-                                       globals=None, locals=None, eval_str=True).parameters  # noqa: E501
+                                       globals=None, locals=None, eval_str=False).parameters  # noqa: E501
 
 
 def is_instance_special_operator(obj, /, *, bound: bool = True) -> bool:
@@ -266,10 +266,10 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901,E
             _is_property or _is_cached_property):
         descriptions.Signature: Signature = \
             signature(func, follow_wrapped=True,
-                      globals=None, locals=None, eval_str=True)
+                      globals=None, locals=None, eval_str=False)
 
         descriptions.Annotations: dict[str, type] = \
             get_annotations(func,
-                            globals=None, locals=None, eval_str=True)
+                            globals=None, locals=None, eval_str=False)
 
     return descriptions
