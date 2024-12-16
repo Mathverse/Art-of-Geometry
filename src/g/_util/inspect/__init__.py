@@ -91,117 +91,116 @@ def is_cached_property(obj, /) -> bool:
     return (isinstance(obj, cached_property) and callable(obj.func))
 
 
-def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901,E501,PLR0915
+def describe(obj, /, is_class: bool = False, key_name: str | None = None) -> SimpleNamespace:  # noqa: C901,E501,PLR0915
     """Describe object."""
     if is_class:
         return SimpleNamespace(
-            **{class_member_name: describe(class_member)
-               for class_member_name, class_member in getmembers(object=obj, predicate=None)  # noqa: E501
-               if class_member_name != '__class__'})
+            **{class_member_name: describe(class_member, key_name=class_member_name)  # noqa: E501
+               for class_member_name, class_member in getmembers(object=obj, predicate=None)})  # noqa: E501
 
-    descriptions: SimpleNamespace = SimpleNamespace(Is=[])
+    descriptions: SimpleNamespace = SimpleNamespace(Is=set())
 
     func: Callable = obj
 
     if isabstract(object=obj):
-        descriptions.Is.append('Abstract')
+        descriptions.Is.add('Abstract')
 
     if isclass(object=obj):
-        descriptions.Is.append('Class')
+        descriptions.Is.add('Class')
 
     if is_routine := isroutine(object=obj):
-        descriptions.Is.append('Routine')
+        descriptions.Is.add('Routine')
 
     if is_function := isfunction(object=obj):
-        descriptions.Is.append('Function')
+        descriptions.Is.add('Function')
 
     if is_method := ismethod(object=obj):
-        descriptions.Is.append('Method')
+        descriptions.Is.add('Method')
 
     if is_static_method(obj):
-        descriptions.Is.append('StaticMethod')
+        descriptions.Is.add('StaticMethod')
         func: Callable = obj
 
     if is_class_method(obj):
-        descriptions.Is.append('ClassMethod')
+        descriptions.Is.add('ClassMethod')
         func: Callable = obj.__func__
 
     if is_bound_instance_method := is_instance_method(obj, bound=True):
-        descriptions.Is.append('InstanceMethodBound')
+        descriptions.Is.add('InstanceMethodBound')
     elif is_unbound_instance_method := is_instance_method(obj, bound=False):
-        descriptions.Is.append('InstanceMethodUnbound')
+        descriptions.Is.add('InstanceMethodUnbound')
 
     if (is_bound_instance_special_operator :=
             is_instance_special_operator(obj, bound=True)):
-        descriptions.Is.append('InstanceSpecialOperatorBound')
+        descriptions.Is.add('InstanceSpecialOperatorBound')
     elif (is_unbound_instance_special_operator :=
             is_instance_special_operator(obj, bound=False)):
-        descriptions.Is.append('InstanceSpecialOperatorUnbound')
+        descriptions.Is.add('InstanceSpecialOperatorUnbound')
 
     if _is_property := (is_property(obj) or
                         is_settable_property(obj) or
                         is_settable_deletable_property(obj)):
-        descriptions.Is.append('Property')
+        descriptions.Is.add('Property')
         func: Callable = obj.fget
 
     if _is_cached_property := is_cached_property(obj):
-        descriptions.Is.append('CachedProperty')
+        descriptions.Is.add('CachedProperty')
         func: Callable = obj.func
 
     if isdatadescriptor(object=obj):
-        descriptions.Is.append('DataDescriptor')
+        descriptions.Is.add('DataDescriptor')
 
     if ismethoddescriptor(object=obj):
-        descriptions.Is.append('MethodDescriptor')
+        descriptions.Is.add('MethodDescriptor')
 
     if ismethodwrapper(object=obj):
-        descriptions.Is.append('MethodWrapper')
+        descriptions.Is.add('MethodWrapper')
 
     # generators only
     if isgenerator(object=obj):
-        descriptions.Is.append('Generator')
+        descriptions.Is.add('Generator')
 
     if isgeneratorfunction(obj=obj):
-        descriptions.Is.append('GeneratorFunction')
+        descriptions.Is.add('GeneratorFunction')
 
     # asynchronous implementations only
     if isasyncgen(object=obj):
-        descriptions.Is.append('AsyncGen')
+        descriptions.Is.add('AsyncGen')
 
     if isasyncgenfunction(obj=obj):
-        descriptions.Is.append('AsyncGenFunction')
+        descriptions.Is.add('AsyncGenFunction')
 
     if isawaitable(object=obj):
-        descriptions.Is.append('Awaitable')
+        descriptions.Is.add('Awaitable')
 
     if iscoroutine(object=obj):
-        descriptions.Is.append('Coroutine')
+        descriptions.Is.add('Coroutine')
 
     if iscoroutinefunction(obj=obj):
-        descriptions.Is.append('CoroutineFunction')
+        descriptions.Is.add('CoroutineFunction')
 
     # C implementations only
     if isgetsetdescriptor(object=obj):
-        descriptions.Is.append('GetSetDescriptor')
+        descriptions.Is.add('GetSetDescriptor')
 
     if ismemberdescriptor(object=obj):
-        descriptions.Is.append('MemberDescriptor')
+        descriptions.Is.add('MemberDescriptor')
 
     # other, not relevant but just for completeness
     if isbuiltin(object=obj):
-        descriptions.Is.append('BuiltIn')
+        descriptions.Is.add('BuiltIn')
 
     if iscode(object=obj):
-        descriptions.Is.append('Code')
+        descriptions.Is.add('Code')
 
     if isframe(object=obj):
-        descriptions.Is.append('Frame')
+        descriptions.Is.add('Frame')
 
     if ismodule(object=obj):
-        descriptions.Is.append('Module')
+        descriptions.Is.add('Module')
 
     if istraceback(object=obj):
-        descriptions.Is.append('Traceback')
+        descriptions.Is.add('Traceback')
 
     if (is_routine or is_function or is_method or
             is_static_method or is_class_method or
