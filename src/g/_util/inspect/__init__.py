@@ -1,6 +1,9 @@
 """Inspection Utilities."""
 
 
+# docs.python.org/dev/library/inspect
+
+
 from __future__ import annotations
 
 from functools import cached_property
@@ -93,7 +96,8 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901,E
     if is_class:
         return SimpleNamespace(
             **{class_member_name: describe(class_member)
-               for class_member_name, class_member in getmembers(obj)})
+               for class_member_name, class_member in getmembers(object=obj, predicate=None)  # noqa: E501
+               if class_member_name != '__class__'})
 
     descriptions: SimpleNamespace = SimpleNamespace(Is=[])
 
@@ -205,13 +209,12 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901,E
             is_bound_instance_special_operator or
             is_unbound_instance_special_operator or
             _is_property or _is_cached_property):
-        descriptions.Signature: Signature = signature(func,
-                                                      follow_wrapped=True,
-                                                      globals=None, locals=None,  # noqa: E501
-                                                      eval_str=True)
+        descriptions.Signature: Signature = \
+            signature(func, follow_wrapped=True,
+                      globals=None, locals=None, eval_str=True)
 
-        descriptions.Annotations = get_annotations(func,
-                                                   globals=None, locals=None,
-                                                   eval_str=True)
+        descriptions.Annotations: dict[str, type] = \
+            get_annotations(func,
+                            globals=None, locals=None, eval_str=True)
 
     return descriptions
