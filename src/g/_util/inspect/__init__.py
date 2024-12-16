@@ -108,32 +108,32 @@ def describe(obj, /, is_class: bool = False, key_name: str | None = None) -> Sim
     if isclass(object=obj):
         descriptions.Is.add('Class')
 
-    if is_routine := isroutine(object=obj):
+    if _is_routine := isroutine(object=obj):
         descriptions.Is.add('Routine')
 
-    if is_function := isfunction(object=obj):
+    if _is_function := isfunction(object=obj):
         descriptions.Is.add('Function')
 
-    if is_method := ismethod(object=obj):
+    if _is_method := ismethod(object=obj):
         descriptions.Is.add('Method')
 
-    if is_static_method(obj):
+    if _is_static_method := is_static_method(obj):
         descriptions.Is.add('StaticMethod')
         func: Callable = obj
 
-    if is_class_method(obj):
+    if _is_class_method := is_class_method(obj):
         descriptions.Is.add('ClassMethod')
         func: Callable = obj.__func__
 
-    if is_bound_instance_method := is_instance_method(obj, bound=True):
+    if _is_bound_instance_method := is_instance_method(obj, bound=True):
         descriptions.Is.add('InstanceMethodBound')
-    elif is_unbound_instance_method := is_instance_method(obj, bound=False):
+    elif _is_unbound_instance_method := is_instance_method(obj, bound=False):
         descriptions.Is.add('InstanceMethodUnbound')
 
-    if (is_bound_instance_special_operator :=
+    if (_is_bound_instance_special_operator :=
             is_instance_special_operator(obj, bound=True)):
         descriptions.Is.add('InstanceSpecialOperatorBound')
-    elif (is_unbound_instance_special_operator :=
+    elif (_is_unbound_instance_special_operator :=
             is_instance_special_operator(obj, bound=False)):
         descriptions.Is.add('InstanceSpecialOperatorUnbound')
 
@@ -202,11 +202,11 @@ def describe(obj, /, is_class: bool = False, key_name: str | None = None) -> Sim
     if istraceback(object=obj):
         descriptions.Is.add('Traceback')
 
-    if (is_routine or is_function or is_method or
-            is_static_method or is_class_method or
-            is_bound_instance_method or is_unbound_instance_method or
-            is_bound_instance_special_operator or
-            is_unbound_instance_special_operator or
+    if (_is_routine or _is_function or _is_method or
+            _is_static_method or _is_class_method or
+            _is_bound_instance_method or _is_unbound_instance_method or
+            _is_bound_instance_special_operator or
+            _is_unbound_instance_special_operator or
             _is_property or _is_cached_property):
         descriptions.Signature: Signature = \
             signature(func, follow_wrapped=True,
