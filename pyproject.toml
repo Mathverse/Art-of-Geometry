@@ -160,7 +160,9 @@ ignore = [
   'ANN002',  # missing type annotation for `**args`
   'ANN003',  # missing type annotation for `**kwargs`
   'B019',  # use of `functools.lru_cache` or `functools.cache` on methods can lead to memory leaks
+  'ERA001',  # found commented-out code
   'EXE002',  # the file is executable but no shebang is present
+  'FIX002',  # line contains TODO, consider resolving the issue
   'FBT001',  # Boolean-typed positional argument in function definition
   'FBT002',  # Boolean default positional argument in function definition
   'I001',  # import block is un-sorted or un-formatted
@@ -174,6 +176,8 @@ ignore = [
   'SLF001',  # private member accessed
   'T201',  # `print` found
   'T203',  # `pprint` found
+  'TD002',  # missing author in TODO; try: `# TODO(<author_name>): ...` or `# TODO @<author_name>: ...
+  'TD003',  # missing issue link on the line following this TODO
   'TID252',  # prefer absolute imports over relative imports from parent modules
 ]
 
