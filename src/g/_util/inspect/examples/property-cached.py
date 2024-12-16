@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from inspect import isroutine
 from pprint import pprint
 from typing import TYPE_CHECKING
 
@@ -22,4 +23,5 @@ class Cls:
 
 
 print(f'{Cls.cached_pty} Is Cached Property? {is_cached_property(Cls.cached_pty)}')  # noqa: E501
+print(f'{Cls.cached_pty} Is Routine? {isroutine(Cls.cached_pty)}')
 pprint(describe(Cls.cached_pty))

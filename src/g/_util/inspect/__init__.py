@@ -1,6 +1,9 @@
 """Inspection Utilities."""
 
 
+# docs.python.org/dev/library/inspect
+
+
 from __future__ import annotations
 
 from functools import cached_property
@@ -22,6 +25,7 @@ from inspect import (get_annotations, getmembers,
                      ismethoddescriptor,
                      ismethodwrapper,
                      ismodule,
+                     # ispackage,  # Python 3.14+
                      isroutine,
                      istraceback,
                      signature)
@@ -41,10 +45,18 @@ __all__: Sequence[LiteralString] = ('is_static_method',
                                     'describe')
 
 
+_SELF_ARG_NAME: LiteralString = 'self'
+
+
 def is_static_method(obj, /) -> bool:
     """Check if object is static method."""
-    return (isfunction(object=obj) and
-            isclass(object=getattr(obj, '__class__', None)))
+    if not (isfunction(object=obj) and ('.' in obj.__qualname__)):
+        return False
+
+    # relying on self-argument naming convention
+    # TODO: make more rigorous
+    return _SELF_ARG_NAME not in signature(obj=obj, follow_wrapped=True,
+                                           globals=None, locals=None, eval_str=False).parameters  # noqa: E501
 
 
 def is_class_method(obj, /) -> bool:
@@ -56,9 +68,16 @@ def is_class_method(obj, /) -> bool:
 
 def is_instance_method(obj, /, *, bound: bool = True) -> bool:
     """Check if object is instance method."""
-    return ((ismethod(object=obj) and (not isclass(object=obj.__self__)))
-            if bound
-            else (isfunction(object=obj) and (not hasattr(obj, '__self__'))))
+    if bound:
+        return ismethod(object=obj) and (not isclass(object=obj.__self__))
+
+    if not (isfunction(object=obj) and ('.' in obj.__qualname__)):
+        return False
+
+    # relying on self-argument naming convention
+    # TODO: make more rigorous
+    return _SELF_ARG_NAME in signature(obj=obj, follow_wrapped=True,
+                                       globals=None, locals=None, eval_str=False).parameters  # noqa: E501
 
 
 def is_instance_special_operator(obj, /, *, bound: bool = True) -> bool:
@@ -91,127 +110,164 @@ def is_cached_property(obj, /) -> bool:
 def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901,E501,PLR0915
     """Describe object."""
     if is_class:
-        return SimpleNamespace(
-            **{class_member_name: describe(class_member)
-               for class_member_name, class_member in getmembers(obj)})
+        return SimpleNamespace(**{class_member_name: describe(class_member)
+                                  for class_member_name, class_member in
+                                  getmembers(object=obj, predicate=None)})
 
-    descriptions: SimpleNamespace = SimpleNamespace(Is=[])
+    descriptions: SimpleNamespace = SimpleNamespace(Is=set())
 
     func: Callable = obj
 
+    # Package & Module
+    # ----------------
+    # docs.python.org/dev/library/inspect.html#inspect.ispackage
+    # if ispackage(object=obj):
+    #     descriptions.Is.add('Package')
+
+    # docs.python.org/dev/library/inspect.html#inspect.ismodule
+    if ismodule(object=obj):
+        descriptions.Is.add('Module')
+
+    # Class
+    # -----
+    # docs.python.org/dev/library/inspect.html#inspect.isabstract
     if isabstract(object=obj):
-        descriptions.Is.append('Abstract')
+        descriptions.Is.add('Abstract')
 
+    # docs.python.org/dev/library/inspect.html#inspect.isclass
     if isclass(object=obj):
-        descriptions.Is.append('Class')
+        descriptions.Is.add('Class')
 
-    if is_routine := isroutine(object=obj):
-        descriptions.Is.append('Routine')
+    # Routine / Function / Method
+    # ---------------------------
+    # docs.python.org/dev/library/inspect.html#inspect.isroutine
+    if _is_routine := isroutine(object=obj):
+        descriptions.Is.add('Routine')
 
-    if is_function := isfunction(object=obj):
-        descriptions.Is.append('Function')
+    # docs.python.org/dev/library/inspect.html#inspect.isfunction
+    if _is_function := isfunction(object=obj):
+        descriptions.Is.add('Function')
 
-    if is_method := ismethod(object=obj):
-        descriptions.Is.append('Method')
+    # docs.python.org/dev/library/inspect.html#inspect.ismethod
+    if _is_method := ismethod(object=obj):
+        descriptions.Is.add('Method')
 
-    if is_static_method(obj):
-        descriptions.Is.append('StaticMethod')
+    if _is_static_method := is_static_method(obj):
+        descriptions.Is.add('StaticMethod')
         func: Callable = obj
 
-    if is_class_method(obj):
-        descriptions.Is.append('ClassMethod')
+    if _is_class_method := is_class_method(obj):
+        descriptions.Is.add('ClassMethod')
         func: Callable = obj.__func__
 
-    if is_bound_instance_method := is_instance_method(obj, bound=True):
-        descriptions.Is.append('InstanceMethodBound')
-    elif is_unbound_instance_method := is_instance_method(obj, bound=False):
-        descriptions.Is.append('InstanceMethodUnbound')
+    if _is_bound_instance_method := is_instance_method(obj, bound=True):
+        descriptions.Is.add('InstanceMethodBound')
+    elif _is_unbound_instance_method := is_instance_method(obj, bound=False):
+        descriptions.Is.add('InstanceMethodUnbound')
 
-    if (is_bound_instance_special_operator :=
+    if (_is_bound_instance_special_operator :=
             is_instance_special_operator(obj, bound=True)):
-        descriptions.Is.append('InstanceSpecialOperatorBound')
-    elif (is_unbound_instance_special_operator :=
+        descriptions.Is.add('InstanceSpecialOperatorBound')
+    elif (_is_unbound_instance_special_operator :=
             is_instance_special_operator(obj, bound=False)):
-        descriptions.Is.append('InstanceSpecialOperatorUnbound')
+        descriptions.Is.add('InstanceSpecialOperatorUnbound')
 
-    if _is_property := (is_property(obj) or
-                        is_settable_property(obj) or
-                        is_settable_deletable_property(obj)):
-        descriptions.Is.append('Property')
+    # Data Descriptor / (Cached) Property
+    # -----------------------------------
+    # docs.python.org/dev/library/inspect.html#inspect.isdatadescriptor
+    if isdatadescriptor(object=obj):
+        descriptions.Is.add('DataDescriptor')
+
+    if _is_property := is_property(obj):
+        descriptions.Is.add('Property')
         func: Callable = obj.fget
 
     if _is_cached_property := is_cached_property(obj):
-        descriptions.Is.append('CachedProperty')
+        descriptions.Is.add('CachedProperty')
         func: Callable = obj.func
 
-    if isdatadescriptor(object=obj):
-        descriptions.Is.append('DataDescriptor')
-
+    # for info only: Method Descriptor/Wrapper
+    # ----------------------------------------
+    # docs.python.org/dev/library/inspect.html#inspect.ismethoddescriptor
     if ismethoddescriptor(object=obj):
-        descriptions.Is.append('MethodDescriptor')
+        descriptions.Is.add('MethodDescriptor')
 
+    # docs.python.org/dev/library/inspect.html#inspect.ismethodwrapper
     if ismethodwrapper(object=obj):
-        descriptions.Is.append('MethodWrapper')
+        descriptions.Is.add('MethodWrapper')
 
-    # generators only
+    # for info only: Generator (Function)
+    # -----------------------------------
+    # docs.python.org/dev/library/inspect.html#inspect.isgenerator
     if isgenerator(object=obj):
-        descriptions.Is.append('Generator')
+        descriptions.Is.add('Generator')
 
+    # docs.python.org/dev/library/inspect.html#inspect.isgeneratorfunction
     if isgeneratorfunction(obj=obj):
-        descriptions.Is.append('GeneratorFunction')
+        descriptions.Is.add('GeneratorFunction')
 
-    # asynchronous implementations only
+    # for info only: Async-related
+    # ----------------------------
+    # docs.python.org/dev/library/inspect.html#inspect.isasyncgen
     if isasyncgen(object=obj):
-        descriptions.Is.append('AsyncGen')
+        descriptions.Is.add('AsyncGen')
 
+    # docs.python.org/dev/library/inspect.html#inspect.isasyncgenfunction
     if isasyncgenfunction(obj=obj):
-        descriptions.Is.append('AsyncGenFunction')
+        descriptions.Is.add('AsyncGenFunction')
 
+    # docs.python.org/dev/library/inspect.html#inspect.isawaitable
     if isawaitable(object=obj):
-        descriptions.Is.append('Awaitable')
+        descriptions.Is.add('Awaitable')
 
+    # docs.python.org/dev/library/inspect.html#inspect.iscoroutine
     if iscoroutine(object=obj):
-        descriptions.Is.append('Coroutine')
+        descriptions.Is.add('Coroutine')
 
+    # docs.python.org/dev/library/inspect.html#inspect.iscoroutinefunction
     if iscoroutinefunction(obj=obj):
-        descriptions.Is.append('CoroutineFunction')
+        descriptions.Is.add('CoroutineFunction')
 
-    # C implementations only
+    # for info only: C-implemented data descriptors
+    # ---------------------------------------------
+    # docs.python.org/dev/library/inspect.html#inspect.isgetsetdescriptor
     if isgetsetdescriptor(object=obj):
-        descriptions.Is.append('GetSetDescriptor')
+        descriptions.Is.add('GetSetDescriptor')
 
+    # docs.python.org/dev/library/inspect.html#inspect.ismemberdescriptor
     if ismemberdescriptor(object=obj):
-        descriptions.Is.append('MemberDescriptor')
+        descriptions.Is.add('MemberDescriptor')
 
-    # other, not relevant but just for completeness
+    # for info only: other, not relevant but just for completeness
+    # ------------------------------------------------------------
+    # docs.python.org/dev/library/inspect.html#inspect.isbuiltin
     if isbuiltin(object=obj):
-        descriptions.Is.append('BuiltIn')
+        descriptions.Is.add('BuiltIn')
 
+    # docs.python.org/dev/library/inspect.html#inspect.iscode
     if iscode(object=obj):
-        descriptions.Is.append('Code')
+        descriptions.Is.add('Code')
 
+    # docs.python.org/dev/library/inspect.html#inspect.isframe
     if isframe(object=obj):
-        descriptions.Is.append('Frame')
+        descriptions.Is.add('Frame')
 
-    if ismodule(object=obj):
-        descriptions.Is.append('Module')
-
+    # docs.python.org/dev/library/inspect.html#inspect.istraceback
     if istraceback(object=obj):
-        descriptions.Is.append('Traceback')
+        descriptions.Is.add('Traceback')
 
-    if (is_routine or is_function or is_method or
-            is_static_method or is_class_method or
-            is_bound_instance_method or is_unbound_instance_method or
-            is_bound_instance_special_operator or
-            is_unbound_instance_special_operator or
+    if (_is_routine or _is_function or _is_method or
+            _is_static_method or _is_class_method or
+            _is_bound_instance_method or _is_unbound_instance_method or
+            _is_bound_instance_special_operator or
+            _is_unbound_instance_special_operator or
             _is_property or _is_cached_property):
-        descriptions.Signature: Signature = signature(func,
-                                                      follow_wrapped=True,
-                                                      globals=None, locals=None,  # noqa: E501
-                                                      eval_str=True)
+        descriptions.Signature: Signature = \
+            signature(func, follow_wrapped=True,
+                      globals=None, locals=None, eval_str=False)
 
-        descriptions.Annotations = get_annotations(func,
-                                                   globals=None, locals=None,
-                                                   eval_str=True)
+        descriptions.Annotations: dict[str, type] = \
+            get_annotations(func,
+                            globals=None, locals=None, eval_str=False)
 
     return descriptions
