@@ -178,9 +178,7 @@ def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901,E
     if isdatadescriptor(object=obj):
         descriptions.Is.add('DataDescriptor')
 
-    if _is_property := (is_property(obj) or
-                        is_settable_property(obj) or
-                        is_settable_deletable_property(obj)):
+    if _is_property := is_property(obj):
         descriptions.Is.add('Property')
         func: Callable = obj.fget
 
