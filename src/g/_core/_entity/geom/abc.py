@@ -100,28 +100,23 @@ class AGeomEntity(AnEntity):
 
     # CUTTING / INTERSECTION
     @abstractmethod
-    def cut(self: Self, other_geom_entity: AGeomEntity, /) \
-            -> (AGeomEntity | set[AGeomEntity]):
+    def cut(self: Self, other_geom_entity: AGeomEntity, /) -> AGeomEntity:
         """Intersection."""
         raise NotImplementedError
 
     # aliases
-    def intersect(self: Self, other_geom_entity: AGeomEntity, /) \
-            -> (AGeomEntity | set[AGeomEntity]):
+    def intersect(self: Self, other_geom_entity: AGeomEntity, /) -> AGeomEntity:  # noqa: E501
         """Intersection."""
         return self.cut(other_geom_entity)
 
-    def intersection(self: Self, other_geom_entity: AGeomEntity, /) \
-            -> (AGeomEntity | set[AGeomEntity]):
+    def intersection(self: Self, other_geom_entity: AGeomEntity, /) -> AGeomEntity:  # noqa: E501
         """Intersection."""
         return self.cut(other_geom_entity)
 
-    def __and__(self: Self, other_geom_entity: AGeomEntity, /) \
-            -> (AGeomEntity | set[AGeomEntity]):
+    def __and__(self: Self, other_geom_entity: AGeomEntity, /) -> AGeomEntity:
         """Intersection."""
         return self.cut(other_geom_entity)
 
-    def __rand__(self: Self, other_geom_entity: AGeomEntity, /) \
-            -> (AGeomEntity | set[AGeomEntity]):
+    def __rand__(self: Self, other_geom_entity: AGeomEntity, /) -> AGeomEntity:
         """Intersection."""
         return self.cut(other_geom_entity)
