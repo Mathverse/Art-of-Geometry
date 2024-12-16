@@ -13,15 +13,11 @@ if TYPE_CHECKING:
     from typing import Self
 
 
-class C:
+class Cls:
     """A Class."""
 
-    def m(self: Self) -> None:
+    def meth(self: Self) -> None:
         """An Instance Method."""  # noqa: D401
 
 
-print(f'{C.m} Is Function? {isfunction(C.m)}')
-print(f'{C.m} Is Bound Instance Method? {ismethod(C.m)}')
-print(f'{C.m} Is Bound Instance Method? {is_instance_method(C.m, bound=True)}')
-print(f'{C.m} Is Unbound Instance Method? {is_instance_method(C.m, bound=False)}')  # noqa: E501
-pprint(describe(C.m))
+pprint(describe(Cls.meth))
