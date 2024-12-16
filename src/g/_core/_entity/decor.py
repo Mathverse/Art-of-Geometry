@@ -64,12 +64,18 @@ def _decorable(function: Callable, /) -> bool:
             return_type: type = eval(return_annotation,  # noqa: S307
                                      globals=sys.modules[function.__module__].__dict__,  # noqa: E501
                                      locals=None)
-        except NameError:
+
+        except NameError as err0:
+            print(f'{function.__module__.upper()}: {err0}\n')
+
             try:
                 return_type: type = eval(return_annotation,  # noqa: S307
                                          globals=sys.modules[_G_MODULE_NAME].__dict__,  # noqa: E501
                                          locals=None)
-            except NameError:
+
+            except NameError as err1:
+                print(f'{err1}\n')
+
                 return False
 
         return (isclass(object=return_type) and issubclass(return_type, AnEntity))  # noqa: E501
