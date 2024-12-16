@@ -11,7 +11,6 @@ from abc import abstractmethod
 from typing import TYPE_CHECKING
 
 from ..abc import AnEntity
-from ..decor import assign_entity_dependencies_and_name
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -25,7 +24,6 @@ if TYPE_CHECKING:
 __all__: Sequence[LiteralString] = ('AGeomEntity',)
 
 
-@assign_entity_dependencies_and_name
 class AGeomEntity(AnEntity):
     """Abstract Geometric Entity."""
 

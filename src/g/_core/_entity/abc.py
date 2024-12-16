@@ -26,12 +26,11 @@ class AnEntity:
         if s := getattr(self, self._SESS_ATTR_KEY, None):
             return s
 
-        else:
-            from g.session import DEFAULT_SESSION
+        from g.session import DEFAULT_SESSION
 
-            setattr(self, self._SESS_ATTR_KEY, DEFAULT_SESSION)
+        setattr(self, self._SESS_ATTR_KEY, DEFAULT_SESSION)
 
-            return DEFAULT_SESSION
+        return DEFAULT_SESSION
 
     @session.setter
     def session(self: Self, session: Session, /) -> None:
@@ -51,8 +50,7 @@ class AnEntity:
             setattr(self, self._DEPS_ATTR_KEY, empty_deps := set[AnEntity]())
             return empty_deps
 
-        else:
-            return deps
+        return deps
 
     @dependencies.setter
     def dependencies(self: Self, dependencies: set[AnEntity], /) -> None:
