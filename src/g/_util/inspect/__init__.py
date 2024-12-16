@@ -95,9 +95,9 @@ def is_cached_property(obj, /) -> bool:
 def describe(obj, /, is_class: bool = False) -> SimpleNamespace:  # noqa: C901,E501,PLR0915
     """Describe object."""
     if is_class:
-        return SimpleNamespace(
-            **{class_member_name: describe(class_member)  # noqa: E501
-               for class_member_name, class_member in getmembers(object=obj, predicate=None)})  # noqa: E501
+        return SimpleNamespace(**{class_member_name: describe(class_member)
+                                  for class_member_name, class_member in
+                                  getmembers(object=obj, predicate=None)})
 
     descriptions: SimpleNamespace = SimpleNamespace(Is=set())
 
