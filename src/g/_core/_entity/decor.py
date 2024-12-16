@@ -52,7 +52,7 @@ def _decorable(function: Callable, /) -> bool:
 
     if (not getattr(function, _ALREADY_DECORATED_ATTR_KEY, False)) and \
             isinstance(return_annotation :=
-                       signature(obj=function, follow_wrapped=True,
+                       signature(obj=function, follow_wrapped=False,
                                  globals=None, locals=None,
                                  eval_str=False).return_annotation, str):
         if (len(qual_name_parts :=
@@ -66,7 +66,8 @@ def _decorable(function: Callable, /) -> bool:
                                      locals=None)
 
         except NameError as err0:
-            print(f'{function.__module__.upper()}: {err0}\n')
+            if debug.ON:
+                print(f'{function.__module__.upper()}: {err0}\n')
 
             try:
                 return_type: type = eval(return_annotation,  # noqa: S307
@@ -74,7 +75,8 @@ def _decorable(function: Callable, /) -> bool:
                                          locals=None)
 
             except NameError as err1:
-                print(f'{err1}\n')
+                if debug.ON:
+                    print(f'{err1}\n')
 
                 return False
 
