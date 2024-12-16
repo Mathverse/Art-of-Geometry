@@ -18,6 +18,6 @@ class ACls(ABC):
         """An Abstract Method."""  # noqa: D401
 
 
-print(f'{ACls} Is Abstract? {isabstract(ACls)}')
+print(f'{ACls} Is Abstract Class? {isabstract(ACls)}')
 print(f'{ACls} Is Class? {isclass(ACls)}')
 pprint(describe(ACls, is_class=True))
