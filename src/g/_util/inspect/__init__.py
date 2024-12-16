@@ -47,8 +47,7 @@ __all__: Sequence[LiteralString] = ('is_static_method',
 
 def is_static_method(obj, /) -> bool:
     """Check if object is static method."""
-    return (isfunction(object=obj) and
-            isclass(object=getattr(obj, '__class__', None)))
+    return (isfunction(object=obj) and ('.' in obj.__qualname__))
 
 
 def is_class_method(obj, /) -> bool:
