@@ -45,14 +45,18 @@ __all__: Sequence[LiteralString] = ('is_static_method',
                                     'describe')
 
 
+_SELF_ARG_NAME: LiteralString = 'self'
+
+
 def is_static_method(obj, /) -> bool:
     """Check if object is static method."""
     if not (isfunction(object=obj) and ('.' in obj.__qualname__)):
         return False
 
     # relying on self-argument naming convention
-    return 'self' not in signature(obj=obj, follow_wrapped=True,
-                                   globals=None, locals=None, eval_str=True).parameters  # noqa: E501
+    # TODO: make more rigorous
+    return _SELF_ARG_NAME not in signature(obj=obj, follow_wrapped=True,
+                                           globals=None, locals=None, eval_str=True).parameters  # noqa: E501
 
 
 def is_class_method(obj, /) -> bool:
@@ -71,8 +75,9 @@ def is_instance_method(obj, /, *, bound: bool = True) -> bool:
         return False
 
     # relying on self-argument naming convention
-    return 'self' in signature(obj=obj, follow_wrapped=True,
-                               globals=None, locals=None, eval_str=True).parameters  # noqa: E501
+    # TODO: make more rigorous
+    return _SELF_ARG_NAME in signature(obj=obj, follow_wrapped=True,
+                                       globals=None, locals=None, eval_str=True).parameters  # noqa: E501
 
 
 def is_instance_special_operator(obj, /, *, bound: bool = True) -> bool:
