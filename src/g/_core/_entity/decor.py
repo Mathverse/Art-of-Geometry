@@ -36,7 +36,11 @@ if TYPE_CHECKING:
 __all__: Sequence[LiteralString] = ('assign_entity_dependencies_and_name',)
 
 
+_ALREADY_DECORATED_ATTR_KEY: LiteralString = '_DECORATED_WITH_DEPENDENCIES_AND_NAME_ASSIGNMENT'  # noqa: E501
+
 _NAME_ATTR_KEY: LiteralString = 'name'
+
+_SELF_TYPE_STR: LiteralString = 'Self'
 
 
 def _decorable(function: Callable, /) -> bool:
@@ -44,20 +48,14 @@ def _decorable(function: Callable, /) -> bool:
     assert isfunction(object=function), \
         TypeError(f'*** {function} NOT A FUNCTION ***')
 
-    function_module_dict: dict[str, Any] = sys.modules[function.__module__].__dict__  # noqa: E501
-
-    if (not getattr(function,
-                    '_DECORATED_WITH_DEPENDENCIES_AND_NAME_ASSIGNMENT',
-                    False)) and \
-            (return_annotation :=
-             get_annotations(obj=function,
-                             globals=function_module_dict,
-                             locals=None,
-                             eval_str=False).get('return')):
-        print(function.__annotations__)
+    if (not getattr(function, _ALREADY_DECORATED_ATTR_KEY, False)) and \
+            isinstance(return_annotation :=
+                       signature(obj=function, follow_wrapped=True,
+                                 globals=None, locals=None,
+                                 eval_str=False).return_annotation, str):
         if (len(qual_name_parts :=
                 function.__qualname__.split('.')) == 2) and \
-                (return_annotation == qual_name_parts[0]):  # noqa: PLR2004
+                (return_annotation in (_SELF_TYPE_STR, qual_name_parts[0])):
             return True
 
         try:
