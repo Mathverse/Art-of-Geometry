@@ -36,13 +36,15 @@ if TYPE_CHECKING:
 __all__: Sequence[LiteralString] = ('assign_entity_dependencies_and_name',)
 
 
-_ALREADY_DECORATED_ATTR_KEY: LiteralString = '_DECORATED_WITH_DEPENDENCIES_AND_NAME_ASSIGNMENT'  # noqa: E501
+_SELF_TYPE_STR: LiteralString = 'Self'
 
 _G_MODULE_NAME: LiteralString = 'g'
 
-_NAME_ATTR_KEY: LiteralString = 'name'
+_NEW_METHOD_NAME: LiteralString = '__new__'
+_INIT_METHOD_NAME: LiteralString = '__init__'
 
-_SELF_TYPE_STR: LiteralString = 'Self'
+_ALREADY_DECORATED_ATTR_KEY: LiteralString = '_DECORATED_WITH_DEPENDENCIES_AND_NAME_ASSIGNMENT'  # noqa: E501
+_NAME_ATTR_KEY: LiteralString = 'name'
 
 
 def _decorable(function: Callable, /) -> bool:
@@ -85,6 +87,13 @@ def _decorable(function: Callable, /) -> bool:
     return False
 
 
+def _func_qualname_and_signature(function: Callable, /) -> str:
+    return f'{function.__qualname__}{signature(obj=function,
+                                               follow_wrapped=False,
+                                               globals=None, locals=None,
+                                               eval_str=False)}'
+
+
 def _decorate(function: Callable, /,  # noqa: C901,PLR0915
               *, assign_name: bool | CallableReturningStr = True) -> Callable:
     """Decorate function with dependencies & name assignment."""
@@ -92,8 +101,7 @@ def _decorate(function: Callable, /,  # noqa: C901,PLR0915
         TypeError(f'*** {function} NOT A FUNCTION ***')
 
     if debug.ON:
-        print(f'DECORATING {function.__qualname__}'
-              f'{signature(obj=function, follow_wrapped=False, eval_str=True)}')  # noqa: E501
+        print(f'DECORATING {_func_qualname_and_signature(function)}')
         pprint(object=describe(function).__dict__,
                stream=None,
                indent=2,
@@ -104,19 +112,20 @@ def _decorate(function: Callable, /,  # noqa: C901,PLR0915
                underscore_numbers=False)
         print('==>')
 
-    name_already_in_arg_spec: bool = _NAME_ATTR_KEY in signature(obj=function).parameters  # noqa: E501
+    assign_name |= not (name_already_in_arg_spec :=
+                        (_NAME_ATTR_KEY in signature(obj=function,
+                                                     follow_wrapped=False,
+                                                     globals=None, locals=None,
+                                                     eval_str=False).parameters))  # noqa: E501
 
-    assign_name: bool | CallableReturningStr = \
-        assign_name and (not name_already_in_arg_spec)
-
-    default_name: CallableReturningStr | None = (assign_name
-                                                 if isfunction(object=assign_name)  # noqa: E501
-                                                 else None)
+    default_name_factory: CallableReturningStr | None = (assign_name
+                                                         if isfunction(object=assign_name)  # noqa: E501
+                                                         else None)
 
     @wraps(wrapped=function)
-    def function_with_dependencies_and_name_assignment(  # noqa: C901
+    def func_w_deps_and_name_assignment(  # noqa: C901
             *args: Any,
-            name: OptionalStrOrCallableReturningStr = default_name,
+            name: OptionalStrOrCallableReturningStr = default_name_factory,
             **kwargs: Any) -> AnEntity | None:
         dependencies: set[AnEntity] = {i
                                        for i in (args + tuple(kwargs.values()))
@@ -133,7 +142,7 @@ def _decorate(function: Callable, /,  # noqa: C901,PLR0915
 
         result: AnEntity | None = function(*args, **kwargs)
 
-        if function.__name__ == '__new__':
+        if function.__name__ == _NEW_METHOD_NAME:
             # assign dependencies
             if not hasattr(result, result._DEPS_ATTR_KEY):
                 result.dependencies: set[AnEntity] = dependencies
@@ -143,12 +152,12 @@ def _decorate(function: Callable, /,  # noqa: C901,PLR0915
                 if isinstance(result, Symbol):
                     result.name: str = name
 
-                elif not hasattr(result, result._NAME_ATTR_KEY):  # noqa: E501,RUF100
-                    setattr(result, result._NAME_ATTR_KEY, name)  # noqa: E501,RUF100
+                elif not hasattr(result, result._NAME_ATTR_KEY):
+                    setattr(result, result._NAME_ATTR_KEY, name)
 
             return result
 
-        if function.__name__ == '__init__':
+        if function.__name__ == _INIT_METHOD_NAME:
             self: AnEntity = args[0]
             assert isinstance(self, AnEntity)
 
@@ -156,7 +165,7 @@ def _decorate(function: Callable, /,  # noqa: C901,PLR0915
 
             # assign dependencies
             if not hasattr(self, self._DEPS_ATTR_KEY):
-                self.dependencies: set[AnEntity] = dependencies[1:]
+                self.dependencies: set[AnEntity] = dependencies - {self}
 
             # assign name
             if assign_name:
@@ -184,47 +193,47 @@ def _decorate(function: Callable, /,  # noqa: C901,PLR0915
 
         return result
 
-    function_with_dependencies_and_name_assignment._DECORATED_WITH_DEPENDENCIES_AND_NAME_ASSIGNMENT: bool = True  # noqa: E501
+    setattr(func_w_deps_and_name_assignment, _ALREADY_DECORATED_ATTR_KEY, True)
 
     if not name_already_in_arg_spec:
-        function_with_dependencies_and_name_assignment.__annotations__[
-            _NAME_ATTR_KEY] = OptionalStrOrCallableReturningStr
+        func_w_deps_and_name_assignment.__annotations__[_NAME_ATTR_KEY] = OptionalStrOrCallableReturningStr  # noqa: E501
 
-        function_signature: Signature = \
-            signature(function, follow_wrapped=False)
+        func_sig: Signature = signature(obj=function, follow_wrapped=False,
+                                        globals=None, locals=None, eval_str=False)  # noqa: E501
 
-        function_parameters: list[Any] = \
-            list(function_signature.parameters.values())
+        func_params: list[Any] = list(func_sig.parameters.values())
 
-        name_parameter: Parameter = \
-            Parameter(name=_NAME_ATTR_KEY,
-                      kind=Parameter.KEYWORD_ONLY,
-                      default=default_name,
-                      annotation=OptionalStrOrCallableReturningStr)
+        name_param: Parameter = Parameter(name=_NAME_ATTR_KEY,
+                                          kind=Parameter.KEYWORD_ONLY,
+                                          default=default_name_factory,
+                                          annotation=OptionalStrOrCallableReturningStr)  # noqa: E501
 
         try:
-            kwargs_parameter_index = \
-                next(i
-                     for i, parameter in enumerate(function_parameters)
-                     if parameter.kind == Parameter.VAR_KEYWORD)
+            kwargs_param_index: int = next(i
+                                           for i, parameter in enumerate(func_params)  # noqa: E501
+                                           if parameter.kind == Parameter.VAR_KEYWORD)  # noqa: E501
 
         except StopIteration:
-            function_parameters.append(name_parameter)
+            func_params.append(name_param)
 
         else:
-            function_parameters.insert(kwargs_parameter_index,
-                                       name_parameter)
+            func_params.insert(kwargs_param_index, name_param)
 
-        function_with_dependencies_and_name_assignment.__signature__ = (
-            function_signature.replace(parameters=function_parameters))
+        func_w_deps_and_name_assignment.__signature__: Signature = (
+            func_sig.replace(parameters=func_params))
 
     if debug.ON:
-        print(f'DECORATED {function_with_dependencies_and_name_assignment.__qualname__}'  # noqa: E501
-              f'{signature(function_with_dependencies_and_name_assignment)}')
-        pprint(describe(function_with_dependencies_and_name_assignment).__dict__,  # noqa: E501,RUF100
-               sort_dicts=False)
+        print(f'DECORATED {_func_qualname_and_signature(func_w_deps_and_name_assignment)}')  # noqa: E501
+        pprint(describe(func_w_deps_and_name_assignment).__dict__,
+               stream=None,
+               indent=2,
+               width=80,
+               depth=None,
+               compact=False,
+               sort_dicts=False,
+               underscore_numbers=False)
 
-    return function_with_dependencies_and_name_assignment
+    return func_w_deps_and_name_assignment
 
 
 def assign_entity_dependencies_and_name(entity_related_callable: Callable, /) -> Callable:  # noqa: C901,E501,PLR0915
@@ -244,7 +253,7 @@ def assign_entity_dependencies_and_name(entity_related_callable: Callable, /) ->
                                                           isclass(object=member))))  # noqa: E501,RUF100
 
         # if __new__ is implemented somewhere in __mro__
-        if isfunction(object=(__new__ := class_members.pop('__new__'))):
+        if isfunction(object=(__new__ := class_members.pop(_NEW_METHOD_NAME))):
             entity_related_callable.__new__: Callable[..., AnEntity] = \
                 _decorate(__new__,
                           assign_name=(True
@@ -255,7 +264,7 @@ def assign_entity_dependencies_and_name(entity_related_callable: Callable, /) ->
                 print()
 
         # if __init__ is implemented somewhere in __mro__
-        if isfunction(object=(__init__ := class_members.pop('__init__'))):
+        if isfunction(object=(__init__ := class_members.pop(_INIT_METHOD_NAME))):  # noqa: E501
             entity_related_callable.__init__: Callable[..., None] = \
                 _decorate(__init__,
                           assign_name=(True
@@ -275,10 +284,16 @@ def assign_entity_dependencies_and_name(entity_related_callable: Callable, /) ->
                 # Static Method
                 if is_static_method(class_member):
                     if debug.ON:
-                        print(f'DECORATING STATIC METHOD {class_member.__qualname__}'  # noqa: E501
-                              f'{signature(class_member, follow_wrapped=False)}')  # noqa: E501
+                        print(f'DECORATING STATIC METHOD '
+                              f'{_func_qualname_and_signature(class_member)}')
                         pprint(describe(class_member).__dict__,
-                               sort_dicts=False)
+                               stream=None,
+                               indent=2,
+                               width=80,
+                               depth=None,
+                               compact=False,
+                               sort_dicts=False,
+                               underscore_numbers=False)
                         print('==>')
 
                     setattr(entity_related_callable, class_member_name,
@@ -291,10 +306,16 @@ def assign_entity_dependencies_and_name(entity_related_callable: Callable, /) ->
                                     class_member_name)
 
                         print('==>')
-                        print(f'DECORATED STATIC METHOD {decorated_class_member.__qualname__}'  # noqa: E501
-                              f'{signature(decorated_class_member, follow_wrapped=False)}')  # noqa: E501
+                        print(f'DECORATED STATIC METHOD '
+                              f'{_func_qualname_and_signature(decorated_class_member)}')  # noqa: E501
                         pprint(describe(decorated_class_member).__dict__,
-                               sort_dicts=False)
+                               stream=None,
+                               indent=2,
+                               width=80,
+                               depth=None,
+                               compact=False,
+                               sort_dicts=False,
+                               underscore_numbers=False)
                         print()
 
                 # Unbound Instance Method
@@ -302,10 +323,16 @@ def assign_entity_dependencies_and_name(entity_related_callable: Callable, /) ->
                     assert is_instance_method(class_member, bound=False)
 
                     if debug.ON:
-                        print(f'DECORATING UNBOUND INSTANCE METHOD {class_member.__qualname__}'  # noqa: E501
-                              f'{signature(class_member, follow_wrapped=False)}')  # noqa: E501
+                        print(f'DECORATING UNBOUND INSTANCE METHOD '
+                              f'{_func_qualname_and_signature(class_member.__qualname__)}')  # noqa: E501
                         pprint(describe(class_member).__dict__,
-                               sort_dicts=False)
+                               stream=None,
+                               indent=2,
+                               width=80,
+                               depth=None,
+                               compact=False,
+                               sort_dicts=False,
+                               underscore_numbers=False)
                         print('==>')
 
                     setattr(entity_related_callable, class_member_name,
@@ -317,19 +344,31 @@ def assign_entity_dependencies_and_name(entity_related_callable: Callable, /) ->
                                     class_member_name)
 
                         print('==>')
-                        print(f'DECORATED UNBOUND INSTANCE METHOD {decorated_class_member.__qualname__}'  # noqa: E501
-                              f'{signature(decorated_class_member, follow_wrapped=False)}')  # noqa: E501
+                        print(f'DECORATED UNBOUND INSTANCE METHOD '
+                              f'{_func_qualname_and_signature(decorated_class_member)}')  # noqa: E501
                         pprint(describe(decorated_class_member).__dict__,
-                               sort_dicts=False)
+                               stream=None,
+                               indent=2,
+                               width=80,
+                               depth=None,
+                               compact=False,
+                               sort_dicts=False,
+                               underscore_numbers=False)
                         print()
 
             # Class Method
             elif is_class_method(class_member) and _decorable(class_member.__func__):  # noqa: E501
                 if debug.ON:
-                    print(f'DECORATING CLASS METHOD {class_member.__qualname__}'  # noqa: E501
-                          f'{signature(class_member, follow_wrapped=False)}')
+                    print(f'DECORATING CLASS METHOD '
+                          f'{_func_qualname_and_signature(class_member)}')
                     pprint(describe(class_member).__dict__,
-                           sort_dicts=False)
+                           stream=None,
+                           indent=2,
+                           width=80,
+                           depth=None,
+                           compact=False,
+                           sort_dicts=False,
+                           underscore_numbers=False)
                     print('==>')
 
                 setattr(entity_related_callable, class_member_name,
@@ -342,10 +381,16 @@ def assign_entity_dependencies_and_name(entity_related_callable: Callable, /) ->
                                 class_member_name)
 
                     print('==>')
-                    print(f'DECORATED CLASS METHOD {decorated_class_member.__qualname__}'  # noqa: E501
-                          f'{signature(decorated_class_member, follow_wrapped=False)}')  # noqa: E501
+                    print(f'DECORATED CLASS METHOD '
+                          f'{_func_qualname_and_signature(decorated_class_member)}')  # noqa: E501
                     pprint(describe(decorated_class_member).__dict__,
-                           sort_dicts=False)
+                           stream=None,
+                           indent=2,
+                           width=80,
+                           depth=None,
+                           compact=False,
+                           sort_dicts=False,
+                           underscore_numbers=False)
                     print()
 
             # Property's Underlying Getter Function
