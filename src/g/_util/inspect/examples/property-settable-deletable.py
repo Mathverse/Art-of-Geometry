@@ -1,4 +1,4 @@
-"""Inspect Settable & Deletable Property."""
+"""Settable-&-Deletable-Property Object Inspection."""
 
 
 from __future__ import annotations
@@ -13,26 +13,26 @@ if TYPE_CHECKING:
     from typing import Self
 
 
-class C:
+class Cls:
     """A Class."""
 
     @property
-    def p(self: Self) -> int:
+    def pty(self: Self) -> int:
         """Get Property Value."""
         return self._p
 
-    @p.setter
-    def p(self: Self, v: int) -> None:
+    @pty.setter
+    def pty(self: Self, v: int) -> None:
         """Set Property Value."""
         self._p: int = v
 
-    @p.deleter
-    def p(self: Self) -> None:
+    @pty.deleter
+    def pty(self: Self) -> None:
         """Set Property Value to 0."""
         self._p: int = 0
 
 
-print(f'{C.p} Is Property? {is_property(C.p)}')
-print(f'{C.p} Is Settable Property? {is_settable_property(C.p)}')
-print(f'{C.p} Is Settable & Deletable Property? {is_settable_deletable_property(C.p)}')  # noqa: E501
-pprint(describe(C.p))
+print(f'{Cls.pty} Is Settable & Deletable Property? {is_settable_deletable_property(Cls.pty)}')  # noqa: E501
+print(f'{Cls.pty} Is Settable Property? {is_settable_property(Cls.pty)}')
+print(f'{Cls.pty} Is Property? {is_property(Cls.pty)}')
+pprint(describe(Cls.pty))
