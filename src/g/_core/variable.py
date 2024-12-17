@@ -15,7 +15,7 @@ from g._util.type import (Num, RealNum,
                           OptionalSymPyExpr, OptionalStrOrSymPyExpr)
 from g._util.unique_name import UNIQUE_NAME_FACTORY
 
-from ._entity.non_geom import ANonGeomEntity
+from ._entity import ANonGeomEntity, assign_entity_dependencies_and_name
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -28,6 +28,7 @@ __all__: Sequence[LiteralString] = ('Variable', 'Var',
                                     'RealNumOrVar', 'OptionalRealNumOrVar')
 
 
+@assign_entity_dependencies_and_name
 class Variable(ANonGeomEntity, Symbol):
     """Variable."""
 
