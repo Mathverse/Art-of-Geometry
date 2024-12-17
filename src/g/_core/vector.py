@@ -43,7 +43,16 @@ __all__: Sequence[LiteralString] = ('Vector', 'Vec', 'V',
 
 
 @assign_entity_dependencies_and_name
-@dataclass
+@dataclass(init=True,
+           repr=True,
+           eq=True,
+           order=True,
+           unsafe_hash=True,
+           frozen=False,
+           match_args=True,
+           kw_only=False,
+           slots=False,
+           weakref_slot=False)
 class Vector(ANonGeomEntity):
     """(3-Dimensional) Vector."""
 
