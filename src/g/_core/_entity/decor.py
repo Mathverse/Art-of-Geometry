@@ -88,6 +88,7 @@ def _decorable(function: Callable, /) -> bool:
 
 
 def _func_qualname_and_signature(function: Callable, /) -> str:
+    """Return function's qualified name and signature."""
     return f'{function.__qualname__}{signature(obj=function,
                                                follow_wrapped=False,
                                                globals=None, locals=None,
