@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property, wraps
-from inspect import (get_annotations, getmembers,
+from inspect import (getmembers,
                      isabstract, isclass, isfunction, ismethoddescriptor,
                      Parameter,
                      Signature, signature)
@@ -301,9 +301,8 @@ def assign_entity_dependencies_and_name(entity_related_callable: Callable, /) ->
                                                    assign_name=True)))
 
                     if debug.ON:
-                        decorated_class_member = \
-                            getattr(entity_related_callable,
-                                    class_member_name)
+                        decorated_class_member: Callable[..., AnEntity] = \
+                            getattr(entity_related_callable, class_member_name)
 
                         print('==>')
                         print(f'DECORATED STATIC METHOD '
@@ -324,7 +323,7 @@ def assign_entity_dependencies_and_name(entity_related_callable: Callable, /) ->
 
                     if debug.ON:
                         print(f'DECORATING UNBOUND INSTANCE METHOD '
-                              f'{_func_qualname_and_signature(class_member.__qualname__)}')  # noqa: E501
+                              f'{_func_qualname_and_signature(class_member)}')
                         pprint(describe(class_member).__dict__,
                                stream=None,
                                indent=2,
@@ -339,9 +338,8 @@ def assign_entity_dependencies_and_name(entity_related_callable: Callable, /) ->
                             _decorate(class_member, assign_name=True))
 
                     if debug.ON:
-                        decorated_class_member = \
-                            getattr(entity_related_callable,
-                                    class_member_name)
+                        decorated_class_member: Callable[..., AnEntity] = \
+                            getattr(entity_related_callable, class_member_name)
 
                         print('==>')
                         print(f'DECORATED UNBOUND INSTANCE METHOD '
@@ -376,9 +374,8 @@ def assign_entity_dependencies_and_name(entity_related_callable: Callable, /) ->
                                               assign_name=True)))
 
                 if debug.ON:
-                    decorated_class_member = \
-                        getattr(entity_related_callable,
-                                class_member_name)
+                    decorated_class_member: Callable[..., AnEntity] = \
+                        getattr(entity_related_callable, class_member_name)
 
                     print('==>')
                     print(f'DECORATED CLASS METHOD '
@@ -398,8 +395,12 @@ def assign_entity_dependencies_and_name(entity_related_callable: Callable, /) ->
                 if debug.ON:
                     print("DECORATING INSTANCE PROPERTY'S GETTER FUNCTION...")
 
-                class_member.fget: Callable = _decorate(class_member.fget,
-                                                        assign_name=False)
+                setattr(entity_related_callable, class_member_name,
+                        property(fget=_decorate(class_member.fget,
+                                                assign_name=False),
+                                 fset=class_member.fset,
+                                 fdel=class_member.fdel,
+                                 doc=class_member.__doc__))
 
                 if debug.ON:
                     print()
@@ -411,8 +412,8 @@ def assign_entity_dependencies_and_name(entity_related_callable: Callable, /) ->
                           'UNDERLYING FUNCTION...')
 
                 setattr(entity_related_callable, class_member_name,
-                        cached_property(_decorate(class_member.func,
-                                                  assign_name=False)))
+                        cached_property(func=_decorate(class_member.func,
+                                                       assign_name=False)))
 
                 if debug.ON:
                     print()
