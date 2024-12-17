@@ -112,11 +112,12 @@ def _decorate(function: Callable, /,  # noqa: C901,PLR0915
                underscore_numbers=False)
         print('==>')
 
-    assign_name |= not (name_already_in_arg_spec :=
-                        (_NAME_ATTR_KEY in signature(obj=function,
-                                                     follow_wrapped=False,
-                                                     globals=None, locals=None,
-                                                     eval_str=False).parameters))  # noqa: E501
+    name_already_in_arg_spec: bool = \
+        (_NAME_ATTR_KEY in signature(obj=function, follow_wrapped=False,
+                                     globals=None, locals=None, eval_str=False).parameters)  # noqa: E501
+
+    assign_name: bool | CallableReturningStr = \
+        assign_name and (not name_already_in_arg_spec)
 
     default_name_factory: CallableReturningStr | None = (assign_name
                                                          if isfunction(object=assign_name)  # noqa: E501
