@@ -29,7 +29,7 @@ from dataclasses import dataclass
 from functools import cache
 from typing import TYPE_CHECKING
 
-from ._entity import ANonGeomEntity
+from ._entity import ANonGeomEntity, assign_entity_dependencies_and_name
 from .variable import RealNumOrVar
 
 if TYPE_CHECKING:
@@ -42,6 +42,7 @@ __all__: Sequence[LiteralString] = ('Vector', 'Vec', 'V',
                                     'Ux', 'Uy', 'Uz', 'V0')
 
 
+@assign_entity_dependencies_and_name
 @dataclass
 class Vector(ANonGeomEntity):
     """(3-Dimensional) Vector."""
