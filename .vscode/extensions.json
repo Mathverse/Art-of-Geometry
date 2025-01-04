@@ -13,6 +13,7 @@
   "unwantedRecommendations": [
     "ms-python.autopep8",  // AutoPEP8 (Microsoft)
     "ms-python.black-formatter",  // Black Formatter (Microsoft)
+    "ms-python.isort",  // ISort (Microsoft)
     "eeyore.yapf",  // Yet Another Python Formatter
 
     "ms-python.mypy-type-checker",  // MyPy Type Checker (Microsoft)
